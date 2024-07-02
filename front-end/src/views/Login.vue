@@ -76,6 +76,12 @@ const submitForm = (formRef: FormInstance | undefined) => {
   });
 };
 
+// reset form
+const resetForm = (formRef: FormInstance | undefined) => {
+    if (!formRef) return;
+  formRef.resetFields();
+};
+
 </script>
 <style scoped lang='scss'>
 .login{
