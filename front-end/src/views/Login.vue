@@ -28,7 +28,7 @@
     </div>
   </template>
 <script setup lang='ts'>
-import { onMounted, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 // form instance
 const formRef = ref<FormInstance>();
@@ -63,6 +63,18 @@ const rules = reactive<FormRules<typeof formData>>({
   username: [{ validator: validateUsername, trigger: "blur" }],
   password: [{ validator: validatePassword, trigger: "blur" }],
 });
+
+// submit form
+const submitForm = (formRef: FormInstance | undefined) => {
+    if (!formRef) return;
+  formRef.validate((valid) => {
+    if (valid) {
+      console.log("submit");
+    } else {
+      console.log("error submit!!");
+    }
+  });
+};
 
 </script>
 <style scoped lang='scss'>
