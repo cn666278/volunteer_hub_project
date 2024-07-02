@@ -38,6 +38,32 @@ const formData = reactive({
   username: "",
   password: "",
 });
+
+// validate username
+const validateUsername = (_: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("Please enter the username"));
+  } else {
+    callback();
+  }
+};
+
+// validate password
+const validatePassword = (_: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("Please enter the password"));
+  } else {
+    callback();
+  }
+};
+
+
+// submit form rules
+const rules = reactive<FormRules<typeof formData>>({
+  username: [{ validator: validateUsername, trigger: "blur" }],
+  password: [{ validator: validatePassword, trigger: "blur" }],
+});
+
 </script>
 <style scoped lang='scss'>
 .login{
