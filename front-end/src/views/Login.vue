@@ -1,20 +1,20 @@
 <template>
     <div class="login">
-      <div class="box">
+      <div class="login-form">
         <h2>Welsh Sport Volunteer Hub</h2>
         <el-form
-          size="small"
+          size="default"
           ref="formRef"
           style="max-width: 600px"
           :model="formData"
           status-icon
           :rules="rules"
-          label-width="40px"
+          label-width="80px"
         >
-          <el-form-item label="账号" prop="username">
+          <el-form-item label="Username" prop="username">
             <el-input v-model="formData.username" />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="Password" prop="password">
             <el-input v-model="formData.password" type="password" />
           </el-form-item>
           <el-form-item>
@@ -39,7 +39,7 @@ const formData = reactive({
   password: "",
 });
 </script>
-<style lang='scss'>
+<style scoped lang='scss'>
 .login{
     width: 100vw;
     height: 100vh;
@@ -47,11 +47,20 @@ const formData = reactive({
     display: flex;
     justify-content: center;
     align-items: center;
-    .box{
-        width: 400px;
-        height: 200px;
-        background: #fff;
-        border-radius: 10px;
+    .login-form {
+    width: 600px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    padding: 20px;
+    h2 {
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
     }
+    :deep(.el-form-item__label) {
+      color: white;
+    }
+  }
 }
 </style>
