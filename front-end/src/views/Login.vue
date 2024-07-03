@@ -31,8 +31,13 @@
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { $login } from "../api/admin.ts";
+import { useRouter } from "vue-router";
+
 // form instance
 const formRef = ref<FormInstance>();
+
+// router instance
+const router = useRouter();
 
 // form data
 const formData = reactive({
@@ -68,9 +73,16 @@ const rules = reactive<FormRules<typeof formData>>({
 // submit form
 const submitForm = (formRef: FormInstance | undefined) => {
     if (!formRef) return;
-  formRef.validate((valid) => {
+  formRef.validate(async (valid) => {
     if (valid) {
-      let res = $login(formData);
+      let res = await $login(formData);
+      if( res.code == 200 ) {
+        console.log('login success')
+        // jump to Main home page
+        router.push('/home')
+      } else {
+        console.log('login failed')
+      }
       console.log("submit");
     } else {
       console.log("error submit!!");

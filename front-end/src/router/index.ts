@@ -13,9 +13,9 @@ const routes = createRouter({
       redirect: "/",
     },
     {
-      path: "/main",
-      name: "Main",
-      component: () => import("../views/Main.vue"),
+      path: "/home",
+      name: "Home",
+      component: () => import("../views/Home.vue"),
     },
   ],
 });
