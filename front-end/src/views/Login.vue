@@ -28,10 +28,20 @@
     </div>
   </template>
 <script setup lang='ts'>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
+import { $login, $getUserInfo } from "../api/admin.ts";
+import { useRouter } from "vue-router";
+import useUser from "../store/user.ts";
+
 // form instance
 const formRef = ref<FormInstance>();
+
+// router instance
+const router = useRouter();
+
+// user store
+const userStore = useUser();
 
 // form data
 const formData = reactive({
@@ -66,9 +76,29 @@ const rules = reactive<FormRules<typeof formData>>({
 
 // submit form
 const submitForm = (formRef: FormInstance | undefined) => {
-    if (!formRef) return;
-  formRef.validate((valid) => {
+  if (!formRef) return;
+  formRef.validate(async (valid) => {
     if (valid) {
+      let res = await $login(formData);
+      if (res.code == 200) {
+        let user = await $getUserInfo({username: formData.username})
+        userStore.setUser(user)
+        console.log('login success')
+        if (res.data.role == 'volunteer') {
+          // jump to Main home page
+          router.push('/home/volunteer')
+        } else if (res.data.role == 'admin') {
+          // jump to Admin home page
+          router.push('/home/admin')
+        } else if (res.data.role == 'organizer') {
+          // jump to Organizer home page
+          router.push('/home/organizer')
+        } else {
+          console.log('role error')
+        }
+      } else {
+        console.log('login failed')
+      }
       console.log("submit");
     } else {
       console.log("error submit!!");
@@ -81,6 +111,21 @@ const resetForm = (formRef: FormInstance | undefined) => {
     if (!formRef) return;
   formRef.resetFields();
 };
+
+// check if the user is logged in, if not, redirect to the home page
+onMounted(() => {
+  if(userStore.user.username){
+    if(userStore.user.role.roleName == 'volunteer'){
+      router.push('/home/volunteer')
+    } else if(userStore.user.role.roleName == 'admin'){
+      router.push('/home/admin')
+    } else if(userStore.user.role.roleName == 'organizer'){
+      router.push('/home/organizer')
+    } else {
+      console.log('role error')
+    }
+  }
+});
 
 </script>
 <style scoped lang='scss'>
