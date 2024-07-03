@@ -67,7 +67,7 @@
             </template>
             <el-menu-item index="2-1">Personal</el-menu-item>
             <el-menu-item index="2-2">Password</el-menu-item>
-            <el-menu-item index="">Exit</el-menu-item>
+            <el-menu-item index="" @click="exit">Exit</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
@@ -91,6 +91,7 @@ import {
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import useUser from "../../../store/user.ts";
+import { ElMessageBox } from 'element-plus'
 
 let userStore = useUser();
 let router = useRouter();
@@ -101,6 +102,21 @@ onMounted(() => {
     router.push('/');
   }
 });
+
+// exit
+const exit = () => {
+  ElMessageBox.confirm('Do you confirm to exit?', 'System Notification', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
+    type: 'warning'
+  }).then(() => {
+    userStore.clearUser();
+    router.push('/');
+  }).catch(() => {
+    console.log('Cancel exit');
+  });
+};
+
 </script>
 
 <style lang="scss">
