@@ -1,5 +1,5 @@
 <template>
-  <div>Home</div>
+  <div>Volunteer Home</div>
 </template>
 <script setup lang="ts"></script>
 <style lang="scss"></style>

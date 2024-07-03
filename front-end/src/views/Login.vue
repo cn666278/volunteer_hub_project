@@ -72,14 +72,24 @@ const rules = reactive<FormRules<typeof formData>>({
 
 // submit form
 const submitForm = (formRef: FormInstance | undefined) => {
-    if (!formRef) return;
+  if (!formRef) return;
   formRef.validate(async (valid) => {
     if (valid) {
       let res = await $login(formData);
-      if( res.code == 200 ) {
+      if (res.code == 200) {
         console.log('login success')
-        // jump to Main home page
-        router.push('/home')
+        if (res.data.role == 'volunteer') {
+          // jump to Main home page
+          router.push('/home/volunteer')
+        } else if (res.data.role == 'admin') {
+          // jump to Admin home page
+          router.push('/home/admin')
+        } else if (res.data.role == 'organizer') {
+          // jump to Organizer home page
+          router.push('/home/organizer')
+        } else {
+          console.log('role error')
+        }
       } else {
         console.log('login failed')
       }

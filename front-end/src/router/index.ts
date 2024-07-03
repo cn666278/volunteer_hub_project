@@ -13,9 +13,19 @@ const routes = createRouter({
       redirect: "/",
     },
     {
-      path: "/home",
-      name: "Home",
-      component: () => import("../views/Home.vue"),
+      path: "/home/admin",
+      name: "Home Admin",
+      component: () => import("../views/home/HomeAdmin.vue"),
+    },
+    {
+      path: "/home/volunteer",
+      name: "Home Volunteer",
+      component: () => import("../views/home/HomeVolunteer.vue"),
+    },
+    {
+      path: "/home/organizer",
+      name: "Home Organizer",
+      component: () => import("../views/home/HomeOrganizer.vue"),
     },
   ],
 });
