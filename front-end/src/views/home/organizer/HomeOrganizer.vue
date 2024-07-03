@@ -88,7 +88,21 @@ import {
   Avatar,
   User,
 } from "@element-plus/icons-vue";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+import useUser from "../../../store/user.ts";
+
+let userStore = useUser();
+let router = useRouter();
+// check if the user is logged in, if not, redirect to the login page
+onMounted(() => {
+  console.log(userStore.user);
+  if(!userStore.user.username){
+    router.push('/');
+  }
+});
 </script>
+
 <style lang="scss">
 .home {
   width: 100vw; // 100% of the viewport width
