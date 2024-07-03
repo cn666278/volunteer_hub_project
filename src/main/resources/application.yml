@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/wsa?useSSL=false&serverTimezone=UTC
+    username: root
+    password: comsc
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  type-aliases-package: com.wsa.model
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+logging:
+  level:
+    root: INFO
+    com.wsa: DEBUG
