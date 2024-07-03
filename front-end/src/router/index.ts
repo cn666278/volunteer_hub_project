@@ -1,4 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import 'pace-progressbar';
+import 'pace-progressbar/themes/blue/pace-theme-minimal.css';
 
 const routes = createRouter({
   history: createWebHashHistory(),
