@@ -30,6 +30,7 @@
 <script setup lang='ts'>
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
+import { $login } from "../api/admin.ts";
 // form instance
 const formRef = ref<FormInstance>();
 
@@ -69,6 +70,7 @@ const submitForm = (formRef: FormInstance | undefined) => {
     if (!formRef) return;
   formRef.validate((valid) => {
     if (valid) {
+      let res = $login(formData);
       console.log("submit");
     } else {
       console.log("error submit!!");
