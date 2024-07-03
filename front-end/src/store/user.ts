@@ -25,6 +25,20 @@ export default defineStore("user", {
     }) {
       this.user = user;
     },
+    clearUser() {
+      sessionStorage.clear();
+      this.user = {
+        username: "",
+        loginId: "",
+        photo: "",
+        phone: "",
+        email: "",
+        role: {
+          roleId: 0,
+          roleName: "",
+        },
+      };
+    },
   },
   // data persistence
   // persist: true // default: localStorage (permanent storage in the browser, not cleared when the browser is closed)
