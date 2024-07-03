@@ -26,6 +26,13 @@ const routes = createRouter({
       path: "/home/organizer",
       name: "Home Organizer",
       component: () => import("../views/home/organizer/HomeOrganizer.vue"),
+      children: [
+        {
+          path: "/event",
+          name: "Event",
+          component: () => import("../views/home/organizer/Event.vue"),
+        },
+      ]
     },
   ],
 });

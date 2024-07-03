@@ -5,6 +5,7 @@
         <h2>WSA Volunteer Hub</h2>
       </div>
       <el-menu
+        router
         active-text-color="#ffd04b"
         background-color="#142334"
         class="el-menu-vertical-demo"
@@ -13,11 +14,11 @@
       >
         <el-sub-menu index="1">
           <template #title>
-            <el-icon><Avatar /></el-icon>
-            <span>Account</span>
+            <el-icon><Briefcase /></el-icon>
+            <span>Event</span>
           </template>
-          <el-menu-item index="1-1">Role</el-menu-item>
-          <el-menu-item index="1-2">User</el-menu-item>
+          <el-menu-item index="/event">Event</el-menu-item>
+          <el-menu-item index="/eventManage">Event Manage</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>
@@ -29,17 +30,18 @@
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
-            <el-icon><Briefcase /></el-icon>
-            <span>Menu</span>
+            <el-icon><Avatar /></el-icon>
+            <span>Account</span>
           </template>
-          <el-menu-item index="3-1">Sub Menu1</el-menu-item>
-          <el-menu-item index="3-2">Sub Menu2</el-menu-item>
+          <el-menu-item index="3-1">Role</el-menu-item>
+          <el-menu-item index="3-2">User</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
     <div class="right">
         <div class="top">
         <el-menu
+          router
           mode="horizontal"
           background-color="#142334"
           text-color="#fff"
@@ -65,11 +67,14 @@
             </template>
             <el-menu-item index="2-1">Personal</el-menu-item>
             <el-menu-item index="2-2">Password</el-menu-item>
-            <el-menu-item index="2-3">Exit</el-menu-item>
+            <el-menu-item index="">Exit</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
-      <div class="content">3</div>
+      <div class="content">
+        <!-- add router, render content -->
+        <router-view></router-view> 
+      </div>
     </div>
   </div>
 </template>
