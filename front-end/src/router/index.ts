@@ -15,17 +15,17 @@ const routes = createRouter({
     {
       path: "/home/admin",
       name: "Home Admin",
-      component: () => import("../views/home/HomeAdmin.vue"),
+      component: () => import("../views/home/admin/HomeAdmin.vue"),
     },
     {
       path: "/home/volunteer",
       name: "Home Volunteer",
-      component: () => import("../views/home/HomeVolunteer.vue"),
+      component: () => import("../views/home/volunteer/HomeVolunteer.vue"),
     },
     {
       path: "/home/organizer",
       name: "Home Organizer",
-      component: () => import("../views/home/HomeOrganizer.vue"),
+      component: () => import("../views/home/organizer/HomeOrganizer.vue"),
     },
   ],
 });
