@@ -13,7 +13,7 @@
       >
         <el-sub-menu index="1">
           <template #title>
-            <el-icon><UserFilled /></el-icon>
+            <el-icon><Avatar /></el-icon>
             <span>Account</span>
           </template>
           <el-menu-item index="1-1">Role</el-menu-item>
@@ -38,17 +38,50 @@
       </el-menu>
     </div>
     <div class="right">
-      <div class="top">2</div>
+        <div class="top">
+        <el-menu
+          mode="horizontal"
+          background-color="#142334"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          :ellipsis="false"
+        >
+          <el-menu-item index="1">
+            <el-icon><House /></el-icon>
+            Home
+          </el-menu-item>
+          <el-menu-item index="2">
+            <el-icon><Message /></el-icon>
+            Mail
+          </el-menu-item>
+          <el-menu-item index="3">
+            <el-icon><ChatDotRound /></el-icon>
+            Message
+          </el-menu-item>
+          <el-sub-menu index="4">
+            <template #title>
+              <el-icon><User /></el-icon>
+              Admin
+            </template>
+            <el-menu-item index="2-1">Personal</el-menu-item>
+            <el-menu-item index="2-2">Password</el-menu-item>
+            <el-menu-item index="2-3">Exit</el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </div>
       <div class="content">3</div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import {
-  UserFilled,
-  HomeFilled,
+  House,
   Briefcase,
   Tools,
+  Message,
+  ChatDotRound,
+  Avatar,
+  User,
 } from "@element-plus/icons-vue";
 </script>
 <style lang="scss">
@@ -79,10 +112,17 @@ import {
       height: 60px;
       background-color: #142334;
       color: white;
+      display: flex;
+      justify-content: flex-end;
+      .el-menu {
+        // delete the bottom border
+        border-bottom: none;
+      }
     }
     .content {
       flex: 1;
       background-color: white;
+      padding: 10px;
     }
   }
 }
