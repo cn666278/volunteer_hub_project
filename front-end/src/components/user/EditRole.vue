@@ -2,7 +2,7 @@
     <el-drawer
       size="30%"
       v-model="drawer"
-      title="Add Role"
+      :title="formData.roleId ? 'Edit Role' : 'Add Role'"
       direction="rtl"
       :before-close="handleClose"
     >
@@ -20,7 +20,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm(formRef)">
-            Add
+            {{ formData.roleId ? "Edit" : "Add" }}
           </el-button>
           <el-button @click="resetForm(formRef)">Reset</el-button>
         </el-form-item>
@@ -31,7 +31,7 @@
   <script setup lang="ts">
   import { FormInstance, FormRules, ElNotification  } from "element-plus";
   import { reactive, ref } from "vue";
-  import { $addRole } from "../../api/role.ts";
+  import { $addRole, $updateRole } from "../../api/role.ts";
   // expose to parent component, so that the parent component can call the drawer
   const emit = defineEmits(["update-role-list"]);
   // drawer
@@ -39,12 +39,14 @@
   // close drawer
   const handleClose = () => {
     drawer.value = false;
-    formRef.value?.resetFields(); // reset form
+    formRef.value?.resetFields(); // reset
+    resetForm(formRef.value); // reset form
   };
   // form ref
   const formRef = ref<FormInstance>();
   // form data
-  const formData = reactive({
+  let formData = ref({
+    roleId: "",
     roleName: "",
   });
   // validate role name
@@ -64,7 +66,15 @@
     if (!formEl) return;
     formEl.validate(async (valid) => {
       if (valid) {
-        const res = await $addRole(formData);
+        let res;
+      console.log(formData.value);
+      if (formData.value.roleId) {
+        // edit
+        res = await $updateRole(formData.value);
+      } else {
+        // add
+        res = await $addRole(formData.value);
+      }
       if (res.code === 200) {
         ElNotification({
           title: "Notification",
@@ -90,12 +100,18 @@
   };
   // reset form
   const resetForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    formEl.resetFields();
+      if (!formEl) return;
+      formEl.resetFields();
+      // reset form data
+      formData.value = {
+          roleId: "",
+          roleName: "",
+      };
   };
   // expose to parent component
   defineExpose({
     drawer,
+    formData,
   });
   </script>
   

@@ -10,7 +10,7 @@
       <el-table-column prop="roleName" label="RoleName" width="250" />
       <el-table-column label="edit">
         <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.row.roleId)">
+          <el-button size="small" @click="handleEdit(scope.row)">
             Edit
           </el-button>
           <el-button
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import EditRole from "../../../../components/user/EditRole.vue";
-import { $getRoleList, $deleteRole } from "../../../../api/role.ts";
+import { $getRoleList, $deleteRole, $getSingleRole  } from "../../../../api/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // role list
@@ -57,8 +57,10 @@ const loadRoles = async () => {
   roles.value = await $getRoleList();
 };
 // edit role
-const handleEdit = (roleId: number) => {
-  console.log(roleId);
+const handleEdit = async (row: any) => {
+  let res = await $getSingleRole(row.roleId);
+  editDrawerRef.value.formData = res;
+  editDrawerRef.value.drawer = true;
 };
 // delete role
 const handleDelete = (row: any) => {
