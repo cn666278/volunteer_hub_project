@@ -16,7 +16,7 @@
           <el-button
             size="small"
             type="danger"
-            @click="handleDelete(scope.row.roleId)"
+            @click="handleDelete(scope.row)"
           >
             Delete
           </el-button>
@@ -37,7 +37,8 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import EditRole from "../../../../components/user/EditRole.vue";
-import { $list } from "../../../../api/role.ts";
+import { $getRoleList, $deleteRole } from "../../../../api/role.ts";
+import { ElMessageBox, ElNotification } from "element-plus";
 
 // role list
 let roles = ref<any[]>([]);
@@ -53,15 +54,42 @@ const handleCurrentChange = (val: number) => {
 };
 // load role list
 const loadRoles = async () => {
-  roles.value = await $list();
+  roles.value = await $getRoleList();
 };
 // edit role
 const handleEdit = (roleId: number) => {
   console.log(roleId);
 };
 // delete role
-const handleDelete = (roleId: number) => {
-  console.log(roleId);
+const handleDelete = (row: any) => {
+  console.log(row);
+  ElMessageBox.confirm("Are you sure delete role: " + row.roleName + " ?", "Notification", {
+    confirmButtonText: "Confirm",
+    cancelButtonText: "Cancel",
+    type: "warning",
+  })
+    .then(async () => {
+      let res = await $deleteRole(row.roleId);
+      if (res.code === 200) {
+        ElNotification({
+          title: "Notification",
+          message: res.data.message,
+          type: "success",
+        });
+        // delete successfully, reload role list
+        loadRoles();
+        console.log("Delete successfully!");
+      } else {
+        ElNotification({
+          title: "Notification",
+          message: res.data.message,
+          type: "error",
+        });
+      }
+    })
+    .catch(() => {
+      console.log("Cancel delete!");
+    });
 };
 // drawer ref
 // define EditRoleRef, by editDrawerRef can get the instance object exposed by the component
