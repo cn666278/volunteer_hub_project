@@ -1,10 +1,11 @@
 <template>
   <div class="role">
     <div class="search">
-      <el-button type="primary" size="small" @click="editDrawerRef.drawer = true"
+      <el-button type="primary" size="small" @click="editDrawerRef.handleOpen()"
         >Add</el-button
       >
     </div>
+    <!-- Roles Table -->
     <el-table :data="showRoles" stripe style="width: 100%">
       <el-table-column prop="roleId" label="Role ID" width="100" />
       <el-table-column prop="roleName" label="RoleName" width="250" />
@@ -23,11 +24,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- Pagination -->
     <el-pagination
       style="margin-top: 5px"
       background
       layout="prev, pager, next"
-      :total="roles.length"
+      :total="roleList.length"
       @current-change="handleCurrentChange"
     />
     <EditRole ref="editDrawerRef" @update-role-list="getRoleList"></EditRole>
@@ -41,12 +43,12 @@ import { $getRoleList, $deleteRole, $getSingleRole  } from "../../../../api/mock
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // role list
-let roles = ref([]);
+let roleList = ref<any[]>([]);
 // page index
 let pageIndex = ref(1);
 // show roles
 let showRoles = computed(() => {
-  return roles.value.slice((pageIndex.value - 1) * 10, pageIndex.value * 10);
+  return roleList.value.slice((pageIndex.value - 1) * 10, pageIndex.value * 10);
 });
 // page change event
 const handleCurrentChange = (val: number) => {
@@ -55,17 +57,15 @@ const handleCurrentChange = (val: number) => {
 // load role list
 const getRoleList = async () => {
   console.log("load role list");
-  roles.value = await $getRoleList();
+  roleList.value = await $getRoleList();
 };
 // edit role
 const handleEdit = async (row: any) => {
   let res = await $getSingleRole(row.roleId);
-  editDrawerRef.value.formData = res;
-  editDrawerRef.value.drawer = true;
+  editDrawerRef.value.handleOpen(res);
 };
 // delete role
 const handleDelete = (row: any) => {
-  console.log(row);
   ElMessageBox.confirm("Are you sure delete role: " + row.roleName + " ?", "Notification", {
     confirmButtonText: "Confirm",
     cancelButtonText: "Cancel",

@@ -13,7 +13,7 @@
         :model="formData"
         status-icon
         :rules="rules"
-        label-width="70px"
+        label-width="90px"
       >
         <el-form-item label="Role Name" prop="roleName">
           <el-input v-model="formData.roleName" clearable/>
