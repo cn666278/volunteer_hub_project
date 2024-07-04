@@ -1,161 +1,169 @@
 import { $get, $post } from "../utils/request.ts";
-import Mock from 'mockjs'
+import Mock from "mockjs";
 
 /*
-* using data from apifox/backend
-*/ 
+ * using data from apifox/backend
+ */
 
 // role list
-export const $list = async () => {
-  let res = await $get("/role/list");
-  console.log(res);
-  return res;
-};
+// export const $list = async () => {
+//   let res = await $get("/role/list");
+//   console.log(res);
+//   return res;
+// };
 
 // addRole
-export const $addRole = async (params: object) => {
-    let res = await $post("/role/addRole",   params);
-    return res;
+// export const $addRole = async (params: object) => {
+//   let res = await $post("/role/addRole", params);
+//   return res;
+// };
+
+/*
+ * using mock data locally
+ */
+
+let List: any[] = [];
+// const count = 200
+
+// for (let i = 0; i < count; i++) {
+//   List.push(
+//     Mock.mock({
+//       id: Mock.Random.guid(),
+//       name: Mock.Random.cname(),
+//       addr: Mock.mock('@county(true)'),
+//       'age|18-60': 1,
+//       birth: Mock.Random.date(),
+//       sex: Mock.Random.integer(0, 1)
+//     })
+//   )
+// }
+
+List = [
+  { roleId: 1, roleName: "admin" },
+  { roleId: 2, roleName: "organizer" },
+  { roleId: 3, roleName: "volunteer" },
+];
+
+/**
+ * getRoleList
+ * @param
+ * @return {{code: number, count: number, data: *[]}}
+ */
+export const $getRoleList = () => {
+  // let res = await $get("/role/list");
+  // delete role with roleId = 0
+  List = List.filter((role: any) => role.roleId !== 0);
+  return List;
+};
+
+// getRoleList
+export const $getSingleRole = async (id: number) => {
+  // let res = await $get("/role/getSingleRole", params);
+  const currentUser = List.find((user: any) => user.roleId === id);
+  console.log(currentUser);
+  return currentUser;
+};
+
+/**
+ * Update Role
+ * @param roleId, roleName
+ * @return {{code: number, data: {message: string}}}
+ */
+export const $updateRole = async (params: {
+  roleId: any;
+  roleName: string;
+}) => {
+  // let res = await $post("/role/updateRole", params);
+  const { roleId, roleName } = params;
+
+  // check if roleName already exists
+  const isRoleNameExists = List.some((role: any) => role.roleName == roleName);
+  if (isRoleNameExists) {
+    return {
+      code: -1,
+      data: {
+        message: "Update failed, roleName already exists",
+      },
+    };
+  }
+  List = List.map((role: any) => {
+    if (role.roleId === roleId) {
+      return {
+        roleId: roleId, 
+        roleName: roleName, // update roleName
+      };
+    }
+    return role;
+  });
+  return {
+    code: 200,
+    data: {
+      message: "Edit Success",
+    },
   };
+};
 
-/* 
-* using mock data locally
-*/
+/**
+ * Add Role
+ * @param roleId, roleName
+ * @return {{code: number, data: {message: string}}}
+ */
+export const $addRole = async (params: { roleId: any; roleName: string }) => {
+  // let res = await $post("/role/addRole", params);
+  // return res;
+  const { roleName } = params;
+  // get max roleId in List, avoid duplicate roleId
+  const maxRoleId = List.reduce((maxId: number, role: any) => {
+    return Math.max(maxId, role.roleId);
+  }, 0);
+  const newRoleId = maxRoleId + 1;
+  // add new role to List tail, if need to add to head, use unshift
+  List.push({
+    roleId: newRoleId,
+    roleName: roleName,
+  });
+  return {
+    code: 200,
+    data: {
+      message: "Add Success",
+    },
+  };
+};
 
-function param2Obj(url: string) {
-  const search = url.split('?')[1]
-  if (!search) {
-    return {}
+/**
+ * Delete Role
+ * @param id
+ * @return {*}
+ */
+export const $deleteRole = async (id: number) => {
+  // let res = await $post("/role/deleteRole", params);
+  if (!id) {
+    return {
+      code: -999,
+      message: "roleId is required",
+    };
+  } else {
+    List = List.filter((role: any) => role.roleId !== id);
+    return {
+      code: 200,
+      message: "Delete Success",
+    };
   }
-  return JSON.parse(
-    '{"' +
-    decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"') +
-    '"}'
-  )
-}
+};
 
-let List: any[] = []
-const count = 200
-
-for (let i = 0; i < count; i++) {
-  List.push(
-    Mock.mock({
-      id: Mock.Random.guid(),
-      name: Mock.Random.cname(),
-      addr: Mock.mock('@county(true)'), 
-      'age|18-60': 1,
-      birth: Mock.Random.date(),
-      sex: Mock.Random.integer(0, 1)
-    })
-  )
-}
-
-export default {
-  /**
-   * getUserList
-   * @param name, page, limit
-   * @return {{code: number, count: number, data: *[]}}
-   */
-  getUserList: (config: { url: any; }) => {
-    const { name, page = 1, limit = 20 } = param2Obj(config.url)
-    const mockList = List.filter(user => {
-      if (name && user.name.indexOf(name) === -1 && user.addr.indexOf(name) === -1) return false
-      return true
-    })
-    const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
-    return {
-      code: 200,
-      data: {
-        list: pageList,
-        count: mockList.length,
-      }
-    }
-  },
-  /**
-   * Create User
-   * @param name, addr, age, birth, sex
-   * @return {{code: number, data: {message: string}}}
-   */
-  createUser: (config: { body: string; }) => {
-    const { name, addr, age, birth, sex } = JSON.parse(config.body)
-    console.log(JSON.parse(config.body))
-    List.unshift({
-      id: Mock.Random.guid(),
-      name: name,
-      addr: addr,
-      age: age,
-      birth: birth,
-      sex: sex
-    })
-    return {
-      code: 200,
-      data: {
-        message: 'Add Success'
-      }
-    }
-  },
-  /**
-   * Delete User
-   * @param id
-   * @return {*}
-   */
-  deleteUser: (config: { url: any; }) => {
-    const { id } = param2Obj(config.url)
-    if (!id) {
-      return {
-        code: -999,
-        message: 'Parameter id is required'
-      }
-    } else {
-      List = List.filter(u => u.id !== id)
-      return {
-        code: 200,
-        message: 'Delete Success'
-      }
-    }
-  },
-  /**
-   * Patch Remove User
-   * @param config
-   * @return {{code: number, data: {message: string}}}
-   */
-  batchremove: (config: { url: any; }) => {
-    let { ids } = param2Obj(config.url)
-    ids = ids.split(',')
-    List = List.filter(u => !ids.includes(u.id))
-    return {
-      code: 20000,
-      data: {
-        message: 'Batch Remove Success'
-      }
-    }
-  },
-  /**
-   * Edit User
-   * @param id, name, addr, age, birth, sex
-   * @return {{code: number, data: {message: string}}}
-   */
-  updateUser: (config: { body: string; }) => {
-    const { id, name, addr, age, birth, sex } = JSON.parse(config.body)
-    const sex_num = parseInt(sex)
-    List.some(u => {
-      if (u.id === id) {
-        u.name = name
-        u.addr = addr
-        u.age = age
-        u.birth = birth
-        u.sex = sex_num
-        return true
-      }
-    })
-    return {
-      code: 200,
-      data: {
-        message: 'Edit Success'
-      }
-    }
-  }
-}
+/**
+ * Patch Remove
+ * @param config
+ * @return {{code: number, data: {message: string}}}
+ */
+export const $batchremove = async (ids: string) => {
+  // let res = await $post("/role/batchremove", params);
+  ids = ids.split(",")[0];
+  List = List.filter((role: any) => !ids.includes(role.roleId));
+  return {
+    code: 20000,
+    data: {
+      message: "Batch Remove Success",
+    },
+  };
+};
