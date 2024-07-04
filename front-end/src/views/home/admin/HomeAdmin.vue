@@ -39,7 +39,7 @@
       </el-menu>
     </div>
     <div class="right">
-        <div class="top">
+      <div class="top">
         <el-menu
           router
           mode="horizontal"
@@ -73,7 +73,7 @@
       </div>
       <div class="content">
         <!-- add router, render content -->
-        <router-view></router-view> 
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -91,32 +91,33 @@ import {
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import useUser from "../../../store/user.ts";
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox } from "element-plus";
 
 let userStore = useUser();
 let router = useRouter();
 // check if the user is logged in, if not, redirect to the login page
 onMounted(() => {
   console.log(userStore.user);
-  if(!userStore.user.username){
-    router.push('/');
+  if (!userStore.user.username) {
+    router.push("/");
   }
 });
 
 // exit
 const exit = () => {
-  ElMessageBox.confirm('Do you confirm to exit?', 'System Notification', {
-    confirmButtonText: 'Confirm',
-    cancelButtonText: 'Cancel',
-    type: 'warning'
-  }).then(() => {
-    userStore.clearUser();
-    router.push('/');
-  }).catch(() => {
-    console.log('Cancel exit');
-  });
+  ElMessageBox.confirm("Do you confirm to exit?", "System Notification", {
+    confirmButtonText: "Confirm",
+    cancelButtonText: "Cancel",
+    type: "warning",
+  })
+    .then(() => {
+      userStore.clearUser();
+      router.push("/");
+    })
+    .catch(() => {
+      console.log("Cancel exit");
+    });
 };
-
 </script>
 
 <style lang="scss">

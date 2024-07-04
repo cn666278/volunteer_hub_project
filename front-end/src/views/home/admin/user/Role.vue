@@ -39,7 +39,11 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import EditRole from "../../../../components/user/EditRole.vue";
-import { $getRoleList, $deleteRole, $getSingleRole  } from "../../../../api/mockData/role.ts";
+import {
+  $getRoleList,
+  $deleteRole,
+  $getSingleRole,
+} from "../../../../api/mockData/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // role list
@@ -66,11 +70,15 @@ const handleEdit = async (row: any) => {
 };
 // delete role
 const handleDelete = (row: any) => {
-  ElMessageBox.confirm("Are you sure delete role: " + row.roleName + " ?", "Notification", {
-    confirmButtonText: "Confirm",
-    cancelButtonText: "Cancel",
-    type: "warning",
-  })
+  ElMessageBox.confirm(
+    "Are you sure delete role: " + row.roleName + " ?",
+    "Notification",
+    {
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
+      type: "warning",
+    }
+  )
     .then(async () => {
       let res = await $deleteRole(row.roleId);
       if (res.code === 200) {

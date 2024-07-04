@@ -89,7 +89,7 @@ export const $updateRole = async (params: {
   List = List.map((role: any) => {
     if (role.roleId === roleId) {
       return {
-        roleId: roleId, 
+        roleId: roleId,
         roleName: roleName, // update roleName
       };
     }
