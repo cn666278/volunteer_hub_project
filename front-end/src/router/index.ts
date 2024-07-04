@@ -27,6 +27,12 @@ const routes = createRouter({
           meta: { title: "Role" },
           component: () => import("../views/home/admin/user/Role.vue"),
         },
+        {
+          path: "/user",
+          name: "User",
+          meta: { title: "User" },
+          component: () => import("../views/home/admin/user/User.vue"),
+        }
       ],
     },
     {
