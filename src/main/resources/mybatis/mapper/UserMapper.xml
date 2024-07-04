@@ -7,4 +7,12 @@
     <select id="selectAllUsers" resultType="com.wsa.model.User">
         SELECT * FROM users;
     </select>
+
+    <select id="findByUsername" parameterType="string" resultType="com.wsa.model.User">
+        SELECT * FROM users WHERE username = #{username};
+    </select>
+
+    <select id="findAuthoritiesByUsername" parameterType="string" resultType="com.wsa.model.Authority">
+        SELECT authority FROM authorities WHERE username = #{username};
+    </select>
 </mapper>

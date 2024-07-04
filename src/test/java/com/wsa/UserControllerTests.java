@@ -33,14 +33,11 @@ public class UserControllerTests {
     public void testGetUsers() {
         User user = new User();
         user.setId(1L);
-        user.setName("Test User");
-        user.setEmail("test@example.com");
 
         when(userService.getAllUsers()).thenReturn(Collections.singletonList(user));
 
         List<User> users = userController.getUsers();
 
         assertThat(users).isNotEmpty();
-        assertThat(users.get(0).getName()).isEqualTo("Test User");
     }
 }

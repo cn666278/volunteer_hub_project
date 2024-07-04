@@ -11,7 +11,7 @@
  Target Server Version : 101102
  File Encoding         : 65001
 
- Date: 03/07/2024 22:16:38
+ Date: 04/07/2024 14:24:45
 */
 
 SET NAMES utf8mb4;
@@ -26,14 +26,13 @@ CREATE TABLE `authorities`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `authority` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `username`(`username`) USING BTREE,
-  CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `username`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of authorities
 -- ----------------------------
-INSERT INTO `authorities` VALUES (1, 'user1', 'ROLE_USER');
+INSERT INTO `authorities` VALUES (1, 'organizer', 'organizer');
 
 -- ----------------------------
 -- Table structure for users
@@ -51,6 +50,6 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'user1', '$2a$10$DowJonesDJXerP4e2ulz3jeVuw7i/uRNT1oGt/S3e', 1);
+INSERT INTO `users` VALUES (1, 'organizer', '$2a$10$DowJonesDJXerP4e2ulz3jeVuw7i/uRNT1oGt/S3e', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
