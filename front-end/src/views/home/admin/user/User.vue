@@ -36,7 +36,7 @@
       :key="isUpdate.toString()"
     >
       <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="loginId" label="LoginId" width="150" />
+      <el-table-column prop="loginId" label="Login ID" width="150" />
       <el-table-column prop="username" label="Username" width="150" />
       <el-table-column prop="photo" label="Photo" width="100">
         <template #default="scope">
@@ -89,14 +89,14 @@
 </template>
 
 <script setup lang="ts">
-import EditUser from "../../components/user/EditUser.vue";
+import EditUser from "../../../../components/user/EditUser.vue";
 import { onMounted, ref } from "vue";
 import {
   $getUserList,
   $getUserByLoginId,
   $deleteUser,
-} from "../../api/admin.ts";
-import { $getRoleList } from "../../api/mockData/role.ts";
+} from "../../../../api/admin.ts";
+import { $getRoleList } from "../../../../api/mockData/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // user list
@@ -121,7 +121,7 @@ const getRoleList = async () => {
   console.log("Load role list");
   let res = await $getRoleList();
   roleList.value = res;
-  roleList.value.unshift({ roleId: 0, roleName: "All Roles" });
+  roleList.value.unshift({ roleId: 0, roleName: "All" });
 };
 
 // get user list

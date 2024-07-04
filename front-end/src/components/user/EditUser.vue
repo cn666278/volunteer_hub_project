@@ -18,7 +18,7 @@
       <el-form-item v-if="!formData.id" label="LoginId" prop="loginId">
         <el-input v-model="formData.loginId" />
       </el-form-item>
-      <el-form-item v-if="!formData.id" label="Passport" prop="password">
+      <el-form-item v-if="!formData.id" label="Password" prop="password">
         <el-input type="password" v-model="formData.password" />
       </el-form-item>
       <el-form-item label="Name" prop="username">

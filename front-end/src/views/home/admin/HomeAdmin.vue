@@ -18,23 +18,23 @@
             <span>Manage</span>
           </template>
           <el-menu-item index="/role">Role</el-menu-item>
-          <el-menu-item index="/eventManage">User</el-menu-item>
+          <el-menu-item index="/user">User</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>
             <el-icon><Tools /></el-icon>
             <span>View</span>
           </template>
-          <el-menu-item index="2-1">Event</el-menu-item>
-          <el-menu-item index="2-2">Organizer</el-menu-item>
+          <el-menu-item index="/event">Event</el-menu-item>
+          <el-menu-item index="/organizer">Organizer</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
             <el-icon><Avatar /></el-icon>
             <span>System</span>
           </template>
-          <el-menu-item index="3-1">Menu</el-menu-item>
-          <el-menu-item index="3-2">Dictionary</el-menu-item>
+          <el-menu-item index="/menu">Menu</el-menu-item>
+          <el-menu-item index="/dict">Dictionary</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
