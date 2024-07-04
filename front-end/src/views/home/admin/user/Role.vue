@@ -1,12 +1,12 @@
 <template>
   <div class="role">
-    <div class="search">
+    <div class="addButton">
       <el-button type="primary" size="small" @click="editDrawerRef.handleOpen()"
         >Add</el-button
       >
     </div>
     <!-- Roles Table -->
-    <el-table :data="showRoles" stripe style="width: 100%">
+    <el-table :data="showRoles" stripe style="width: 100%" :key="isUpdate.toString()">
       <el-table-column prop="roleId" label="Role ID" width="100" />
       <el-table-column prop="roleName" label="RoleName" width="250" />
       <el-table-column label="edit">
@@ -50,8 +50,11 @@ import { ElMessageBox, ElNotification } from "element-plus";
 let roleList = ref<any[]>([]);
 // page index
 let pageIndex = ref(1);
+// role list update flag
+let isUpdate = ref(false);
 // show roles
 let showRoles = computed(() => {
+  isUpdate.value = !isUpdate.value; // update role list
   return roleList.value.slice((pageIndex.value - 1) * 10, pageIndex.value * 10);
 });
 // page change event
@@ -62,6 +65,7 @@ const handleCurrentChange = (val: number) => {
 const getRoleList = async () => {
   console.log("load role list");
   roleList.value = await $getRoleList();
+  isUpdate.value = !isUpdate.value; // update role list
 };
 // edit role
 const handleEdit = async (row: any) => {
@@ -111,7 +115,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-.search {
+.addButton {
   margin-bottom: 20px;
 }
 </style>
