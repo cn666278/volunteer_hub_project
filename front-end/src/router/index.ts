@@ -17,22 +17,34 @@ const routes = createRouter({
     },
     {
       path: "/home/admin",
-      name: "Home Admin",
-      meta: { title: "Home Admin" },
-      component: () => import("../views/home/admin/HomeAdmin.vue"),
+      name: "Admin",
+      meta: { title: "Admin Page" },
+      component: () => import("../views/home/admin/Index.vue"),
       children: [
         {
-          path: "/role",
+          path: "/home/admin/home",
+          name: "Home",
+          meta: { title: "Home" },
+          component: () => import("../views/home/admin/Home.vue"),
+        },
+        {
+          path: "/home/admin/role",
           name: "Role",
           meta: { title: "Role" },
           component: () => import("../views/home/admin/user/Role.vue"),
         },
         {
-          path: "/user",
+          path: "/home/admin/user",
           name: "User",
           meta: { title: "User" },
           component: () => import("../views/home/admin/user/User.vue"),
-        }
+        },
+        {
+          path: "/home/admin/personal",
+          name: "Personal",
+          meta: { title: "Personal" },
+          component: () => import("../views/home/admin/user/Personal.vue"),
+        },
       ],
     },
     {
