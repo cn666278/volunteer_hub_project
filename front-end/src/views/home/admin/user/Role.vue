@@ -5,7 +5,7 @@
         >Add</el-button
       >
     </div>
-    <el-table :data="roles" stripe style="width: 100%">
+    <el-table :data="showRoles" stripe style="width: 100%">
       <el-table-column prop="roleId" label="Role ID" width="100" />
       <el-table-column prop="roleName" label="RoleName" width="250" />
       <el-table-column label="edit">
@@ -23,17 +23,34 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="margin-top: 5px"
+      background
+      layout="prev, pager, next"
+      :total="roles.length"
+      @current-change="handleCurrentChange"
+    />
+    <EditRole ref="editDrawerRef" @update-role-list="loadRoles"></EditRole>
   </div>
-  <EditRole ref="editDrawerRef" @update-role-list="loadRoles"></EditRole>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import EditRole from "../../../../components/user/EditRole.vue";
 import { $list } from "../../../../api/role.ts";
 
 // role list
-let roles = ref([]);
+let roles = ref<any[]>([]);
+// page index
+let pageIndex = ref(1);
+// show roles
+let showRoles = computed(() => {
+  return roles.value.slice((pageIndex.value - 1) * 10, pageIndex.value * 10);
+});
+// page change event
+const handleCurrentChange = (val: number) => {
+  pageIndex.value = val;
+};
 // load role list
 const loadRoles = async () => {
   roles.value = await $list();
