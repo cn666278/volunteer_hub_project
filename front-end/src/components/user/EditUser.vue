@@ -78,7 +78,7 @@ import { Plus } from "@element-plus/icons-vue";
 import { onMounted, ref } from "vue";
 import { $getRoleList } from "../../api/mockData/role.ts";
 import { $addUser, $updateUser } from "../../api/admin.ts";
-import { baseURL_dev } from "../../configure/baseURL.ts";
+import { baseURL_dev } from "../../config/baseURL.ts";
 
 // expose to parent component, so that the parent component can call the drawer
 const emit = defineEmits(["update-user-list"]);
