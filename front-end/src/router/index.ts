@@ -20,6 +20,14 @@ const routes = createRouter({
       name: "Home Admin",
       meta: {title: "Home Admin"},
       component: () => import("../views/home/admin/HomeAdmin.vue"),
+      children: [
+        {
+          path: "/role",
+          name: "Role",
+          meta: {title: "Role"},
+          component: () => import("../views/home/admin/user/Role.vue"),
+        },
+      ]
     },
     {
       path: "/home/volunteer",
