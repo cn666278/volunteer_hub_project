@@ -30,18 +30,18 @@
       :total="roles.length"
       @current-change="handleCurrentChange"
     />
-    <EditRole ref="editDrawerRef" @update-role-list="loadRoles"></EditRole>
+    <EditRole ref="editDrawerRef" @update-role-list="getRoleList"></EditRole>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import EditRole from "../../../../components/user/EditRole.vue";
-import { $getRoleList, $deleteRole, $getSingleRole  } from "../../../../api/role.ts";
+import { $getRoleList, $deleteRole, $getSingleRole  } from "../../../../api/mockData/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // role list
-let roles = ref<any[]>([]);
+let roles = ref([]);
 // page index
 let pageIndex = ref(1);
 // show roles
@@ -53,7 +53,8 @@ const handleCurrentChange = (val: number) => {
   pageIndex.value = val;
 };
 // load role list
-const loadRoles = async () => {
+const getRoleList = async () => {
+  console.log("load role list");
   roles.value = await $getRoleList();
 };
 // edit role
@@ -75,16 +76,16 @@ const handleDelete = (row: any) => {
       if (res.code === 200) {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "success",
         });
         // delete successfully, reload role list
-        loadRoles();
+        getRoleList();
         console.log("Delete successfully!");
       } else {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "error",
         });
       }
@@ -97,7 +98,7 @@ const handleDelete = (row: any) => {
 // define EditRoleRef, by editDrawerRef can get the instance object exposed by the component
 const editDrawerRef = ref();
 onMounted(() => {
-  loadRoles();
+  getRoleList();
 });
 </script>
 

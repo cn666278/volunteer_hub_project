@@ -16,13 +16,13 @@
         label-width="70px"
       >
         <el-form-item label="Role Name" prop="roleName">
-          <el-input v-model="formData.roleName" />
+          <el-input v-model="formData.roleName" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm(formRef)">
             {{ formData.roleId ? "Edit" : "Add" }}
           </el-button>
-          <el-button @click="resetForm(formRef)">Reset</el-button>
+          <el-button @click="handleClose">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -31,22 +31,26 @@
   <script setup lang="ts">
   import { FormInstance, FormRules, ElNotification  } from "element-plus";
   import { reactive, ref } from "vue";
-  import { $addRole, $updateRole } from "../../api/role.ts";
+  import { $addRole, $updateRole } from "../../api/mockData/role.ts";
   // expose to parent component, so that the parent component can call the drawer
   const emit = defineEmits(["update-role-list"]);
   // drawer
   const drawer = ref(false);
+  // open drawer
+  const handleOpen = (row: any) => {
+    drawer.value = true;
+    formData.value = { ...row };
+  };
   // close drawer
   const handleClose = () => {
     drawer.value = false;
-    formRef.value?.resetFields(); // reset
     resetForm(formRef.value); // reset form
   };
   // form ref
   const formRef = ref<FormInstance>();
   // form data
-  let formData = ref({
-    roleId: "",
+  const formData = ref({
+    roleId: null,
     roleName: "",
   });
   // validate role name
@@ -58,7 +62,7 @@
     }
   };
   // form rules
-  const rules = reactive<FormRules<typeof formData>>({
+  const rules = ref<FormRules<typeof formData>>({
     roleName: [{ required: true, validator: validateRoleName, trigger: "blur" }],
   });
   // submit form
@@ -67,7 +71,6 @@
     formEl.validate(async (valid) => {
       if (valid) {
         let res;
-      console.log(formData.value);
       if (formData.value.roleId) {
         // edit
         res = await $updateRole(formData.value);
@@ -104,7 +107,7 @@
       formEl.resetFields();
       // reset form data
       formData.value = {
-          roleId: "",
+          roleId: null,
           roleName: "",
       };
   };
@@ -112,6 +115,7 @@
   defineExpose({
     drawer,
     formData,
+    handleOpen
   });
   </script>
   

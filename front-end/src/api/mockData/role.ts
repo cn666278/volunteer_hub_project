@@ -1,4 +1,4 @@
-import { $get, $post } from "../utils/request.ts";
+import { $get, $post } from "../../utils/request.ts";
 import Mock from "mockjs";
 
 /*
