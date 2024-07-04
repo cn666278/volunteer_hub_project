@@ -29,8 +29,11 @@
   </template>
   
   <script setup lang="ts">
-  import { FormInstance, FormRules } from "element-plus";
+  import { FormInstance, FormRules, ElNotification  } from "element-plus";
   import { reactive, ref } from "vue";
+  import { $addRole } from "../../api/role.ts";
+  // expose to parent component, so that the parent component can call the drawer
+  const emit = defineEmits(["update-role-list"]);
   // drawer
   const drawer = ref(false);
   // close drawer
@@ -61,6 +64,24 @@
     if (!formEl) return;
     formEl.validate(async (valid) => {
       if (valid) {
+        const res = await $addRole(formData);
+      if (res.code === 200) {
+        ElNotification({
+          title: "Notification",
+          message: res.data.message,
+          type: "success",
+        });
+        emit("update-role-list"); // update role list
+        handleClose(); // close drawer
+        console.log("success submit!");
+      } else {
+        ElNotification({
+          title: "Notification",
+          message: res.data.message,
+          type: "error",
+        });
+        console.log("error submit!");
+      }
       } else {
         console.log("error submit!");
         // return false;
