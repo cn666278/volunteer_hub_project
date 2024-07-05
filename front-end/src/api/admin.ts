@@ -31,6 +31,7 @@ export const $login = async (params: object | any) => {
 
 // get user info
 export const $getUserInfo = async (params: object) => {
+  // let res = await $get("/api/admin/getUserInfo", params); // from back-end
   let res = await $get("admin/getUserInfo", params);
   console.log(res);
   return res;
