@@ -15,31 +15,31 @@
         <el-sub-menu index="1">
           <template #title>
             <el-icon><Briefcase /></el-icon>
-            <span>Manage</span>
+            <span>Event</span>
           </template>
-          <el-menu-item index="/role">Role</el-menu-item>
-          <el-menu-item index="/user">User</el-menu-item>
+          <el-menu-item index="/event">Event</el-menu-item>
+          <el-menu-item index="/eventManage">Event Manage</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>
             <el-icon><Tools /></el-icon>
-            <span>View</span>
+            <span>System</span>
           </template>
-          <el-menu-item index="/event">Event</el-menu-item>
-          <el-menu-item index="/organizer">Organizer</el-menu-item>
+          <el-menu-item index="2-1">Menu</el-menu-item>
+          <el-menu-item index="2-2">Dictionary</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
             <el-icon><Avatar /></el-icon>
-            <span>System</span>
+            <span>Account</span>
           </template>
-          <el-menu-item index="/menu">Menu</el-menu-item>
-          <el-menu-item index="/dict">Dictionary</el-menu-item>
+          <el-menu-item index="3-1">Role</el-menu-item>
+          <el-menu-item index="3-2">User</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
     <div class="right">
-      <div class="top">
+        <div class="top">
         <el-menu
           router
           mode="horizontal"
@@ -73,7 +73,7 @@
       </div>
       <div class="content">
         <!-- add router, render content -->
-        <router-view></router-view>
+        <router-view></router-view> 
       </div>
     </div>
   </div>
@@ -90,34 +90,33 @@ import {
 } from "@element-plus/icons-vue";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import useUser from "../../../store/user.ts";
-import { ElMessageBox } from "element-plus";
+import useUser from "../../store/user.ts";
+import { ElMessageBox } from 'element-plus'
 
 let userStore = useUser();
 let router = useRouter();
 // check if the user is logged in, if not, redirect to the login page
 onMounted(() => {
   console.log(userStore.user);
-  if (!userStore.user.username) {
-    router.push("/");
+  if(!userStore.user.username){
+    router.push('/');
   }
 });
 
 // exit
 const exit = () => {
-  ElMessageBox.confirm("Do you confirm to exit?", "System Notification", {
-    confirmButtonText: "Confirm",
-    cancelButtonText: "Cancel",
-    type: "warning",
-  })
-    .then(() => {
-      userStore.clearUser();
-      router.push("/");
-    })
-    .catch(() => {
-      console.log("Cancel exit");
-    });
+  ElMessageBox.confirm('Do you confirm to exit?', 'System Notification', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
+    type: 'warning'
+  }).then(() => {
+    userStore.clearUser();
+    router.push('/');
+  }).catch(() => {
+    console.log('Cancel exit');
+  });
 };
+
 </script>
 
 <style lang="scss">

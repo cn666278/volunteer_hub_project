@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import useUser from "../../../../store/user.ts";
+import useUser from "../../../store/user.ts";
 import {
   Iphone,
   Message,

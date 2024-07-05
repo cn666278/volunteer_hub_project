@@ -38,12 +38,12 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
-import EditRole from "../../../../components/user/EditRole.vue";
+import EditRole from "../../../components/user/EditRole.vue";
 import {
   $getRoleList,
   $deleteRole,
   $getSingleRole,
-} from "../../../../api/mockData/role.ts";
+} from "../../../api/mockData/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // role list

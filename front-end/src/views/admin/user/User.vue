@@ -89,14 +89,14 @@
 </template>
 
 <script setup lang="ts">
-import EditUser from "../../../../components/user/EditUser.vue";
+import EditUser from "../../../components/user/EditUser.vue";
 import { onMounted, ref } from "vue";
 import {
   $getUserList,
   $getUserByLoginId,
   $deleteUser,
-} from "../../../../api/admin.ts";
-import { $getRoleList } from "../../../../api/mockData/role.ts";
+} from "../../../api/admin.ts";
+import { $getRoleList } from "../../../api/mockData/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 // user list
