@@ -8,7 +8,6 @@ export const $login = async (params: object | any) => {
     32
   );
   let res = await $post("login", params);
-  console.log(res);
   const { code, data } = res;
   if (code === 200) {
     ElNotification({
