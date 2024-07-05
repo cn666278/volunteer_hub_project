@@ -25,13 +25,13 @@ const routes = createRouter({
       path: "/volunteer",
       name: "Volunteer Page",
       meta: { title: "Volunteer Page" },
-      component: () => import("../views/volunteer/Index.vue"),
+      component: () => import("../views/volunteer/VolunteerHome.vue"),
       children: [
         {
           path: "",
           name: "Volunteer Home",
           meta: { title: "Home" },
-          component: () => import("../views/volunteer/Home.vue"),
+          component: () => import("../views/volunteer/VolunteerHome.vue"),
         },
       ],
     },
