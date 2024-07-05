@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { FormInstance, FormRules, ElNotification } from "element-plus";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { $addRole, $updateRole } from "../../api/mockData/role.ts";
 // expose to parent component, so that the parent component can call the drawer
 const emit = defineEmits(["update-role-list"]);
