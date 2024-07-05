@@ -90,7 +90,7 @@ import {
 } from "@element-plus/icons-vue";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import useUser from "../../../store/user.ts";
+import useUser from "../../store/user.ts";
 import { ElMessageBox } from 'element-plus'
 
 let userStore = useUser();

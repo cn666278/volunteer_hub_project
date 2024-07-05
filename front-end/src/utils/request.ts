@@ -13,24 +13,30 @@ const instance = axios.create({
 });
 
 // add request interceptor
-instance.interceptors.request.use(function (config) {
-  // each request will add a token to the header
-  console.log(config)
-  config.headers['token'] = sessionStorage.getItem("token");
-  return config;
-}, function (error) {
-  // Do something with request error
-  return Promise.reject(error);
-});
+instance.interceptors.request.use(
+  function (config) {
+    // each request will add a token to the header
+    console.log(config);
+    config.headers["token"] = sessionStorage.getItem("token");
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
 
 // add response interceptor
-instance.interceptors.response.use(function (response) {
-  // any 2xx status code will be caught here
-  return response;
-}, function (error) {
-  // any non-2xx status code will be caught here
-  return Promise.reject(error);
-});
+instance.interceptors.response.use(
+  function (response) {
+    // any 2xx status code will be caught here
+    return response;
+  },
+  function (error) {
+    // any non-2xx status code will be caught here
+    return Promise.reject(error);
+  }
+);
 
 // get method
 export const $get = async (url: string, params: object = {}) => {
@@ -40,6 +46,6 @@ export const $get = async (url: string, params: object = {}) => {
 
 // post method
 export const $post = async (url: string, params: object = {}) => {
-  let {data} = await instance.post(url, params);
+  let { data } = await instance.post(url, params);
   return data;
 };

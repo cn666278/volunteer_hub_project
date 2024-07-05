@@ -86,13 +86,13 @@ const submitForm = (formRef: FormInstance | undefined) => {
         console.log('login success')
         if (res.data.role == 'volunteer') {
           // jump to Main home page
-          router.push('/home/volunteer')
+          router.push('/volunteer')
         } else if (res.data.role == 'admin') {
           // jump to Admin home page
-          router.push('/home/admin')
+          router.push('/admin')
         } else if (res.data.role == 'organizer') {
           // jump to Organizer home page
-          router.push('/home/organizer')
+          router.push('/organizer')
         } else {
           console.log('role error')
         }
@@ -116,11 +116,11 @@ const resetForm = (formRef: FormInstance | undefined) => {
 onMounted(() => {
   if(userStore.user.username){
     if(userStore.user.role.roleName == 'volunteer'){
-      router.push('/home/volunteer')
+      router.push('/volunteer')
     } else if(userStore.user.role.roleName == 'admin'){
-      router.push('/home/admin')
+      router.push('/admin')
     } else if(userStore.user.role.roleName == 'organizer'){
-      router.push('/home/organizer')
+      router.push('/organizer')
     } else {
       console.log('role error')
     }
