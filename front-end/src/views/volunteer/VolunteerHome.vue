@@ -1,31 +1,29 @@
 <template>
-  <div class="volunteerHome">
+  <div className="volunteerHome">
     <!-- Header 部分 -->
     <el-header>
-      <Navbar />
+      <Navbar/>
     </el-header>
 
-    <!-- 主内容部分 -->
-    <el-main>
-      <div class="dashed-box">
-        <p>这是一个虚线透明框</p>
-      </div>
-    </el-main>
+        <!-- 主内容部分 -->
+        <VolunteerMainPage />
 
     <!-- 页脚部分 -->
-    <VolunteerFooter />
+    <VolunteerFooter/>
   </div>
 </template>
 
 <script>
 import Navbar from './VolunteerNavbar.vue';
 import VolunteerFooter from './VolunteerFooter.vue';
+import VolunteerMainPage from './VolunteerMainPage.vue';
 
 export default {
   name: 'VolunteerHome',
   components: {
     Navbar,
-    VolunteerFooter
+    VolunteerFooter,
+    VolunteerMainPage
   }
 };
 </script>
