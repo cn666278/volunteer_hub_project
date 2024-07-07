@@ -8,23 +8,25 @@ import { baseURL_dev } from "../config/baseURL.ts";
 
 // create an axios instance
 const instance = axios.create({
-  baseURL: baseURL_dev,
-  timeout: 30000, // Request timeout 30s
+    baseURL: baseURL_dev,
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    timeout: 30000, // Request timeout 30s
 });
 
 // add request interceptor
-instance.interceptors.request.use(
-  function (config) {
-    // each request will add a token to the header
-    console.log(config);
-    config.headers["token"] = sessionStorage.getItem("token");
+instance.interceptors.request.use((config) => {
+    const token = sessionStorage.getItem('token');
+    console.log("token:",token)
+    if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+    }
     return config;
-  },
-  function (error) {
-    // Do something with request error
+}, (error) => {
     return Promise.reject(error);
-  }
-);
+});
 
 // add response interceptor
 instance.interceptors.response.use(

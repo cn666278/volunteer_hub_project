@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .cors().and() // Enable CORS
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll() // Allow all users to authenticate
+                .antMatchers("/login").permitAll() // Allow all users to authenticate
                 .anyRequest().authenticated() // All other requests must be authenticated
                 .and()
                 .sessionManagement()
@@ -42,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

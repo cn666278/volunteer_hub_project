@@ -3,10 +3,10 @@ import { md5 } from "md5js";
 import { ElNotification } from "element-plus";
 
 export const $login = async (params: object | any) => {
-  params.password = md5(
-    md5(params.password, 32).split("").reverse().join(""),
-    32
-  );
+  // params.password = md5(
+  //   md5(params.password, 32).split("").reverse().join(""),
+  //   32
+  // );
   let res = await $post("login", params);
   const { code, data } = res;
   if (code === 200) {
@@ -15,6 +15,7 @@ export const $login = async (params: object | any) => {
       message: data.message,
       type: "success",
     });
+    console.log("login token:",data.token)
     // if login success, save token to sessionStorage
     sessionStorage.setItem("token", data.token);
     return res;
@@ -31,7 +32,7 @@ export const $login = async (params: object | any) => {
 // get user info
 export const $getUserInfo = async (params: object) => {
   // let res = await $get("/api/admin/getUserInfo", params); // from back-end
-  let res = await $get("admin/getUserInfo", params);
+  let res = await $post("admin/getUserInfo", params);
   console.log(res);
   return res;
 };

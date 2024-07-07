@@ -23,7 +23,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/api/admin/getUserInfo")
+    @PostMapping("/admin/getUserInfo")
     public ResponseEntity<UserInfo> getUserInfo(@RequestBody UserRequest request) {
         UserInfo userInfo = userService.getUserInfoByUsername(request.getUsername());
         if (userInfo != null) {

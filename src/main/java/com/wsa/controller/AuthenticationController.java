@@ -34,7 +34,7 @@ public class AuthenticationController {
         loginResult.setMessage("success");
         loginResult.setToken(jwt);
         ResultVO resultVO = new ResultVO();
-        resultVO.setCode("200");
+        resultVO.setCode(200);
         resultVO.setData(loginResult);
 //        UserInfo userInfo = new UserInfo();
 //        userInfo.setToken(jwt);

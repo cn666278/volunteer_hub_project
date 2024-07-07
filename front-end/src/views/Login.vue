@@ -84,13 +84,13 @@ const submitForm = (formRef: FormInstance | undefined) => {
         let user = await $getUserInfo({username: formData.username})
         userStore.setUser(user)
         console.log('login success')
-        if (res.data.role == 'volunteer') {
+        if (user.role.roleName == 'volunteer') {
           // jump to Main home page
           router.push('/volunteer')
-        } else if (res.data.role == 'admin') {
+        } else if (user.role.roleName == 'admin') {
           // jump to Admin home page
           router.push('/admin')
-        } else if (res.data.role == 'organizer') {
+        } else if (user.role.roleName == 'organizer') {
           // jump to Organizer home page
           router.push('/organizer')
         } else {
