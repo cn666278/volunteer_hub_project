@@ -11,7 +11,7 @@
  Target Server Version : 101102
  File Encoding         : 65001
 
- Date: 05/07/2024 20:30:06
+ Date: 07/07/2024 20:38:27
 */
 
 SET NAMES utf8mb4;
@@ -91,6 +91,15 @@ CREATE TABLE `events`  (
   `points_awarded` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for message
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message`  (
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for organizer
@@ -176,7 +185,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'orgainzer', 'organizer', '07961555608', '$2a$10$DowJonesDJXerP4e2ulz3jeVuw7i/uRNT1oGt/S3e', '13253348930@163.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1);
+INSERT INTO `users` VALUES (1, 'orgainzer', 'organizer', '07961555608', '$2a$10$Xr6WrdQBrtCumI6T9UN8cOaLkgNUQzEw5sIyw3lDjMSFOrOo2KlRi', '13253348930@163.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1);
 
 -- ----------------------------
 -- Table structure for volunteer
