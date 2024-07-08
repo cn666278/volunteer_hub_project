@@ -11,7 +11,7 @@
  Target Server Version : 101102
  File Encoding         : 65001
 
- Date: 07/07/2024 20:38:27
+ Date: 09/07/2024 00:15:46
 */
 
 SET NAMES utf8mb4;
@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `authorities`;
 CREATE TABLE `authorities`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role_id` int(20) NOT NULL,
   `authority` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`username`) USING BTREE
@@ -32,7 +33,7 @@ CREATE TABLE `authorities`  (
 -- ----------------------------
 -- Records of authorities
 -- ----------------------------
-INSERT INTO `authorities` VALUES (1, 'organizer', 'organizer');
+INSERT INTO `authorities` VALUES (1, 'organizer', 1, 'organizer');
 
 -- ----------------------------
 -- Table structure for emails
@@ -148,12 +149,14 @@ CREATE TABLE `roles`  (
   `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`role_id`) USING BTREE,
   UNIQUE INDEX `role_name`(`role_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
+INSERT INTO `roles` VALUES (3, 'admin');
 INSERT INTO `roles` VALUES (1, 'organizer');
+INSERT INTO `roles` VALUES (2, 'volunteer');
 
 -- ----------------------------
 -- Table structure for userrole
@@ -164,6 +167,11 @@ CREATE TABLE `userrole`  (
   `role_id` bigint(20) NOT NULL,
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of userrole
+-- ----------------------------
+INSERT INTO `userrole` VALUES (1, 1);
 
 -- ----------------------------
 -- Table structure for users
