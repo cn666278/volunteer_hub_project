@@ -53,4 +53,34 @@ public class UserService {
         }
         return userInfo;
     }
+
+    public UserInfo getUserInfoByLoginId(String loginId) {
+        User user = userMapper.findByLoginid(loginId);
+        UserInfo userInfo = new UserInfo();
+        if(user != null){
+            userInfo.setUsername(user.getUsername());
+            userInfo.setId(user.getId());
+            userInfo.setLoginId(user.getLoginId());
+            userInfo.setPhoto(user.getPhoto());
+            userInfo.setEmail(user.getEmail());
+            userInfo.setPhone(user.getPhone());
+        }
+
+        if (userInfo != null) {
+            List<Authority> authoritiesByUsername = userMapper.findAuthoritiesByUsername(userInfo.getUsername());
+            if ((authoritiesByUsername != null)){
+                Authority authority = authoritiesByUsername.get(0);
+                UserInfo.Role role = new UserInfo.Role();
+                role.setRoleName(authority.getAuthority());
+                role.setRoleId(String.valueOf(authority.getId()));
+                userInfo.setRole(role);
+            }
+        }
+        return userInfo;
+    }
+
+    public List<UserInfo> getUserListByRoleId(int roleId, int pageIndex, int pageSize) {
+        int offset = (pageIndex - 1) * pageSize;
+        return userMapper.selectUsersByRoleId(roleId, offset, pageSize);
+    }
 }
