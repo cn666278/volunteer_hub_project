@@ -14,25 +14,40 @@
         <span>contact@example.com</span>
       </div>
     </div>
-    <div class="navbar-container">
-      <el-menu mode="horizontal" class="navbar">
-        <el-menu-item index="1">Home</el-menu-item>
-        <el-menu-item index="2">Events</el-menu-item>
-        <el-menu-item index="3">News</el-menu-item>
-        <el-menu-item index="4">Search</el-menu-item>
-        <el-menu-item index="5">Login</el-menu-item>
-        <el-menu-item index="6">
-          <el-avatar src="user-avatar.jpg" class="menu-avatar"></el-avatar>
-        </el-menu-item>
-      </el-menu>
-    </div>
+    <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo navbar"
+        mode="horizontal"
+        :ellipsis="false"
+        @select="handleSelect"
+    >
+      <div class="weblogo">
+        <img src="D:\WSA project\wsa_volunteer_hub\front-end\src\assets\logo.png" class="logo">
+      </div>
+      <el-menu-item index="1">Home</el-menu-item>
+      <el-menu-item index="2">Events</el-menu-item>
+      <el-menu-item index="3">News</el-menu-item>
+      <el-menu-item index="4">Search</el-menu-item>
+      <el-menu-item index="5">Login</el-menu-item>
+      <el-menu-item index="6">
+        <el-tooltip content="View Notifications" placement="bottom">
+          <el-icon class="icon">
+            <i class="el-icon-bell"></i>
+          </el-icon>
+        </el-tooltip>
+        <el-avatar src="user-avatar.jpg" class="menu-avatar"></el-avatar>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Navbar'
-};
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const activeIndex = ref('1')
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
 </script>
 
 <style scoped>
@@ -40,65 +55,71 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #FFFFFF;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ddd;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-}
-
-.contact-info {
-  display: flex;
-  align-items: center;
-}
-
-.contact-info .icon {
-  margin-right: 5px;
-}
-
-.contact-info.right {
-  justify-content: flex-end;
-}
-
-.navbar-container {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  margin-top: 20px;
-  position: fixed;
-  top: 60px;
-  left: 0;
   background-color: #FFFFFF;
+  padding: 10px 10px;
+  box-sizing: border-box;
+  height: 50px;
+}
+
+.navbar-container, .el-menu-demo {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #FFFFFF;
+  overflow-x: auto;
+  position: fixed;
+  top: 50px;
+  padding-right: 50px;
+  width: 100%;
   z-index: 1000;
 }
 
-.navbar {
-  background-color: #FFFFFF;
-}
 
 .el-menu-item {
-  font-size: 24px;
-  line-height: 100px;
-  color: #607D8B;
-  padding: 0 20px;
-  overflow: visible;
-  white-space: nowrap;
+  padding: 10px 15px;
 }
 
-.el-menu-item:not(.is-disabled):hover {
-  background-color: #f5f5f5;
-}
-
-.el-menu-item.is-active {
-  color: #607D8B;
-  border-bottom: 4px solid #607D8B;
+.flex-grow {
+  flex-grow: 1;
 }
 
 .menu-avatar {
-  --el-avatar-size: 40px;
+  margin-left: 10px;
   vertical-align: middle;
 }
+
+ .contact-info {
+   max-width: 150px;
+ }
+
+.contact-info span {
+  font-size: 14px;
+}
+
+
+ .navbar-top {
+   margin-bottom: 0; /* 减少底部外边距 */
+ }
+
+.weblogo {
+  padding-left: 20px; /* 根据需要调整，确保图片不会贴近边界 */
+  padding-right:900px;
+  flex: none; /* 防止 logo 拉伸或压缩 */
+  display: flex;
+  justify-content: center; /* 居中图片 */
+  z-index: 1000;
+}
+
+/*.logo {*/
+/*  width: 25px; !* 设置图片宽度 *!*/
+/*  height: 25px; !* 保持图片的宽高比 *!*/
+/*}*/
+
+
+
+
 </style>
