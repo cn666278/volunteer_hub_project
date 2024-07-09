@@ -20,6 +20,7 @@ export default {
       mock: true,
     });
   },
+  /** Admin */
   // home组件，左侧表格数据获取
   getTableData(params: any) {
     return request({
@@ -85,9 +86,25 @@ export default {
     });
   },
   // user组件
-  getUserData(params: any) {
+  uploadImg(params: any) {
     return request({
-      url: "/admin/user/getUser",
+      url: "/admin/user/uploadImg",
+      method: "post",
+      data: params,
+      mock: true,
+    });
+  },
+  getUserByLoginId(params: any) {
+    return request({
+      url: "/admin/user/getUserByLoginId",
+      method: "get",
+      data: params,
+      mock: false,
+    });
+  },
+  getUserList(params: any) {
+    return request({
+      url: "/admin/user/getUserList",
       method: "get",
       data: params, // data: {total: 0, page: 1}
       mock: false, // 本地获取数据，不使用mock(apifox)数据
@@ -95,7 +112,7 @@ export default {
   },
   addUser(params: any) {
     return request({
-      url: "/admin/user/add",
+      url: "/admin/user/addUser",
       method: "post",
       data: params,
       mock: false,
@@ -103,7 +120,7 @@ export default {
   },
   editUser(params: any) {
     return request({
-      url: "/admin/user/edit",
+      url: "/admin/user/editUser",
       method: "post",
       data: params,
       mock: false,
@@ -111,7 +128,7 @@ export default {
   },
   deleteUser(params: any) {
     return request({
-      url: "/admin/user/delete",
+      url: "/admin/user/deleteUser",
       method: "get", // 因为删除请求不需要传递参数，所以使用get方法
       data: params,
       mock: false,
