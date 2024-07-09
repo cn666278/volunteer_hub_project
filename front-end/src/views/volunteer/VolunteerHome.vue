@@ -1,14 +1,14 @@
 <template>
   <div className="volunteerHome">
-    <!-- Header 部分 -->
+    <!-- Header -->
     <el-header>
       <Navbar/>
     </el-header>
 
-        <!-- 主内容部分 -->
+        <!-- Main content -->
         <VolunteerMainPage />
 
-    <!-- 页脚部分 -->
+    <!-- Footer -->
     <VolunteerFooter/>
   </div>
 </template>

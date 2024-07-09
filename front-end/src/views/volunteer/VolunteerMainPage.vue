@@ -1,8 +1,9 @@
 <template>
   <el-main class="main-content">
     <div class="user-profile">
-      <el-avatar size="500" src="path_to_user_avatar.jpg"></el-avatar>
-    </div>
+    <el-avatar src="path_to_user_avatar.jpg" size="large"></el-avatar>
+    <div class="username">username</div>
+  </div>
     <div class="user-rating">
       <el-rate v-model="rating" show-score></el-rate>
     </div>
@@ -91,6 +92,7 @@ export default {
 .feature-card h3 {
   margin-top: 10px;
 }
+
 
 .feature-card p {
   color: #666;

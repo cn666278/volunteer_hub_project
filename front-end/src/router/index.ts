@@ -10,6 +10,7 @@ const routes = createRouter({
       name: "Login",
       meta: { title: "Login" },
       component: () => import("../views/Login.vue"),
+
     },
     {
       path: "/login",
@@ -31,7 +32,7 @@ const routes = createRouter({
           path: "",
           name: "Volunteer Home",
           meta: { title: "Home" },
-          component: () => import("../views/volunteer/VolunteerHome.vue"),
+          component: () => import("../views/MainPage.vue"),
         },
       ],
     },
