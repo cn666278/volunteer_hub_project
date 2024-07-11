@@ -2,6 +2,7 @@ package com.wsa.controller;
 
 import com.wsa.model.User;
 import com.wsa.model.UserInfo;
+import com.wsa.model.UserListRequest;
 import com.wsa.model.UserRequest;
 import com.wsa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,19 @@ public class UserController {
         }
     }
 
+    @PostMapping("/admin/getUserByLoginId")
+    public ResponseEntity<UserInfo> getUserByLoginId(@RequestBody UserRequest request) {
+        UserInfo userInfo = userService.getUserInfoByLoginId(request.getLoginId());
+        if (userInfo != null) {
+            return ResponseEntity.ok(userInfo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/admin/getUserList")
+    public ResponseEntity<List<UserInfo>> getUserList(@RequestBody UserListRequest request) {
+        List<UserInfo> userList = userService.getUserListByRoleId(request.getRoleId(), request.getPageIndex(), request.getPageSize());
+        return ResponseEntity.ok(userList);
+    }
 }
