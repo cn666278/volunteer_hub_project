@@ -80,7 +80,7 @@ export default {
   deleteRole(params: any) {
     return request({
       url: "/admin/role/deleteRole",
-      method: "get",
+      method: "post",
       data: params,
       mock: false,
     });
@@ -120,7 +120,7 @@ export default {
   },
   updateUser(params: any) {
     return request({
-      url: "/admin/user/editUser",
+      url: "/admin/user/updateUser",
       method: "post",
       data: params,
       mock: false,

@@ -147,7 +147,6 @@ const handleEdit = async (loginId: string) => {
 
 // Delete user
 const handleDelete = (row: any) => {
-  console.log("Delete user: ", row);
   ElMessageBox.confirm(
     "Are you sure delete user: " + row.username + " ?",
     "Notification",

@@ -68,10 +68,9 @@ export default {
    */
   getUserByLoginId: (config: any) => {
     // 为什么还有body? get方法？
-    console.log(config)
+    // console.log(config)
     const { loginId } = param2Obj(config.url);
     const user = mockData.data.find((user) => user.loginId === loginId);
-    console.log(user)
     return {
       code: 200,
       data: user,
@@ -129,7 +128,6 @@ export default {
       role: role,
       ...JSON.parse(params.body),
     });
-    console.log(mockData.data);
     return {
       code: 200,
       data: {
@@ -147,7 +145,6 @@ export default {
     const { id, username, phone, email, photo, roleId } = JSON.parse(
       params.body
     );
-    console.log(JSON.parse(params.body));
     //check roleName
     let roleName = "";
     if (roleId == 1) {
@@ -185,8 +182,8 @@ export default {
    * @return {{code: number, data: {message: string}}}
    */
   deleteUser: (params: any) => {
-    const id = JSON.parse(params.body).loginId;
-    mockData.data = mockData.data.filter((user) => user.loginId !== id);
+    const { loginId } = JSON.parse(params.body);
+    mockData.data = mockData.data.filter((user) => user.loginId !== loginId);
     return {
       code: 200,
       data: {

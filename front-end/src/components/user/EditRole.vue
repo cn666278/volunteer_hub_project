@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { FormInstance, FormRules, ElNotification } from "element-plus";
-import { ref } from "vue";
-import { $addRole, $updateRole } from "../../api/mockData/role.ts";
+import { getCurrentInstance, ref } from "vue";
+const { proxy }: any = getCurrentInstance();
 // expose to parent component, so that the parent component can call the drawer
 const emit = defineEmits(["update-role-list"]);
 // drawer
@@ -73,15 +73,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
       let res;
       if (formData.value.roleId) {
         // edit
-        res = await $updateRole(formData.value);
+        res = await proxy.$api.updateRole(formData.value);
       } else {
         // add
-        res = await $addRole(formData.value);
+        res = await proxy.$api.addRole(formData.value);
       }
-      if (res.code === 200) {
+      if (res) {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "success",
         });
         emit("update-role-list"); // update role list
@@ -90,7 +90,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       } else {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "error",
         });
         console.log("error submit!");
