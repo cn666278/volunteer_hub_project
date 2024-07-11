@@ -90,20 +90,17 @@
 
 <script setup lang="ts">
 import EditUser from "../../../components/user/EditUser.vue";
-import { onMounted, ref } from "vue";
-import {
-  $getUserList,
-  $getUserByLoginId,
-  $deleteUser,
-} from "../../../api/admin.ts";
-import { $getRoleList } from "../../../api/mockData/role.ts";
+import { getCurrentInstance, onMounted, ref } from "vue";
 import { ElMessageBox, ElNotification } from "element-plus";
-
+const { proxy }: any = getCurrentInstance();
 // user list
 let userList = ref<any>([]);
 
 // page index
 let pageIndex = ref(1);
+
+// page size
+let pageSize = 10;
 
 let total = ref(0);
 
@@ -119,7 +116,7 @@ const roleList: any = ref([]);
 // page change event
 const getRoleList = async () => {
   console.log("Load role list");
-  let res = await $getRoleList();
+  let res = await proxy.$api.getRoleList();
   roleList.value = res;
   roleList.value.unshift({ roleId: 0, roleName: "All" });
 };
@@ -127,26 +124,31 @@ const getRoleList = async () => {
 // get user list
 const getUserList = async () => {
   console.log("Load user list");
-  let { data, count } = await $getUserList({
-    pageIndex: pageIndex.value,
-    pageSize: 10,
-    roleId: roleId.value,
-  });
-  userList.value = data;
+  let res = await proxy.$api.getUserList();
+  let { list, count } = res;
+  // 当roleId改变时，筛选出对应roleId的用户，并更新用户列表
+  if (roleId.value !== 0) {
+    list = list.filter((user: any) => user.roleId === roleId.value);
+  }
+  // Pagination前端分页
+  const start = (pageIndex.value - 1) * pageSize;
+  const end = start + pageSize;
+  list = list.slice(start, end);
+  userList.value = list;
   total.value = count;
   isUpdate.value = !isUpdate.value; // update table
 };
 
 // Edit user
 const handleEdit = async (loginId: string) => {
-  let res = await $getUserByLoginId(loginId);
+  let res = await proxy.$api.getUserByLoginId({loginId: loginId});
   editDrawerRef.value.handleOpen(res);
 };
 
 // Delete user
 const handleDelete = (row: any) => {
   ElMessageBox.confirm(
-    "Are you sure delete role: " + row.roleName + " ?",
+    "Are you sure delete user: " + row.username + " ?",
     "Notification",
     {
       confirmButtonText: "Confirm",
@@ -155,11 +157,11 @@ const handleDelete = (row: any) => {
     }
   )
     .then(async () => {
-      let res = await $deleteUser(row.roleId);
-      if (res.code === 200) {
+      let res = await proxy.$api.deleteUser({loginId: row.loginId});
+      if (res) {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "success",
         });
         // delete successfully, reload role list
@@ -168,7 +170,7 @@ const handleDelete = (row: any) => {
       } else {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "error",
         });
       }

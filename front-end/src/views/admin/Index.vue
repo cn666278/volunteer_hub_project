@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="index">
       <div class="left">
         <div class="title">
           <h2>WSA Volunteer Hub</h2>
@@ -121,7 +121,7 @@
   </script>
   
   <style lang="scss">
-  .home {
+  .index {
     width: 100vw; // 100% of the viewport width
     height: 100vh;
     display: flex;

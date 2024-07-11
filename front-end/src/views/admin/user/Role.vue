@@ -11,7 +11,7 @@
       <el-table-column prop="roleName" label="RoleName" width="250" />
       <el-table-column label="edit">
         <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.row)">
+          <el-button size="small" @click="handleEdit(scope.row.roleId)">
             Edit
           </el-button>
           <el-button
@@ -37,14 +37,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, getCurrentInstance } from "vue";
 import EditRole from "../../../components/user/EditRole.vue";
-import {
-  $getRoleList,
-  $deleteRole,
-  $getSingleRole,
-} from "../../../api/mockData/role.ts";
 import { ElMessageBox, ElNotification } from "element-plus";
+
+const { proxy }: any = getCurrentInstance();
 
 // role list
 let roleList = ref<any[]>([]);
@@ -64,12 +61,12 @@ const handleCurrentChange = (val: number) => {
 // load role list
 const getRoleList = async () => {
   console.log("load role list");
-  roleList.value = await $getRoleList();
+  roleList.value = await proxy.$api.getRoleList();
   isUpdate.value = !isUpdate.value; // update role list
 };
 // edit role
-const handleEdit = async (row: any) => {
-  let res = await $getSingleRole(row.roleId);
+const handleEdit = async (roleId: number) => {
+  let res = await proxy.$api.getSingleRole({roleId: roleId});
   editDrawerRef.value.handleOpen(res);
 };
 // delete role
@@ -84,8 +81,8 @@ const handleDelete = (row: any) => {
     }
   )
     .then(async () => {
-      let res = await $deleteRole(row.roleId);
-      if (res.code === 200) {
+      let res = await proxy.$api.deleteRole({roleId: row.roleId});
+      if (res) {
         ElNotification({
           title: "Notification",
           message: res.message,
