@@ -13,7 +13,7 @@ Mock.mock(/\/admin\/user\/getUserList/, 'get', userApi.getUserList)
 Mock.mock(/\/admin\/user\/getUserByLoginId/, 'get', userApi.getUserByLoginId)
 Mock.mock(/\/admin\/user\/addUser/, 'post', userApi.addUser)
 Mock.mock(/\/admin\/user\/editUser/, 'post', userApi.updateUser)
-Mock.mock(/\/admin\/user\/deleteUser/, 'get', userApi.deleteUser)
+Mock.mock(/\/admin\/user\/deleteUser/, 'post', userApi.deleteUser)
 // role
 Mock.mock(/\/admin\/role\/getRoleList/, 'get', roleApi.getRoleList)
 Mock.mock(/\/admin\/role\/getSingleRole/, 'get', roleApi.getSingleRole)

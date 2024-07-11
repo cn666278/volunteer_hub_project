@@ -99,6 +99,9 @@ let userList = ref<any>([]);
 // page index
 let pageIndex = ref(1);
 
+// page size
+let pageSize = 10;
+
 let total = ref(0);
 
 // When the user list data changes, modify this value, bind the table key, and trigger the table update
@@ -127,6 +130,10 @@ const getUserList = async () => {
   if (roleId.value !== 0) {
     list = list.filter((user: any) => user.roleId === roleId.value);
   }
+  // Pagination前端分页
+  const start = (pageIndex.value - 1) * pageSize;
+  const end = start + pageSize;
+  list = list.slice(start, end);
   userList.value = list;
   total.value = count;
   isUpdate.value = !isUpdate.value; // update table

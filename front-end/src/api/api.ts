@@ -129,7 +129,7 @@ export default {
   deleteUser(params: any) {
     return request({
       url: "/admin/user/deleteUser",
-      method: "get", 
+      method: "post", 
       data: params,
       mock: false,
     });

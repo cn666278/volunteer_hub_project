@@ -67,8 +67,9 @@ export default {
    * @return user
    */
   getUserByLoginId: (config: any) => {
-    // 为什么是body? get方法？
-    const { loginId } = JSON.parse(config.body);
+    // 为什么还有body? get方法？
+    console.log(config)
+    const { loginId } = param2Obj(config.url);
     const user = mockData.data.find((user) => user.loginId === loginId);
     console.log(user)
     return {
