@@ -27,7 +27,7 @@
       <el-form-item label="Photo" prop="photo">
         <el-upload
           class="avatar-uploader"
-          :action="baseURL_dev + '/admin/uploadImg'"
+          :action = "config.mockApi + 'user/uploadImg'"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
@@ -75,10 +75,9 @@ import {
   UploadProps,
 } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
-import { onMounted, ref } from "vue";
-import { $getRoleList } from "../../api/mockData/role.ts";
-import { $addUser, $updateUser } from "../../api/admin.ts";
-import { baseURL_dev } from "../../config/baseURL.ts";
+import { getCurrentInstance, onMounted, ref } from "vue";
+import config from "../../config/index";
+const { proxy }: any = getCurrentInstance();
 
 // expose to parent component, so that the parent component can call the drawer
 const emit = defineEmits(["update-user-list"]);
@@ -118,7 +117,7 @@ const roleList: any = ref([]);
 
 // get role list
 const getRoleList = async () => {
-  let res = await $getRoleList();
+  let res = await proxy.$api.getRoleList();
   console.log("Load role list");
   roleList.value = res;
 };
@@ -176,15 +175,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
       let res: any = {};
       if (formData.value.id) {
         // edit
-        res = await $updateUser(formData.value);
+        res = await proxy.$api.updateUser(formData.value);
       } else {
         // add
-        res = await $addUser(formData.value);
+        res = await proxy.$api.addUser(formData.value);
       }
-      if (res.code === 200) {
+      if (res) {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "success",
         });
         emit("update-user-list"); // update user list
@@ -193,7 +192,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       } else {
         ElNotification({
           title: "Notification",
-          message: res.data.message,
+          message: res.message,
           type: "error",
         });
         console.log("error submit!");
@@ -225,8 +224,7 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
   response,
   uploadFile
 ) => {
-  let { code } = response;
-  if (code === 200) {
+  if (response) {
     ElNotification({
       title: "Notification",
       message: "Upload photo successfully!",

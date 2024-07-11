@@ -118,7 +118,7 @@ export default {
       mock: false,
     });
   },
-  editUser(params: any) {
+  updateUser(params: any) {
     return request({
       url: "/admin/user/editUser",
       method: "post",
@@ -129,7 +129,7 @@ export default {
   deleteUser(params: any) {
     return request({
       url: "/admin/user/deleteUser",
-      method: "get", // 因为删除请求不需要传递参数，所以使用get方法
+      method: "get", 
       data: params,
       mock: false,
     });
