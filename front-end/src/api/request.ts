@@ -23,13 +23,13 @@ service.interceptors.request.use((req) => {
 
 // Response interceptor 请求之后的拦截器
 service.interceptors.response.use((res) => {
-  const { code, data, message } = res.data;
+  const { code, data, msg } = res.data;
   // 根据后端，视情况修改状态码
   if (code === 200) {
     return data;
   } else {
-    ElMessage.error(message || NETWORK_ERROR);
-    return Promise.reject(message || NETWORK_ERROR); // Reject the promise and display the error message 
+    ElMessage.error(msg || NETWORK_ERROR);
+    return Promise.reject(msg || NETWORK_ERROR); // Reject the promise and display the error message 
     // why reject the promise? Because the return value of the request method is a promise, 
     // and the return value of the promise is the data returned by the server. 
     // If the request fails, the promise should be rejected, 
