@@ -33,21 +33,7 @@ public class AuthenticationController {
         LoginResult loginResult = new LoginResult();
         loginResult.setMessage("success");
         loginResult.setToken(jwt);
-        ResultVO resultVO = new ResultVO();
-        resultVO.setCode(200);
-        resultVO.setData(loginResult);
-//        UserInfo userInfo = new UserInfo();
-//        userInfo.setToken(jwt);
-//        userInfo.setPhone("100888");
-//        userInfo.setId(2L);
-//        userInfo.setPhoto("https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png");
-//        userInfo.setEmail("123@gmail.com");
-//        userInfo.setUsername("organizer");
-//        userInfo.setLoginId("organizer");
-//        UserInfo.Role role = new UserInfo.Role();
-//        role.setRoleId("2");
-//        role.setRoleName("organizer");
-//        userInfo.setRole(role);
+        ResultVO resultVO = ResultVO.success(loginResult);
         return resultVO;
     }
 }

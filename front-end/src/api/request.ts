@@ -9,19 +9,29 @@ import { ElMessage } from "element-plus";
 
 const NETWORK_ERROR = "Network error, please try again later..";
 
-// 创建axios实例
 const service = axios.create({
   baseURL: config.baseApi,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  timeout: 30000,
 });
 
-// Request interceptor 请求之前的拦截器
-service.interceptors.request.use((req) => {
-  // Add a custom header, jwt-token is the token of the current user
-  // const headers = req.headers;
-  return req;
-});
+service.interceptors.request.use(
+    (req) => {
+      const token = sessionStorage.getItem('token');
+      console.log("Token:", token);
+      if (token) {
+        req.headers['Authorization'] = 'Bearer ' + token;
+      }
+      return req;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+);
 
-// Response interceptor 请求之后的拦截器
 service.interceptors.response.use((res) => {
   const { code, data, msg } = res.data;
   // 根据后端，视情况修改状态码

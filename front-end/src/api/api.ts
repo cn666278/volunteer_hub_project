@@ -143,4 +143,15 @@ export default {
   //       mock: false,
   //     });
   //   }
+  /**
+   * event api
+   */
+  getEventsByDate(params: any) {
+    return request({
+      url: "/getEventsByDate",
+      method: "get",
+      data: params,
+      mock: false,
+    });
+  },
 };
