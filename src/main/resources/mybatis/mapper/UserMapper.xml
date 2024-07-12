@@ -13,20 +13,20 @@
     </select>
 
     <select id="findAuthoritiesByUsername" parameterType="string" resultType="com.wsa.model.Authority">
-        SELECT a.role_id AS roleId, a.authority
+        SELECT a.roleId, a.authority
         FROM authorities a
                  JOIN users u ON a.username = u.username
         WHERE a.username = #{username}
     </select>
     <select id="findByLoginid" parameterType="string" resultType="com.wsa.model.User">
-        SELECT * FROM users WHERE login_id = #{loginId};
+        SELECT * FROM users WHERE loginId = #{loginId};
     </select>
     <select id="selectUsersByRoleId" parameterType="map" resultType="com.wsa.model.UserInfo">
-        SELECT u.id, u.login_id, u.username, u.password, u.phone, u.email, u.photo, r.role_id, r.role_name
+        SELECT u.id, u.loginId, u.username, u.password, u.phone, u.email, u.photo, r.roleId, r.roleName
         FROM users u
                  JOIN authorities a ON u.username = a.username
-                 JOIN roles r ON a.role_id = r.role_id
-        WHERE a.role_id = #{roleId}
+                 JOIN roles r ON a.roleId = r.roleId
+        WHERE a.roleId = #{roleId}
             LIMIT #{offset}, #{pageSize}
     </select>
 </mapper>

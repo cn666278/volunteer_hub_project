@@ -9,6 +9,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import api from './api/api.ts'
 import './api/mock.ts'
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import 'vue-cal/dist/vuecal.css';
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
