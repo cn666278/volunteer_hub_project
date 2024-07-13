@@ -1,9 +1,6 @@
 package com.wsa.controller;
 
-import com.wsa.model.User;
-import com.wsa.model.UserInfo;
-import com.wsa.model.UserListRequest;
-import com.wsa.model.UserRequest;
+import com.wsa.model.*;
 import com.wsa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +22,12 @@ public class UserController {
     }
 
     @PostMapping("/getLoginUserInfo")
-    public ResponseEntity<UserInfo> getUserInfo(@RequestBody UserRequest request) {
+    public ResultVO getUserInfo(@RequestBody UserRequest request) {
         UserInfo userInfo = userService.getUserInfoByUsername(request.getUsername());
         if (userInfo != null) {
-            return ResponseEntity.ok(userInfo);
+            return ResultVO.success(userInfo);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResultVO.failure("not found!");
         }
     }
 

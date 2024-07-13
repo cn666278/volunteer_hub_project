@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.14",
+    "@fullcalendar/daygrid": "^6.1.14",
+    "@fullcalendar/vue3": "^6.1.14",
     "axios": "^1.7.2",
     "echarts": "^5.5.1",
     "element-plus": "^2.7.6",
@@ -21,6 +24,7 @@
     "sass": "^1.77.6",
     "sass-loader": "^14.2.1",
     "vue": "^3.4.29",
+    "vue-cal": "^4.9.0",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {

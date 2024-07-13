@@ -80,47 +80,61 @@ const rules = reactive<FormRules<typeof formData>>({
 const submitForm = (formRef: FormInstance | undefined) => {
   if (!formRef) return;
   formRef.validate(async (valid) => {
-    if (valid) {
-      let res = await proxy.$api.login(formData);
-      console.log(res);
-      if (res) {
-        ElNotification({
-          title: "Notification",
-          message: res.message,
-          type: "success",
-        });
-        console.log("login token:", res.token);
-        // if login success, save token to sessionStorage
-        sessionStorage.setItem("token", res.token);
-        let user = await proxy.$api.getLoginUserInfo({ username: formData.username });
-        console.log(user);
-        userStore.setUser(user);
-        console.log("login success");
-        if (user.role.roleName == "volunteer") {
-          // jump to Main home page
-          router.push("/volunteer");
-        } else if (user.role.roleName == "admin") {
-          // jump to Admin home page
-          router.push("/admin");
-        } else if (user.role.roleName == "organizer") {
-          // jump to Organizer home page
-          router.push("/organizer");
-        } else {
-          console.log("role error");
+    try {
+      console.log("Validation result:", valid);
+      if (valid) {
+        try {
+          console.log("Validation passed, submitting form data:", formData);
+          let res = await proxy.$api.login(formData);
+          console.log("Login response:", res);
+
+          if (res) {
+            ElNotification({
+              title: "Notification",
+              message: res.message,
+              type: "success",
+            });
+
+            console.log("Login token:", res.token);
+            sessionStorage.setItem("token", res.token);
+
+            let user = await proxy.$api.getLoginUserInfo({ username: formData.username });
+            console.log("User info:", user);
+
+            userStore.setUser(user);
+            console.log("Login success");
+
+            if (user.role.roleName === "volunteer") {
+              // jump to Main home page
+              router.push("/volunteer");
+            } else if (user.role.roleName === "admin") {
+              // jump to Admin home page
+              router.push("/admin");
+            } else if (user.role.roleName === "organizer") {
+              // jump to Organizer home page
+              router.push("/organizer");
+            } else {
+              console.log("Role error");
+            }
+          } else {
+            ElNotification({
+              title: "Notification",
+              message: res.message,
+              type: "error",
+            });
+            console.log("Login failed");
+          }
+        } catch (error) {
+          console.error("Error during login:", error);
         }
       } else {
-        ElNotification({
-          title: "Notification",
-          message: res.message,
-          type: "error",
-        });
-        console.log("login failed");
+        console.log("Form validation failed");
       }
-      console.log("submit");
-    } else {
-      console.log("error submit!!");
+    } catch (error) {
+      console.error("Unexpected error during form validation:", error);
     }
   });
+
 };
 
 // reset form
