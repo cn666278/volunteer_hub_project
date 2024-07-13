@@ -14,7 +14,7 @@ export default {
   },
   getLoginUserInfo(params: any) {
     return request({
-      url: "/admin/getUserInfo",
+      url: "/getLoginUserInfo",
       method: "post",
       data: params,
       mock: true,
