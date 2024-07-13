@@ -128,7 +128,7 @@ const getUserList = async () => {
   let { list, count } = res;
   // 当roleId改变时，筛选出对应roleId的用户，并更新用户列表
   if (roleId.value !== 0) {
-    list = list.filter((user: any) => user.roleId === roleId.value);
+    list = list.filter((user: any) => user.role.roleId === roleId.value);
   }
   // Pagination前端分页
   const start = (pageIndex.value - 1) * pageSize;
