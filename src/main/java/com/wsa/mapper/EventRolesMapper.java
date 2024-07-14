@@ -1,14 +1,13 @@
 package com.wsa.mapper;
 
 import com.wsa.model.Event;
+import com.wsa.model.EventRoles;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface EventMapper {
+public interface EventRolesMapper {
 
-    void saveEvent(Event event);
-
-    List<Event> findEventsByMonth(int month, int year);
+void saveEventRoles(EventRoles eventRoles);
 }

@@ -154,4 +154,12 @@ export default {
       mock: false,
     });
   },
+  registerEvent(params: any) {
+    return request({
+      url: "/registerEvent",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
 };

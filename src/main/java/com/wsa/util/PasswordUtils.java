@@ -19,7 +19,7 @@ public class PasswordUtils {
 
     public static void main(String[] args) {
         // Example usage
-        String rawPassword = "password";
+        String rawPassword = "123456";
         String hashedPassword = generateBCryptPassword(rawPassword);
         System.out.println("Raw Password: " + rawPassword);
         System.out.println("Hashed Password: " + hashedPassword);

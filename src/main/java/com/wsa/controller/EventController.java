@@ -1,13 +1,12 @@
 package com.wsa.controller;
 
 import com.wsa.model.Event;
+import com.wsa.model.EventRequest;
 import com.wsa.model.EventRes;
 import com.wsa.model.ResultVO;
 import com.wsa.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +35,11 @@ public class EventController {
         } else {
             return ResultVO.failure("not found!");
         }
+    }
+
+    @PostMapping("/registerEvent")
+    public ResultVO registerEvent(@RequestBody EventRequest eventRequest) {
+        eventService.registerEvent(eventRequest);
+        return ResultVO.success("success");
     }
 }
