@@ -17,6 +17,7 @@
             <el-icon><Briefcase /></el-icon>
             <span>Event</span>
           </template>
+          <el-menu-item index="/eventRegister">EventRegister</el-menu-item>
           <el-menu-item index="/event">Event</el-menu-item>
           <el-menu-item index="/eventManage">Event Manage</el-menu-item>
         </el-sub-menu>

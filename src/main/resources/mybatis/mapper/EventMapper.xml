@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wsa.mapper.EventMapper">
+    <insert id="saveEvent" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO events (organizerId, title, description, location, pointsAwarded, startDate, endDate)
+        VALUES (#{organizerId}, #{title}, #{description}, #{location}, #{pointsAwarded}, #{startDate}, #{endDate})
+    </insert>
 
     <select id="findEventsByMonth" resultType="com.wsa.model.Event">
         SELECT * FROM events

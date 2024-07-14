@@ -54,6 +54,12 @@ const routes = createRouter({
           meta: { title: "Event" },
           component: () => import("../views/organizer/Event.vue"),
         },
+        {
+          path: "/eventRegister",
+          name: "EventRegister",
+          meta: { title: "EventRegister" },
+          component: () => import("../views/organizer/EventRegister.vue"),
+        },
       ],
     },
     {

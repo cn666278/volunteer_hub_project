@@ -11,7 +11,7 @@
  Target Server Version : 101102
  File Encoding         : 65001
 
- Date: 12/07/2024 22:50:00
+ Date: 14/07/2024 02:14:38
 */
 
 SET NAMES utf8mb4;
@@ -28,12 +28,14 @@ CREATE TABLE `authorities`  (
   `authority` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of authorities
 -- ----------------------------
 INSERT INTO `authorities` VALUES (1, 'organizer', 1, 'organizer');
+INSERT INTO `authorities` VALUES (2, 'admin', 3, 'admin');
+INSERT INTO `authorities` VALUES (3, 'volunteer', 2, 'volunteer');
 
 -- ----------------------------
 -- Table structure for emails
@@ -49,6 +51,40 @@ CREATE TABLE `emails`  (
   `sendAt` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for eventfacilities
+-- ----------------------------
+DROP TABLE IF EXISTS `eventfacilities`;
+CREATE TABLE `eventfacilities`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eventId` int(11) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of eventfacilities
+-- ----------------------------
+INSERT INTO `eventfacilities` VALUES (1, 4, 'Transform Hospital Group - Cardiff Clinic');
+INSERT INTO `eventfacilities` VALUES (2, 4, 'CAU');
+INSERT INTO `eventfacilities` VALUES (3, 4, 'Fat Freezing Cardiff - Portland Body Clinic');
+INSERT INTO `eventfacilities` VALUES (4, 4, 'Clifton Surgery');
+INSERT INTO `eventfacilities` VALUES (5, 4, 'Cardiff Royal Infirmary');
+INSERT INTO `eventfacilities` VALUES (6, 4, 'Veincentre');
+INSERT INTO `eventfacilities` VALUES (7, 5, 'Transform Hospital Group - Cardiff Clinic');
+INSERT INTO `eventfacilities` VALUES (8, 5, 'St David\'s Hospital');
+INSERT INTO `eventfacilities` VALUES (9, 5, 'Fat Freezing Cardiff - Portland Body Clinic');
+INSERT INTO `eventfacilities` VALUES (10, 5, 'Life Line Screening');
+INSERT INTO `eventfacilities` VALUES (11, 5, 'Cathedral Road Clinic');
+INSERT INTO `eventfacilities` VALUES (12, 5, 'Veincentre');
+INSERT INTO `eventfacilities` VALUES (13, 5, 'Elated hair salon & beauty clinic');
+INSERT INTO `eventfacilities` VALUES (14, 5, 'Crwys Medical Centre');
+INSERT INTO `eventfacilities` VALUES (15, 5, 'St David\'s Children\'s Centre');
+INSERT INTO `eventfacilities` VALUES (16, 5, 'Boots Hearingcare Cardiff');
+INSERT INTO `eventfacilities` VALUES (17, 5, 'Medical Systems Ltd');
+INSERT INTO `eventfacilities` VALUES (18, 5, 'Ysbyty Calon y Ddraig - Dragon\'s Heart Hospital');
+INSERT INTO `eventfacilities` VALUES (19, 5, 'Whitchurch Road Surgery');
 
 -- ----------------------------
 -- Table structure for eventregistrations
@@ -74,7 +110,15 @@ CREATE TABLE `eventroles`  (
   `roleDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `volunteerCount` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of eventroles
+-- ----------------------------
+INSERT INTO `eventroles` VALUES (7, 4, 'role1', NULL, 1);
+INSERT INTO `eventroles` VALUES (8, 4, 'role2', NULL, 2);
+INSERT INTO `eventroles` VALUES (9, 4, 'role3', NULL, 3);
+INSERT INTO `eventroles` VALUES (10, 5, 'role2', NULL, 2);
 
 -- ----------------------------
 -- Table structure for events
@@ -86,27 +130,28 @@ CREATE TABLE `events`  (
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `status` enum('upcoming','ongoing','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'upcoming',
-  `notifications` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `status` enum('Awaiting review','Passed','Rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'Awaiting review',
   `pointsAwarded` int(11) NULL DEFAULT 0,
   `startDate` datetime(0) NOT NULL,
   `endDate` datetime(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of events
 -- ----------------------------
-INSERT INTO `events` VALUES (1, 1, 'event1', 'test event', 'cardiff', 'upcoming', 'null', 100, '2024-07-12 04:26:05', '2024-07-12 07:26:16');
+INSERT INTO `events` VALUES (1, 1, 'event1', 'test event', 'cardiff', 'Passed', 100, '2024-07-12 04:26:05', '2024-07-12 07:26:16');
+INSERT INTO `events` VALUES (4, 1, 'test', 'test', '13 Pen-Y-Lan Rd, Cardiff CF24, UK', 'Awaiting review', 7, '2024-07-14 09:00:00', '2024-07-14 20:00:00');
+INSERT INTO `events` VALUES (5, 1, 'tes', 'tes', 'Julian Hodge Building, Colum Dr, Cardiff CF10 3EU, UK', 'Awaiting review', 2, '2024-07-14 01:08:36', '2024-07-14 09:06:42');
 
 -- ----------------------------
 -- Table structure for message
 -- ----------------------------
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for organizer
@@ -165,21 +210,6 @@ INSERT INTO `roles` VALUES (1, 'organizer');
 INSERT INTO `roles` VALUES (2, 'volunteer');
 
 -- ----------------------------
--- Table structure for userrole
--- ----------------------------
-DROP TABLE IF EXISTS `userrole`;
-CREATE TABLE `userrole`  (
-  `userId` bigint(20) NOT NULL,
-  `roleId` bigint(20) NOT NULL,
-  PRIMARY KEY (`userId`, `roleId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of userrole
--- ----------------------------
-INSERT INTO `userrole` VALUES (1, 1);
-
--- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
@@ -194,12 +224,14 @@ CREATE TABLE `users`  (
   `enabled` tinyint(1) NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 'orgainzer', 'organizer', '07961555608', '$2a$10$Xr6WrdQBrtCumI6T9UN8cOaLkgNUQzEw5sIyw3lDjMSFOrOo2KlRi', '13253348930@163.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1);
+INSERT INTO `users` VALUES (2, 'admin', 'admin', '13253348930', '$2a$10$oerriH6/v5CkxPgoIJpNv.jJj1h7ATIqfpXmlyHDPbR2M7HXJpUoe', 'gongj13@cardiff.ac.uk', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1);
+INSERT INTO `users` VALUES (3, 'volunteer', 'volunteer', '13370776044', '$10$oerriH6/v5CkxPgoIJpNv.jJj1h7ATIqfpXmlyHDPbR2M7HXJpUoe', '543800896@qq.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1);
 
 -- ----------------------------
 -- Table structure for volunteer
