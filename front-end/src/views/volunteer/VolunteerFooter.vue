@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .footer {
-  background-color: #000000;
+  background-color: #333333;
   color: #FFFFFF;
   padding: 100px;
   display: flex;
@@ -71,5 +71,10 @@ export default {
   color: #FFFFFF;
   margin-right: 10px;
   font-size: 24px;
+}
+@media (max-width: 768px) {
+  .footer {
+    display: none;
+  }
 }
 </style>
