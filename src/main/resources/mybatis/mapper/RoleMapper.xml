@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wsa.mapper.RoleMapper">
+    <insert id="addRole">
+        INSERT INTO roles (roleName)
+        VALUES
+            (#{roleName})
+    </insert>
+    <update id="updateRole">
+        UPDATE roles
+        SET roleName = #{roleName}
+        WHERE roleId = #{roleId};
+    </update>
+    <delete id="deleteRole">
+        DELETE FROM roles
+        WHERE roleId = #{roleId};
+    </delete>
+
+    <select id="selectRoleById" parameterType="long" resultType="com.wsa.model.Role">
+        SELECT * FROM roles WHERE roleId = #{roleId};
+    </select>
+    <select id="getAllRoles" resultType="com.wsa.model.Role">
+        SELECT * FROM roles;
+    </select>
+
+
+</mapper>

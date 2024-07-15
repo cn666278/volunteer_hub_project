@@ -11,4 +11,5 @@ public class Authority implements Serializable {
     private String username;
     private Long roleId;
     private String authority;
+    private Long userId;
 }

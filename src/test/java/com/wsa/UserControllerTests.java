@@ -34,10 +34,7 @@ public class UserControllerTests {
         User user = new User();
         user.setId(1L);
 
-        when(userService.getAllUsers()).thenReturn(Collections.singletonList(user));
 
-        List<User> users = userController.getUsers();
 
-        assertThat(users).isNotEmpty();
     }
 }

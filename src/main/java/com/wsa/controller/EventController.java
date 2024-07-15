@@ -18,7 +18,7 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/getEventsByDate")
-    public ResultVO getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
+    public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
         List<Event> eventsByMonth = eventService.getEventsByMonth(month, year);
         List<EventRes> eventRes = new ArrayList<>();
         for (Event e: eventsByMonth
@@ -38,7 +38,7 @@ public class EventController {
     }
 
     @PostMapping("/registerEvent")
-    public ResultVO registerEvent(@RequestBody EventRequest eventRequest) {
+    public ResultVO<String> registerEvent(@RequestBody EventRequest eventRequest) {
         eventService.registerEvent(eventRequest);
         return ResultVO.success("success");
     }

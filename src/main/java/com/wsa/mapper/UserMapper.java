@@ -1,9 +1,6 @@
 package com.wsa.mapper;
 
-import com.wsa.model.Authority;
-import com.wsa.model.Role;
-import com.wsa.model.User;
-import com.wsa.model.UserInfo;
+import com.wsa.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -17,11 +14,18 @@ public interface UserMapper {
 
     User findByUsername(String username);
 
-    User findByLoginid(String loginId);
+    User findById(Long id);
 
-    List<Authority> findAuthoritiesByUsername(String username);
+    List<Authority> findAuthoritiesByUserId(Long userId);
 
     Role findRoleByUserId(Long userId);
 
-    List<UserInfo> selectUsersByRoleId(@Param("roleId") int roleId, @Param("offset") int offset, @Param("pageSize") int pageSize);}
+    List<UserInfo> selectUsersByRoleId(@Param("roleId") int roleId, @Param("offset") int offset, @Param("pageSize") int pageSize);
+
+    void addUser(User user);
+
+    void updateUser(User user);
+
+    void deleteUser(UserReq request);
+}
 
