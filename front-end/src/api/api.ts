@@ -94,10 +94,10 @@ export default {
       mock: true,
     });
   },
-  getUserByLoginId(params: any) {
+  getUserById(params: any) {
     return request({
-      url: "/admin/user/getUserByLoginId",
-      method: "get",
+      url: "/admin/user/getUserById",
+      method: "post",
       data: params,
       mock: false,
     });

@@ -60,7 +60,7 @@
       <el-table-column prop="role.roleName" label="Role" width="150" sortable />
       <el-table-column label="Action">
         <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.row.loginId)">
+          <el-button size="small" @click="handleEdit(scope.row.id)">
             Edit
           </el-button>
           <el-button
@@ -140,8 +140,8 @@ const getUserList = async () => {
 };
 
 // Edit user
-const handleEdit = async (loginId: string) => {
-  let res = await proxy.$api.getUserByLoginId({loginId: loginId});
+const handleEdit = async (id: number) => {
+  let res = await proxy.$api.getUserById({id: id});
   editDrawerRef.value.handleOpen(res);
 };
 
@@ -157,7 +157,7 @@ const handleDelete = (row: any) => {
     }
   )
     .then(async () => {
-      let res = await proxy.$api.deleteUser({loginId: row.loginId});
+      let res = await proxy.$api.deleteUser({id: row.id});
       if (res) {
         ElNotification({
           title: "Notification",

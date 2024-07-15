@@ -56,15 +56,15 @@ let mockData = {
 // import { mockData } from "./mockData";
 export default {
   /**
-   * get user info by LoginId
-   * @param
+   * get user info by Id
+   * @param 
    * @return user
    */
-  getUserByLoginId: (config: any) => {
+  getUserById: (config: any) => {
     // 为什么还有body? get方法？
     // console.log(config)
-    const { loginId } = param2Obj(config.url);
-    const user = mockData.data.find((user) => user.loginId === loginId);
+    const { id } = JSON.parse(config.body);
+    const user = mockData.data.find((user) => user.id === Number(id));
     return {
       code: 200,
       data: user,
@@ -176,8 +176,8 @@ export default {
    * @return {{code: number, data: {message: string}}}
    */
   deleteUser: (params: any) => {
-    const { loginId } = JSON.parse(params.body);
-    mockData.data = mockData.data.filter((user) => user.loginId !== loginId);
+    const { id } = JSON.parse(params.body);
+    mockData.data = mockData.data.filter((user) => user.id !== id);
     return {
       code: 200,
       data: {

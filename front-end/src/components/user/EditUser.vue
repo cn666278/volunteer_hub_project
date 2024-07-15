@@ -89,6 +89,7 @@ const drawer = ref(false);
 const handleOpen = (row: any) => {
   drawer.value = true;
   formData.value = { ...row };
+  formData.value.roleId = row.role.roleId;
 };
 
 // close drawer
