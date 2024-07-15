@@ -66,8 +66,7 @@ const getRoleList = async () => {
 };
 // edit role
 const handleEdit = async (roleId: number) => {
-  let res = await proxy.$api.getRoleList();
-  const role = res.find((role: any) => role.roleId === roleId);
+  const role = roleList.value.find((role: any) => role.roleId === roleId);
   editDrawerRef.value.handleOpen(role);
 };
 // delete role
