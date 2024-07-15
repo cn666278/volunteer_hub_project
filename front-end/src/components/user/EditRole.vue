@@ -76,7 +76,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         res = await proxy.$api.updateRole(formData.value);
       } else {
         // add
-        res = await proxy.$api.addRole(formData.value);
+        res = await proxy.$api.addRole({roleName: formData.value.roleName});
       }
       if (res) {
         ElNotification({
