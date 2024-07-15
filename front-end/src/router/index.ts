@@ -10,8 +10,6 @@ const routes = createRouter({
       name: "Login",
       meta: { title: "Login" },
       component: () => import("../views/Login.vue"),
-      // component: () => import("../views/volunteer/VolunteerPersonal.vue"),
-      // component: () => import("../views/volunteer/Index.vue"),
 
     },
     {
@@ -28,19 +26,13 @@ const routes = createRouter({
       path: "/volunteer",
       name: "Volunteer Page",
       meta: { title: "Volunteer Page" },
-      component: () => import("../views/volunteer/Index.vue"),
+      component: () => import("../views/volunteer/VolunteerHome.vue"),
       children: [
         {
           path: "",
           name: "Volunteer Home",
           meta: { title: "Home" },
-          component: () => import("../views/volunteer/Home.vue"),
-        },
-        {
-          path: "/volunteer/personal",
-          name: "Volunteer Personal",
-          meta: { title: "Personal" },
-          component: () => import("../views/volunteer/VolunteerPersonal.vue"),
+          component: () => import("../views/MainPage.vue"),
         },
       ],
     },

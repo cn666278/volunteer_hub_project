@@ -15,7 +15,6 @@
       </div>
     </div>
     <el-menu
-        router
         :default-active="activeIndex"
         class="el-menu-demo navbar"
         mode="horizontal"
@@ -25,18 +24,18 @@
       <div class="weblogo">
         <img src="D:\WSA project\wsa_volunteer_hub\front-end\src\assets\logo.png" class="logo">
       </div>
-      <el-menu-item index="/volunteer">Home</el-menu-item>
-      <el-menu-item index="/volunteer/events">Events</el-menu-item>
+      <el-menu-item index="1">Home</el-menu-item>
+      <el-menu-item index="2">Events</el-menu-item>
       <el-menu-item index="3">News</el-menu-item>
       <el-menu-item index="4">Search</el-menu-item>
       <el-menu-item index="5">Login</el-menu-item>
-      <el-menu-item index="/volunteer/personal">
+      <el-menu-item index="6">
         <el-tooltip content="View Notifications" placement="bottom">
           <el-icon class="icon">
             <i class="el-icon-bell"></i>
           </el-icon>
         </el-tooltip>
-        <el-avatar :src="userStore.user.photo" class="menu-avatar"></el-avatar>
+        <el-avatar src="user-avatar.jpg" class="menu-avatar"></el-avatar>
       </el-menu-item>
     </el-menu>
   </div>
@@ -44,9 +43,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import useUser from "../../store/user";
-// user store
-const userStore = useUser();
 
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
