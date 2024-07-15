@@ -1,61 +1,74 @@
 package com.wsa.service;
 
 import com.wsa.exception.ResourceNotFoundException;
+import com.wsa.mapper.AuthorityMapper;
+import com.wsa.mapper.RoleMapper;
 import com.wsa.mapper.UserMapper;
-import com.wsa.model.Authority;
-import com.wsa.model.User;
-import com.wsa.model.UserInfo;
+import com.wsa.model.*;
+import com.wsa.util.PasswordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
     private static final Logger logger = LogManager.getLogger(UserService.class);
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private AuthorityMapper authorityMapper;
 
-    public List<User> getAllUsers() {
-        logger.debug("Fetching all users from database.");
+    @Autowired
+    private RoleMapper roleMapper;
+    public List<UserInfo> getAllUsers() {
+        List<UserInfo> userInfos = new ArrayList<>();
         List<User> users = userMapper.selectAllUsers();
-        if (users.isEmpty()) {
+        UserInfo userInfo = new UserInfo();
+        if(users != null){
+            for (User user:users
+                 ) {
+                userInfo.setUsername(user.getUsername());
+                userInfo.setId(user.getId());
+                userInfo.setLoginId(user.getLoginId());
+                userInfo.setPhoto(user.getPhoto());
+                userInfo.setEmail(user.getEmail());
+                userInfo.setPhone(user.getPhone());
+                findAuthoritiesByUserId(userInfo);
+                userInfos.add(userInfo);
+            }
+        }
+        if (userInfos.isEmpty()) {
             throw new ResourceNotFoundException("No users found");
         }
-        logger.info("Number of users fetched: {}", users.size());
-        return users;
+        return userInfos;
+    }
+
+    private void findAuthoritiesByUserId(UserInfo userInfo) {
+        List<Authority> authoritiesByUserId = userMapper.findAuthoritiesByUserId(userInfo.getId());
+        if (authoritiesByUserId != null){
+            Authority authority = authoritiesByUserId.get(0);
+            UserInfo.Role role = new UserInfo.Role();
+            role.setRoleName(authority.getAuthority());
+            role.setRoleId(String.valueOf(authority.getId()));
+            userInfo.setRole(role);
+        }
     }
 
     public UserInfo getUserInfoByUsername(String username) {
         User user = userMapper.findByUsername(username);
-        UserInfo userInfo = new UserInfo();
-        if(user != null){
-            userInfo.setUsername(user.getUsername());
-            userInfo.setId(user.getId());
-            userInfo.setLoginId(user.getLoginId());
-            userInfo.setPhoto(user.getPhoto());
-            userInfo.setEmail(user.getEmail());
-            userInfo.setPhone(user.getPhone());
-        }
-
-        if (userInfo != null) {
-            List<Authority> authoritiesByUsername = userMapper.findAuthoritiesByUsername(userInfo.getUsername());
-            if ((authoritiesByUsername != null)){
-                Authority authority = authoritiesByUsername.get(0);
-                UserInfo.Role role = new UserInfo.Role();
-                role.setRoleName(authority.getAuthority());
-                role.setRoleId(String.valueOf(authority.getId()));
-                userInfo.setRole(role);
-            }
-        }
-        return userInfo;
+        return getUserInfo(user);
     }
 
-    public UserInfo getUserInfoByLoginId(String loginId) {
-        User user = userMapper.findByLoginid(loginId);
+    public UserInfo getUserInfoById(Long id) {
+        User user = userMapper.findById(id);
+        return getUserInfo(user);
+    }
+
+    private UserInfo getUserInfo(User user) {
         UserInfo userInfo = new UserInfo();
         if(user != null){
             userInfo.setUsername(user.getUsername());
@@ -67,14 +80,7 @@ public class UserService {
         }
 
         if (userInfo != null) {
-            List<Authority> authoritiesByUsername = userMapper.findAuthoritiesByUsername(userInfo.getUsername());
-            if ((authoritiesByUsername != null)){
-                Authority authority = authoritiesByUsername.get(0);
-                UserInfo.Role role = new UserInfo.Role();
-                role.setRoleName(authority.getAuthority());
-                role.setRoleId(String.valueOf(authority.getId()));
-                userInfo.setRole(role);
-            }
+            findAuthoritiesByUserId(userInfo);
         }
         return userInfo;
     }
@@ -82,5 +88,48 @@ public class UserService {
     public List<UserInfo> getUserListByRoleId(int roleId, int pageIndex, int pageSize) {
         int offset = (pageIndex - 1) * pageSize;
         return userMapper.selectUsersByRoleId(roleId, offset, pageSize);
+    }
+
+    public void addUser(UserReq request) {
+        User user = new User();
+        user.setLoginId(request.getLoginId());
+        user.setUsername(request.getUsername());
+        user.setPassword(PasswordUtils.generateBCryptPassword(request.getPassword()));
+        user.setPhoto(request.getPhoto());
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        userMapper.addUser(user);
+        Long userId = user.getId();
+        Authority authority = new Authority();
+        authority.setRoleId(request.getRoleId());
+        authority.setUserId(userId);
+        authority.setUsername(user.getUsername());
+        Role role = roleMapper.selectRoleById(request.getRoleId());
+        authority.setAuthority(role.getRoleName());
+        authorityMapper.addAuthority(authority);
+    }
+
+    public void updateUser(UserReq request) {
+        User user = new User();
+        user.setLoginId(request.getLoginId());
+        user.setUsername(request.getUsername());
+        user.setPassword(PasswordUtils.generateBCryptPassword(request.getPassword()));
+        user.setPhoto(request.getPhoto());
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        user.setId(request.getId());
+        userMapper.updateUser(user);
+        Authority authority = new Authority();
+        authority.setRoleId(request.getRoleId());
+        authority.setUserId(request.getId());
+        authority.setUsername(request.getUsername());
+        Role role = roleMapper.selectRoleById(request.getRoleId());
+        authority.setAuthority(role.getRoleName());
+        authorityMapper.updateAuthority(authority);
+    }
+
+    public void deleteUser(UserReq request) {
+        userMapper.deleteUser(request);
+        authorityMapper.deleteAuthority(request);
     }
 }

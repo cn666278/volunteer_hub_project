@@ -4,6 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wsa.mapper.UserMapper">
+    <update id="updateUser">
+        UPDATE users
+        SET loginId = #{loginId}, username = #{username}, phone = #{phone}, photo = #{photo}, email = #{email}, password = #{password}
+            WHERE id = #{id};
+    </update>
+    <delete id="deleteUser">
+        DELETE FROM users
+        WHERE id = #{id};
+    </delete>
+
     <select id="selectAllUsers" resultType="com.wsa.model.User">
         SELECT * FROM users;
     </select>
@@ -12,14 +22,14 @@
         SELECT * FROM users WHERE username = #{username};
     </select>
 
-    <select id="findAuthoritiesByUsername" parameterType="string" resultType="com.wsa.model.Authority">
+    <select id="findAuthoritiesByUserId" parameterType="long" resultType="com.wsa.model.Authority">
         SELECT a.roleId, a.authority
         FROM authorities a
-                 JOIN users u ON a.username = u.username
-        WHERE a.username = #{username}
+                 JOIN users u ON a.userId = u.id
+        WHERE a.userId = #{userId}
     </select>
-    <select id="findByLoginid" parameterType="string" resultType="com.wsa.model.User">
-        SELECT * FROM users WHERE loginId = #{loginId};
+    <select id="findById" parameterType="long" resultType="com.wsa.model.User">
+        SELECT * FROM users WHERE id = #{id};
     </select>
     <select id="selectUsersByRoleId" parameterType="map" resultType="com.wsa.model.UserInfo">
         SELECT u.id, u.loginId, u.username, u.password, u.phone, u.email, u.photo, r.roleId, r.roleName
@@ -29,4 +39,10 @@
         WHERE a.roleId = #{roleId}
             LIMIT #{offset}, #{pageSize}
     </select>
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (loginId, username, password, phone, email, photo)
+        VALUES
+            (#{loginId}, #{username}, #{password}, #{phone}, #{email}, #{phone})
+    </insert>
 </mapper>

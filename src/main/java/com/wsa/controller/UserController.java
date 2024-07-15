@@ -4,10 +4,7 @@ import com.wsa.model.*;
 import com.wsa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,34 +13,52 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api/users")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
-    }
-
     @PostMapping("/getLoginUserInfo")
-    public ResultVO getUserInfo(@RequestBody UserRequest request) {
+    public ResultVO<UserInfo> getLoginUserInfo(@RequestBody UserRequest request) {
         UserInfo userInfo = userService.getUserInfoByUsername(request.getUsername());
         if (userInfo != null) {
             return ResultVO.success(userInfo);
         } else {
-            return ResultVO.failure("not found!");
+            return ResultVO.failure("getLoginUserInfo : not found!");
         }
     }
-
-    @PostMapping("/admin/getUserByLoginId")
-    public ResponseEntity<UserInfo> getUserByLoginId(@RequestBody UserRequest request) {
-        UserInfo userInfo = userService.getUserInfoByLoginId(request.getLoginId());
-        if (userInfo != null) {
-            return ResponseEntity.ok(userInfo);
+    @GetMapping("/admin/user/getUserList")
+    public ResultVO<UserListRes> getUserList() {
+        List<UserInfo> userInfos = userService.getAllUsers();
+        if (userInfos != null) {
+            UserListRes userListRes = new UserListRes();
+            userListRes.setCount(Long.valueOf(userInfos.size()));
+            userListRes.setList(userInfos);
+            return ResultVO.success(userListRes);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResultVO.failure("getUserList : not found!");
+        }
+    }
+    @PostMapping("/admin/user/getUserById")
+    public ResultVO<UserInfo> getUserById(@RequestBody UserRequest request) {
+        UserInfo userInfo = userService.getUserInfoById(request.getId());
+        if (userInfo != null) {
+            return ResultVO.success(userInfo);
+        } else {
+            return ResultVO.failure("getUserById : not found!");
         }
     }
 
-    @PostMapping("/admin/getUserList")
-    public ResponseEntity<List<UserInfo>> getUserList(@RequestBody UserListRequest request) {
-        List<UserInfo> userList = userService.getUserListByRoleId(request.getRoleId(), request.getPageIndex(), request.getPageSize());
-        return ResponseEntity.ok(userList);
+    @PostMapping("/admin/user/addUser")
+    public ResultVO<String> addUser(@RequestBody UserReq request) {
+        userService.addUser(request);
+        return ResultVO.success("add success");
+    }
+
+    @PostMapping("/admin/user/updateUser")
+    public ResultVO<String> updateUser(@RequestBody UserReq request) {
+        userService.updateUser(request);
+        return ResultVO.success("update success");
+    }
+
+    @PostMapping("/admin/user/deleteUser")
+    public ResultVO<String> deleteUser(@RequestBody UserReq request) {
+        userService.deleteUser(request);
+        return ResultVO.success("delete success");
     }
 }

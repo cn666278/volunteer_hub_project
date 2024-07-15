@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        List<Authority> authorities = userMapper.findAuthoritiesByUsername(username);
+        List<Authority> authorities = userMapper.findAuthoritiesByUserId(user.getId());
         List<GrantedAuthority> grantedAuthorities = authorities.stream()
                 .map(auth -> new SimpleGrantedAuthority(auth.getAuthority()))
                 .collect(Collectors.toList());

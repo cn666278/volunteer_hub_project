@@ -23,7 +23,7 @@ public class AuthenticationController {
     private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/login")
-    public ResultVO createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResultVO<LoginResult> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
         );
@@ -33,7 +33,6 @@ public class AuthenticationController {
         LoginResult loginResult = new LoginResult();
         loginResult.setMessage("success");
         loginResult.setToken(jwt);
-        ResultVO resultVO = ResultVO.success(loginResult);
-        return resultVO;
+        return ResultVO.success(loginResult);
     }
 }
