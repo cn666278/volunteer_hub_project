@@ -23,7 +23,7 @@
         @select="handleSelect"
     >
       <div class="weblogo">
-        <img src="D:\WSA project\wsa_volunteer_hub\front-end\src\assets\logo.png" class="logo">
+        <img src="../../assets/logo.png" class="logo">
       </div>
       <el-menu-item index="/volunteer">Home</el-menu-item>
       <el-menu-item index="/volunteer/events">Events</el-menu-item>
