@@ -196,7 +196,7 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
   width: 95%;
   max-width: 1200px;
   margin: auto;
-  margin-bottom: 50px;
+  margin-bottom: 120px;
   color: #333;
 }
 </style>
