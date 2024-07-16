@@ -42,7 +42,7 @@ export default {
         {
           name: 'Personal Information',
           icon: './src/assets/personal.png',
-          route: '/profile',
+          route: '/volunteer/personalInfo',
         },
         {
           name: 'Credentials',
