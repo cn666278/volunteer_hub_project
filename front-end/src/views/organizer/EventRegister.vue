@@ -72,7 +72,7 @@ const form = reactive({
 
 const availableRoles = ['role1', 'role2', 'role3', 'role4', 'role5', 'role6'];
 const nearbyFacilities = ref<any[]>([]);
-
+//
 const submitForm = () => {
   const roles = form.roles.map(role => ({
     role,
