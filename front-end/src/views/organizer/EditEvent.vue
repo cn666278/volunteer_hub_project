@@ -44,7 +44,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm">Register</el-button>
+        <el-button type="primary" @click="submitForm">Update</el-button>
         <el-button @click="resetForm">Reset</el-button>
       </el-form-item>
     </el-form>
@@ -54,8 +54,10 @@
 <script setup lang='ts'>
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
 import { ElMessage, ElForm } from 'element-plus';
+import { useRoute } from 'vue-router';
 
 const { proxy } = getCurrentInstance();
+const route = useRoute();
 
 const formRef = ref<InstanceType<typeof ElForm>>();
 const form = reactive({
@@ -72,6 +74,19 @@ const form = reactive({
 
 const availableRoles = ['role1', 'role2', 'role3', 'role4', 'role5', 'role6'];
 const nearbyFacilities = ref<any[]>([]);
+let eventId = 0;
+const loadEventData = (event) => {
+  eventId = event.eventId;
+  form.title = event.title;
+  form.description = event.description;
+  form.location = event.location;
+  form.pointsAwarded = event.pointsAwarded;
+  form.startDate = event.startDate;
+  form.endDate = event.endDate;
+  form.roles = event.roles ? event.roles.map(r => r.role) : [];
+  form.rolesQuantities = event.roles ? event.roles.reduce((acc, r) => ({ ...acc, [r.role]: r.quantity }), {}) : {};
+  form.nearbyFacilities = event.nearbyFacilities;
+};
 
 const submitForm = () => {
   const roles = form.roles.map(role => ({
@@ -80,6 +95,7 @@ const submitForm = () => {
   }));
 
   const payload = {
+    eventId: eventId,
     organizerId: 1,
     title: form.title,
     description: form.description,
@@ -90,8 +106,8 @@ const submitForm = () => {
     roles: roles,
     nearbyFacilities: form.nearbyFacilities
   };
-  console.log("submitForm payload:",payload)
-  proxy.$api.registerEvent(payload)
+  console.log("submitForm payload:", payload)
+  proxy.$api.editEventById(payload)
       .then(response => {
         ElMessage.success(response);
         resetForm();
@@ -159,6 +175,12 @@ const fetchNearbyFacilities = (location) => {
 };
 
 onMounted(() => {
+  const event = JSON.parse(route.query.event);
+  if (event) {
+    console.log("event data",event)
+    loadEventData(event);
+    console.log("form data now",form)
+  }
   if (window.google) {
     openMap();
   } else {

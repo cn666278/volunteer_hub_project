@@ -10,6 +10,10 @@
         VALUES
             (#{eventId}, #{roleName}, #{volunteerCount})
     </insert>
+    <delete id="deleteEventRolesByEventId">
+        DELETE FROM eventRoles
+        WHERE eventId = #{id};
+    </delete>
 
 
 </mapper>

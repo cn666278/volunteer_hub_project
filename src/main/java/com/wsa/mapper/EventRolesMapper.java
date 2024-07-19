@@ -10,4 +10,6 @@ import java.util.List;
 public interface EventRolesMapper {
 
 void saveEventRoles(EventRoles eventRoles);
+
+    void deleteEventRolesByEventId(Long id);
 }

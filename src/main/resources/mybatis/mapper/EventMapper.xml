@@ -13,5 +13,75 @@
         SELECT * FROM events
         WHERE MONTH(startDate) = #{month} AND YEAR(startDate) = #{year}
     </select>
+    <select id="getEventsByOrganizerIdAndFilters" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+        WHERE organizerId = #{organizerId}
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <select id="getTotalCountByOrganizerIdAndFilters" resultType="int">
+        SELECT COUNT(*) FROM events
+        WHERE organizerId = #{organizerId}
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <select id="getEventDetailById" resultMap="eventResultMap">
+        SELECT
+            e.id AS eventId,
+            e.organizerId,
+            e.title,
+            e.description,
+            e.location,
+            e.startDate,
+            e.endDate,
+            e.status,
+            e.pointsAwarded,
+            r.roleName,
+            r.volunteerCount,
+            f.name AS facilityName
+        FROM
+            events e
+        LEFT JOIN
+            eventRoles r ON e.id = r.eventId
+        LEFT JOIN
+            eventFacilities f ON e.id = f.eventId
+        WHERE
+            e.id = #{id}
+    </select>
+
+    <resultMap id="eventResultMap" type="com.wsa.model.EventRequest">
+        <id column="eventId" property="eventId"/>
+        <result column="organizerId" property="organizerId"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="location" property="location"/>
+        <result column="startDate" property="startDate"/>
+        <result column="endDate" property="endDate"/>
+        <result column="status" property="status"/>
+        <result column="pointsAwarded" property="pointsAwarded"/>
+        <collection property="roles" ofType="com.wsa.model.EventRequest$RoleQuantity">
+            <result column="roleName" property="role"/>
+            <result column="volunteerCount" property="quantity"/>
+        </collection>
+        <collection property="nearbyFacilities" ofType="java.lang.String">
+            <result column="facilityName" property=""/>
+        </collection>
+    </resultMap>
+
+    <update id="editEventById">
+        UPDATE events
+        SET organizerId = #{organizerId}, title = #{title}, description = #{description}, location = #{location}, pointsAwarded = #{pointsAwarded}, startDate = #{startDate}, endDate = #{endDate}
+        WHERE id = #{id};
+    </update>
 
 </mapper>

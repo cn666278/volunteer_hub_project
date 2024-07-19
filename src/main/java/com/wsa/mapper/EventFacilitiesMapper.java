@@ -9,4 +9,6 @@ import java.util.List;
 public interface EventFacilitiesMapper {
 
     void saveEventFacilities(EventFacilities eventFacilities);
+
+    void deleteEventFacilitiesByEventId(Long id);
 }

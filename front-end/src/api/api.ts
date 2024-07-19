@@ -9,7 +9,7 @@ export default {
       url: "/login",
       method: "post",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
   getLoginUserInfo(params: any) {
@@ -17,7 +17,7 @@ export default {
       url: "/getLoginUserInfo",
       method: "post",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
   /** Admin */
@@ -148,7 +148,7 @@ export default {
    */
   getEventsByDate(params: any) {
     return request({
-      url: "/getEventsByDate",
+      url: "/event/getEventsByDate",
       method: "get",
       data: params,
       mock: false,
@@ -156,7 +156,23 @@ export default {
   },
   registerEvent(params: any) {
     return request({
-      url: "/registerEvent",
+      url: "/event/registerEvent",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+  getEventsByOrganizerIdAndFilters(params: any) {
+    return request({
+      url: "/event/getEventsByOrganizerIdAndFilters",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+  editEventById(params: any) {
+    return request({
+      url: "/event/editEventById",
       method: "post",
       data: params,
       mock: false,
