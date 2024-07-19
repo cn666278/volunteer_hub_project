@@ -10,6 +10,10 @@
         VALUES
             (#{eventId}, #{name})
     </insert>
+    <delete id="deleteEventFacilitiesByEventId">
+        DELETE FROM eventfacilities
+        WHERE eventId = #{id};
+    </delete>
 
 
 </mapper>

@@ -15,7 +15,6 @@ public class Event implements Serializable {
     private Timestamp startDate;
     private Timestamp endDate;
     private String status;
-    private String notifications;
     private Integer pointsAwarded;
 
 }

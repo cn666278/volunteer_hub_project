@@ -1,3 +1,4 @@
+// @ts-ignore
 import { createRouter, createWebHashHistory } from "vue-router";
 import "pace-progressbar";
 import "pace-progressbar/themes/blue/pace-theme-minimal.css";
@@ -69,16 +70,22 @@ const routes = createRouter({
           component: () => import("../views/organizer/Home.vue"),
         },
         {
-          path: "/event",
-          name: "Event",
-          meta: { title: "Event" },
-          component: () => import("../views/organizer/Event.vue"),
+          path: "/myEvents",
+          name: "myEvents",
+          meta: { title: "MyEvents" },
+          component: () => import("../views/organizer/MyEvents.vue"),
         },
         {
           path: "/eventRegister",
           name: "EventRegister",
           meta: { title: "EventRegister" },
           component: () => import("../views/organizer/EventRegister.vue"),
+        },
+        {
+          path: "/eventEdit",
+          name: "EventEdit",
+          meta: { title: "EventEdit" },
+          component: () => import("../views/organizer/EditEvent.vue"),
         },
       ],
     },
