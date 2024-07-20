@@ -16,24 +16,26 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import bannerImage from '../../../assets/login-banner.png';
+import bannerImage1 from '../../../assets/login-banner1.png';
+import bannerImage2 from '../../../assets/login-banner2.png';
+import bannerImage3 from '../../../assets/login-banner3.png';
 import { Carousel } from '@arco-design/web-vue';
 
 const carouselItem = computed(() => [
   {
     slogan: "Welcome to WSA Volunteer Hub",
     subSlogan: "hello",
-    image: bannerImage,
+    image: bannerImage1,
+  },
+  {
+    slogan: "Earn volunteer vouchers and rewards",
+    subSlogan: "a massive thank you",
+    image: bannerImage2,
   },
   {
     slogan: "We are here to help the sports community",
-    subSlogan: "say hi to the community",
-    image: bannerImage,
-  },
-  {
-    slogan: "Join us and make a difference",
     subSlogan: "you can make a difference",
-    image: bannerImage,
+    image: bannerImage3,
   },
 ]);
 </script>
