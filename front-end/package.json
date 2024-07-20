@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@arco-design/web-vue": "^2.55.3",
     "@fullcalendar/core": "^6.1.14",
     "@fullcalendar/daygrid": "^6.1.14",
     "@fullcalendar/vue3": "^6.1.14",
@@ -29,6 +30,7 @@
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
+    "@arco-plugins/vite-vue": "^1.4.5",
     "@types/mockjs": "^1.0.10",
     "@vitejs/plugin-vue": "^5.0.5",
     "less": "^4.2.0",
