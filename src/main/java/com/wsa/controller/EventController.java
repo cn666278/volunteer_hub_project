@@ -5,6 +5,8 @@ import com.wsa.model.*;
 import com.wsa.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -85,5 +87,15 @@ public class EventController {
     public ResultVO<String> editEventById(@RequestBody EventRequest eventRequest) {
         eventService.editEventById(eventRequest);
         return ResultVO.success("success");
+    }
+
+    @PostMapping("/updateVolunteerStatus")
+    public ResultVO<String> updateVolunteerStatus(@RequestBody UpdateStatusRequest request) {
+        try {
+            eventService.updateVolunteerStatus(request.getId(), request.getStatus());
+            return ResultVO.success("Status updated successfully");
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to update status");
+        }
     }
 }

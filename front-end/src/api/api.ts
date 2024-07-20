@@ -178,4 +178,23 @@ export default {
       mock: false,
     });
   },
+  updateVolunteerStatus(params: any) {
+    return request({
+      url: "/event/updateVolunteerStatus",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+  /**
+   * volunteer api
+   */
+  getVolunteersByEventId(params: any) {
+    return request({
+      url: "/volunteer/getVolunteersByEventId",
+      method: "get",
+      data: params,
+      mock: false,
+    });
+  },
 };

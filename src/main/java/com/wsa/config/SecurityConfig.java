@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors().and() // Enable CORS
                 .authorizeRequests()
-                .antMatchers("/login").permitAll() // Allow all users to authenticate
+                .antMatchers("/login", "/static/**", "/**/*.png").permitAll()
                 .anyRequest().authenticated() // All other requests must be authenticated
                 .and()
                 .sessionManagement()

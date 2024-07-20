@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wsa.mapper.VolunteerMapper">
+
+    <select id="getVolunteersByEventId" resultMap="volunteerResultMap">
+    SELECT
+        er.id,
+        v.userId,
+        v.experience,
+        v.firstAid,
+        v.dbs,
+        v.kudosPoints,
+        v.eventCount,
+        v.level,
+        u.username,
+        u.phone,
+        u.email,
+        u.photo,
+        c.credentialName,
+        c.credentialUrl,
+        er.roleId
+    FROM
+        eventregistrations er
+    LEFT JOIN
+        volunteer v ON er.volunteerId = v.id
+    LEFT JOIN
+        users u ON v.userId = u.id
+    LEFT JOIN
+        credentials c ON v.id = c.volunteerId
+    WHERE
+        er.eventId = #{eventId}
+        AND
+        er.status = 'pending'
+</select>
+    <resultMap id="volunteerResultMap" type="com.wsa.model.Volunteer">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="photo" property="photo"/>
+        <result column="userId" property="userId"/>
+        <result column="experience" property="experience"/>
+        <result column="firstAid" property="firstAid"/>
+        <result column="dbs" property="dbs"/>
+        <result column="kudosPoints" property="kudosPoints"/>
+        <result column="eventCount" property="eventCount"/>
+        <result column="roleId" property="roleId"/>
+        <result column="level" property="level"/>
+        <collection property="credentialList" ofType="com.wsa.model.Volunteer$Credential">
+            <result column="credentialName" property="credentialName"/>
+            <result column="credentialUrl" property="credentialUrl"/>
+        </collection>
+    </resultMap>
+
+
+</mapper>
