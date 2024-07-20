@@ -94,7 +94,7 @@ const editEvent = (event: any) => {
 
 const reviewEvent = (event: any) => {
   console.log('Review event:', event);
-  // Handle review event
+  router.push({ name: 'EventReview', query: { event: JSON.stringify(event) } });
 };
 
 const discussEvent = (event: any) => {

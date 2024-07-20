@@ -2,6 +2,7 @@ package com.wsa.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.wsa.mapper.EventRegistrationsMapper;
 import com.wsa.model.*;
 import com.wsa.mapper.EventFacilitiesMapper;
 import com.wsa.mapper.EventRolesMapper;
@@ -24,6 +25,11 @@ public class EventService {
 
     @Autowired
     private EventFacilitiesMapper eventFacilitiesMapper;
+
+    @Autowired
+    private EventRegistrationsMapper eventRegistrationsMapper;
+
+
     public List<Event> getEventsByMonth(int month, int year) {
         return eventMapper.findEventsByMonth(month, year);
     }
@@ -96,5 +102,9 @@ public class EventService {
             eventFacilities.setName(facility);
             eventFacilitiesMapper.saveEventFacilities(eventFacilities);
         }
+    }
+
+    public void updateVolunteerStatus(Long id, String status) {
+        eventRegistrationsMapper.updateStatusById(id, status);
     }
 }

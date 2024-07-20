@@ -4,10 +4,13 @@ spring:
     username: root
     password: comsc
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialize: true
-  sql:
-    init:
-      data-locations: classpath:schema.sql
+#    initialize: true
+#  sql:
+#    init:
+#      data-locations: classpath:schema.sql
+  web:
+    resources:
+      static-locations: classpath:/static/, file:./static/
 mybatis:
   type-aliases-package: com.wsa.model
   mapper-locations: classpath:mybatis/mapper/*.xml
