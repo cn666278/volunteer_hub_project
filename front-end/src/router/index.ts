@@ -9,7 +9,7 @@ const routes = createRouter({
       path: "/",
       name: "Login",
       meta: { title: "Login" },
-      component: () => import("../views/Login.vue"),
+      component: () => import("../views/login/Login.vue"),
       // component: () => import("../views/volunteer/VolunteerPersonal.vue"),
       // component: () => import("../views/volunteer/Index.vue"),
 
@@ -22,7 +22,7 @@ const routes = createRouter({
       path: "/register",
       name: "Register",
       meta: { title: "Register" },
-      component: () => import("../views/Register.vue"),
+      component: () => import("../views/login/Register.vue"),
     },
     {
       path: "/volunteer",
