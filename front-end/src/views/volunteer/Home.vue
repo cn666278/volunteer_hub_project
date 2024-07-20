@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- Carousel for displaying images -->
-    <el-carousel interval="5000" height="500px">
+    <el-carousel interval="5000" height="500">
       <el-carousel-item v-for="item in carouselItems" :key="item.id">
         <img :src="item.src" :alt="item.alt" class="carousel-image">
       </el-carousel-item>
@@ -125,7 +125,7 @@ export default {
 .activities-button-container {
   text-align: right; /* 文字右对齐，会影响内部的按钮对齐 */
   width: 100%; /* 确保容器宽度与活动展示区相同 */
-  margin-top: 0px; /* 与活动展示区的间隔 */
+  margin-top: 20px; /* 与活动展示区的间隔 */
 }
 
 .more-activities-btn {
@@ -149,6 +149,12 @@ export default {
 
   .activities-display {
     grid-template-columns: 1fr; /* 在小屏幕上使用单列布局 */
+  }
+
+  .carousel-image {
+    width: 100%; /* 宽度充满容器 */
+    height: 200px;
+    display: block; /* 图片显示为块级元素 */
   }
 }
 </style>

@@ -47,7 +47,7 @@ export default {
         {
           name: 'Credentials',
           icon: './src/assets/credentials.png',
-          route: '/credentials',
+          route: '/volunteer/credentials',
         },
         {name: 'Events', icon: './src/assets/events.png', route: '/events',},
         {
