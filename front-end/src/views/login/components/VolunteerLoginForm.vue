@@ -78,6 +78,7 @@ const submitForm = (formRef: FormInstance | undefined) => {
             if (valid) {
                 try {
                     console.log("Validation passed, submitting form data:", formData);
+                    // let res = await proxy.$api.login({ id: 3, formData }); // muti-roles
                     let res = await proxy.$api.login(formData);
                     console.log("Login response:", res);
 
@@ -160,15 +161,15 @@ onMounted(() => {
     margin-bottom: 30px;
 }
 
-:deep(.el-button.is-text){
+:deep(.el-button.is-text) {
     color: white;
 }
 
-:deep(.el-form-item__error){
+:deep(.el-form-item__error) {
     color: white;
 }
 
-.el-form-item--default{
+.el-form-item--default {
     margin-bottom: 30px;
 }
 </style>
