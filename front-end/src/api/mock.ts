@@ -2,6 +2,7 @@ import Mock from 'mockjs'
 import homeApi from './mockData/home'
 import roleApi from './mockData/role'
 import userApi from './mockData/user'
+import listApi from './mockData/list'
 
 // 拦截请求，返回本地模拟数据
 Mock.mock('/home/getData', homeApi.getHomeData)
@@ -20,3 +21,6 @@ Mock.mock(/\/admin\/role\/getSingleRole/, 'get', roleApi.getSingleRole)
 Mock.mock(/\/admin\/role\/addRole/, 'post', roleApi.addRole)
 Mock.mock(/\/admin\/role\/updateRole/, 'post', roleApi.updateRole)
 Mock.mock(/\/admin\/role\/deleteRole/, 'post', roleApi.deleteRole)
+// list
+// /admin/list/evnets
+Mock.mock(/\/admin\/list\/evnets/, 'get', listApi.getEventList)

@@ -168,10 +168,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, reactive, watch, nextTick } from 'vue';
+import { computed, ref, reactive, watch, nextTick, getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useLoading from '../../../hooks/loading.ts';
-// import { queryPolicyList } from '@/api/list';
 import { PolicyRecord, PolicyParams } from './list.ts';
 import { Pagination } from '../../../types/global';
 import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
@@ -181,6 +180,8 @@ import Sortable from 'sortablejs';
 
 type SizeProps = 'mini' | 'small' | 'medium' | 'large';
 type Column = TableColumnData & { checked?: true };
+
+const { proxy } = getCurrentInstance() as any;
 
 const generateFormModel = () => {
   return {
@@ -200,6 +201,12 @@ const cloneColumns = ref<Column[]>([]);
 const showColumns = ref<Column[]>([]);
 
 const size = ref<SizeProps>('medium');
+
+// page index
+let pageIndex = ref(1);
+
+// page size
+let pageSize = 10;
 
 const basePagination: Pagination = {
   current: 1,
@@ -303,14 +310,22 @@ const statusOptions = computed<SelectOptionData[]>(() => [
   },
 ]);
 const fetchData = async (
-  params: PolicyParams = { current: 1, pageSize: 20 }
+  params: PolicyParams = { current: 1, pageSize: 10 }
 ) => {
   setLoading(true);
   try {
-    // const { data } = await proxy.$api.queryPolicyList(params);
-    // renderData.value = data.list;
-    // pagination.current = params.current;
-    // pagination.total = data.total;
+    let res = await proxy.$api.getEventList(params);
+    console.log(res);
+    let { list, total } = res;
+    // Pagination前端分页
+    const start = (pageIndex.value - 1) * pageSize;
+    const end = start + pageSize;
+    let data = list.slice(start, end);
+    console.log(data);
+    renderData.value = data;
+    console.log(renderData.value);
+    pagination.current = params.current;
+    pagination.total = total;
   } catch (err) {
     // you can report use errorHandler or other
   } finally {
