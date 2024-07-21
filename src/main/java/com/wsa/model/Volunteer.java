@@ -20,6 +20,8 @@ public class Volunteer extends User implements Serializable {
     @Transient
     private Long roleId;
     @Transient
+    private Long volunteerId;
+    @Transient
     private String roleName;
     @Transient
     private List<Credential> credentialList;

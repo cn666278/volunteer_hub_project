@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
+import global from 'global';
 import router from './router/index.ts'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -13,7 +14,7 @@ import 'vue-cal/dist/vuecal.css';
 import i18n from './locale/index.ts';
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-
+window.global = global;
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);  

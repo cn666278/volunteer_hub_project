@@ -196,6 +196,14 @@ export default {
       mock: false,
     });
   },
+  getMessagesByEventId(params: any) {
+    return request({
+      url: "/messages/getMessagesByEventId",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
   /**
    * volunteer api
    */
@@ -203,6 +211,14 @@ export default {
     return request({
       url: "/volunteer/getVolunteersByEventId",
       method: "get",
+      data: params,
+      mock: false,
+    });
+  },
+  submitComment(params: any) {
+    return request({
+      url: "/volunteer/submitComment",
+      method: "post",
       data: params,
       mock: false,
     });

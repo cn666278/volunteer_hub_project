@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wsa.mapper.VolunteerMapper">
+    <insert id="insertVolunteerRating">
+        INSERT INTO volunteerratings (eventId, organizerId, volunteerId, rating, comment, createdAt)
+        VALUES (#{eventId}, #{organizerId}, #{volunteerId}, #{rating}, #{comment}, NOW())
+    </insert>
 
     <select id="getVolunteersByEventId" resultMap="volunteerResultMap">
     SELECT
@@ -21,7 +25,8 @@
         u.photo,
         c.credentialName,
         c.credentialUrl,
-        er.roleId
+        er.roleId,
+        er.volunteerId
     FROM
         eventregistrations er
     LEFT JOIN
@@ -33,7 +38,7 @@
     WHERE
         er.eventId = #{eventId}
         AND
-        er.status = 'pending'
+        er.status = #{status}
 </select>
     <resultMap id="volunteerResultMap" type="com.wsa.model.Volunteer">
         <id column="id" property="id"/>
@@ -48,6 +53,7 @@
         <result column="kudosPoints" property="kudosPoints"/>
         <result column="eventCount" property="eventCount"/>
         <result column="roleId" property="roleId"/>
+        <result column="volunteerId" property="volunteerId"/>
         <result column="level" property="level"/>
         <collection property="credentialList" ofType="com.wsa.model.Volunteer$Credential">
             <result column="credentialName" property="credentialName"/>

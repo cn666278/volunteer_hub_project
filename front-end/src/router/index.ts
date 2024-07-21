@@ -99,6 +99,24 @@ const routes = createRouter({
           meta: { title: "EventReview" },
           component: () => import("../views/organizer/EventReview.vue"),
         },
+        {
+          path: '/commentVolunteer',
+          name: 'CommentVolunteer',
+          meta: { title: "CommentVolunteer" },
+          component: () => import('../views/organizer/CommentVolunteer.vue'),
+        },
+        {
+          path: '/commentDetail',
+          name: 'CommentDetail',
+          meta: { title: "CommentDetail" },
+          component: () => import('../views/organizer/CommentDetail.vue'),
+        },
+        {
+          path: '/eventDiscuss',
+          name: 'EventDiscuss',
+          meta: { title: "EventDiscuss" },
+          component: () => import('../views/organizer/EventDiscuss.vue'),
+        },
       ],
     },
     {

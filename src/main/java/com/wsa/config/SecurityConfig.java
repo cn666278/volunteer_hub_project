@@ -35,15 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors().and() // Enable CORS
                 .authorizeRequests()
-                .antMatchers("/login", "/static/**", "/**/*.png").permitAll()
-                .anyRequest().authenticated() // All other requests must be authenticated
+                .antMatchers("/login", "/static/**", "/**/*.png", "/ws/**", "/app/**", "/topic/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // No session will be created or used by Spring Security
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
