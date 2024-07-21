@@ -9,7 +9,7 @@ export default {
       url: "/login",
       method: "post",
       data: params,
-      mock: false,
+      mock: true,
     });
   },
   getLoginUserInfo(params: any) {
@@ -17,7 +17,7 @@ export default {
       url: "/getLoginUserInfo",
       method: "post",
       data: params,
-      mock: false,
+      mock: true,
     });
   },
   /** Admin */
