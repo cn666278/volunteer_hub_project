@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 20/07/2024 23:44:56
+ Date: 21/07/2024 23:12:54
 */
 
 SET NAMES utf8mb4;
@@ -117,7 +117,7 @@ CREATE TABLE `eventregistrations`  (
 -- Records of eventregistrations
 -- ----------------------------
 INSERT INTO `eventregistrations` VALUES (1, 4, 1, 2, 'accepted');
-INSERT INTO `eventregistrations` VALUES (2, 4, 2, 1, 'pending');
+INSERT INTO `eventregistrations` VALUES (2, 4, 2, 1, 'accepted');
 
 -- ----------------------------
 -- Table structure for eventroles
@@ -165,13 +165,30 @@ INSERT INTO `events` VALUES (4, 1, 'test2', 'test2', '15 Pen-Y-Lan Rd, Cardiff C
 INSERT INTO `events` VALUES (5, 1, 'tes', 'tes', 'Julian Hodge Building, Colum Dr, Cardiff CF10 3EU, UK', 'Awaiting review', 2, '2024-07-14 01:08:36', '2024-07-14 09:06:42');
 
 -- ----------------------------
--- Table structure for message
+-- Table structure for messages
 -- ----------------------------
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventId` bigint(20) DEFAULT NULL,
+  `senderId` bigint(20) DEFAULT NULL,
+  `content` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `timestamp` datetime(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `event_id`(`eventId`) USING BTREE,
+  INDEX `sender_id`(`senderId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of messages
+-- ----------------------------
+INSERT INTO `messages` VALUES (1, 4, 1, 'test message', '2024-07-21 22:06:41');
+INSERT INTO `messages` VALUES (2, 4, 1, '1', '2024-07-21 22:30:18');
+INSERT INTO `messages` VALUES (3, 4, 1, '2', '2024-07-21 22:55:21');
+INSERT INTO `messages` VALUES (4, 4, 1, 'test', '2024-07-21 22:55:36');
+INSERT INTO `messages` VALUES (5, 4, 1, '123', '2024-07-21 22:55:45');
+INSERT INTO `messages` VALUES (6, 4, 1, 'test time', '2024-07-21 23:01:00');
+INSERT INTO `messages` VALUES (7, 4, 1, 'test time2', '2024-07-21 23:04:25');
 
 -- ----------------------------
 -- Table structure for organizer
@@ -289,6 +306,6 @@ CREATE TABLE `volunteerratings`  (
   `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
