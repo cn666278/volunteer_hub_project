@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsa.mapper.MessageMapper">
+
+    <insert id="save">
+        INSERT INTO messages (eventId, senderId, content, timestamp)
+        VALUES (#{eventId}, #{senderId}, #{content}, #{timestamp})
+    </insert>
+    <select id="getMessagesByEventId" resultType="com.wsa.model.Message">
+        SELECT
+        messages.eventId,
+        messages.senderId,
+        messages.content,
+        messages.timestamp,
+        users.username
+        FROM
+        messages
+        INNER JOIN users ON messages.senderId = users.id
+        WHERE eventId = #{eventId}
+    </select>
+
+</mapper>

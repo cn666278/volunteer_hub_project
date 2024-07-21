@@ -22,8 +22,7 @@
       </el-table-column>
       <el-table-column label="Actions">
         <template v-slot="scope">
-          <el-button @click="acceptVolunteer(scope.row.id)">Accept</el-button>
-          <el-button @click="rejectVolunteer(scope.row.id)">Reject</el-button>
+          <el-button @click="commentVolunteer(scope.row)">Comment</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -31,15 +30,16 @@
     <el-dialog :visible.sync="dialogVisible" title="Credential Image">
       <img :src="currentCredentialUrl" alt="Credential Image" class="img-fluid"/>
     </el-dialog>
-
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, getCurrentInstance } from 'vue';
-import { useRoute } from 'vue-router';
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { useRoute, useRouter } from 'vue-router';
+import { ElMessageBox } from 'element-plus';
+
 const route = useRoute();
+const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const volunteers = ref([]);
@@ -49,8 +49,8 @@ const pageSize = ref(10);
 const event = JSON.parse(route.query.event);
 const dialogVisible = ref(false);
 const currentCredentialUrl = ref('');
+
 const viewCredential1 = (url) => {
-  console.log("url",url)
   ElMessageBox.alert(
       `<img src="${url}"/>`,
       {
@@ -58,10 +58,12 @@ const viewCredential1 = (url) => {
       }
   )
 }
+
 const fetchVolunteers = async () => {
+  console.log("getVolunteersByEventId event",event)
   const response = await proxy.$api.getVolunteersByEventId({
     eventId: event.eventId,
-    status: 'pending',
+    status: 'accepted',
     pageNum: currentPage.value,
     pageSize: pageSize.value,
   });
@@ -74,32 +76,22 @@ const handlePageChange = (page) => {
   fetchVolunteers();
 };
 
-const viewCredential = (url) => {
-  console.log("url:", url);
-  currentCredentialUrl.value = url;
-  dialogVisible.value = true;
-  console.log("dialogVisible.value", dialogVisible.value);
-  console.log("currentCredentialUrl.value", currentCredentialUrl.value);
+const commentVolunteer = (volunteer) => {
+  console.log("commentVolunteer event",event)
+  router.push({
+    name: 'CommentDetail',
+    query: {
+      volunteer: JSON.stringify({
+        ...volunteer,
+        eventId: event.eventId,
+        organizerId: event.organizerId
+      }),
+      event: JSON.stringify(event)
+    },
+  });
 };
 
-const acceptVolunteer = async (id) => {
-  await updateVolunteerStatus(id, 'accepted');
-  fetchVolunteers();
-};
 
-const rejectVolunteer = async (id) => {
-  await updateVolunteerStatus(id, 'rejected');
-  fetchVolunteers();
-};
-
-const updateVolunteerStatus = async (id, status) => {
-  try {
-    await proxy.$api.updateVolunteerStatus({ id, status });
-    ElMessage.success(`Volunteer has been ${status}.`);
-  } catch (error) {
-    ElMessage.error('Failed to update volunteer status.');
-  }
-};
 onMounted(() => {
   fetchVolunteers();
 });

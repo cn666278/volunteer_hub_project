@@ -99,11 +99,13 @@ const reviewEvent = (event: any) => {
 
 const discussEvent = (event: any) => {
   console.log('Discuss event:', event);
+  router.push({ name: 'EventDiscuss', query: { event: JSON.stringify(event) } });
   // Handle discuss event
 };
 
 const commentEvent = (event: any) => {
   console.log('Comment event:', event);
+  router.push({ name: 'CommentVolunteer', query: { event: JSON.stringify(event) } });
   // Handle comment event
 };
 
