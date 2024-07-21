@@ -131,6 +131,12 @@ const routes = createRouter({
           meta: { title: "Personal" },
           component: () => import("../views/admin/user/Personal.vue"),
         },
+        {
+          path: "/admin/approve/event",
+          name: "ApproveEvent",
+          meta: { title: "ApproveEvent" },
+          component: () => import("../views/admin/approve/Event.vue"),
+        },
       ],
     },
   ],

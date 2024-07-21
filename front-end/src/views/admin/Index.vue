@@ -23,10 +23,10 @@
           <el-sub-menu index="2">
             <template #title>
               <el-icon><Tools /></el-icon>
-              <span>View</span>
+              <span>Approve</span>
             </template>
-            <el-menu-item index="/admin/event">Event</el-menu-item>
-            <el-menu-item index="/admin/organizer">Organizer</el-menu-item>
+            <el-menu-item index="/admin/approve/event">Event</el-menu-item>
+            <el-menu-item index="/admin/approve/organizer">Organizer</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="3">
             <template #title>
