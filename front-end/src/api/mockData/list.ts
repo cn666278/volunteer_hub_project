@@ -33,16 +33,3 @@ export default {
   },
 };
 
-// setupMock({
-//   setup() {
-//     Mock.mock(new RegExp('/api/list/policy'), (params: GetParams) => {
-//       const { current = 1, pageSize = 10 } = qs.parseUrl(params.url).query;
-//       const p = current as number;
-//       const ps = pageSize as number;
-//       return successResponseWrap({
-//         list: data.list.slice((p - 1) * ps, p * ps),
-//         total: 55,
-//       });
-//     });
-//   },
-// });

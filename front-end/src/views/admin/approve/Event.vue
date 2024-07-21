@@ -4,28 +4,34 @@
     <a-card class="general-card" :title="$t('menu.list.searchTable')">
       <a-row>
         <a-col :flex="1">
-          <a-form :model="formModel" :label-col-props="{ span: 6 }" :wrapper-col-props="{ span: 18 }"
+          <a-form :model="formModel" :label-col-props="{ span: 8 }" :wrapper-col-props="{ span: 18 }"
             label-align="left">
             <a-row :gutter="16">
-              <a-col :span="8">
+              <a-col :span="10">
                 <a-form-item field="number" :label="$t('searchTable.form.number')">
                   <a-input v-model="formModel.number" :placeholder="$t('searchTable.form.number.placeholder')" />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+              <a-col :span="10">
                 <a-form-item field="name" :label="$t('searchTable.form.name')">
                   <a-input v-model="formModel.name" :placeholder="$t('searchTable.form.name.placeholder')" />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item field="contentType" :label="$t('searchTable.form.contentType')">
-                  <a-select v-model="formModel.contentType" :options="contentTypeOptions"
+              <a-col :span="10">
+                <a-form-item field="eventType" :label="$t('searchTable.form.eventType')">
+                  <a-select v-model="formModel.eventType" :options="eventTypeOptions"
                     :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+              <!-- <a-col :span="8">
                 <a-form-item field="filterType" :label="$t('searchTable.form.filterType')">
                   <a-select v-model="formModel.filterType" :options="filterTypeOptions"
+                    :placeholder="$t('searchTable.form.selectDefault')" />
+                </a-form-item>
+              </a-col> -->
+              <a-col :span="6">
+                <a-form-item field="status" :label="$t('searchTable.form.status')">
+                  <a-select v-model="formModel.status" :options="statusOptions"
                     :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
               </a-col>
@@ -33,12 +39,6 @@
                 <a-form-item field="createdTime" :label="$t('searchTable.form.createdTime')">
                   <!-- bug:显示为中文：修改locale -->
                   <a-range-picker v-model="formModel.createdTime" style="width: 100%"/>
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item field="status" :label="$t('searchTable.form.status')">
-                  <a-select v-model="formModel.status" :options="statusOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -132,13 +132,13 @@
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
         </template>
-        <template #contentType="{ record }">
+        <template #eventType="{ record }">
           <a-space>
-            <a-avatar v-if="record.contentType === 'img'" :size="16" shape="square">
+            <a-avatar v-if="record.eventType === 'img'" :size="16" shape="square">
               <img alt="avatar"
                 src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image" />
             </a-avatar>
-            <a-avatar v-else-if="record.contentType === 'horizontalVideo'" :size="16" shape="square">
+            <a-avatar v-else-if="record.eventType === 'horizontalVideo'" :size="16" shape="square">
               <img alt="avatar"
                 src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image" />
             </a-avatar>
@@ -146,20 +146,26 @@
               <img alt="avatar"
                 src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image" />
             </a-avatar>
-            {{ $t(`searchTable.form.contentType.${record.contentType}`) }}
+            {{ $t(`searchTable.form.eventType.${record.eventType}`) }}
           </a-space>
         </template>
-        <template #filterType="{ record }">
+        <!-- <template #filterType="{ record }">
           {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
-        </template>
+        </template> -->
         <template #status="{ record }">
           <span v-if="record.status === 'offline'" class="circle"></span>
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
         <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small">
+          <a-button v-permission="['admin']" type="text" size="small" style="margin-right: 10px;">
             {{ $t('searchTable.columns.operations.view') }}
+          </a-button>
+          <a-button v-permission="['admin']" status="success" size="small" style="margin-right: 10px;">
+            {{ $t('searchTable.columns.operations.approve') }}
+          </a-button>
+          <a-button v-permission="['admin']" status="danger" size="small">
+            {{ $t('searchTable.columns.operations.reject') }}
           </a-button>
         </template>
       </a-table>
@@ -187,7 +193,7 @@ const generateFormModel = () => {
   return {
     number: '',
     name: '',
-    contentType: '',
+    eventType: '',
     filterType: '',
     createdTime: [],
     status: '',
@@ -210,7 +216,7 @@ let pageSize = 10;
 
 const basePagination: Pagination = {
   current: 1,
-  pageSize: 20,
+  pageSize: 10,
 };
 const pagination = reactive({
   ...basePagination,
@@ -248,18 +254,14 @@ const columns = computed<TableColumnData[]>(() => [
     dataIndex: 'name',
   },
   {
-    title: t('searchTable.columns.contentType'),
-    dataIndex: 'contentType',
-    slotName: 'contentType',
+    title: t('searchTable.columns.eventType'),
+    dataIndex: 'eventType',
+    slotName: 'eventType',
   },
-  {
-    title: t('searchTable.columns.filterType'),
-    dataIndex: 'filterType',
-  },
-  {
-    title: t('searchTable.columns.count'),
-    dataIndex: 'count',
-  },
+  // {
+  //   title: t('searchTable.columns.filterType'),
+  //   dataIndex: 'filterType',
+  // },
   {
     title: t('searchTable.columns.createdTime'),
     dataIndex: 'createdTime',
@@ -275,30 +277,30 @@ const columns = computed<TableColumnData[]>(() => [
     slotName: 'operations',
   },
 ]);
-const contentTypeOptions = computed<SelectOptionData[]>(() => [
+const eventTypeOptions = computed<SelectOptionData[]>(() => [
   {
-    label: t('searchTable.form.contentType.img'),
+    label: t('searchTable.form.eventType.img'),
     value: 'img',
   },
   {
-    label: t('searchTable.form.contentType.horizontalVideo'),
+    label: t('searchTable.form.eventType.horizontalVideo'),
     value: 'horizontalVideo',
   },
   {
-    label: t('searchTable.form.contentType.verticalVideo'),
+    label: t('searchTable.form.eventType.verticalVideo'),
     value: 'verticalVideo',
   },
 ]);
-const filterTypeOptions = computed<SelectOptionData[]>(() => [
-  {
-    label: t('searchTable.form.filterType.artificial'),
-    value: 'artificial',
-  },
-  {
-    label: t('searchTable.form.filterType.rules'),
-    value: 'rules',
-  },
-]);
+// const filterTypeOptions = computed<SelectOptionData[]>(() => [
+//   {
+//     label: t('searchTable.form.filterType.artificial'),
+//     value: 'artificial',
+//   },
+//   {
+//     label: t('searchTable.form.filterType.rules'),
+//     value: 'rules',
+//   },
+// ]);
 const statusOptions = computed<SelectOptionData[]>(() => [
   {
     label: t('searchTable.form.status.online'),
@@ -317,13 +319,8 @@ const fetchData = async (
     let res = await proxy.$api.getEventList(params);
     console.log(res);
     let { list, total } = res;
-    // Pagination前端分页
-    const start = (pageIndex.value - 1) * pageSize;
-    const end = start + pageSize;
-    let data = list.slice(start, end);
-    console.log(data);
-    renderData.value = data;
-    console.log(renderData.value);
+    // 使用后端分页
+    renderData.value = list;
     pagination.current = params.current;
     pagination.total = total;
   } catch (err) {
