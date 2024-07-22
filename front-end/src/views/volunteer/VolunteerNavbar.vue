@@ -1,18 +1,7 @@
 <template>
   <div>
     <div class="navbar-top">
-      <div class="contact-info">
-        <el-icon class="icon">
-          <i class="el-icon-phone"></i>
-        </el-icon>
-        <span>123-456-7890</span>
-      </div>
-      <div class="contact-info right">
-        <el-icon class="icon">
-          <i class="el-icon-message"></i>
-        </el-icon>
-        <span>contact@example.com</span>
-      </div>
+      <!-- Removed contact info elements -->
     </div>
     <el-menu
         router
@@ -42,6 +31,7 @@
   </div>
 </template>
 
+
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useUser from "../../store/user";
@@ -55,29 +45,29 @@ const handleSelect = (key: string, keyPath: string[]) => {
 </script>
 
 <style scoped>
-.navbar-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #FFFFFF;
-  padding: 10px 10px;
-  box-sizing: border-box;
-  height: 50px;
-}
+/*.navbar-top {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: center;*/
+/*  !*position: fixed;*!*/
+
+/*  width: 100%;*/
+/*  z-index: 1000;*/
+/*  background-color: #FFFFFF;*/
+/*  padding: 10px 10px;*/
+/*  !*box-sizing: border-box;*!*/
+/*  height: 50px;*/
+/*}*/
 
 .navbar-container, .el-menu-demo {
   display: flex;
   justify-content: flex-end;
   background-color: #FFFFFF;
   overflow-x: auto;
-  position: fixed;
+  /*position: fixed;*/
   top: 50px;
   padding-right: 50px;
+  padding-left: 50px;
   width: 100%;
   z-index: 1000;
 }
