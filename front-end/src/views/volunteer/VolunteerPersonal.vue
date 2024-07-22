@@ -49,7 +49,10 @@ export default {
           icon: './src/assets/credentials.png',
           route: '/volunteer/credentials',
         },
-        {name: 'Events', icon: './src/assets/events.png', route: '/events',},
+        {
+          name: 'Events',
+          icon: './src/assets/events.png',
+          route: '/volunteer/events',},
         {
           name: 'Comments',
           icon: './src/assets/comments.png',
