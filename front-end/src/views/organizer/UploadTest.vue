@@ -31,7 +31,9 @@ const uploadFile = async () => {
 
   try {
     const response = await proxy.$api.uploadFile(formData);
-    uploadedFilePath.value = response;
+    // Assuming the response structure is { code: 200, data: "File uploaded successfully with ID: {file_id}", msg: "success" }
+    const fileId = response.match(/\d+$/)[0]; // Extract the file ID from the response data
+    uploadedFilePath.value = `/files/${fileId}`;
     console.log("File uploaded successfully:", response);
   } catch (error) {
     console.error("File upload failed:", error);

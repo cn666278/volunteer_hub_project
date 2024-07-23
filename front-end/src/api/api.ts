@@ -243,7 +243,7 @@ export default {
     });
   },
   /**
-   * upload file api
+   * file api
    */
   uploadFile(params: any) {
     return request({
@@ -256,4 +256,12 @@ export default {
       }
     });
   },
+  getfiles(params) {
+    return request({
+      url: `/files/${params.id}`,
+      method: 'get',
+      responseType: 'text',
+      mock: false,
+    });
+  }
 };

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsa.mapper.FileMapper">
+    <resultMap id="FileResultMap" type="com.wsa.model.FileModel">
+        <id column="id" property="id"/>
+        <result column="filename" property="filename"/>
+        <result column="content_type" property="contentType"/>
+        <result column="data" property="data"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO files (filename, content_type, data)
+        VALUES (#{filename}, #{contentType}, #{data})
+    </insert>
+
+    <select id="findById" resultMap="FileResultMap">
+        SELECT id, filename, content_type, data
+        FROM files
+        WHERE id = #{id}
+    </select>
+</mapper>
