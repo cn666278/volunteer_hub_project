@@ -9,22 +9,22 @@
           active-text-color="#409EFF"
           @select="handleSelect"
       >
-      <el-menu-item index="1">
-        <el-icon><search /></el-icon>
-        <span slot="title">All Events</span>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <el-icon><icon-menu /></el-icon>
-        <span slot="title">Events Participated</span>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <el-icon><document /></el-icon>
-        <span slot="title">Events Subscribed</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <el-icon><setting /></el-icon>
-        <span slot="title">Navigator Four</span>
-      </el-menu-item>
+        <el-menu-item index="1">
+          <el-icon><search /></el-icon>
+          <span slot="title">All Events</span>
+        </el-menu-item>
+        <el-menu-item index="2">
+          <el-icon><icon-menu /></el-icon>
+          <span slot="title">Events Participated</span>
+        </el-menu-item>
+        <el-menu-item index="3">
+          <el-icon><document /></el-icon>
+          <span slot="title">Events Subscribed</span>
+        </el-menu-item>
+        <el-menu-item index="4">
+          <el-icon><setting /></el-icon>
+          <span slot="title">Navigator Four</span>
+        </el-menu-item>
       </el-menu>
     </div>
     <div class="content">
@@ -105,10 +105,12 @@ const handleClose = (key: string, keyPath: string[]) => {
   padding: 20px;
   display: flex;
   justify-content: center;
+
 }
 
 .el-input .el-input__inner {
   padding-left: 35px;
+
 }
 
 .search-section .el-input {
@@ -117,7 +119,9 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 .el-input .el-icon {
   margin-right: 8px;
+  color: #409EFF;
 }
+
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 100%; /* Use full width of the sidebar */
@@ -126,22 +130,36 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 .events-display {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(3, 1fr); /* Maintain three columns */
+  gap: 30px; /* Space between cards */
+  padding: 20px 35px;
 }
 
 .event-card {
+  width: 300px; /* Reduced width to fit three columns */
+  height: 300px; /* Reduced height accordingly */
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  justify-content: space-between;
+  border-radius: 10px;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .event-image {
-  width: 100%;
-  height: auto;
+  width: 150px;
+  height: 150px; /* Adjusted height for new card size */
   object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
+
+
 </style>
