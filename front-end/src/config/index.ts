@@ -13,15 +13,15 @@ const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
         // 使用本地数据 mock data
         // baseApi: '/api',
         // 使用apifox模拟数据
-        mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default/api',
+        mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default',
     },
     test: { // 测试环境 test environment
         baseApi: '/test',
-        mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default/api'
+        mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default'
     },
     prod: { // 开发（生产）环境 production environment
         baseApi: '/prod',
-        mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default/api'
+        mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default'
     }
 }
 
