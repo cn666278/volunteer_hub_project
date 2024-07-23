@@ -242,4 +242,18 @@ export default {
       mock: false,
     });
   },
+  /**
+   * upload file api
+   */
+  uploadFile(params: any) {
+    return request({
+      url: "/upload",
+      method: "post",
+      data: params,
+      mock: false,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
 };

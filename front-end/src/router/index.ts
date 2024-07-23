@@ -129,6 +129,12 @@ const routes = createRouter({
           meta: { title: "EventDiscuss" },
           component: () => import('../views/organizer/EventDiscuss.vue'),
         },
+        {
+          path: '/uploadTest',
+          name: 'UploadTest',
+          meta: { title: "UploadTest" },
+          component: () => import('../views/organizer/UploadTest.vue'),
+        },
       ],
     },
     {

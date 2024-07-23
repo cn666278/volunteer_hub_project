@@ -10,13 +10,16 @@ spring:
 #      data-locations: classpath:schema.sql
   web:
     resources:
-      static-locations: classpath:/static/, file:./static/
+      static-locations: classpath:/static/, file:///D:/uploads/
 mybatis:
   type-aliases-package: com.wsa.model
   mapper-locations: classpath:mybatis/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
   config-location: classpath:mybatis/mybatis-config.xml
+
+file:
+  upload-dir: D:/uploads
 
 logging:
   level:

@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 23/07/2024 15:27:02
+ Date: 23/07/2024 17:28:04
 */
 
 SET NAMES utf8mb4;
@@ -53,7 +53,7 @@ CREATE TABLE `credentials`  (
 -- ----------------------------
 -- Records of credentials
 -- ----------------------------
-INSERT INTO `credentials` VALUES (1, 1, 'test', 'http://localhost:8080/test.png');
+INSERT INTO `credentials` VALUES (1, 1, 'test', 'http://localhost:8080/uploads/test.png');
 
 -- ----------------------------
 -- Table structure for emails
@@ -241,9 +241,9 @@ CREATE TABLE `rewardstore`  (
 -- ----------------------------
 -- Records of rewardstore
 -- ----------------------------
-INSERT INTO `rewardstore` VALUES (1, 'http://localhost:8080/test.png', 'Red bull', 'beverage', 1, 100);
-INSERT INTO `rewardstore` VALUES (2, 'http://localhost:8080/test.png', 'jellycat', 'toy', 2, 100);
-INSERT INTO `rewardstore` VALUES (3, 'http://localhost:8080/test.png', 'kebab', 'food', 3, 100);
+INSERT INTO `rewardstore` VALUES (1, 'http://localhost:8080/uploads/test.png', 'Red bull', 'beverage', 1, 100);
+INSERT INTO `rewardstore` VALUES (2, 'http://localhost:8080/uploads/test.png', 'jellycat', 'toy', 2, 100);
+INSERT INTO `rewardstore` VALUES (3, 'http://localhost:8080/uploads/test.png', 'kebab', 'food', 3, 100);
 
 -- ----------------------------
 -- Table structure for roles
