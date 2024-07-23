@@ -19,6 +19,7 @@
       <el-menu-item index="3">News</el-menu-item>
       <el-menu-item index="4">Search</el-menu-item>
       <el-menu-item index="5">Login</el-menu-item>
+      <el-menu-item index="/volunteer/rewardStore">RewardStore</el-menu-item>
       <el-menu-item index="/volunteer/personal">
         <el-tooltip content="View Notifications" placement="bottom">
           <el-icon class="icon">
