@@ -33,6 +33,10 @@ service.interceptors.request.use(
 );
 
 service.interceptors.response.use((res) => {
+  console.log("res start",res)
+  if (res.config.responseType === 'text') {
+    return res.data;
+  }
   const { code, data, msg } = res.data;
   // 根据后端，视情况修改状态码
   if (code === 200) {

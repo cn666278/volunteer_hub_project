@@ -1,45 +1,59 @@
 package com.wsa.controller;
 
+import com.wsa.model.FileModel;
+import com.wsa.service.FileService;
 import com.wsa.model.ResultVO;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @RestController
 public class FileUploadController {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    @Autowired
+    private FileService fileService;
 
     @PostMapping("/upload")
     public ResultVO<String> uploadFile(@RequestParam("file") MultipartFile file,
                                        @RequestParam("filename") String filename) {
         String originalFilename = file.getOriginalFilename();
         String fileExtension = "";
-
         if (originalFilename != null && originalFilename.contains(".")) {
             fileExtension = originalFilename.substring(originalFilename.lastIndexOf('.'));
         }
-
         String cleanFilename = StringUtils.cleanPath(filename) + fileExtension;
-        String filePath = Paths.get(uploadDir, cleanFilename).toString();
-        File dest = new File(filePath);
-
         try {
-            // 确保上传目录存在
-            Files.createDirectories(Paths.get(uploadDir));
-            file.transferTo(dest);
-            String fileUrl = "/uploads/" + cleanFilename;
-            return ResultVO.success(fileUrl);
+            FileModel fileModel = new FileModel();
+            fileModel.setFilename(cleanFilename);
+            fileModel.setContentType(file.getContentType());
+            fileModel.setData(file.getBytes());
+            fileService.saveFile(fileModel);
+            return ResultVO.success("File uploaded successfully with ID: " + fileModel.getId());
         } catch (IOException e) {
             e.printStackTrace();
-            return ResultVO.failure("File upload failed: " + e.getMessage());
+            return ResultVO.failure("File upload failed");
         }
+    }
+
+    @GetMapping("/files/{id}")
+    public ResponseEntity<String> getFile(@PathVariable Long id) {
+        FileModel fileModel = fileService.getFileById(id);
+        if (fileModel == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        String base64Data = Base64Utils.encodeToString(fileModel.getData());
+
+        return new ResponseEntity<>(base64Data, headers, HttpStatus.OK);
     }
 }
