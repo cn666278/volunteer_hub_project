@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsa.mapper.RewardStoreMapper">
+    <select id="getItems" resultType="com.wsa.model.Item">
+        SELECT * FROM rewardstore
+    </select>
+
+    <select id="getUserPoints" resultType="int">
+        SELECT kudosPoints FROM volunteer WHERE userId = #{userId}
+    </select>
+
+    <select id="getItemById" resultType="com.wsa.model.Item">
+        SELECT * FROM rewardstore WHERE id = #{itemId}
+    </select>
+
+    <update id="deductPoints">
+        UPDATE volunteer SET kudosPoints = kudosPoints - #{points} WHERE userId = #{userId}
+    </update>
+
+    <insert id="createRedemptionRecord">
+        INSERT INTO redemptionrecords (userId, itemId, pointsUsed, createdAt)
+        VALUES (#{userId}, #{itemId}, #{pointsUsed}, NOW())
+    </insert>
+</mapper>

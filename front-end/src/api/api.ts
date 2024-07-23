@@ -223,4 +223,23 @@ export default {
       mock: false,
     });
   },
+  /**
+   * store api
+   */
+  getItems(params: any) {
+    return request({
+      url: "/rewardstore/items",
+      method: "get",
+      data: params,
+      mock: false,
+    });
+  },
+  redeemItem(params: any) {
+    return request({
+      url: "/rewardstore/redeem",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
 };
