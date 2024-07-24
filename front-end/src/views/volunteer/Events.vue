@@ -108,10 +108,17 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 }
 
+.el-input{
+  --el-input-border-color: #c0c4cc;
+}
+
 .el-input .el-input__inner {
   padding-left: 35px;
 
 }
+
+
+
 
 .search-section .el-input {
   width: 80%;
