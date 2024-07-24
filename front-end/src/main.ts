@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import global from 'global';
+// import global from 'global';
 import router from './router/index.ts'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -11,13 +11,20 @@ import api from './api/api.ts'
 import './api/mock.ts'
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import 'vue-cal/dist/vuecal.css';
-import i18n from './locales/index.ts';
+// 初始化多语言
+import { setupI18n } from './plugins/vueI18n'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-window.global = global;
+// window.global = global;
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);  
 }
 app.config.globalProperties.$api = api;
-app.use(ElementPlus).use(i18n).use(router).use(pinia).mount('#app')
+const setupAll = async () => {
+    await setupI18n(app);
+  };
+setupAll();
+app.use(ElementPlus).use(router).use(pinia).mount('#app')
+
+export { pinia }

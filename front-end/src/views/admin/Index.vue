@@ -59,6 +59,7 @@
             <el-menu-item index="3">
               <el-icon><ChatDotRound /></el-icon>
               Message
+              <LocaleDropdown/>
             </el-menu-item>
             <el-sub-menu index="4">
               <template #title>
@@ -92,6 +93,7 @@
   import { useRouter } from "vue-router";
   import useUser from "../../store/user.ts";
   import { ElMessageBox } from "element-plus";
+  import LocaleDropdown from "../../components/LocaleDropdown/src/LocaleDropdown.vue";
   
   let userStore = useUser();
   let router = useRouter();
