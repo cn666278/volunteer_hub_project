@@ -62,6 +62,12 @@ const routes = createRouter({
           component: () => import("../views/volunteer/Events.vue"),
         },
         {
+          path: "/volunteer/comments",
+          name: "Volunteer Comments",
+          meta: { title: "Comments" },
+          component: () => import("../views/volunteer/Comments.vue"),
+        },
+        {
           path: "/",
           name: "Volunteer Event",
           meta: { title: "Event" },

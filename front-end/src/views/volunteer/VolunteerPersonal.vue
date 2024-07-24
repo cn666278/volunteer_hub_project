@@ -56,7 +56,7 @@ export default {
         {
           name: 'Comments',
           icon: './src/assets/comments.png',
-          route: '/reviews',
+          route: '/volunteer/comments',
 
         },
         {name: 'Information', icon: './src/assets/message.png', route: '/messages', },
