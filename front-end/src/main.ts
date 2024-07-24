@@ -11,7 +11,7 @@ import api from './api/api.ts'
 import './api/mock.ts'
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import 'vue-cal/dist/vuecal.css';
-import i18n from './locale/index.ts';
+import i18n from './locales/index.ts';
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 window.global = global;
