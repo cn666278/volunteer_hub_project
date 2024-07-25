@@ -1,8 +1,20 @@
 <template>
   <div>
     <div class="navbar-top">
-      <!-- Removed contact info elements -->
+      <img src="../../assets/logo.png" class="top-logo">
+      <el-dropdown class="language-switcher">
+  <span class="el-dropdown-link">
+    <img src="../../assets/language.png" class="custom-icon"> <!-- 更换为自定义图标 -->
+  </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>English</el-dropdown-item>
+          <el-dropdown-item>中文</el-dropdown-item>
+          <el-dropdown-item>Español</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
     </div>
+
     <el-menu
         router
         :default-active="activeIndex"
@@ -46,33 +58,56 @@ const handleSelect = (key: string, keyPath: string[]) => {
 </script>
 
 <style scoped>
-/*.navbar-top {*/
-/*  display: flex;*/
-/*  justify-content: space-between;*/
-/*  align-items: center;*/
-/*  !*position: fixed;*!*/
+.navbar-top {
+  position: fixed; /* 固定位置 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左边对齐 */
+  right: 0; /* 右边对齐 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding:20px;
+  z-index: 1010; /* 高层次以保持在顶部 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  height: 20px;
 
-/*  width: 100%;*/
-/*  z-index: 1000;*/
-/*  background-color: #FFFFFF;*/
-/*  padding: 10px 10px;*/
-/*  !*box-sizing: border-box;*!*/
-/*  height: 50px;*/
-/*}*/
+}
+
+.top-logo {
+  width: 50px; /* Adjust the size as necessary */
+}
+
+.language-switcher i {
+  margin-right: 8px;
+}
+
+.language-switcher .el-dropdown-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
 
 .navbar-container, .el-menu-demo {
+  position: fixed; /* 固定位置 */
+  top: 40px; /* 在navbar-top之下，调整这个值以适应navbar-top的高度 */
+  left: 0; /* 左边对齐 */
+  right: 0; /* 右边对齐 */
   display: flex;
   justify-content: flex-end;
   background-color: #FFFFFF;
   overflow-x: auto;
-  /*position: fixed;*/
-  top: 50px;
   padding-right: 50px;
   padding-left: 50px;
   width: 100%;
-  z-index: 1000;
+  z-index: 1000; /* 确保在下层 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
+body {
+  padding-top: 120px; /* 调整这个值以确保足够的空间给固定的导航栏 */
+}
 
 .el-menu-item {
   padding: 10px 15px;
@@ -109,10 +144,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
   z-index: 1000;
 }
 
-/*.logo {*/
-/*  width: 25px; !* 设置图片宽度 *!*/
-/*  height: 25px; !* 保持图片的宽高比 *!*/
-/*}*/
+.custom-icon {
+  width: 20px; /* 或者其他适当的尺寸 */
+  height: 20px; /* 保持宽高比 */
+}
+
 
 
 
