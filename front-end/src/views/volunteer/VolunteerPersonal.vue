@@ -59,7 +59,7 @@ export default {
           route: '/volunteer/comments',
 
         },
-        {name: 'Information', icon: './src/assets/message.png', route: '/messages', },
+        {name: 'Information', icon: './src/assets/message.png', route: '/volunteer/information', },
         {name: 'Share', icon: './src/assets/share.png', route: '/share', }
       ]
     };
@@ -87,7 +87,7 @@ export default {
 }
 
 .user-profile {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   width: 100%; /* 确保占满整个容器宽度 */
   display: flex;
   flex-direction: column;
@@ -98,13 +98,13 @@ export default {
   margin-top: 10px; /* 根据需要调整间距 */
   text-align: center; /* 确保文本居中显示 */
   color: #6894c7;
-  font-size: 20px;
+  font-size: 15px;
 
 }
 
 .user-avatar {
-  width: 80px; /* 设置头像宽度 */
-  height: 80px; /* 设置头像高度 */
+  width: 50px; /* 设置头像宽度 */
+  height: 50px; /* 设置头像高度 */
   border-radius: 50%; /* 保持圆形 */
   object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
   border: 2px solid #b0bec5; /* 为头像添加边框 */
@@ -124,11 +124,18 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 2px dashed #6894c7;
   padding: 20px;
-  margin-top: 0px;
+  margin-top: 10px;
   margin-bottom: 15px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-radius: 10px;
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .feature-icon {
