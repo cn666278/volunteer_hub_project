@@ -60,8 +60,8 @@
             </el-icon>
             Message
           </el-menu-item>
-          <el-sub-menu index="4">
-            <el-icon>
+          <!-- <el-sub-menu index="4"> -->
+            <!-- <el-icon>
               <User />
             </el-icon>
             <template #title>
@@ -69,10 +69,14 @@
                 <icon-translate theme="filled" size="60" fill="#142334" :strokeWidth="4" color="white" />
               </el-icon>
             </template>
-            <el-menu-item v-for="item in languages" :key="item.value" :disabled="language == item.value">
-              <span @click="handleSetLanguage(item.value)">{{ item.name }}</span>
-            </el-menu-item>
-          </el-sub-menu>
+            <el-menu-item v-for="item in locales" :key="item.value">
+              <el-icon v-show="item.value === currentLocale">
+                <Select />
+              </el-icon>
+              <span @click="changeLocale(item.value)">{{ item.value }}</span>
+            </el-menu-item> -->
+            <changeLanguage/>
+          <!-- </el-sub-menu> -->
           <el-sub-menu index="5">
             <template #title>
               <el-icon>
@@ -102,34 +106,38 @@
     ChatDotRound,
     Avatar,
     User,
+    Select
   } from "@element-plus/icons-vue";
   import { computed, onMounted, reactive } from "vue";
   import { useRouter } from "vue-router";
   import useUser from "../../store/user.ts";
-  import useLocale from "../../store/locale.ts";
+  import useLocale from "../../hooks/locale";
   import { ElMessageBox } from "element-plus";
+  import changeLanguage from './changeLanguage.vue';
+  // const { changeLocale, currentLocale } = useLocale();
+  // import { LOCALE_OPTIONS } from '../../locales';
+  // const locales = [...LOCALE_OPTIONS];
+  // const languages = reactive([
+  //   {
+  //     name: 'Chinese',
+  //     value: 'zh-cn',
+  //   },
+  //   {
+  //     name: 'English',
+  //     value: 'en',
+  //   },
+  // ]);
 
-  const languages = reactive([
-    {
-      name: 'Chinese',
-      value: 'zh-cn',
-    },
-    {
-      name: 'English',
-      value: 'en',
-    },
-  ]);
-
-  const language = computed(() => {
-    return store.locale;
-  });
+  // const language = computed(() => {
+  //   return store.locale;
+  // });
 
   const store = useLocale();
 
-  const handleSetLanguage = (lang: string) => {
-    store.setLocale(lang);
-    location.reload();
-  };
+  // const handleSetLanguage = (lang: string) => {
+  //   store.setLocale(lang);
+  //   location.reload();
+  // };
   
   let userStore = useUser();
   let router = useRouter();
