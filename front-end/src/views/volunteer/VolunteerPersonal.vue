@@ -60,7 +60,7 @@ export default {
 
         },
         {name: 'Information', icon: './src/assets/message.png', route: '/volunteer/information', },
-        {name: 'Share', icon: './src/assets/share.png', route: '/share', }
+        {name: 'Share', icon: './src/assets/share.png', route: '/volunteer/share', }
       ]
     };
   },
