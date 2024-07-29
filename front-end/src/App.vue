@@ -1,24 +1,24 @@
 <template>
-  <el-config-provider :locale="locale">
+  <!-- <el-config-provider :locale="locale"> -->
     <router-view></router-view>
-  </el-config-provider>
+  <!-- </el-config-provider> -->
 </template>
 
-<script lang="ts" setup>
+<!-- <script lang="ts" setup>
   import { computed } from 'vue';
-  import enUS from '@arco-design/web-vue/es/locale/lang/en-us';
-  import zhCN from '@arco-design/web-vue/es/locale/lang/zh-cn';
+  import en from 'element-plus/dist/locale/en.mjs';
+  import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
   import useLocale from './hooks/locale';
 
   const { currentLocale } = useLocale();
   const locale = computed(() => {
     switch (currentLocale.value) {
-      case 'zh-CN':
-        return zhCN;
-      case 'en-US':
-        return enUS;
+      case 'zhCn':
+        return zhCn;
+      case 'en':
+        return en;
       default:
-        return enUS;
+        return en;
     }
   });
-</script>
+</script> -->

@@ -12,7 +12,7 @@ export default function useLocale() {
       return;
     }
     i18.locale.value = value;
-    localStorage.setItem('arco-locale', value);
+    localStorage.setItem('wsa-locale', value);
     ElMessage.success(i18.t('navbar.action.locale'));
   };
   return {
