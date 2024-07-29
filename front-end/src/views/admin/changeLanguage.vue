@@ -49,6 +49,14 @@ changeLocale(lang.value)
 </script>
 
 <style scoped>
+:deep(.el-select__wrapper){
+  background-color: #a9181a;
+}
+
+:deep(.el-select__placeholder){
+    color: white;
+  }
+
 .custom-container {
   display: flex;
   align-items: center;
@@ -58,29 +66,30 @@ changeLocale(lang.value)
   width: 24px;
   height: 24px;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 .custom-select {
   width: 100px;
   border: none;
   background: none;
-  color: white;
+  color: rgb(255, 143, 15);
   padding: 0;
 }
 
 .custom-select .el-input__inner {
   border: none;
-  background: none;
-  color: white;
+  background-color: #a9181a;
+  color: rgb(255, 143, 15);
   padding: 0;
   cursor: pointer;
 }
 
 .custom-popper .el-select-dropdown__item {
-  color: black;
+  color: #a9181a;
 }
 
 .custom-popper .el-select-dropdown__item:hover {
-  background-color: #f0f0f0;
+  background-color: #d9d8d8;
 }
 </style>

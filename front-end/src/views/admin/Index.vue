@@ -4,7 +4,7 @@
       <div class="title">
         <h2>WSA Volunteer Hub</h2>
       </div>
-      <el-menu router active-text-color="#ffd04b" background-color="#142334" class="el-menu-vertical-demo"
+      <el-menu router active-text-color="#ffd04b" background-color="#a9181a" class="el-menu-vertical-demo"
         default-active="2" text-color="#fff">
         <el-sub-menu index="1">
           <template #title>
@@ -40,7 +40,7 @@
     </div>
     <div class="right">
       <div class="top">
-        <el-menu router mode="horizontal" background-color="#142334" text-color="#fff" active-text-color="#ffd04b"
+        <el-menu router mode="horizontal" background-color="#a9181a" text-color="#fff" active-text-color="rgb(255, 143, 15)"
           :ellipsis="false">
           <el-menu-item index="/admin">
             <el-icon>
@@ -60,23 +60,7 @@
             </el-icon>
             Message
           </el-menu-item>
-          <!-- <el-sub-menu index="4"> -->
-            <!-- <el-icon>
-              <User />
-            </el-icon>
-            <template #title>
-              <el-icon>
-                <icon-translate theme="filled" size="60" fill="#142334" :strokeWidth="4" color="white" />
-              </el-icon>
-            </template>
-            <el-menu-item v-for="item in locales" :key="item.value">
-              <el-icon v-show="item.value === currentLocale">
-                <Select />
-              </el-icon>
-              <span @click="changeLocale(item.value)">{{ item.value }}</span>
-            </el-menu-item> -->
             <changeLanguage/>
-          <!-- </el-sub-menu> -->
           <el-sub-menu index="5">
             <template #title>
               <el-icon>
@@ -106,38 +90,12 @@
     ChatDotRound,
     Avatar,
     User,
-    Select
   } from "@element-plus/icons-vue";
-  import { computed, onMounted, reactive } from "vue";
+  import { onMounted } from "vue";
   import { useRouter } from "vue-router";
   import useUser from "../../store/user.ts";
-  import useLocale from "../../hooks/locale";
   import { ElMessageBox } from "element-plus";
   import changeLanguage from './changeLanguage.vue';
-  // const { changeLocale, currentLocale } = useLocale();
-  // import { LOCALE_OPTIONS } from '../../locales';
-  // const locales = [...LOCALE_OPTIONS];
-  // const languages = reactive([
-  //   {
-  //     name: 'Chinese',
-  //     value: 'zh-cn',
-  //   },
-  //   {
-  //     name: 'English',
-  //     value: 'en',
-  //   },
-  // ]);
-
-  // const language = computed(() => {
-  //   return store.locale;
-  // });
-
-  const store = useLocale();
-
-  // const handleSetLanguage = (lang: string) => {
-  //   store.setLocale(lang);
-  //   location.reload();
-  // };
   
   let userStore = useUser();
   let router = useRouter();
@@ -173,7 +131,7 @@
     display: flex;
     .left {
       width: 200px;
-      background-color: #142334;
+      background-color: #a9181a;
       color: white;
       .el-menu {
         // delete the right border
@@ -192,7 +150,7 @@
       flex-direction: column;
       .top {
         height: 60px;
-        background-color: #142334;
+        background-color: #a9181a;
         color: white;
         display: flex;
         justify-content: flex-end;
