@@ -1,11 +1,11 @@
 <template>
   <div class="banner">
     <div class="banner-inner">
-      <a-carousel class="carousel" animation-name="fade"  :auto-play="{interval: 5000}">
+      <a-carousel class="carousel" animation-name="fade" :auto-play="{ interval: 5000 }">
         <a-carousel-item v-for="item in carouselItem" :key="item.slogan">
           <div :key="item.slogan" class="carousel-item">
-            <div class="carousel-title">{{ item.slogan }}</div>
-            <div class="carousel-sub-title">{{ item.subSlogan }}</div>
+            <div class="carousel-title">{{ $t(item.slogan) }}</div>
+            <div class="carousel-sub-title">{{ $t(item.subSlogan) }}</div>
             <img class="carousel-image" :src="item.image" />
           </div>
         </a-carousel-item>
@@ -23,18 +23,18 @@ import { Carousel } from '@arco-design/web-vue';
 
 const carouselItem = computed(() => [
   {
-    slogan: "Welcome to WSA Volunteer Hub",
-    subSlogan: "hello",
+    slogan: "banner.slogan1",
+    subSlogan: "banner.subSlogan1",
     image: bannerImage1,
   },
   {
-    slogan: "Earn volunteer vouchers and rewards",
-    subSlogan: "a massive thank you",
+    slogan: "banner.slogan2",
+    subSlogan: "banner.subSlogan2",
     image: bannerImage2,
   },
   {
-    slogan: "We are here to help the sports community",
-    subSlogan: "you can make a difference",
+    slogan: "banner.slogan3",
+    subSlogan: "banner.subSlogan3",
     image: bannerImage3,
   },
 ]);

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import changeLanguage from './changeLanguage.vue';
+import changeLanguage from '../../components/changeLanguage.vue';
 const router = useRouter()
 
 // const props = defineProps({

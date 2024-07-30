@@ -2,7 +2,7 @@
   <div class="index">
     <div class="left">
       <div class="title">
-        <h2>WSA Volunteer Hub</h2>
+        <h2>{{ $t('appName') }}</h2>
       </div>
       <el-menu router active-text-color="#ffd04b" background-color="#a9181a" class="el-menu-vertical-demo"
         default-active="2" text-color="#fff">
@@ -11,30 +11,30 @@
             <el-icon>
               <Briefcase />
             </el-icon>
-            <span>Manage</span>
+            <span>{{ $t('menu.manage') }}</span>
           </template>
-          <el-menu-item index="/admin/role">Role</el-menu-item>
-          <el-menu-item index="/admin/user">User</el-menu-item>
+          <el-menu-item index="/admin/role">{{ $t('menu.role') }}</el-menu-item>
+          <el-menu-item index="/admin/user">{{ $t('menu.user') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>
             <el-icon>
               <Tools />
             </el-icon>
-            <span>Approve</span>
+            <span>{{ $t('menu.approve') }}</span>
           </template>
-          <el-menu-item index="/admin/approve/event">Event</el-menu-item>
-          <el-menu-item index="/admin/approve/organizer">Organizer</el-menu-item>
+          <el-menu-item index="/admin/approve/event">{{ $t('menu.event') }}</el-menu-item>
+          <el-menu-item index="/admin/approve/organizer">{{ $t('menu.organizer') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
             <el-icon>
               <Avatar />
             </el-icon>
-            <span>System</span>
+            <span>{{ $t('menu.system') }}</span>
           </template>
-          <el-menu-item index="/admin/menu">Menu</el-menu-item>
-          <el-menu-item index="/admin/dict">Dictionary</el-menu-item>
+          <el-menu-item index="/admin/menu">{{ $t('menu.menu') }}</el-menu-item>
+          <el-menu-item index="/admin/dict">{{ $t('menu.dict') }}</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
@@ -46,21 +46,21 @@
             <el-icon>
               <House />
             </el-icon>
-            Home
+            {{ $t('menu.home') }}
           </el-menu-item>
           <el-menu-item index="/admin/mail">
             <el-icon>
               <Message />
             </el-icon>
-            Mail
+            {{ $t('menu.mail') }}
           </el-menu-item>
           <el-menu-item index="3">
             <el-icon>
               <ChatDotRound />
             </el-icon>
-            Message
+            {{ $t('menu.message') }}
           </el-menu-item>
-            <changeLanguage/>
+          <changeLanguage />
           <el-sub-menu index="5">
             <template #title>
               <el-icon>
@@ -68,9 +68,9 @@
               </el-icon>
               {{ userStore.user.username }}
             </template>
-            <el-menu-item index="/admin/personal">Personal</el-menu-item>
-            <el-menu-item index="/admin/password">Password</el-menu-item>
-            <el-menu-item index="" @click="exit">Exit</el-menu-item>
+            <el-menu-item index="/admin/personal">{{ $t('menu.personal') }}</el-menu-item>
+            <el-menu-item index="/admin/password">{{ $t('menu.password') }}</el-menu-item>
+            <el-menu-item index="" @click="exit">{{ $t('menu.exit') }}</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
@@ -81,6 +81,7 @@
     </div>
   </div>
 </template>
+
   <script setup lang="ts">
   import {
     House,
@@ -95,7 +96,7 @@
   import { useRouter } from "vue-router";
   import useUser from "../../store/user.ts";
   import { ElMessageBox } from "element-plus";
-  import changeLanguage from './changeLanguage.vue';
+  import changeLanguage from '../../components/changeLanguage.vue';
   
   let userStore = useUser();
   let router = useRouter();
