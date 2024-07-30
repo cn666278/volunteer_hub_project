@@ -3,6 +3,7 @@ const en = {
   language: {
     chinese: 'Chinese',
     english: 'English',
+    welsh: 'Welsh'
   },
   header: {
     actions: {

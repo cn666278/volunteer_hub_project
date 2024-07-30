@@ -1,8 +1,9 @@
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
-    chinese: '中文',
-    english: '英文',
+    chinese: 'Chinese',
+    english: 'English',
+    welsh: 'Welsh'
   },
   header: {
     actions: {
