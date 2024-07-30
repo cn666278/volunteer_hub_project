@@ -2,18 +2,21 @@
   <div class="container">
     <div class="logo">
       <img alt="logo" src="../../assets/logo.jpg" />
-      <div class="logo-text">WSA Volunteer Hub</div>
+      <div class="logo-text">{{ $t('appName') }}</div>
+    </div>
+    <div class="top-right">
+      <changeLanguage />
     </div>
     <LoginBanner />
     <div class="content">
       <div class="content-inner">
         <el-tabs type="border-card">
-          <el-tab-pane label="Volunteer">
+          <el-tab-pane :label="$t('login.volunteer')">
             <VolunteerLoginForm />
           </el-tab-pane>
-          <el-tab-pane label="Organizer">Organizer</el-tab-pane>
-          <el-tab-pane label="Admin">Admin</el-tab-pane>
-          <el-tab-pane label="Register">Register</el-tab-pane>
+          <el-tab-pane :label="$t('login.organizer')">{{ $t('login.organizer') }}</el-tab-pane>
+          <el-tab-pane :label="$t('login.admin')">{{ $t('login.admin') }}</el-tab-pane>
+          <el-tab-pane :label="$t('login.register')">{{ $t('login.register') }}</el-tab-pane>
         </el-tabs>
       </div>
       <div class="footer">
@@ -22,18 +25,28 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import Footer from './components/Footer.vue';
 import LoginBanner from './components/banner.vue';
 import VolunteerLoginForm from './components/VolunteerLoginForm.vue';
-
+import changeLanguage from '../../components/changeLanguage.vue';
 </script>
+
 <style scoped lang="scss">
 // scoped表示这个样式只在当前组件中生效, 不会影响到其他组件
 
 .container {
   display: flex;
   height: 100vh;
+  position: relative;
+
+  .top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;  // 确保语言切换按钮在上层
+  }
 
   .banner {
     width: 550px;
@@ -47,6 +60,7 @@ import VolunteerLoginForm from './components/VolunteerLoginForm.vue';
     align-items: center;
     justify-content: center;
     padding-bottom: 40px;
+    z-index: 1;  // 确保 content 不会覆盖语言切换按钮
 
     :deep(.el-form-item__label) {
       color: white;
@@ -95,12 +109,11 @@ import VolunteerLoginForm from './components/VolunteerLoginForm.vue';
   font-weight: 600;
 }
 
-
 :deep(.el-tabs--border-card) {
   background: linear-gradient(163.85deg, #e0535f 0%, #c52323 100%);
 }
 
-:deep(.el-tabs){
+:deep(.el-tabs) {
   --el-color-primary: #f74150;
   --el-color-primary-light-3: #ff5d6a;
 }

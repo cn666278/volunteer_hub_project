@@ -1,21 +1,20 @@
 <template>
-    <el-form size="default" ref="formRef" style="max-width: 600px" :model="formData" status-icon :rules="rules"
-        label-width="80px">
+    <el-form size="default" ref="formRef" style="max-width: 600px" :model="formData" status-icon :rules="rules" label-width="80px">
         <div class="form-header">
-            <p>Volunteer Login</p>
+            <p>{{ $t('login.volunteerLogin') }}</p>
         </div>
-        <el-form-item label="Username" prop="username">
+        <el-form-item :label="$t('login.username')" prop="username">
             <el-input v-model="formData.username" />
         </el-form-item>
-        <el-form-item label="Password" prop="password">
+        <el-form-item :label="$t('login.password')" prop="password">
             <el-input v-model="formData.password" type="password" />
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm(formRef)">
-                Login
+                {{ $t('login.login') }}
             </el-button>
-            <el-button @click="resetForm(formRef)">Reset</el-button>
-            <el-button type="" text="plain" style="margin-left: 80px;">Forget Password?</el-button>
+            <el-button @click="resetForm(formRef)">{{ $t('login.reset') }}</el-button>
+            <el-button type="" text="plain" style="margin-left: 80px;">{{ $t('login.forgetPassword') }}</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -48,7 +47,7 @@ const formData = reactive({
 // validate username
 const validateUsername = (_: any, value: any, callback: any) => {
     if (value === "") {
-        callback(new Error("Please enter the username"));
+        callback(new Error(proxy.$t('login.usernameRequired')));
     } else {
         callback();
     }
@@ -57,7 +56,7 @@ const validateUsername = (_: any, value: any, callback: any) => {
 // validate password
 const validatePassword = (_: any, value: any, callback: any) => {
     if (value === "") {
-        callback(new Error("Please enter the password"));
+        callback(new Error(proxy.$t('login.passwordRequired')));
     } else {
         callback();
     }
@@ -84,7 +83,7 @@ const submitForm = (formRef: FormInstance | undefined) => {
 
                     if (res) {
                         ElNotification({
-                            title: "Notification",
+                            title: proxy.$t('notification.title'),
                             message: res.message,
                             type: "success",
                         });
@@ -112,7 +111,7 @@ const submitForm = (formRef: FormInstance | undefined) => {
                         }
                     } else {
                         ElNotification({
-                            title: "Notification",
+                            title: proxy.$t('notification.title'),
                             message: res.message,
                             type: "error",
                         });

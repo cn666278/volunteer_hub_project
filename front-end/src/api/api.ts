@@ -256,7 +256,7 @@ export default {
       }
     });
   },
-  getfiles(params) {
+  getfiles(params: any) {
     return request({
       url: `/files/${params.id}`,
       method: 'get',

@@ -1,22 +1,24 @@
-import { createI18n } from 'vue-i18n';
-import en from './en-US';
-import cn from './zh-CN';
+import { App } from 'vue'
+import { createI18n } from 'vue-i18n'
+import { zh } from './zh'
+import { en } from './en'
+console.log(zh)
+console.log(en)
 
-export const LOCALE_OPTIONS = [
-  { label: '中文', value: 'zh-CN' },
-  { label: 'English', value: 'en-US' },
-];
-const defaultLocale = localStorage.getItem('arco-locale') || 'en-US';
+const isBrowser = typeof window !== 'undefined' && typeof navigator !== 'undefined';
+const language = isBrowser ? (navigator.language || 'en').toLocaleLowerCase() : 'en'; // 获取浏览器的语言设置
+const locale = isBrowser ? (localStorage.getItem('lang') || language) : 'en';
 
 const i18n = createI18n({
-  locale: defaultLocale,
-  fallbackLocale: 'en-US',
   legacy: false,
-  allowComposition: true,
+  locale: locale, // 优先从本地存储获取语言设置，如果没有则使用浏览器默认语言
+  fallbackLocale: 'en', // 当前语言无法找到匹配的翻译时，使用的备选语言
   messages: {
-    'en-US': en,
-    'zh-CN': cn,
-  },
-});
+    en,
+    zh
+  }
+})
 
-export default i18n;
+export const initI18n = (app: App<Element>) => {
+  app.use(i18n)
+}
