@@ -51,6 +51,12 @@ const en = {
   },
   notification: {
     title: 'Notification'
+  },
+  logout: {
+    title: 'System Notification',
+    message: 'Do you confirm to exit?',
+    confirm: 'Confirm',
+    cancel: 'Cancel'
   }
 }
 export { en }

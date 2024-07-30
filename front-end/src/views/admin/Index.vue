@@ -97,6 +97,8 @@
   import useUser from "../../store/user.ts";
   import { ElMessageBox } from "element-plus";
   import changeLanguage from '../../components/changeLanguage.vue';
+  import { useI18n } from 'vue-i18n';
+  const { t } = useI18n();
   
   let userStore = useUser();
   let router = useRouter();
@@ -110,9 +112,9 @@
   
   // exit
   const exit = () => {
-    ElMessageBox.confirm("Do you confirm to exit?", "System Notification", {
-      confirmButtonText: "Confirm",
-      cancelButtonText: "Cancel",
+    ElMessageBox.confirm(t('logout.message'), t('logout.title'), {
+    confirmButtonText: t('logout.confirm'),
+    cancelButtonText: t('logout.cancel'),
       type: "warning",
     })
       .then(() => {

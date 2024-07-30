@@ -33,7 +33,7 @@ const cy = {
       admin: 'Gweinyddwr',
       register: 'Cofrestru',
       volunteerLogin: 'Mewngofnodi Gwirfoddolwr',
-      username: 'Enw Defnyddiwr',
+      username: 'Cyfrif',
       password: 'Cyfrinair',
       login: 'Mewngofnodi',
       reset: 'Ailosod',
@@ -46,11 +46,17 @@ const cy = {
       subSlogan1: 'helo',
       slogan2: 'Ennill talebau a gwobrau gwirfoddolwr',
       subSlogan2: 'diolch enfawr',
-      slogan3: "Rydym yma i helpu'r gymuned chwaraeon",
+      slogan3: 'Rydym yma i helpu\'r gymuned chwaraeon',
       subSlogan3: 'gallwch wneud gwahaniaeth'
     },
     notification: {
       title: 'Hysbysiad'
+    },
+    logout: {
+      title: 'Hysbysiad System',
+      message: 'A ydych yn cadarnhau eich bod am allgofnodi?',
+      confirm: 'Cadarnhau',
+      cancel: 'Canslo'
     }
   }
   export { cy }

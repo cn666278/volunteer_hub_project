@@ -51,6 +51,12 @@ const zh = {
   },
   notification: {
     title: '通知'
+  },
+  logout: {
+    title: '系统通知',
+    message: '您确定要退出吗？',
+    confirm: '确认',
+    cancel: '取消'
   }
 }
 export { zh }
