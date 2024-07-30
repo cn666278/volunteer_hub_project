@@ -2,8 +2,9 @@
   <div class="custom-container">
     <img :src="flagIcon" class="language-icon" alt="language icon" />
     <el-select class="custom-select" v-model="lang" @change="changeLocale" popper-class="custom-popper">
-      <el-option :label="t('language.chinese')" value="zh" />
+      <el-option :label="t('language.welsh')" value="cy" />
       <el-option :label="t('language.english')" value="en" />
+      <el-option :label="t('language.chinese')" value="zh" />
     </el-select>
   </div>
 </template>
@@ -27,10 +28,12 @@ const currentLocale = computed(() => {
 // 国旗图标映射
 import cnIcon from '../assets/cn-icon.png'
 import ukIcon from '../assets/uk-icon.png'
+import cyIcon from '../assets/welsh-icon.png'
 
 const flagIcons: { [key: string]: string } = {
   zh: cnIcon,
   en: ukIcon,
+  cy: cyIcon
 }
 
 const flagIcon = computed(() => {
@@ -45,7 +48,7 @@ const changeLocale = (locale: string) => {
 }
 
 // 初始化时调用切换语言函数以确保语言设置正确
-changeLocale(lang.value)
+// changeLocale(lang.value)
 </script>
 
 <style scoped>

@@ -1,8 +1,9 @@
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
-    chinese: '中文',
-    english: '英文',
+    chinese: 'Chinese',
+    english: 'English',
+    welsh: 'Welsh'
   },
   header: {
     actions: {
@@ -50,6 +51,12 @@ const zh = {
   },
   notification: {
     title: '通知'
+  },
+  logout: {
+    title: '系统通知',
+    message: '您确定要退出吗？',
+    confirm: '确认',
+    cancel: '取消'
   }
 }
 export { zh }
