@@ -1,46 +1,55 @@
 const en = {
-  Chinese: 'Chinese',
-  English: 'English',
-  OK: 'OK',
-  cancel: 'Cancel',
-  login: {
-    username: 'User Name',
-    password: 'Password',
-    usernameRequire: 'Please input Username',
-    passwordRequire: 'Please input Password',
-    management: 'Management Platform',
-    login: 'Login',
-    logout: 'Logout',
-    concel: 'Concel'
+  appName: 'WSA Volunteer Hub',
+  language: {
+    chinese: 'Chinese',
+    english: 'English',
   },
   header: {
-    welcome: 'Welcome! Take Off the Ghost Face',
-    confirmLogout: 'You will logout.  Continue?',
-    tips: 'Tips',
-    actions: { locale: 'Switch to English' },
+    actions: {
+      locale: 'Language switched successfully'
+    }
   },
-  routes: {
-    admin: 'Console',
+  menu: {
+    manage: 'Manage',
+    role: 'Role',
+    user: 'User',
+    approve: 'Approve',
+    event: 'Event',
+    organizer: 'Organizer',
+    system: 'System',
+    menu: 'Menu',
+    dict: 'Dictionary',
     home: 'Home',
-    statistics: 'Statistics',
-    chart: 'Chart',
-    document: 'Document',
-    setting: 'Setting',
-    preview: 'Preview',
-    table: 'Table',
-    console: 'Console',
-    permissionConsole: 'Permission Console',
-    userConsole: 'User Console'
+    mail: 'Mail',
+    message: 'Message',
+    personal: 'Personal',
+    password: 'Password',
+    exit: 'Exit'
   },
-  homePage: {
-    useV3TS:
-      'Use Vite to build the project, vue3 + TypeScirpt + elementPlus technology stack implementation',
-    sevice: 'nodejs+koa.js implements server-side content!',
-    url: 'You can click on the Banner to get the page code',
-    loginCount: 'Login Times',
-    messageCount: 'Message Count',
-    payCount: 'Pay Count',
-    keyWord: 'KeyWords'
+  login: {
+    volunteer: 'Volunteer',
+    organizer: 'Organizer',
+    admin: 'Admin',
+    register: 'Register',
+    volunteerLogin: 'Volunteer Login',
+    username: 'Username',
+    password: 'Password',
+    login: 'Login',
+    reset: 'Reset',
+    forgetPassword: 'Forget Password?',
+    usernameRequired: 'Please enter the username',
+    passwordRequired: 'Please enter the password'
   },
+  banner: {
+    slogan1: 'Welcome to WSA Volunteer Hub',
+    subSlogan1: 'hello',
+    slogan2: 'Earn volunteer vouchers and rewards',
+    subSlogan2: 'a massive thank you',
+    slogan3: 'We are here to help the sports community',
+    subSlogan3: 'you can make a difference'
+  },
+  notification: {
+    title: 'Notification'
+  }
 }
 export { en }

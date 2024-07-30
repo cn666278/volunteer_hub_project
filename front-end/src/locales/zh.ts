@@ -1,45 +1,55 @@
 const zh = {
-  Chinese: '中文',
-  English: '英文',
-  OK: '确认',
-  cancel: '取消',
-  login: {
-    username: '用户名',
-    password: '密码',
-    usernameRequire: '请输入用户名',
-    passwordRequire: '请输入密码',
-    management: '管理平台',
-    login: '登陆',
-    logout: '登出',
-    concel: '取消'
+  appName: 'WSA 志愿者中心',
+  language: {
+    chinese: '中文',
+    english: '英文',
   },
   header: {
-    welcome: '欢迎来到 Ghost Face！',
-    confirmLogout: '您将登出账号是否继续？',
-    tips: '提示',
-    actions: {locale: '切换到中文'},
+    actions: {
+      locale: '语言切换成功'
+    }
   },
-  routes: {
-    admin: '平台管理',
-    home: 'HomePage',
-    statistics: '统计管理',
-    chart: '统计数据',
-    document: '文档管理',
-    setting: '文档配置',
-    preview: '文档预览',
-    table: '图表展示',
-    console: '控制台',
-    permissionConsole: '权限管理',
-    userConsole: '用户管理'
+  menu: {
+    manage: '管理',
+    role: '角色',
+    user: '用户',
+    approve: '审批',
+    event: '事件',
+    organizer: '组织者',
+    system: '系统',
+    menu: '菜单',
+    dict: '字典',
+    home: '主页',
+    mail: '邮件',
+    message: '消息',
+    personal: '个人',
+    password: '密码',
+    exit: '退出'
   },
-  homePage: {
-    useV3TS: '使用Vite构建项目，vue3 + TypeScirpt + elementPlus技术栈实现',
-    sevice: 'nodejs+koa.js 实现服务端内容!',
-    url: '可以点击Banner 获取页面代码',
-    loginCount: '用户登录',
-    messageCount: '消息',
-    payCount: '订单数',
-    keyWord: '关键词'
+  login: {
+    volunteer: '志愿者',
+    organizer: '组织者',
+    admin: '管理员',
+    register: '注册',
+    volunteerLogin: '志愿者登录',
+    username: '用户名',
+    password: '密码',
+    login: '登录',
+    reset: '重置',
+    forgetPassword: '忘记密码？',
+    usernameRequired: '请输入用户名',
+    passwordRequired: '请输入密码'
+  },
+  banner: {
+    slogan1: '欢迎来到WSA志愿者中心',
+    subSlogan1: '你好',
+    slogan2: '获得志愿者代金券和奖励',
+    subSlogan2: '衷心感谢',
+    slogan3: '我们在这里帮助体育社区',
+    subSlogan3: '你可以有所作为'
+  },
+  notification: {
+    title: '通知'
   }
 }
 export { zh }
