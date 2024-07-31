@@ -2,7 +2,7 @@
   <el-drawer
     size="30%"
     v-model="drawer"
-    :title="formData.roleId ? 'Edit Role' : 'Add Role'"
+    :title="formData.roleId ? $t('role.editTitle') : $t('role.addTitle')"
     direction="rtl"
     :before-close="handleClose"
   >
@@ -15,14 +15,14 @@
       :rules="rules"
       label-width="90px"
     >
-      <el-form-item label="Role Name" prop="roleName">
+      <el-form-item :label="$t('role.roleName')" prop="roleName">
         <el-input v-model="formData.roleName" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">
-          {{ formData.roleId ? "Edit" : "Add" }}
+          {{ formData.roleId ? $t('role.edit') : $t('role.add') }}
         </el-button>
-        <el-button @click="handleClose">Reset</el-button>
+        <el-button @click="handleClose">{{ $t('role.reset') }}</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
@@ -31,6 +31,9 @@
 <script setup lang="ts">
 import { FormInstance, FormRules, ElNotification } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { proxy }: any = getCurrentInstance();
 // expose to parent component, so that the parent component can call the drawer
 const emit = defineEmits(["update-role-list"]);
@@ -56,7 +59,7 @@ const formData = ref({
 // validate role name
 const validateRoleName = (_: any, value: any, callback: any) => {
   if (value === "") {
-    callback(new Error("Please enter role name"));
+    callback(new Error(t('role.validateRoleName')));
   } else {
     callback();
   }
@@ -80,7 +83,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
       if (res) {
         ElNotification({
-          title: "Notification",
+          title: t('role.notificationTitle'),
           message: res.message,
           type: "success",
         });
@@ -89,7 +92,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         console.log("success submit!");
       } else {
         ElNotification({
-          title: "Notification",
+          title: t('role.notificationTitle'),
           message: res.message,
           type: "error",
         });

@@ -7,7 +7,7 @@
           <div class="user-info">
             <el-descriptions
               class="margin-top"
-              title="User Information"
+              :title="$t('home.userInformation')"
               :column="1"
               size="default"
               border
@@ -18,7 +18,7 @@
                     <el-icon>
                       <tickets />
                     </el-icon>
-                    Username
+                    {{ $t('home.username') }}
                   </div>
                 </template>
                 {{ userStore.user.username }}
@@ -29,7 +29,7 @@
                     <el-icon>
                       <user />
                     </el-icon>
-                    Role
+                    {{ $t('home.role') }}
                   </div>
                 </template>
                 <el-tag size="small">{{ userStore.user.role.roleName }}</el-tag>
@@ -40,7 +40,7 @@
                     <el-icon>
                       <office-building />
                     </el-icon>
-                    Last login Time
+                    {{ $t('home.lastLoginTime') }}
                   </div>
                 </template>
                 2024-03-24 12:00:00
@@ -51,7 +51,7 @@
                     <el-icon>
                       <iphone />
                     </el-icon>
-                    Last Login Location
+                    {{ $t('home.lastLoginLocation') }}
                   </div>
                 </template>
                 Cardiff
@@ -66,7 +66,7 @@
             v-for="(val, key) in tableLable"
             :key="key"
             :prop="key"
-            :label="val"
+            :label="$t(`home.${val}`)"
           ></el-table-column>
         </el-table>
       </el-card>
@@ -85,21 +85,21 @@
           ></component>
           <div class="details">
             <p class="num">{{ item.value }}</p>
-            <p class="text">{{ item.name }}</p>
+            <p class="text">{{ $t(`home.${item.name}`) }}</p>
           </div>
         </el-card>
       </div>
       <el-card style="height: 300px">
-        <p>Register User</p>
+        <p>{{ $t('home.registerUser') }}</p>
         <div ref="echart" style="height: 280px"></div>
       </el-card>
       <div class="graph">
         <el-card style="height: 300px">
-          <p>Activie Users</p>
+          <p>{{ $t('home.activeUsers') }}</p>
           <div ref="userEchart" style="height: 240px"></div>
         </el-card>
         <el-card style="height: 300px">
-          <p>Events</p>
+          <p>{{ $t('home.events') }}</p>
           <div ref="videoEchart" style="height: 240px"></div>
         </el-card>
       </div>
@@ -122,10 +122,10 @@ let tableData = ref([]); // 双向绑定，使用ref包裹数组，实现响应�
 let countData = ref({});
 // 今日购买，本月购买，总购买 Today's purchases, Monthly purchases, Total purchases
 const tableLable = {
-  name: "Event",
-  todayPurchase: "Today's active users",
-  monthlyPurchase: "Monthly active users",
-  totalPurchase: "Total active users",
+  name: 'event',
+  todayPurchase: 'todaysActiveUsers',
+  monthlyPurchase: 'monthlyActiveUsers',
+  totalPurchase: 'totalActiveUsers',
 };
 
 // 获取表格数据
