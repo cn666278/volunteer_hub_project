@@ -6,7 +6,7 @@
     <div class="right">
       <el-descriptions
         class="margin-top"
-        title="User Information"
+        :title="$t('user.personal.title')"
         :column="2"
         :size="size"
         border
@@ -17,7 +17,7 @@
               <el-icon>
                 <View />
               </el-icon>
-              Login ID
+              {{ $t('user.personal.loginId') }}
             </div>
           </template>
           {{ userStore.user.loginId }}
@@ -26,9 +26,9 @@
           <template #label>
             <div class="cell-item">
               <el-icon>
-                <message />
+                <Message />
               </el-icon>
-              Mail
+              {{ $t('user.personal.mail') }}
             </div>
           </template>
           {{ userStore.user.email }}
@@ -37,9 +37,9 @@
           <template #label>
             <div class="cell-item">
               <el-icon>
-                <tickets />
+                <Tickets />
               </el-icon>
-              Username
+              {{ $t('user.personal.username') }}
             </div>
           </template>
           {{ userStore.user.username }}
@@ -48,9 +48,9 @@
           <template #label>
             <div class="cell-item">
               <el-icon>
-                <iphone />
+                <Iphone />
               </el-icon>
-              Phone
+              {{ $t('user.personal.phone') }}
             </div>
           </template>
           {{ userStore.user.phone }}
@@ -59,9 +59,9 @@
           <template #label>
             <div class="cell-item">
               <el-icon>
-                <user />
+                <User />
               </el-icon>
-              Role
+              {{ $t('user.personal.role') }}
             </div>
           </template>
           <el-tag size="small">{{ userStore.user.role.roleName }}</el-tag>
@@ -70,9 +70,9 @@
           <template #label>
             <div class="cell-item">
               <el-icon>
-                <office-building />
+                <OfficeBuilding />
               </el-icon>
-              Address
+              {{ $t('user.personal.address') }}
             </div>
           </template>
           Cardiff, UK
