@@ -25,7 +25,27 @@ public class VolunteerController {
             @RequestParam int pageSize) {
         PageInfo<Volunteer> volunteersByEventId = volunteerService.getVolunteersByEventId(eventId, status, pageNum, pageSize);
         for (Volunteer v : volunteersByEventId.getList()) {
-            v.setRoleName("roleName" + v.getRoleId());
+            switch(v.getRoleId().intValue()){
+                case 1 :
+                    v.setRoleName("Event Coordinator");
+                    break;
+                case 2 :
+                    v.setRoleName("Event Welcome Desk");
+                    break;
+                case 3 :
+                    v.setRoleName("Athlete Registration Desk");
+                    break;
+                case 4 :
+                    v.setRoleName("Transport Operations");
+                    break;
+                case 5 :
+                    v.setRoleName("Event Greeter / Fan Experience");
+                    break;
+                case 6 :
+                    v.setRoleName("Entertainment Coordinator");
+                    break;
+                default :
+            }
         }
         return ResultVO.success(volunteersByEventId);
     }

@@ -1,17 +1,11 @@
 <template>
-  <div class="home">
+  <div class="index">
     <div class="left">
       <div class="title">
         <h2>WSA Volunteer Hub</h2>
       </div>
-      <el-menu
-        router
-        active-text-color="#ffd04b"
-        background-color="#142334"
-        class="el-menu-vertical-demo"
-        default-active="2"
-        text-color="#fff"
-      >
+      <el-menu router active-text-color="#ffd04b" background-color="#a9181a" class="el-menu-vertical-demo"
+               default-active="2" text-color="#fff">
         <el-sub-menu index="1">
           <template #title>
             <el-icon><Briefcase /></el-icon>
@@ -41,14 +35,8 @@
     </div>
     <div class="right">
         <div class="top">
-        <el-menu
-          router
-          mode="horizontal"
-          background-color="#142334"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-          :ellipsis="false"
-        >
+          <el-menu router mode="horizontal" background-color="#a9181a" text-color="#fff" active-text-color="rgb(255, 143, 15)"
+                   :ellipsis="false">
           <el-menu-item index="1">
             <el-icon><House /></el-icon>
             Home
@@ -121,13 +109,13 @@ const exit = () => {
 </script>
 
 <style lang="scss">
-.home {
+.index {
   width: 100vw; // 100% of the viewport width
   height: 100vh;
   display: flex;
   .left {
     width: 200px;
-    background-color: #142334;
+    background-color: #a9181a;
     color: white;
     .el-menu {
       // delete the right border
@@ -146,7 +134,7 @@ const exit = () => {
     flex-direction: column;
     .top {
       height: 60px;
-      background-color: #142334;
+      background-color: #a9181a;
       color: white;
       display: flex;
       justify-content: flex-end;

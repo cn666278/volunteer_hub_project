@@ -72,7 +72,7 @@ const form = reactive({
   nearbyFacilities: []
 });
 
-const availableRoles = ['role1', 'role2', 'role3', 'role4', 'role5', 'role6'];
+const availableRoles = ['Event Coordinator', 'Event Welcome Desk', 'Athlete Registration Desk', 'Transport Operations', 'Event Greeter / Fan Experience', 'Entertainment Coordinator'];
 const nearbyFacilities = ref<any[]>([]);
 let eventId = 0;
 const loadEventData = (event) => {

@@ -123,7 +123,7 @@ onMounted(() => {
 
 <style scoped>
 .custom-el-messagebox .el-message-box__content img {
-  max-width: 100%;
+  /*max-width: 100%;*/
   height: auto;
   display: block;
   margin: 0 auto;
