@@ -14,15 +14,13 @@
           <el-card class="feature-card" @click="navigateTo(feature.route)">
             <div class="card-content">
               <img :src="feature.icon" class="feature-icon" alt="Feature Icon">
-              <h3>{{ feature.name }}</h3>
+              <h3>{{ $t(feature.name) }}</h3>
               <p>{{ feature.description }}</p>
             </div>
           </el-card>
         </el-col>
       </el-row>
-
     </el-main>
-
   </div>
 </template>
 
@@ -40,27 +38,35 @@ export default {
       rating: 4.5,
       features: [
         {
-          name: 'Personal Information',
+          name: 'personal.personalInformation',
           icon: './src/assets/personal.png',
           route: '/volunteer/personalInfo',
         },
         {
-          name: 'Credentials',
+          name: 'personal.credentials',
           icon: './src/assets/credentials.png',
           route: '/volunteer/credentials',
         },
         {
-          name: 'Events',
+          name: 'personal.events',
           icon: './src/assets/events.png',
-          route: '/volunteer/events',},
+          route: '/volunteer/events',
+        },
         {
-          name: 'Comments',
+          name: 'personal.comments',
           icon: './src/assets/comments.png',
           route: '/volunteer/comments',
-
         },
-        {name: 'Information', icon: './src/assets/message.png', route: '/volunteer/information', },
-        {name: 'Share', icon: './src/assets/share.png', route: '/volunteer/share', }
+        {
+          name: 'personal.information',
+          icon: './src/assets/message.png',
+          route: '/volunteer/information',
+        },
+        {
+          name: 'personal.share',
+          icon: './src/assets/share.png',
+          route: '/volunteer/share',
+        }
       ]
     };
   },
@@ -70,13 +76,9 @@ export default {
     }
   }
 };
-
-
 </script>
 
 <style scoped>
-
-
 .main-content {
   display: flex;
   flex-direction: column;
@@ -99,7 +101,6 @@ export default {
   text-align: center; /* 确保文本居中显示 */
   color:  #a9181a;;
   font-size: 15px;
-
 }
 
 .user-avatar {
@@ -213,6 +214,4 @@ export default {
     word-wrap: break-word; /* 避免文字溢出 */
   }
 }
-
-
 </style>

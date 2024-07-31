@@ -74,5 +74,27 @@ export default {
   "eventRegister.selectQualification": "Dewiswch o leiaf un cymhwyster os gwelwch yn dda",
   "eventRegister.selectEventType": "Dewiswch o leiaf un math o ddigwyddiad os gwelwch yn dda",
   "eventRegister.selectEventResource": "Dewiswch adnodd digwyddiad os gwelwch yn dda",
-  "eventRegister.inputNote": "Rhowch nodyn os gwelwch yn dda"
+  "eventRegister.inputNote": "Rhowch nodyn os gwelwch yn dda",
+  // personal
+  "personal.personalInformation": "Gwybodaeth Bersonol",
+  "personal.credentials": "Cymwysterau",
+  "personal.events": "Digwyddiadau",
+  "personal.comments": "Sylwadau",
+  "personal.information": "Gwybodaeth",
+  "personal.share": "Rhannu",
+  // personal info
+  "personalInfo.name": "Enw",
+  "personalInfo.gender": "Rhyw",
+  "personalInfo.phone": "Ffôn",
+  "personalInfo.email": "E-bost",
+  "personalInfo.dateOfBirth": "Dyddiad Geni",
+  "personalInfo.pickDate": "Dewiswch ddyddiad",
+  "personalInfo.credentials": "Cymwysterau",
+  "personalInfo.onlineActivities": "Gweithgareddau ar-lein",
+  "personalInfo.promotionActivities": "Gweithgareddau hyrwyddo",
+  "personalInfo.offlineActivities": "Gweithgareddau all-lein",
+  "personalInfo.simpleBrandExposure": "Amlygiad brand syml",
+  "personalInfo.personalStatement": "Datganiad personol",
+  "personalInfo.create": "Creu",
+  "personalInfo.cancel": "Canslo",
 };
