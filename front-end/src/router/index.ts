@@ -61,6 +61,12 @@ const routes = createRouter({
           component: () => import("../views/volunteer/Events.vue"),
         },
         {
+          path: "/volunteer/eventRegister",
+          name: "Volunteer Event Register",
+          meta: { title: "Event Register" },
+          component: () => import("../views/volunteer/EventRegister.vue"),
+        },
+        {
           path: "/volunteer/comments",
           name: "Volunteer Comments",
           meta: { title: "Comments" },
@@ -82,7 +88,7 @@ const routes = createRouter({
           path: "/",
           name: "Volunteer Event",
           meta: { title: "Event" },
-          component: () => import("../views/volunteer/Event.vue"),
+          component: () => import("../views/volunteer/EventRegister.vue"),
         },
         {
           path: "/volunteer/rewardStore",

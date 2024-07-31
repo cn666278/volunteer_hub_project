@@ -20,7 +20,7 @@
       </div>
       <el-menu-item index="/volunteer">{{ $t('navbar.home') }}</el-menu-item>
       <el-menu-item index="/volunteer/events">{{ $t('navbar.events') }}</el-menu-item>
-      <el-menu-item index="3">{{ $t('navbar.news') }}</el-menu-item>
+      <el-menu-item index="/volunteer/eventRegister">{{ $t('navbar.news') }}</el-menu-item>
       <el-menu-item index="/volunteer/rewardStore">{{ $t('navbar.rewardStore') }}</el-menu-item>
       <el-menu-item index="/volunteer/personal">
         <el-tooltip :content="$t('navbar.viewNotifications')" placement="bottom">
