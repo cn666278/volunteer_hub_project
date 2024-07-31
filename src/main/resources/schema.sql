@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 31/07/2024 01:13:38
+ Date: 31/07/2024 01:17:09
 */
 
 SET NAMES utf8mb4;
@@ -55,7 +55,7 @@ CREATE TABLE `credentials`  (
 -- ----------------------------
 INSERT INTO `credentials` VALUES (1, 1, 'first aid', '/files/4');
 INSERT INTO `credentials` VALUES (2, 1, 'first aid', '/files/4');
-INSERT INTO `credentials` VALUES (3, 2, 'first aid', '/files/3');
+INSERT INTO `credentials` VALUES (3, 2, 'first aid', '/files/4');
 
 -- ----------------------------
 -- Table structure for emails
