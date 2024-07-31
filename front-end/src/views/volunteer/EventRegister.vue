@@ -5,77 +5,68 @@
       <div class="image" style="display: flex; justify-content: center; margin-bottom: 20px;">
         <img src="../../assets/volunteer2.png" alt="volunteer" style="width: 800px;">
       </div>
-      <el-form-item label="Event name" prop="name">
+      <el-form-item :label="$t('eventRegister.eventName')" prop="name">
         <el-input v-model="ruleForm.name" disabled />
       </el-form-item>
-      <el-form-item label="Event date" prop="date">
+      <el-form-item :label="$t('eventRegister.eventDate')" prop="date">
         <el-input v-model="ruleForm.date" disabled />
       </el-form-item>
-      <el-form-item label="Volunteer date" prop="region">
-        <el-select v-model="ruleForm.region" placeholder="Volunteer Date">
-          <el-option label="Day one - 24 Aug" value="day1" />
-          <el-option label="Day two - 25 Aug" value="day2" />
-          <el-option label="Day three - 26 Aug" value="day3" />
+      <el-form-item :label="$t('eventRegister.volunteerDate')" prop="region">
+        <el-select v-model="ruleForm.region" :placeholder="$t('eventRegister.volunteerDatePlaceholder')">
+          <el-option :label="$t('eventRegister.dayOne')" value="day1" />
+          <el-option :label="$t('eventRegister.dayTwo')" value="day2" />
+          <el-option :label="$t('eventRegister.dayThree')" value="day3" />
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="Event count" prop="count">
-        <el-select-v2 v-model="ruleForm.count" placeholder="Event count" :options="options" />
-      </el-form-item> -->
-      <el-form-item label="DBS" prop="abs" required>
+      <el-form-item :label="$t('eventRegister.dbs')" prop="abs" required>
         <el-radio-group v-model="ruleForm.resource">
-          <el-radio value="yes">Yes</el-radio>
-          <el-radio value="no">No</el-radio>
+          <el-radio :label="$t('eventRegister.yes')" value="yes">{{ $t('eventRegister.yes') }}</el-radio>
+          <el-radio :label="$t('eventRegister.no')" value="no">{{ $t('eventRegister.no') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <!-- <el-form-item label="DBS" prop="dbs" required>
-        <el-switch v-model="ruleForm.delivery" />
-      </el-form-item> -->
-      <el-form-item label="Qualifications" prop="qualifications">
+      <el-form-item :label="$t('eventRegister.qualifications')" prop="qualifications">
         <el-checkbox-group v-model="ruleForm.qualifications">
-          <el-checkbox value="coach qualifications" name="qualifications">
-            coach qualifications
+          <el-checkbox :label="$t('eventRegister.coachQualifications')" value="coach qualifications">
+            {{ $t('eventRegister.coachQualifications') }}
           </el-checkbox>
-          <el-checkbox value="first aid" name="qualifications">
-            first aid
+          <el-checkbox :label="$t('eventRegister.firstAid')" value="first aid">
+            {{ $t('eventRegister.firstAid') }}
           </el-checkbox>
-          <el-checkbox value="previous experience" name="qualifications">
-            previous experience
+          <el-checkbox :label="$t('eventRegister.previousExperience')" value="previous experience">
+            {{ $t('eventRegister.previousExperience') }}
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <!-- <el-form-item label="Event location" prop="location">
-        <el-segmented v-model="ruleForm.location" :options="locationOptions" />
-      </el-form-item> -->
-      <el-form-item label="Volunteer role" prop="role">
+      <el-form-item :label="$t('eventRegister.volunteerRole')" prop="role">
         <el-checkbox-group v-model="ruleForm.role">
-          <el-checkbox value="Event Coordinator" name="role">
-        Event Coordinator
+          <el-checkbox :label="$t('eventRegister.eventCoordinator')" value="Event Coordinator">
+            {{ $t('eventRegister.eventCoordinator') }}
           </el-checkbox>
-          <el-checkbox value="Event Welcome Desk" name="role">
-        Event Welcome Desk
+          <el-checkbox :label="$t('eventRegister.eventWelcomeDesk')" value="Event Welcome Desk">
+            {{ $t('eventRegister.eventWelcomeDesk') }}
           </el-checkbox>
-          <el-checkbox value="Athlete Registration Desk" name="role">
-        Athlete Registration Desk
+          <el-checkbox :label="$t('eventRegister.athleteRegistrationDesk')" value="Athlete Registration Desk">
+            {{ $t('eventRegister.athleteRegistrationDesk') }}
           </el-checkbox>
-          <el-checkbox value="Transport Operations" name="role">
-        Transport Operations
+          <el-checkbox :label="$t('eventRegister.transportOperations')" value="Transport Operations">
+            {{ $t('eventRegister.transportOperations') }}
           </el-checkbox>
-          <el-checkbox value="Event Greeter / Fan Experience" name="role">
-        Event Greeter / Fan Experience
+          <el-checkbox :label="$t('eventRegister.eventGreeter')" value="Event Greeter / Fan Experience">
+            {{ $t('eventRegister.eventGreeter') }}
           </el-checkbox>
-          <el-checkbox value="Entertainment Coordinator" name="role">
-        Entertainment Coordinator
+          <el-checkbox :label="$t('eventRegister.entertainmentCoordinator')" value="Entertainment Coordinator">
+            {{ $t('eventRegister.entertainmentCoordinator') }}
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="Note" prop="note">
+      <el-form-item :label="$t('eventRegister.note')" prop="note">
         <el-input v-model="ruleForm.note" type="textarea" />
       </el-form-item>
       <el-form-item style="display: flex;">
         <el-button type="primary" @click="submitForm(ruleFormRef)">
-          Create
+          {{ $t('eventRegister.create') }}
         </el-button>
-        <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+        <el-button @click="resetForm(ruleFormRef)">{{ $t('eventRegister.reset') }}</el-button>
       </el-form-item>
     </el-form>
   </div>

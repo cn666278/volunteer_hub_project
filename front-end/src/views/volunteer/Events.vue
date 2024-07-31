@@ -2,32 +2,32 @@
   <div class="container">
     <div class="sidebar">
       <el-menu
-          :default-active="activeIndex"
-          class="el-menu-vertical-demo"
-          background-color="#ffffff"
-          text-color="#303133"
-          active-text-color="#409EFF"
-          @select="handleSelect"
+        :default-active="activeIndex"
+        class="el-menu-vertical-demo"
+        background-color="#ffffff"
+        text-color="#303133"
+        active-text-color="#409EFF"
+        @select="handleSelect"
       >
         <el-menu-item index="1">
           <el-icon><search /></el-icon>
-          <span slot="title">All Events</span>
+          <span slot="title">{{ $t('events.allEvents') }}</span>
         </el-menu-item>
         <el-menu-item index="2">
           <el-icon><icon-menu /></el-icon>
-          <span slot="title">Ongoing Events</span>
+          <span slot="title">{{ $t('events.ongoingEvents') }}</span>
         </el-menu-item>
         <el-menu-item index="3">
           <el-icon><document /></el-icon>
-          <span slot="title">Closed Events</span>
+          <span slot="title">{{ $t('events.closedEvents') }}</span>
         </el-menu-item>
       </el-menu>
     </div>
     <div class="content">
       <div v-if="activeIndex === '1'" class="search-section">
         <el-input
-            placeholder="Type here to search..."
-            v-model="searchQuery">
+          :placeholder="$t('events.searchPlaceholder')"
+          v-model="searchQuery">
           <template #prefix>
             <el-icon><search /></el-icon>
           </template>
@@ -57,7 +57,6 @@
       </div>
       <!-- Ongoing Events Section -->
       <div class="blog-section" v-if="activeIndex === '2'">
-
         <div class="blog-display">
           <el-card v-for="post in ongoingEvents" :key="post.id" class="blog-card">
             <img :src="post.image" alt="Blog Image" class="blog-image">
@@ -80,7 +79,6 @@
       </div>
       <!-- Closed Events Section -->
       <div class="blog-section" v-if="activeIndex === '3'">
-
         <div class="blog-display">
           <el-card v-for="post in closedEvents" :key="post.id" class="blog-card">
             <img :src="post.image" alt="Blog Image" class="blog-image">

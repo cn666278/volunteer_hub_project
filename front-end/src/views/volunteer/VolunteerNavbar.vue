@@ -2,17 +2,7 @@
   <div>
     <div class="navbar-top">
       <img src="../../assets/logo.png" class="top-logo">
-      <el-dropdown class="language-switcher">
-  <span class="el-dropdown-link">
-    <img src="../../assets/language.png" class="custom-icon"> <!-- 更换为自定义图标 -->
-  </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>English</el-dropdown-item>
-          <el-dropdown-item>中文</el-dropdown-item>
-          <el-dropdown-item>Español</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
+      <change-language />
     </div>
 
     <el-menu
@@ -28,13 +18,12 @@
       <div class="weblogo">
         <img src="../../assets/logo.png" class="logo">
       </div>
-      <el-menu-item index="/volunteer">Home</el-menu-item>
-      <el-menu-item index="/volunteer/events">Events</el-menu-item>
-      <el-menu-item index="3">News</el-menu-item>
-
-      <el-menu-item index="/volunteer/rewardStore">RewardStore</el-menu-item>
+      <el-menu-item index="/volunteer">{{ $t('navbar.home') }}</el-menu-item>
+      <el-menu-item index="/volunteer/events">{{ $t('navbar.events') }}</el-menu-item>
+      <el-menu-item index="/volunteer/eventRegister">{{ $t('navbar.news') }}</el-menu-item>
+      <el-menu-item index="/volunteer/rewardStore">{{ $t('navbar.rewardStore') }}</el-menu-item>
       <el-menu-item index="/volunteer/personal">
-        <el-tooltip content="View Notifications" placement="bottom">
+        <el-tooltip :content="$t('navbar.viewNotifications')" placement="bottom">
           <el-icon class="icon">
             <i class="el-icon-bell"></i>
           </el-icon>
@@ -45,10 +34,10 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useUser from "../../store/user";
+import changeLanguage from '../../components/changeLanguage.vue';
 // user store
 const userStore = useUser();
 

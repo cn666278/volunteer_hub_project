@@ -3,29 +3,32 @@
     <div class="footer-content">
       <div class="footer-section">
         <el-row>
-          <el-col :span="24"><h3>About Us</h3></el-col>
-          <el-col :span="24"><p>Learn more</p></el-col>
+          <el-col :span="24"><h3>{{ $t('footer.aboutUs') }}</h3></el-col>
+          <el-col :span="24"><p>{{ $t('footer.learnMore') }}</p></el-col>
         </el-row>
       </div>
       <div class="footer-section">
-        <h3>Newsletter</h3>
+        <h3>{{ $t('footer.newsletter') }}</h3>
         <el-form>
           <el-form-item>
-            <el-input placeholder="Your email"></el-input>
+            <el-input :placeholder="$t('footer.yourEmail')"></el-input>
           </el-form-item>
-          <el-button type="primary">Subscribe</el-button>
+          <el-button type="primary">{{ $t('footer.subscribe') }}</el-button>
         </el-form>
       </div>
       <div class="footer-section">
-        <h3>Follow Us</h3>
+        <h3>{{ $t('footer.followUs') }}</h3>
         <el-link icon="el-icon-twitter"></el-link>
         <el-link icon="el-icon-linkedin"></el-link>
       </div>
       <div class="footer-section">
-        <h3>Contact Us</h3>
-        <p>Address: Your Address</p>
-        <p>Phone: Your Phone Number</p>
-        <p>Email: contact@example.com</p>
+        <h3>{{ $t('footer.contactUs') }}</h3>
+        <p>{{ $t('footer.address') }}<br>
+          {{ $t('footer.addressLine1') }}<br>
+          {{ $t('footer.addressLine2') }}<br>
+          {{ $t('footer.addressLine3') }}</p>
+        <p>{{ $t('footer.phone') }}</p>
+        <p>{{ $t('footer.email') }}</p>
       </div>
     </div>
   </el-footer>
