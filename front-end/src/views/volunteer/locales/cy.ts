@@ -1,4 +1,5 @@
 export default {
+  // home
   "home.intro.weAreGathered": "Rydym wedi ymgynnull",
   "home.intro.wsa": "WSA",
   "home.intro.welshSportsAssociation": "Cymdeithas Chwaraeon Cymru",
@@ -22,4 +23,24 @@ export default {
   "home.blogSection.postAuthor3": "Tenis Bwrdd Cymru",
   "home.blogSection.postDate3": "30.07.2024",
   "home.blogSection.postDescription3": "Mae Tenis Bwrdd Cymru yn cynnal Pencampwriaethau Tîm Hŷn Cymru, gan gynnwys cystadleuaeth tîm elitaidd mewn tenis bwrdd.",
+  // nav
+  "navbar.home": "Hafan",
+  "navbar.events": "Digwyddiadau",
+  "navbar.news": "Newyddion",
+  "navbar.rewardStore": "Siop Wobrwyo",
+  "navbar.viewNotifications": "Gweld Hysbysiadau",
+  // footer
+  "footer.aboutUs": "Amdanom ni",
+  "footer.learnMore": "Dysgu mwy",
+  "footer.newsletter": "Cylchlythyr",
+  "footer.yourEmail": "Eich e-bost",
+  "footer.subscribe": "Tanysgrifio",
+  "footer.followUs": "Dilynwch ni",
+  "footer.contactUs": "Cysylltwch â ni",
+  "footer.address": "Cyfeiriad: Cymdeithas Chwaraeon Cymru",
+  "footer.addressLine1": "Canolfan Genedlaethol",
+  "footer.addressLine2": "Gerddi Sophia",
+  "footer.addressLine3": "Caerdydd CF11 9SW",
+  "footer.phone": "Ffôn: 029 2033 4972",
+  "footer.email": "E-bost: admin@wsa.wales",
 };

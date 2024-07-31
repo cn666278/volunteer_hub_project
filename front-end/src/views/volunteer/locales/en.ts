@@ -1,4 +1,5 @@
 export default {
+  // home
   "home.intro.weAreGathered": "We Are Gathered",
   "home.intro.wsa": "WSA",
   "home.intro.welshSportsAssociation": "Welsh Sports Association",
@@ -22,4 +23,24 @@ export default {
   "home.blogSection.postAuthor3": "Table Tennis Wales",
   "home.blogSection.postDate3": "30.07.2024",
   "home.blogSection.postDescription3": "Table Tennis Wales is hosting the Senior Team Championships of Wales, featuring elite team competition in table tennis.",
+  // nav
+  "navbar.home": "Home",
+  "navbar.events": "Events",
+  "navbar.news": "News",
+  "navbar.rewardStore": "Reward Store",
+  "navbar.viewNotifications": "View Notifications",
+  // footer
+  "footer.aboutUs": "About Us",
+  "footer.learnMore": "Learn more",
+  "footer.newsletter": "Newsletter",
+  "footer.yourEmail": "Your email",
+  "footer.subscribe": "Subscribe",
+  "footer.followUs": "Follow Us",
+  "footer.contactUs": "Contact Us",
+  "footer.address": "Address: Welsh Sports Association",
+  "footer.addressLine1": "c/o National Centre",
+  "footer.addressLine2": "Sophia Gardens",
+  "footer.addressLine3": "Cardiff CF11 9SW",
+  "footer.phone": "Phone: 029 2033 4972",
+  "footer.email": "Email: admin@wsa.wales",
 };

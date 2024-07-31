@@ -1,4 +1,5 @@
 export default {
+  // home
   "home.intro.weAreGathered": "我们聚集在一起",
   "home.intro.wsa": "WSA",
   "home.intro.welshSportsAssociation": "威尔士体育协会",
@@ -22,4 +23,24 @@ export default {
   "home.blogSection.postAuthor3": "威尔士乒乓球",
   "home.blogSection.postDate3": "2024.07.30",
   "home.blogSection.postDescription3": "威尔士乒乓球将举办威尔士高级队锦标赛，展示乒乓球精英队比赛。",
+  // nav
+  "navbar.home": "首页",
+  "navbar.events": "事件",
+  "navbar.news": "新闻",
+  "navbar.rewardStore": "奖励商店",
+  "navbar.viewNotifications": "查看通知",
+  // footer
+  "footer.aboutUs": "关于我们",
+  "footer.learnMore": "了解更多",
+  "footer.newsletter": "通讯",
+  "footer.yourEmail": "您的电子邮件",
+  "footer.subscribe": "订阅",
+  "footer.followUs": "关注我们",
+  "footer.contactUs": "联系我们",
+  "footer.address": "地址: 威尔士体育协会",
+  "footer.addressLine1": "国家中心",
+  "footer.addressLine2": "索菲亚花园",
+  "footer.addressLine3": "加的夫 CF11 9SW",
+  "footer.phone": "电话: 029 2033 4972",
+  "footer.email": "电子邮件: admin@wsa.wales",
 };

@@ -18,13 +18,12 @@
       <div class="weblogo">
         <img src="../../assets/logo.png" class="logo">
       </div>
-      <el-menu-item index="/volunteer">Home</el-menu-item>
-      <el-menu-item index="/volunteer/events">Events</el-menu-item>
-      <el-menu-item index="3">News</el-menu-item>
-
-      <el-menu-item index="/volunteer/rewardStore">RewardStore</el-menu-item>
+      <el-menu-item index="/volunteer">{{ $t('navbar.home') }}</el-menu-item>
+      <el-menu-item index="/volunteer/events">{{ $t('navbar.events') }}</el-menu-item>
+      <el-menu-item index="3">{{ $t('navbar.news') }}</el-menu-item>
+      <el-menu-item index="/volunteer/rewardStore">{{ $t('navbar.rewardStore') }}</el-menu-item>
       <el-menu-item index="/volunteer/personal">
-        <el-tooltip content="View Notifications" placement="bottom">
+        <el-tooltip :content="$t('navbar.viewNotifications')" placement="bottom">
           <el-icon class="icon">
             <i class="el-icon-bell"></i>
           </el-icon>
@@ -34,7 +33,6 @@
     </el-menu>
   </div>
 </template>
-
 
 <script lang="ts" setup>
 import { ref } from 'vue'
