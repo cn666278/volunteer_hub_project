@@ -22,6 +22,8 @@
         mode="horizontal"
         :ellipsis="false"
         @select="handleSelect"
+        text-color="#a9181a"
+        active-text-color="#a9181a"
     >
       <div class="weblogo">
         <img src="../../assets/logo.png" class="logo">
@@ -29,8 +31,7 @@
       <el-menu-item index="/volunteer">Home</el-menu-item>
       <el-menu-item index="/volunteer/events">Events</el-menu-item>
       <el-menu-item index="3">News</el-menu-item>
-      <el-menu-item index="4">Search</el-menu-item>
-      <el-menu-item index="5">Login</el-menu-item>
+
       <el-menu-item index="/volunteer/rewardStore">RewardStore</el-menu-item>
       <el-menu-item index="/volunteer/personal">
         <el-tooltip content="View Notifications" placement="bottom">
@@ -107,7 +108,14 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 body {
   padding-top: 120px; /* 调整这个值以确保足够的空间给固定的导航栏 */
+
 }
+
+:root {
+  --el-menu-active-color: #a9181a; /* 例如，将活跃菜单项的颜色修改为红色 */
+  --el-menu-hover-text-color: #a9181a; /* 例如，将悬停菜单项的颜色修改为蓝色 */
+}
+
 
 .el-menu-item {
   padding: 10px 15px;
