@@ -1,4 +1,5 @@
 import localeAdminHome from '../views/admin/locales/zh'
+import localeAdminEventApprove from '../views/admin/approve/locales/zh'
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
@@ -60,5 +61,6 @@ const zh = {
     cancel: '取消'
   },
   ...localeAdminHome,
+  ...localeAdminEventApprove,
 }
 export { zh }

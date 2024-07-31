@@ -1,4 +1,5 @@
 import localeAdminHome from '../views/admin/locales/en'
+import localeAdminEventApprove from '../views/admin/approve/locales/en'
 const en = {
   appName: 'WSA Volunteer Hub',
   language: {
@@ -60,5 +61,6 @@ const en = {
     cancel: 'Cancel'
   },
   ...localeAdminHome,
+  ...localeAdminEventApprove,
 }
 export { en }

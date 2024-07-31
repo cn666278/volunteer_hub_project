@@ -1,4 +1,5 @@
 import localeAdminHome from '../views/admin/locales/cy'
+import localeAdminEventApprove from '../views/admin/approve/locales/cy'
 const cy = {
     appName: 'Canolfan Wirfoddolwyr WSA',
     language: {
@@ -60,6 +61,7 @@ const cy = {
       cancel: 'Canslo'
     },
     ...localeAdminHome,
+    ...localeAdminEventApprove,
   }
   export { cy }
   
