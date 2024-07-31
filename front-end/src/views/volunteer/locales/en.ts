@@ -97,4 +97,9 @@ export default {
   "personalInfo.personalStatement": "Personal statement",
   "personalInfo.create": "Create",
   "personalInfo.cancel": "Cancel",
+  // events
+  "events.allEvents": "All Events",
+  "events.ongoingEvents": "Ongoing Events",
+  "events.closedEvents": "Closed Events",
+  "events.searchPlaceholder": "Type here to search...",
 };

@@ -97,4 +97,9 @@ export default {
   "personalInfo.personalStatement": "个人陈述",
   "personalInfo.create": "创建",
   "personalInfo.cancel": "取消",
+  // events
+  "events.allEvents": "所有活动",
+  "events.ongoingEvents": "正在进行的活动",
+  "events.closedEvents": "已结束的活动",
+  "events.searchPlaceholder": "在这里输入搜索...",
 };

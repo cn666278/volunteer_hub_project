@@ -97,4 +97,9 @@ export default {
   "personalInfo.personalStatement": "Datganiad personol",
   "personalInfo.create": "Creu",
   "personalInfo.cancel": "Canslo",
+  // events
+  "events.allEvents": "Pob Digwyddiad",
+  "events.ongoingEvents": "Digwyddiadau Parhaus",
+  "events.closedEvents": "Digwyddiadau Wedi'u Cau",
+  "events.searchPlaceholder": "Teipiwch yma i chwilio...",
 };
