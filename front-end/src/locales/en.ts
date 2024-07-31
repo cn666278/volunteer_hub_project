@@ -1,3 +1,4 @@
+import localeAdminHome from '../views/admin/locales/en'
 const en = {
   appName: 'WSA Volunteer Hub',
   language: {
@@ -57,6 +58,7 @@ const en = {
     message: 'Do you confirm to exit?',
     confirm: 'Confirm',
     cancel: 'Cancel'
-  }
+  },
+  ...localeAdminHome,
 }
 export { en }

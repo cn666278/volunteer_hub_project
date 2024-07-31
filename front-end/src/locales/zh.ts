@@ -1,3 +1,4 @@
+import localeAdminHome from '../views/admin/locales/zh'
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
@@ -57,6 +58,7 @@ const zh = {
     message: '您确定要退出吗？',
     confirm: '确认',
     cancel: '取消'
-  }
+  },
+  ...localeAdminHome,
 }
 export { zh }

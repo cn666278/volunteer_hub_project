@@ -1,3 +1,4 @@
+import localeAdminHome from '../views/admin/locales/cy'
 const cy = {
     appName: 'Canolfan Wirfoddolwyr WSA',
     language: {
@@ -57,7 +58,8 @@ const cy = {
       message: 'A ydych yn cadarnhau eich bod am allgofnodi?',
       confirm: 'Cadarnhau',
       cancel: 'Canslo'
-    }
+    },
+    ...localeAdminHome,
   }
   export { cy }
   
