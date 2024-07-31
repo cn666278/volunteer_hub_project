@@ -2,6 +2,7 @@ import localeAdminHome from '../views/admin/locales/zh'
 import localeAdminEventApprove from '../views/admin/approve/locales/zh'
 import localeAdminUser from '../views/admin/user/locales/zh'
 import localeAdminEditComponent from '../components/user/locales/zh'
+import localeVolunteerHome from '../views/volunteer/locales/zh'
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
@@ -66,5 +67,6 @@ const zh = {
   ...localeAdminEventApprove,
   ...localeAdminUser,
   ...localeAdminEditComponent,
+  ...localeVolunteerHome,
 }
 export { zh }

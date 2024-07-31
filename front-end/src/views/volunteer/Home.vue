@@ -3,10 +3,10 @@
     <!-- Intro Section with text and single image carousel -->
     <div class="intro-section">
       <div class="text-content">
-        <h4>We Are Gathered</h4>
-        <h1>WSA</h1>
+        <h4>{{ $t('home.intro.weAreGathered') }}</h4>
+        <h1>{{ $t('home.intro.wsa') }}</h1>
         <h1><span class="animated-text">{{ displayedText }}</span></h1>
-        <p>Welsh Sports Association</p>
+        <p>{{ $t('home.intro.welshSportsAssociation') }}</p>
       </div>
       <div class="image-carousel">
         <el-carousel trigger="hover" interval="3000" height="400px" indicator-position="none">
@@ -22,8 +22,8 @@
         <el-icon :name="item.icon" :size="50">
           <component :is="item.component" />
         </el-icon>
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.text }}</p>
+        <h3>{{ $t(`home.projectIntro.${item.title.toLowerCase()}Title`) }}</h3>
+        <p>{{ $t(`home.projectIntro.${item.title.toLowerCase()}Text`) }}</p>
       </div>
     </div>
 
@@ -35,13 +35,13 @@
                 allowfullscreen class="video-frame"></iframe>
       </div>
       <div class="text-content">
-        <p>We talked to one of their volunteers at the event, Penney Bell, about her experience with the system and volunteering in general, as well as Badminton Wales Major Events Officer Beth Nesham about the role of the WSA Volunteer Hub and its impact for the organisation, including sourcing a new Board member!</p>
+        <p>{{ $t('home.videoSection.text') }}</p>
       </div>
     </div>
 
     <!-- Blog Posts Section -->
     <div class="blog-section">
-      <h1>Recent Events Posts</h1>
+      <h1>{{ $t('home.blogSection.title') }}</h1>
       <div class="blog-display">
         <el-card v-for="post in blogPosts" :key="post.id" class="blog-card">
           <img :src="post.image" alt="Blog Image" class="blog-image">
@@ -66,9 +66,10 @@
   </div>
 </template>
 
-
 <script lang='ts'>
 import { ElButton, ElCard, ElCarousel, ElCarouselItem, ElIcon } from "element-plus";
+import { User, Calendar } from "@element-plus/icons-vue"; // 引入需要的图标
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'Index',
@@ -78,6 +79,8 @@ export default {
     ElButton,
     ElCard,
     ElIcon,
+    User,
+    Calendar,
   },
   data() {
     return {
@@ -180,9 +183,9 @@ export default {
       text-align: center;
       padding: 10px;
 
-      el-icon {
-      ;
-      }
+      // el-icon {
+      // ;
+      // }
 
       h3 {
         margin-top: 10px;
@@ -330,9 +333,9 @@ export default {
 
 .activity-card {
   display: flex;
-  flexDirection: column;
-  alignItems: center;
-  justifyContent: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
@@ -479,6 +482,4 @@ export default {
     }
   }
 }
-
-
 </style>

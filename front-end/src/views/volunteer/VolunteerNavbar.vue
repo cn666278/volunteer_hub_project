@@ -2,17 +2,7 @@
   <div>
     <div class="navbar-top">
       <img src="../../assets/logo.png" class="top-logo">
-      <el-dropdown class="language-switcher">
-  <span class="el-dropdown-link">
-    <img src="../../assets/language.png" class="custom-icon"> <!-- 更换为自定义图标 -->
-  </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>English</el-dropdown-item>
-          <el-dropdown-item>中文</el-dropdown-item>
-          <el-dropdown-item>Español</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
+      <change-language />
     </div>
 
     <el-menu
@@ -49,6 +39,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useUser from "../../store/user";
+import changeLanguage from '../../components/changeLanguage.vue';
 // user store
 const userStore = useUser();
 
