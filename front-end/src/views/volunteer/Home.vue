@@ -1,40 +1,74 @@
 <template>
   <div class="home">
-    <!-- Carousel for displaying images -->
-    <el-carousel interval="5000" height="500">
-      <el-carousel-item v-for="item in carouselItems" :key="item.id">
-        <img :src="item.src" :alt="item.alt" class="carousel-image">
-      </el-carousel-item>
-    </el-carousel>
-
-    <!-- Project Introduction Section -->
-    <div class="project-introduction">
-      <h1>WSA Volunteer Hub</h1>
-      <p>The WSA Volunteer Hub was set up with the objective of providing our members with crucial support in the running of their events. The role of volunteers is so important in the smooth-running and even existence of the competitions that our members put on for athletes and fans to enjoy; so, it’s vital that there’s a reliable hub of volunteers for them to call upon.</p>
-      <p>With our mission of supporting our members and ensuring they remain robust and resilient, this Volunteer Hub will give them just that!</p>
-      <p>It’s no secret that the sports industry is a tough one to get into; neither is it a secret that sporting events are so often supported by the work of volunteers. This, as a result, provides people searching for CPD opportunities or even a day of enjoyment a perfect scenario!</p>
-      <p>The WSA Volunteer Hub helped member organisation Badminton Wales, for example, who were supported for the Welsh International Badminton Championships 2023 when they came to the Sport Wales National Centre.</p>
-      <p>We talked to one of their volunteers at the event, Penney Bell, about her experience with the system and volunteering in general, as well as Badminton Wales Major Events Officer Beth Nesham about the role of the WSA Volunteer Hub and its impact for the organisation, including sourcing a new Board member!</p>
+    <!-- Intro Section with text and single image carousel -->
+    <div class="intro-section">
+      <div class="text-content">
+        <h4>We Are Gathered</h4>
+        <h1>WSA</h1>
+        <h1><span class="animated-text">{{ displayedText }}</span></h1>
+        <p>Welsh Sports Association</p>
+      </div>
+      <div class="image-carousel">
+        <el-carousel trigger="hover" interval="3000" height="400px" indicator-position="none">
+          <el-carousel-item v-for="image in introImages" :key="image.id">
+            <img :src="image.src" alt="carousel image" class="carousel-image">
+          </el-carousel-item>
+        </el-carousel>
+      </div>
     </div>
 
-    <!-- Activities section with a button and activity display -->
-    <div class="activities-section">
-      <h1>Events</h1> <!-- New Title -->
-      <div class="activities-display">
-        <el-card v-for="activity in activities" :key="activity.id" class="activity-card">
-          <img :src="activity.image" alt="Activity Image" class="activity-image">
-          <div style="padding: 14px;">
-            <h5>{{ activity.title }}</h5>
+    <div class="project-introduction-middle">
+      <div class="column" v-for="(item, index) in introSections" :key="index">
+        <el-icon :name="item.icon" :size="50">
+          <component :is="item.component" />
+        </el-icon>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.text }}</p>
+      </div>
+    </div>
+
+    <!-- New Video Section -->
+    <div class="video-section">
+      <div class="video-content">
+        <iframe src="https://www.youtube.com/embed/OeDycAFm0Xo" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen class="video-frame"></iframe>
+      </div>
+      <div class="text-content">
+        <p>We talked to one of their volunteers at the event, Penney Bell, about her experience with the system and volunteering in general, as well as Badminton Wales Major Events Officer Beth Nesham about the role of the WSA Volunteer Hub and its impact for the organisation, including sourcing a new Board member!</p>
+      </div>
+    </div>
+
+    <!-- Blog Posts Section -->
+    <div class="blog-section">
+      <h1>Recent Events Posts</h1>
+      <div class="blog-display">
+        <el-card v-for="post in blogPosts" :key="post.id" class="blog-card">
+          <img :src="post.image" alt="Blog Image" class="blog-image">
+          <div class="blog-info">
+            <div class="blog-author-date">
+              <div class="author-details">
+                <el-icon><User /></el-icon> <!-- Element Plus icon for author -->
+                {{ post.author }}
+              </div>
+              <div class="date-details">
+                <el-icon><Calendar /></el-icon> <!-- Element Plus icon for date -->
+                {{ post.date }}
+              </div>
+            </div>
+
+            <h5>{{ post.title }}</h5>
+            <p>{{ post.description }}</p>
           </div>
         </el-card>
       </div>
-      <div class="activities-button-container">
-        <el-button class="more-activities-btn" type="text">Find out more!</el-button></div>
     </div>
   </div>
 </template>
+
+
 <script lang='ts'>
-import {ElButton, ElCard, ElCarousel, ElCarouselItem} from "element-plus";
+import { ElButton, ElCard, ElCarousel, ElCarouselItem, ElIcon } from "element-plus";
 
 export default {
   name: 'Index',
@@ -42,119 +76,409 @@ export default {
     ElCarousel,
     ElCarouselItem,
     ElButton,
-    ElCard
+    ElCard,
+    ElIcon,
   },
   data() {
     return {
-      carouselItems: [
-        { id: 1, src: './src/assets/volunteer1.jpg', alt: 'Image 1' },
-        { id: 2, src: './src/assets/volunteer2.png', alt: 'Image 2' },
-        { id: 3, src: './src/assets/volunteer3.jpg', alt: 'Image 3' }
+      introImages: [
+        { id: 1, src: './src/assets/volunteer1.jpg' },
+        { id: 2, src: './src/assets/volunteer2.jpg' },
+        { id: 3, src: './src/assets/volunteer3.jpg' }
+      ],
+      introSections: [{
+        icon: 'el-icon-service',
+        component: 'Service',
+        title: 'SUPPORT',
+        text: 'The WSA Volunteer Hub provides critical support to ensure the smooth running of the event.'
+      },
+        {
+          icon: 'el-icon-user',
+          component: 'User',
+          title: 'ROLE',
+          text: 'The role of volunteers at events is crucial and has a major impact on the smooth running and existence of the competition.'
+        },
+        {
+          icon: 'el-icon-star',
+          component: 'Star',
+          title: 'OPPORTUNITY',
+          text: 'The WSA Volunteer Hub provides opportunities for volunteers and organisations to grow and develop.'
+        }
       ],
       activities: [
-        { id: 1, title: 'Activity 1', image: './src/assets/volunteer3.jpg' },
-        { id: 2, title: 'Activity 2', image: './src/assets/volunteer3.jpg' },
-        { id: 3, title: 'Activity 3', image: './src/assets/volunteer3.jpg' },
-        { id: 4, title: 'Activity 4', image: './src/assets/volunteer3.jpg' },
-        { id: 5, title: 'Activity 5', image: './src/assets/volunteer3.jpg' },
-        { id: 6, title: 'Activity 6', image: './src/assets/volunteer3.jpg' }
-      ]
+        { id: 1, title: 'Activity 1', image: './src/assets/activity1.jpg' },
+        { id: 2, title: 'Activity 2', image: './src/assets/activity2.jpg' },
+        { id: 3, title: 'Activity 3', image: './src/assets/activity3.jpg' },
+        { id: 4, title: 'Activity 4', image: './src/assets/activity4.jpg' },
+        { id: 5, title: 'Activity 5', image: './src/assets/activity5.jpg' },
+        { id: 6, title: 'Activity 6', image: './src/assets/activity6.jpg' }
+      ],
+      blogPosts: [
+        {
+          id: 1,
+          image: './src/assets/event-judo.png',
+          title: 'The British Adaptive & VI Open',
+          date: '30.07.2024',
+          author: 'Welsh Judo',
+          description: 'Welsh Judo is hosting the British Adaptive & VI Open in Swansea, showcasing inclusive judo for visually impaired athletes.'
+        },
+        {
+          id: 2,
+          image: './src/assets/event-badminto.png',
+          title: 'Yonex Welsh International Challenge',
+          date: '30.07.2024',
+          author: 'Badminton Wales',
+          description: 'Badminton Wales is hosting the Yonex Welsh International Challenge in Cardiff, attracting top badminton talent from around the world.'
+        },
+        {
+          id: 3,
+          image: './src/assets/event-tabletennis.png',
+          title: 'The magic of marketing, the science of sales',
+          date: '30.07.2024',
+          author: 'Table Tennis Wales',
+          description: 'Table Tennis Wales is hosting the Senior Team Championships of Wales, featuring elite team competition in table tennis.'
+        }
+      ],
+      volunteerHubText: 'Volunteer Hub',
+      displayedText: ''
     };
+  },
+  mounted() {
+    this.animateText();
+  },
+  methods: {
+    animateText() {
+      const characters = this.volunteerHubText.split('');
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < characters.length) {
+          this.displayedText += characters[index];
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 300); // Adjust timing for effect
+    }
   }
 };
 </script>
+
 <style lang='scss'>
 .home {
-  padding-top: 20px;
-  width: 95%;
-  max-width: 1200px; /* 最大宽度确保在大屏幕上也能对齐 */
-  margin: auto; /* 自动外边距确保居中 */
-  color: #333; /* 统一字体颜色 */
+  .project-introduction-middle {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 40px 20px;
+    background-color: #f5f5f5;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    .column {
+      width: 30%;
+      text-align: center;
+      padding: 10px;
+
+      el-icon {
+      ;
+      }
+
+      h3 {
+        margin-top: 10px;
+        font-size: 1.5rem;
+        color: #a9181a;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #666;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  @media (max-width: 800px) {
+    .project-introduction-middle {
+
+      flex-direction: column;
+      .column {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.video-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+  background-color: #fff;
+  border-bottom: 2px solid #ececec;
+
+  .video-content {
+    width: 50%;
+    padding-right: 20px;
+
+    .video-frame {
+      width: 100%;
+      height: 400px; // Adjust based on design requirement
+      border-radius: 8px;
+    }
+  }
+
+  .text-content {
+    width: 50%;
+    padding-left: 20px;
+
+    h4 {
+      color: #666;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+
+
+.intro-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+  background-color: #fff;
+  border-bottom: 2px solid #ececec;
+
+  .text-content {
+    width: 50%;
+    padding-right: 20px;
+
+    h4 {
+      color: #a9181a;
+      font-size: 1.2rem;
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      line-height: 1.2;
+      margin: 0.5rem 0;
+      span {
+        color: #a9181a;
+        font-weight: bold;
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #a9181a;
+      margin-bottom: 20px;
+    }
+  }
+
+  .image-carousel {
+    width: 50%;
+    padding-left: 20px;
+
+    .carousel-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .el-carousel__arrow {
+      opacity: 0.5;
+      color: #333;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 }
 
 .project-introduction, .activities-section {
   padding: 20px;
-  background-color: #f5f5f5; /* 仅为 project-introduction 设置 */
-  margin: 20px 0; /* 顶部和底部外边距相同 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 仅为 project-introduction 设置 */
-  border-radius: 8px; /* 仅为 project-introduction 设置 */
-}
-
-.project-introduction {
   background-color: #f5f5f5;
-  border-radius: 8px;
+  margin: 20px 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.activities-section {
-  background-color: transparent; /* 确保活动部分无背景色 */
-  box-shadow: none; /* 活动部分无阴影 */
+  border-radius: 8px;
 }
 
 .activities-section h1, .project-introduction h1 {
-  margin-bottom: 16px; /* 标题下边距 */
-  text-align: center; /* 标题居中 */
-}
-
-.carousel-image {
-  width: 100%; /* 宽度充满容器 */
-  height: auto; /* 高度自动 */
-  display: block; /* 图片显示为块级元素 */
+  margin-bottom: 16px;
+  text-align: center;
 }
 
 .activities-display {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 三列布局 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
 .activity-card {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flexDirection: column;
+  alignItems: center;
+  justifyContent: center;
   overflow: hidden;
 }
 
 .activity-image {
-  width: 100%; /* 图片宽度充满卡片 */
-  height: auto; /* 自动高度以保持宽高比 */
-  object-fit: cover; /* 图片内容填充 */
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 .activities-button-container {
-  text-align: right; /* 文字右对齐，会影响内部的按钮对齐 */
-  width: 100%; /* 确保容器宽度与活动展示区相同 */
-  margin-top: 20px; /* 与活动展示区的间隔 */
+  text-align: right;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .more-activities-btn {
-  display: inline-block; /* 将按钮设为内联块级元素，使其能响应 text-align */
-  border: none; /* 无边框 */
-  background-color: transparent; /* 背景透明 */
-  color: #333; /* 深灰色字体 */
+  display: inline-block;
+  border: none;
+  background-color: transparent;
+  color: #333;
 }
 
-/*Mobile page style settings*/
-@media (max-width: 600px) { /* 设置最小值 */
-  .content {
-    padding: 10px;
+@media (max-width: 800px) {
+  .intro-section {
+    flex-direction: column;
+    align-items: center;
 
-  }
-
-  .project-introduction, .activities-section {
-    padding: 10px;
-    margin: 10px 0;
+    .text-content, .image-carousel {
+      width: 100%;
+      padding: 0 10px;
+    }
   }
 
   .activities-display {
-    grid-template-columns: 1fr; /* 在小屏幕上使用单列布局 */
-  }
-
-  .carousel-image {
-    width: 100%; /* 宽度充满容器 */
-    height: 200px;
-    display: block; /* 图片显示为块级元素 */
+    grid-template-columns: 1fr;
   }
 }
+
+.animated-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: .15em solid #a9181a; /* 用于模拟打字机效果的光标 */
+  animation: typing 0.3s steps(30, end), blink-caret .75s step-end infinite;
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #a9181a; }
+  }
+}
+
+.blog-section {
+  padding: 20px;
+  background-color: #f5f5f5;
+  margin: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 16px;
+    color: #a9181a;
+  }
+}
+
+.blog-display {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #ddd; // 给卡片添加边框
+  border-radius: 8px; // 圆角边框
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); // 轻微阴影
+
+  img {
+    width: 100%;
+    height: 200px; // 设置图片高度
+    object-fit: cover; // 确保图片完整显示
+    border-radius: 8px; // 图片四个角圆角
+  }
+
+  .blog-info {
+    padding: 14px;
+    text-align: left;
+    width: 100%;
+
+    .blog-author-date {
+      display: flex;
+      align-items: center;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+
+      .author-icon, .date-icon {
+        color:#a9181a; // 图标颜色
+        margin-right: 5px;
+      }
+    }
+
+    h5 {
+      color: #666;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+
+    p {
+      color: #666;
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .blog-display {
+    grid-template-columns: 1fr;
+  }
+}
+
+.blog-author-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+
+  .author-details, .date-details {
+    display: flex;
+    align-items: center;
+
+    .el-icon {
+      color: #a9181a; // Changed icon color to blue
+      margin-right: 5px;
+    }
+  }
+}
+
+
 </style>

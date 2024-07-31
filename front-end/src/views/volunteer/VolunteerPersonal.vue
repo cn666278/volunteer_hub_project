@@ -83,7 +83,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  color: #333333; /* 设置文本颜色为深灰色 */
+  color: #a9181a;; /* 设置文本颜色为深灰色 */
 }
 
 .user-profile {
@@ -97,7 +97,7 @@ export default {
 .username {
   margin-top: 10px; /* 根据需要调整间距 */
   text-align: center; /* 确保文本居中显示 */
-  color: #6894c7;
+  color:  #a9181a;;
   font-size: 15px;
 
 }
@@ -107,7 +107,7 @@ export default {
   height: 50px; /* 设置头像高度 */
   border-radius: 50%; /* 保持圆形 */
   object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
-  border: 2px solid #b0bec5; /* 为头像添加边框 */
+  border: 2px solid  #a9181a;; /* 为头像添加边框 */
 }
 
 .user-rating {
@@ -153,7 +153,7 @@ export default {
 }
 
 .feature-card p {
-  color: #666;
+  color:  #a9181a;;
   font-size: 14px;
 }
 
@@ -189,7 +189,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #6894c7;
+    border: 2px dashed  #a9181a;;
     padding: 15px;
     margin: 10px auto; /* 确保卡片居中且有足够的外边距 */
     width: calc(100% - 20px); /* 减去外边距确保完整显示边框 */

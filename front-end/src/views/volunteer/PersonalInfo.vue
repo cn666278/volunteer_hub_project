@@ -96,7 +96,7 @@ const onSubmit = () => {
 .username {
   margin-top: 10px; /* 根据需要调整间距 */
   text-align: center; /* 确保文本居中显示 */
-  color: #6894c7;
+  color: #a9181a;
   font-size: 10px;
 }
 
@@ -105,6 +105,6 @@ const onSubmit = () => {
   height: 50px; /* 设置头像高度 */
   border-radius: 50%; /* 保持圆形 */
   object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
-  border: 2px solid #b0bec5; /* 为头像添加边框 */
+  border: 2px solid  #a9181a; /* 为头像添加边框 */
 }
 </style>

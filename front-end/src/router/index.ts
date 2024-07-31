@@ -11,8 +11,7 @@ const routes = createRouter({
       name: "Login",
       meta: { title: "Login" },
       component: () => import("../views/login/Login.vue"),
-      // component: () => import("../views/volunteer/VolunteerPersonal.vue"),
-      // component: () => import("../views/volunteer/Index.vue"),
+
 
     },
     {
