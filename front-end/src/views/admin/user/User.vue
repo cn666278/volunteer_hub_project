@@ -2,11 +2,11 @@
   <div class="user">
     <div class="search">
       <!-- Search -->
-      <span style="color: grey; font-size: 13px">Role: </span>
+      <span style="color: grey; font-size: 13px">{{ $t('user.role') }}: </span>
       <el-select
         size="small"
         v-model="roleId"
-        placeholder="Please search a role"
+        :placeholder="$t('user.search.placeholder')"
         style="width: 240px; margin-right: 10px"
       >
         <el-option
@@ -17,16 +17,16 @@
         />
       </el-select>
       <el-button type="success" size="small" @click="getUserList">
-        Search</el-button
-      >
+        {{ $t('user.search') }}
+      </el-button>
       <!-- Add Button -->
       <el-button
         type="primary"
         size="small"
         @click="editDrawerRef.handleOpen()"
       >
-        Add</el-button
-      >
+        {{ $t('user.add') }}
+      </el-button>
     </div>
     <!-- User Table -->
     <el-table
@@ -35,10 +35,10 @@
       style="width: 100%"
       :key="isUpdate.toString()"
     >
-      <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="loginId" label="Login ID" width="150" />
-      <el-table-column prop="username" label="Username" width="150" />
-      <el-table-column prop="photo" label="Photo" width="100">
+      <el-table-column prop="id" :label="$t('user.id')" width="100" />
+      <el-table-column prop="loginId" :label="$t('user.loginId')" width="150" />
+      <el-table-column prop="username" :label="$t('user.username')" width="150" />
+      <el-table-column prop="photo" :label="$t('user.photo')" width="100">
         <template #default="scope">
           <el-avatar
             v-if="scope.row.photo"
@@ -55,20 +55,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="phone" label="Phone" width="150" />
-      <el-table-column prop="email" label="Email" width="200" />
-      <el-table-column prop="role.roleName" label="Role" width="150" sortable />
-      <el-table-column label="Action">
+      <el-table-column prop="phone" :label="$t('user.phone')" width="150" />
+      <el-table-column prop="email" :label="$t('user.email')" width="200" />
+      <el-table-column prop="role.roleName" :label="$t('user.role')" width="150" sortable />
+      <el-table-column :label="$t('user.action')">
         <template #default="scope">
           <el-button size="small" @click="handleEdit(scope.row.id)">
-            Edit
+            {{ $t('user.edit') }}
           </el-button>
           <el-button
             size="small"
             type="danger"
             @click="handleDelete(scope.row)"
           >
-            Delete
+            {{ $t('user.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -92,6 +92,9 @@
 import EditUser from "../../../components/user/EditUser.vue";
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { ElMessageBox, ElNotification } from "element-plus";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const { proxy }: any = getCurrentInstance();
 // user list
 let userList = ref<any>([]);
@@ -118,7 +121,7 @@ const getRoleList = async () => {
   console.log("Load role list");
   let res = await proxy.$api.getRoleList();
   roleList.value = res;
-  roleList.value.unshift({ roleId: 0, roleName: "All" });
+  roleList.value.unshift({ roleId: 0, roleName: t('user.role.all') });
 };
 
 // get user list
@@ -148,11 +151,11 @@ const handleEdit = async (id: number) => {
 // Delete user
 const handleDelete = (row: any) => {
   ElMessageBox.confirm(
-    "Are you sure delete user: " + row.username + " ?",
-    "Notification",
+    t('user.confirmDelete', { username: row.username }),
+    t('user.notification'),
     {
-      confirmButtonText: "Confirm",
-      cancelButtonText: "Cancel",
+      confirmButtonText: t('user.confirm'),
+      cancelButtonText: t('user.cancel'),
       type: "warning",
     }
   )
@@ -160,7 +163,7 @@ const handleDelete = (row: any) => {
       let res = await proxy.$api.deleteUser({id: row.id});
       if (res) {
         ElNotification({
-          title: "Notification",
+          title: t('user.notification'),
           message: res.message,
           type: "success",
         });
@@ -169,7 +172,7 @@ const handleDelete = (row: any) => {
         console.log("Delete successfully!");
       } else {
         ElNotification({
-          title: "Notification",
+          title: t('user.notification'),
           message: res.message,
           type: "error",
         });

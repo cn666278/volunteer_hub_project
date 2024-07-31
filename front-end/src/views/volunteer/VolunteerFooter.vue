@@ -27,7 +27,7 @@
           <el-form-item>
             <el-input placeholder="Last Name"></el-input>
           </el-form-item>
-          <el-button type="primary">Subscribe</el-button>
+          <el-button type="primary">{{ $t('footer.subscribe') }}</el-button>
         </el-form>
       </div>
       <div class="footer-section social-media">

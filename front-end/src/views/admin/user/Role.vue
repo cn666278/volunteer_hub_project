@@ -1,26 +1,16 @@
 <template>
   <div class="role">
     <div class="addButton">
-      <el-button type="primary" size="small" @click="editDrawerRef.handleOpen()"
-        >Add</el-button
-      >
+      <el-button type="primary" size="small" @click="editDrawerRef.handleOpen()">{{ $t('role.add') }}</el-button>
     </div>
     <!-- Roles Table -->
     <el-table :data="showRoles" stripe style="width: 100%" :key="isUpdate.toString()">
-      <el-table-column prop="roleId" label="Role ID" width="100" />
-      <el-table-column prop="roleName" label="RoleName" width="250" />
-      <el-table-column label="edit">
+      <el-table-column prop="roleId" :label="$t('role.roleId')" width="100" />
+      <el-table-column prop="roleName" :label="$t('role.roleName')" width="250" />
+      <el-table-column :label="$t('role.edit')">
         <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.row.roleId)">
-            Edit
-          </el-button>
-          <el-button
-            size="small"
-            type="danger"
-            @click="handleDelete(scope.row)"
-          >
-            Delete
-          </el-button>
+          <el-button size="small" @click="handleEdit(scope.row.roleId)">{{ $t('role.edit') }}</el-button>
+          <el-button size="small" type="danger" @click="handleDelete(scope.row)">{{ $t('role.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -37,10 +27,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, getCurrentInstance } from "vue";
-import EditRole from "../../../components/user/EditRole.vue";
-import { ElMessageBox, ElNotification } from "element-plus";
+import { onMounted, ref, computed, getCurrentInstance } from 'vue';
+import EditRole from '../../../components/user/EditRole.vue';
+import { ElMessageBox, ElNotification } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const { proxy }: any = getCurrentInstance();
 
 // role list
@@ -60,7 +52,7 @@ const handleCurrentChange = (val: number) => {
 };
 // load role list
 const getRoleList = async () => {
-  console.log("load role list");
+  console.log(t('role.loadRoleList'));
   roleList.value = await proxy.$api.getRoleList();
   isUpdate.value = !isUpdate.value; // update role list
 };
@@ -72,35 +64,35 @@ const handleEdit = async (roleId: number) => {
 // delete role
 const handleDelete = (row: any) => {
   ElMessageBox.confirm(
-    "Are you sure delete role: " + row.roleName + " ?",
-    "Notification",
+    t('role.confirmDelete', { roleName: row.roleName }),
+    t('role.notification'),
     {
-      confirmButtonText: "Confirm",
-      cancelButtonText: "Cancel",
-      type: "warning",
+      confirmButtonText: t('role.confirm'),
+      cancelButtonText: t('role.cancel'),
+      type: 'warning',
     }
   )
     .then(async () => {
-      let res = await proxy.$api.deleteRole({roleId: row.roleId});
+      let res = await proxy.$api.deleteRole({ roleId: row.roleId });
       if (res) {
         ElNotification({
-          title: "Notification",
+          title: t('role.notification'),
           message: res.message,
-          type: "success",
+          type: 'success',
         });
         // delete successfully, reload role list
         getRoleList();
-        console.log("Delete successfully!");
+        console.log(t('role.deleteSuccess'));
       } else {
         ElNotification({
-          title: "Notification",
+          title: t('role.notification'),
           message: res.message,
-          type: "error",
+          type: 'error',
         });
       }
     })
     .catch(() => {
-      console.log("Cancel delete!");
+      console.log(t('role.cancelDelete'));
     });
 };
 // drawer ref
