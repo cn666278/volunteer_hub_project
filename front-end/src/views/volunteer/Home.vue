@@ -86,7 +86,7 @@ export default {
     return {
       introImages: [
         { id: 1, src: './src/assets/volunteer1.jpg' },
-        { id: 2, src: './src/assets/volunteer2.jpg' },
+        { id: 2, src: './src/assets/event-badminto.png' },
         { id: 3, src: './src/assets/volunteer3.jpg' }
       ],
       introSections: [{

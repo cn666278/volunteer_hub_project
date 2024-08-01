@@ -22,9 +22,8 @@
 import { ref } from 'vue';
 
 const items = ref([
-  { id: 1, title: 'Credential1', imgSrc: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png' },
-  { id: 2, title: 'Credential2', imgSrc: 'https://shadow.elemecdn.com/app/element/salad.png'},
-  { id: 3, title: 'Credential3', imgSrc: 'https://shadow.elemecdn.com/app/element/pizza.png'}
+  { id: 1, title: 'Volunteer certificate', imgSrc: './src/assets/cer1.png' },
+  { id: 2, title: 'Credential2', imgSrc: './src/assets/cer2.jpg'},
 ]);
 </script>
 
