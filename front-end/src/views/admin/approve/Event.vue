@@ -38,7 +38,7 @@
               <a-col :span="8">
                 <a-form-item field="createdTime" :label="$t('searchTable.form.createdTime')">
                   <!-- bug:显示为中文：修改locale -->
-                  <a-range-picker v-model="formModel.createdTime" style="width: 100%"/>
+                  <a-range-picker v-model="formModel.createdTime" style="width: 100%" />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -134,19 +134,26 @@
         </template>
         <template #eventType="{ record }">
           <a-space>
-            <a-avatar v-if="record.eventType === 'img'" :size="16" shape="square">
-              <img alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image" />
+            <a-avatar v-if="record.eventType === 'Judo'" :size="16" shape="square">
+              <img alt="avatar" src="../../../assets/kungfu.png" />
             </a-avatar>
-            <a-avatar v-else-if="record.eventType === 'horizontalVideo'" :size="16" shape="square">
-              <img alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image" />
+            <a-avatar v-else-if="record.eventType === 'Badminton'" :size="16" shape="square">
+              <img alt="avatar" src="../../../assets/badminton.png" />
             </a-avatar>
-            <a-avatar v-else :size="16" shape="square">
-              <img alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image" />
+            <a-avatar v-else-if="record.eventType === 'Table Tennis'" :size="16" shape="square">
+              <img alt="avatar" src="../../../assets/tabletennis.png" />
             </a-avatar>
-            {{ $t(`searchTable.form.eventType.${record.eventType}`) }}
+            <a-avatar v-else-if="record.eventType === 'Hockey'" :size="16" shape="square">
+              <img alt="avatar" src="../../../assets/hockey.png" />
+            </a-avatar>
+            <a-avatar v-else-if="record.eventType === 'Cycling'" :size="16" shape="square">
+              <img alt="avatar" src="../../../assets/air-bike.png" />
+            </a-avatar>
+            <a-avatar v-else-if="record.eventType === 'Snowsports'" :size="16" shape="square">
+              <img alt="avatar" src="../../../assets/skating.png" />
+            </a-avatar>
+
+            {{ record.eventType }}
           </a-space>
         </template>
         <!-- <template #filterType="{ record }">
@@ -245,10 +252,10 @@ const columns = computed<TableColumnData[]>(() => [
     dataIndex: 'index',
     slotName: 'index',
   },
-  {
-    title: t('searchTable.columns.number'),
-    dataIndex: 'number',
-  },
+  // {
+  //   title: t('searchTable.columns.number'),
+  //   dataIndex: 'number',
+  // },
   {
     title: t('searchTable.columns.name'),
     dataIndex: 'name',
@@ -262,10 +269,10 @@ const columns = computed<TableColumnData[]>(() => [
   //   title: t('searchTable.columns.filterType'),
   //   dataIndex: 'filterType',
   // },
-  {
-    title: t('searchTable.columns.createdTime'),
-    dataIndex: 'createdTime',
-  },
+  // {
+  //   title: t('searchTable.columns.createdTime'),
+  //   dataIndex: 'createdTime',
+  // },
   {
     title: t('searchTable.columns.status'),
     dataIndex: 'status',
@@ -279,16 +286,28 @@ const columns = computed<TableColumnData[]>(() => [
 ]);
 const eventTypeOptions = computed<SelectOptionData[]>(() => [
   {
-    label: t('searchTable.form.eventType.img'),
-    value: 'img',
+    label: t('searchTable.form.eventType.Judo'),
+    value: 'Judo',
   },
   {
-    label: t('searchTable.form.eventType.horizontalVideo'),
-    value: 'horizontalVideo',
+    label: t('searchTable.form.eventType.Badminton'),
+    value: 'Badminton',
   },
   {
-    label: t('searchTable.form.eventType.verticalVideo'),
-    value: 'verticalVideo',
+    label: t('searchTable.form.eventType.TableTennis'),
+    value: 'Table Tennis',
+  },
+  {
+    label: t('searchTable.form.eventType.Hockey'),
+    value: 'Hockey',
+  },
+  {
+    label: t('searchTable.form.eventType.Cycling'),
+    value: 'Cycling',
+  },
+  {
+    label: t('searchTable.form.eventType.Snowsports'),
+    value: 'Snowsports',
   },
 ]);
 // const filterTypeOptions = computed<SelectOptionData[]>(() => [
