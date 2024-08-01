@@ -24,11 +24,16 @@ export default {
   "home.blogSection.postDate3": "30.07.2024",
   "home.blogSection.postDescription3": "Mae Tenis Bwrdd Cymru yn cynnal Pencampwriaethau Tîm Hŷn Cymru, gan gynnwys cystadleuaeth tîm elitaidd mewn tenis bwrdd.",
   // nav
-  "navbar.home": "Hafan",
+  "navbar.home": "Cartref",
   "navbar.events": "Digwyddiadau",
   "navbar.news": "Newyddion",
   "navbar.rewardStore": "Siop Wobrwyo",
   "navbar.viewNotifications": "Gweld Hysbysiadau",
+  "navbar.logout": "Allgofnodi",
+  "logout.message": "Ydych chi'n siŵr eich bod am allgofnodi?",
+  "logout.title": "Cadarnhad Allgofnodi",
+  "logout.confirm": "Cadarnhau",
+  "logout.cancel": "Canslo",
   // footer
   "footer.aboutUs": "Amdanom ni",
   "footer.learnMore": "Dysgu mwy",

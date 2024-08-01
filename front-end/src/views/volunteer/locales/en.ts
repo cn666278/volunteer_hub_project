@@ -29,6 +29,11 @@ export default {
   "navbar.news": "News",
   "navbar.rewardStore": "Reward Store",
   "navbar.viewNotifications": "View Notifications",
+  "navbar.logout": "Logout",
+  "logout.message": "Are you sure you want to logout?",
+  "logout.title": "Logout Confirmation",
+  "logout.confirm": "Confirm",
+  "logout.cancel": "Cancel",
   // footer
   "footer.aboutUs": "About Us",
   "footer.learnMore": "Learn more",

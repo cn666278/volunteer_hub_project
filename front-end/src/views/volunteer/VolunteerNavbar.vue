@@ -30,21 +30,51 @@
         </el-tooltip>
         <el-avatar :src="userStore.user.photo" class="menu-avatar"></el-avatar>
       </el-menu-item>
+      <el-menu-item @click="exit" class="logout-menu-item">
+        <el-tooltip :content="$t('navbar.logout')" placement="bottom">
+          <el-icon class="icon">
+            <i class="el-icon-switch-button"></i>
+          </el-icon>
+        </el-tooltip>
+        {{ $t('navbar.logout') }}
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRouter } from "vue-router";
 import useUser from "../../store/user";
 import changeLanguage from '../../components/changeLanguage.vue';
+import { ElMessageBox } from "element-plus";
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 // user store
 const userStore = useUser();
+let router = useRouter();
 
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+
+// exit
+const exit = () => {
+  ElMessageBox.confirm(t('logout.message'), t('logout.title'), {
+    confirmButtonText: t('logout.confirm'),
+    cancelButtonText: t('logout.cancel'),
+    type: "warning",
+  })
+    .then(() => {
+      userStore.clearUser();
+      router.push("/");
+    })
+    .catch(() => {
+      console.log("Cancel exit");
+    });
+};
 </script>
 
 <style scoped>
@@ -62,7 +92,6 @@ const handleSelect = (key: string, keyPath: string[]) => {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
   height: 20px;
-
 }
 
 .top-logo {
@@ -97,14 +126,12 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 body {
   padding-top: 120px; /* 调整这个值以确保足够的空间给固定的导航栏 */
-
 }
 
 :root {
   --el-menu-active-color: #a9181a; /* 例如，将活跃菜单项的颜色修改为红色 */
   --el-menu-hover-text-color: #a9181a; /* 例如，将悬停菜单项的颜色修改为蓝色 */
 }
-
 
 .el-menu-item {
   padding: 10px 15px;
@@ -119,22 +146,21 @@ body {
   vertical-align: middle;
 }
 
- .contact-info {
-   max-width: 150px;
- }
+.contact-info {
+  max-width: 150px;
+}
 
 .contact-info span {
   font-size: 14px;
 }
 
-
- .navbar-top {
-   margin-bottom: 0; /* 减少底部外边距 */
- }
+.navbar-top {
+  margin-bottom: 0; /* 减少底部外边距 */
+}
 
 .weblogo {
   padding-left: 20px; /* 根据需要调整，确保图片不会贴近边界 */
-  padding-right:900px;
+  padding-right: 900px;
   flex: none; /* 防止 logo 拉伸或压缩 */
   display: flex;
   justify-content: center; /* 居中图片 */
@@ -146,8 +172,10 @@ body {
   height: 20px; /* 保持宽高比 */
 }
 
-
-
-
-
+.logout-menu-item {
+  margin-left: auto; /* 将退出按钮推到右侧 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

@@ -25,10 +25,15 @@ export default {
   "home.blogSection.postDescription3": "威尔士乒乓球将举办威尔士高级队锦标赛，展示乒乓球精英队比赛。",
   // nav
   "navbar.home": "首页",
-  "navbar.events": "事件",
+  "navbar.events": "活动",
   "navbar.news": "新闻",
   "navbar.rewardStore": "奖励商店",
   "navbar.viewNotifications": "查看通知",
+  "navbar.logout": "退出",
+  "logout.message": "您确定要退出吗？",
+  "logout.title": "退出确认",
+  "logout.confirm": "确认",
+  "logout.cancel": "取消",
   // footer
   "footer.aboutUs": "关于我们",
   "footer.learnMore": "了解更多",
