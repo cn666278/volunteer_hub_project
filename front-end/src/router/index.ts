@@ -56,9 +56,15 @@ const routes = createRouter({
         },
         {
           path: "/volunteer/events",
-          name: "Volunteer Events",
+          name: "Events",
           meta: { title: "Events" },
           component: () => import("../views/volunteer/Events.vue"),
+        },
+        {
+          path: "/volunteer/events_volunteer",
+          name: "Volunteer Events",
+          meta: { title: "Volunteer Events" },
+          component: () => import("../views/volunteer/Events_volunteer.vue"),
         },
         {
           path: "/volunteer/eventRegister",

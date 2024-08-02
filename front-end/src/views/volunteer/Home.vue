@@ -183,10 +183,6 @@ export default {
       text-align: center;
       padding: 10px;
 
-      // el-icon {
-      // ;
-      // }
-
       h3 {
         margin-top: 10px;
         font-size: 1.5rem;
@@ -203,7 +199,6 @@ export default {
 
   @media (max-width: 800px) {
     .project-introduction-middle {
-
       flex-direction: column;
       .column {
         width: 100%;
@@ -310,6 +305,21 @@ export default {
       }
     }
   }
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+    .text-content, .image-carousel {
+      width: 100%;
+      padding: 0;
+    }
+    .text-content {
+      padding-bottom: 20px;
+    }
+    .image-carousel {
+      height: auto;
+    }
+  }
 }
 
 .project-introduction, .activities-section {
@@ -359,16 +369,6 @@ export default {
 }
 
 @media (max-width: 800px) {
-  .intro-section {
-    flex-direction: column;
-    align-items: center;
-
-    .text-content, .image-carousel {
-      width: 100%;
-      padding: 0 10px;
-    }
-  }
-
   .activities-display {
     grid-template-columns: 1fr;
   }

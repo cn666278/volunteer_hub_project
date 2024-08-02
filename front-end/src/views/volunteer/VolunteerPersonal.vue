@@ -50,7 +50,7 @@ export default {
         {
           name: 'personal.events',
           icon: './src/assets/events.png',
-          route: '/volunteer/events',
+          route: '/volunteer/events_volunteer',
         },
         {
           name: 'personal.comments',
