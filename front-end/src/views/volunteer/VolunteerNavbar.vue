@@ -5,97 +5,156 @@
       <change-language />
     </div>
 
+    <!-- Navigation Menu -->
     <el-menu
         router
         :default-active="activeIndex"
         class="el-menu-demo navbar"
-        mode="horizontal"
+        :mode="'horizontal'"
         :ellipsis="false"
         @select="handleSelect"
         text-color="#a9181a"
         active-text-color="#a9181a"
     >
-      <div class="weblogo">
-        <img src="../../assets/logo.png" class="logo">
-      </div>
-      <el-menu-item index="/volunteer">{{ $t('navbar.home') }}</el-menu-item>
-      <el-menu-item index="/volunteer/events">{{ $t('navbar.events') }}</el-menu-item>
-      <el-menu-item index="/volunteer/eventRegister">{{ $t('navbar.news') }}</el-menu-item>
-      <el-menu-item index="/volunteer/rewardStore">{{ $t('navbar.rewardStore') }}</el-menu-item>
-      <el-menu-item index="/volunteer/personal">
-        <el-tooltip :content="$t('navbar.viewNotifications')" placement="bottom">
-          <el-icon class="icon">
-            <i class="el-icon-bell"></i>
-          </el-icon>
-        </el-tooltip>
-        <el-avatar :src="userStore.user.photo" class="menu-avatar"></el-avatar>
+      <el-menu-item index="/volunteer">
+        <el-icon><House /></el-icon><span class="menu-text">{{ $t('navbar.home') }}</span>
       </el-menu-item>
-      <el-menu-item @click="exit" class="logout-menu-item">
-        <el-tooltip :content="$t('navbar.logout')" placement="bottom">
-          <el-icon class="icon">
-            <i class="el-icon-switch-button"></i>
-          </el-icon>
-        </el-tooltip>
-        {{ $t('navbar.logout') }}
+      <el-menu-item index="/volunteer/events">
+        <el-icon><Search /></el-icon><span class="menu-text">{{ $t('navbar.events') }}</span>
       </el-menu-item>
+      <el-menu-item index="/volunteer/rewardStore">
+        <el-icon><Star /></el-icon><span class="menu-text">{{ $t('navbar.rewardStore') }}</span>
+      </el-menu-item>
+      <el-dropdown trigger="click" @command="handleCommand">
+        <el-menu-item>
+          <el-icon><User /></el-icon><span class="menu-text">{{ $t('Profile') }}</span>
+        </el-menu-item>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="profile">{{ $t('Profile') }}</el-dropdown-item>
+            <el-dropdown-item command="logout">{{ $t('navbar.logout') }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </el-menu>
+
+    <!-- Mobile Menu Icon -->
+    <div class="mobile-menu-icon" @click="toggleMobileMenu">
+      <i class="el-icon-menu"></i>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <el-menu
+        v-if="mobileMenuVisible"
+        router
+        :default-active="activeIndex"
+        class="el-menu-demo mobile-navbar"
+        :mode="'vertical'"
+        :ellipsis="false"
+        @select="handleSelect"
+        text-color="#a9181a"
+        active-text-color="#a9181a"
+    >
+      <el-menu-item index="/volunteer">
+        <el-icon><House /></el-icon>{{ $t('navbar.home') }}
+      </el-menu-item>
+      <el-menu-item index="/volunteer/events">
+        <el-icon><Search /></el-icon>{{ $t('navbar.events') }}
+      </el-menu-item>
+      <el-menu-item index="/volunteer/rewardStore">
+        <el-icon><Star /></el-icon>{{ $t('navbar.rewardStore') }}
+      </el-menu-item>
+      <el-dropdown trigger="click" @command="handleCommand">
+        <el-menu-item>
+          <el-icon><User /></el-icon>{{ $t('Profile') }}
+        </el-menu-item>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="profile">{{ $t('Profile') }}</el-dropdown-item>
+            <el-dropdown-item command="logout">{{ $t('navbar.logout') }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </el-menu>
   </div>
 </template>
 
+
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useRouter } from "vue-router";
-import useUser from "../../store/user";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import useUser from '../../store/user';
 import changeLanguage from '../../components/changeLanguage.vue';
-import { ElMessageBox } from "element-plus";
+import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
+import { House, Search, Star, User } from '@element-plus/icons-vue';
+
 const { t } = useI18n();
 
 // user store
 const userStore = useUser();
 let router = useRouter();
 
-const activeIndex = ref('1')
+const activeIndex = ref('1');
+const mobileMenuVisible = ref(false);
+
 const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
+
+const toggleMobileMenu = () => {
+  mobileMenuVisible.value = !mobileMenuVisible.value;
+};
+
+const navigateToProfile = () => {
+  router.push('/volunteer/personal');
+};
+
+const handleCommand = (command: string) => {
+  if (command === 'profile') {
+    navigateToProfile();
+  } else if (command === 'logout') {
+    exit();
+  }
+};
 
 // exit
 const exit = () => {
   ElMessageBox.confirm(t('logout.message'), t('logout.title'), {
     confirmButtonText: t('logout.confirm'),
     cancelButtonText: t('logout.cancel'),
-    type: "warning",
+    type: 'warning',
   })
-    .then(() => {
-      userStore.clearUser();
-      router.push("/");
-    })
-    .catch(() => {
-      console.log("Cancel exit");
-    });
+      .then(() => {
+        userStore.clearUser();
+        router.push('/');
+      })
+      .catch(() => {
+        console.log('Cancel exit');
+      });
 };
 </script>
 
+
 <style scoped>
 .navbar-top {
-  position: fixed; /* 固定位置 */
-  top: 0; /* 顶部对齐 */
-  left: 0; /* 左边对齐 */
-  right: 0; /* 右边对齐 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #FFFFFF;
-  padding:20px;
-  z-index: 1010; /* 高层次以保持在顶部 */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  padding: 20px;
+  z-index: 1010;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
-  height: 20px;
+  height: 60px;
 }
 
 .top-logo {
-  width: 50px; /* Adjust the size as necessary */
+  width: 50px;
 }
 
 .language-switcher i {
@@ -108,37 +167,29 @@ const exit = () => {
   align-items: center;
 }
 
-.navbar-container, .el-menu-demo {
-  position: fixed; /* 固定位置 */
-  top: 40px; /* 在navbar-top之下，调整这个值以适应navbar-top的高度 */
-  left: 0; /* 左边对齐 */
-  right: 0; /* 右边对齐 */
+.navbar-container,
+.el-menu-demo {
+  margin-top: 60px; /* 在navbar-top之下，调整这个值以适应navbar-top的高度 */
   display: flex;
-  justify-content: flex-end;
-  background-color: #FFFFFF;
-  overflow-x: auto;
+  justify-content: center;
+  background-color: #ffffff;
   padding-right: 50px;
-  padding-left: 50px;
   width: 100%;
-  z-index: 1000; /* 确保在下层 */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 body {
-  padding-top: 120px; /* 调整这个值以确保足够的空间给固定的导航栏 */
+  padding-top: 80px; /* 调整这个值以确保足够的空间给固定的导航栏 */
 }
 
 :root {
-  --el-menu-active-color: #a9181a; /* 例如，将活跃菜单项的颜色修改为红色 */
-  --el-menu-hover-text-color: #a9181a; /* 例如，将悬停菜单项的颜色修改为蓝色 */
+  --el-menu-active-color: #a9181a;
+  --el-menu-hover-text-color: #a9181a;
 }
 
 .el-menu-item {
   padding: 10px 15px;
-}
-
-.flex-grow {
-  flex-grow: 1;
 }
 
 .menu-avatar {
@@ -155,27 +206,64 @@ body {
 }
 
 .navbar-top {
-  margin-bottom: 0; /* 减少底部外边距 */
+  margin-bottom: 0;
 }
 
 .weblogo {
-  padding-left: 20px; /* 根据需要调整，确保图片不会贴近边界 */
-  padding-right: 900px;
-  flex: none; /* 防止 logo 拉伸或压缩 */
+  padding-left: 20px;
+  flex: none;
   display: flex;
-  justify-content: center; /* 居中图片 */
+  justify-content: center;
   z-index: 1000;
 }
 
 .custom-icon {
-  width: 20px; /* 或者其他适当的尺寸 */
-  height: 20px; /* 保持宽高比 */
+  width: 20px;
+  height: 20px;
 }
 
 .logout-menu-item {
-  margin-left: auto; /* 将退出按钮推到右侧 */
+  margin-left: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mobile-menu-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .navbar-top {
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .navbar-container,
+  .el-menu-demo {
+    padding-left:0px;
+    justify-content: center; /* 居中 */
+  }
+
+  .mobile-menu-icon {
+    display: block;
+  }
+
+  .mobile-navbar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .mobile-navbar .el-menu-item {
+    padding: 10px 15px;
+  }
+
+  .el-menu-item .menu-text {
+    display: none; /* 隐藏文本 */
+  }
 }
 </style>

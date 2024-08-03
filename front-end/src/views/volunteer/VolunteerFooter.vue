@@ -126,19 +126,9 @@ export default {
 
 @media (max-width: 768px) {
   .footer {
-    flex-direction: column;
-    align-items: center;
+    display: none;
   }
 
-  .footer-content {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .footer-section {
-    margin-right: 0;
-    margin-bottom: 20px;
-    text-align: center;
-  }
 }
 </style>
