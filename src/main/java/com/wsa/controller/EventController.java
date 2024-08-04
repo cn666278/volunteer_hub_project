@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,23 +21,37 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/getEventList")
-    public ResultVO<List<EventRes>> getAllEvents() {
-        List<Event> allEvents = eventService.getAllEvents();
-        List<EventRes> eventRes = new ArrayList<>();
-        for (Event e: allEvents) {
+    public ResultVO<Map<String, Object>> getAllEvents(
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
+        List<Event> allEvents = eventService.getEventsByPage(current, pageSize);
+        int total = eventService.getTotalEventsCount();
+        List<EventRes> eventResList = new ArrayList<>();
+        for (Event e : allEvents) {
             EventRes eRes = new EventRes();
             eRes.setId(e.getId());
             eRes.setTitle(e.getTitle());
+            eRes.setDescription(e.getDescription());
+            eRes.setLocation(e.getLocation());
+            eRes.setPointsAwarded(e.getPointsAwarded());
             eRes.setStartDate(e.getStartDate());
             eRes.setEndDate(e.getEndDate());
-            eventRes.add(eRes);
+            eRes.setStatus(e.getStatus());
+            eventResList.add(eRes);
         }
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("list", eventResList);
+        resultMap.put("total", total);
+
         if (allEvents != null) {
-            return ResultVO.success(eventRes);
+            return ResultVO.success(resultMap);
         } else {
             return ResultVO.failure("not found!");
         }
     }
+
 
     @GetMapping("/getEventsByDate")
     public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {

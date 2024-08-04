@@ -13,6 +13,15 @@
         SELECT * FROM events
     </select>
 
+    <select id="findAllEventsPaged" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getTotalEventsCount" resultType="int">
+        SELECT COUNT(*) FROM events
+    </select>
+
     <select id="findEventsByMonth" resultType="com.wsa.model.Event">
         SELECT * FROM events
         WHERE MONTH(startDate) = #{month} AND YEAR(startDate) = #{year}

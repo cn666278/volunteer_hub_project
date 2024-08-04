@@ -156,9 +156,6 @@
             {{ record.eventType }}
           </a-space>
         </template>
-        <!-- <template #filterType="{ record }">
-          {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
-        </template> -->
         <template #status="{ record }">
           <span v-if="record.status === 'offline'" class="circle"></span>
           <span v-else class="circle pass"></span>
@@ -215,12 +212,6 @@ const showColumns = ref<Column[]>([]);
 
 const size = ref<SizeProps>('medium');
 
-// page index
-let pageIndex = ref(1);
-
-// page size
-let pageSize = 10;
-
 const basePagination: Pagination = {
   current: 1,
   pageSize: 10,
@@ -249,7 +240,7 @@ const densityList = computed(() => [
 const columns = computed<TableColumnData[]>(() => [
   {
     title: t('searchTable.columns.index'),
-    dataIndex: 'index',
+    dataIndex: 'id',
     slotName: 'index',
   },
   // {
@@ -258,7 +249,7 @@ const columns = computed<TableColumnData[]>(() => [
   // },
   {
     title: t('searchTable.columns.name'),
-    dataIndex: 'name',
+    dataIndex: 'title',
   },
   {
     title: t('searchTable.columns.eventType'),
@@ -310,26 +301,17 @@ const eventTypeOptions = computed<SelectOptionData[]>(() => [
     value: 'Snowsports',
   },
 ]);
-// const filterTypeOptions = computed<SelectOptionData[]>(() => [
-//   {
-//     label: t('searchTable.form.filterType.artificial'),
-//     value: 'artificial',
-//   },
-//   {
-//     label: t('searchTable.form.filterType.rules'),
-//     value: 'rules',
-//   },
-// ]);
 const statusOptions = computed<SelectOptionData[]>(() => [
   {
     label: t('searchTable.form.status.online'),
-    value: 'online',
+    value: 'Awaiting review',
   },
   {
     label: t('searchTable.form.status.offline'),
-    value: 'offline',
+    value: 'Passed',
   },
 ]);
+
 const fetchData = async (
   params: PolicyParams = { current: 1, pageSize: 10 }
 ) => {
@@ -355,6 +337,7 @@ const search = () => {
     ...formModel.value,
   } as unknown as PolicyParams);
 };
+
 const onPageChange = (current: number) => {
   fetchData({ ...basePagination, current });
 };
