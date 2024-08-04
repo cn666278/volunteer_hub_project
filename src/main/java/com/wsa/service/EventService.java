@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +30,9 @@ public class EventService {
     @Autowired
     private EventRegistrationsMapper eventRegistrationsMapper;
 
+    public List<Event> getEventsByDateRange(Date startDate, Date endDate) {
+        return eventMapper.findEventsByDateRange(startDate, endDate);
+    }
 
     public List<Event> getEventsByMonth(int month, int year) {
         return eventMapper.findEventsByMonth(month, year);

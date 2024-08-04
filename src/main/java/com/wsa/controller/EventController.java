@@ -5,11 +5,13 @@ import com.wsa.model.*;
 import com.wsa.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,27 @@ public class EventController {
             eventRes.add(eRes);
         }
         if (eventsByMonth != null) {
+            return ResultVO.success(eventRes);
+        } else {
+            return ResultVO.failure("not found!");
+        }
+    }
+
+    @GetMapping("/getEventsByDateRange")
+    public ResultVO<List<EventRes>> getEventsByDateRange(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        List<Event> eventsByDateRange = eventService.getEventsByDateRange(startDate, endDate);
+        List<EventRes> eventRes = new ArrayList<>();
+        for (Event e: eventsByDateRange) {
+            EventRes eRes = new EventRes();
+            eRes.setId(e.getId());
+            eRes.setTitle(e.getTitle());
+            eRes.setStartDate(e.getStartDate());
+            eRes.setEndDate(e.getEndDate());
+            eventRes.add(eRes);
+        }
+        if (eventsByDateRange != null) {
             return ResultVO.success(eventRes);
         } else {
             return ResultVO.failure("not found!");

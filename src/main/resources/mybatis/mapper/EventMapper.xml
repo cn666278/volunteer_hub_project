@@ -13,6 +13,12 @@
         SELECT * FROM events
         WHERE MONTH(startDate) = #{month} AND YEAR(startDate) = #{year}
     </select>
+
+    <select id="findEventsByDateRange" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+        WHERE startDate >= #{startDate} AND endDate <= #{endDate}
+    </select>
+
     <select id="getEventsByOrganizerIdAndFilters" resultType="com.wsa.model.Event">
         SELECT * FROM events
         WHERE organizerId = #{organizerId}
