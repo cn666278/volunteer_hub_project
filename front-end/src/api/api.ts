@@ -134,7 +134,7 @@ export default {
       mock: false,
     });
   },
-  // list组件
+  // event approve 组件
   getEventList(params: any) {
     return request({
       url: "/event/getEventList",
@@ -143,7 +143,6 @@ export default {
       mock: false,
     });
   },
-  // event approve 组件
   getEventsByDateRange(params: any) {
       return request({
       url: "/event/getEventsByDateRange",
