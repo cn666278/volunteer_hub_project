@@ -22,6 +22,25 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @GetMapping("/getEventList")
+    public ResultVO<List<EventRes>> getAllEvents() {
+        List<Event> allEvents = eventService.getAllEvents();
+        List<EventRes> eventRes = new ArrayList<>();
+        for (Event e: allEvents) {
+            EventRes eRes = new EventRes();
+            eRes.setId(e.getId());
+            eRes.setTitle(e.getTitle());
+            eRes.setStartDate(e.getStartDate());
+            eRes.setEndDate(e.getEndDate());
+            eventRes.add(eRes);
+        }
+        if (allEvents != null) {
+            return ResultVO.success(eventRes);
+        } else {
+            return ResultVO.failure("not found!");
+        }
+    }
+
     @GetMapping("/getEventsByDate")
     public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
         List<Event> eventsByMonth = eventService.getEventsByMonth(month, year);

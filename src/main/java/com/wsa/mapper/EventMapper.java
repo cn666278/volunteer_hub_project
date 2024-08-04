@@ -14,6 +14,8 @@ public interface EventMapper {
 
     void saveEvent(Event event);
 
+    List<Event> findAllEvents();
+
     List<Event> findEventsByMonth(int month, int year);
 
     List<Event> findEventsByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);

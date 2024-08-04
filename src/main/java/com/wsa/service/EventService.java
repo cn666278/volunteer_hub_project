@@ -30,6 +30,10 @@ public class EventService {
     @Autowired
     private EventRegistrationsMapper eventRegistrationsMapper;
 
+    public List<Event> getAllEvents() {
+        return eventMapper.findAllEvents();
+    }
+
     public List<Event> getEventsByDateRange(Date startDate, Date endDate) {
         return eventMapper.findEventsByDateRange(startDate, endDate);
     }

@@ -137,10 +137,10 @@ export default {
   // list组件
   getEventList(params: any) {
     return request({
-      url: "/admin/list/getEventList",
+      url: "/event/getEventList",
       method: "get",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
   // event approve 组件

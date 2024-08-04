@@ -9,6 +9,10 @@
         VALUES (#{organizerId}, #{title}, #{description}, #{location}, #{pointsAwarded}, #{startDate}, #{endDate})
     </insert>
 
+    <select id="findAllEvents" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+    </select>
+
     <select id="findEventsByMonth" resultType="com.wsa.model.Event">
         SELECT * FROM events
         WHERE MONTH(startDate) = #{month} AND YEAR(startDate) = #{year}
