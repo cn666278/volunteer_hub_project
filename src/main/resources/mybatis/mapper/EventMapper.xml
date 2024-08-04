@@ -20,7 +20,7 @@
 
     <select id="findEventsByDateRange" resultType="com.wsa.model.Event">
         SELECT * FROM events
-        WHERE startDate >= #{startDate} AND endDate <= #{endDate}
+        WHERE startDate &gt;= #{startDate} AND endDate &lt;= #{endDate}
     </select>
 
     <select id="getEventsByOrganizerIdAndFilters" resultType="com.wsa.model.Event">
