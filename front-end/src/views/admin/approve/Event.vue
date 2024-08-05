@@ -4,8 +4,7 @@
     <a-card class="general-card" :title="$t('menu.list.searchTable')">
       <a-row>
         <a-col :flex="1">
-          <a-form :model="formModel" :label-col-props="{ span: 8 }" :wrapper-col-props="{ span: 18 }"
-            label-align="left">
+          <a-form :model="formModel" :label-col-props="{ span: 8 }" :wrapper-col-props="{ span: 18 }" label-align="left">
             <a-row :gutter="16">
               <a-col :span="10">
                 <a-form-item field="number" :label="$t('searchTable.form.number')">
@@ -19,25 +18,16 @@
               </a-col>
               <a-col :span="10">
                 <a-form-item field="eventType" :label="$t('searchTable.form.eventType')">
-                  <a-select v-model="formModel.eventType" :options="eventTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')" />
+                  <a-select v-model="formModel.eventType" :options="eventTypeOptions" :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
               </a-col>
-              <!-- <a-col :span="8">
-                <a-form-item field="filterType" :label="$t('searchTable.form.filterType')">
-                  <a-select v-model="formModel.filterType" :options="filterTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')" />
-                </a-form-item>
-              </a-col> -->
               <a-col :span="6">
                 <a-form-item field="status" :label="$t('searchTable.form.status')">
-                  <a-select v-model="formModel.status" :options="statusOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')" />
+                  <a-select v-model="formModel.status" :options="statusOptions" :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item field="createdTime" :label="$t('searchTable.form.createdTime')">
-                  <!-- bug:显示为中文：修改locale -->
                   <a-range-picker v-model="formModel.createdTime" style="width: 100%" />
                 </a-form-item>
               </a-col>
@@ -96,8 +86,7 @@
               <div class="action-icon"><icon-line-height size="18" /></div>
             </a-tooltip>
             <template #content>
-              <a-doption v-for="item in densityList" :key="item.value" :value="item.value"
-                :class="{ active: item.value === size }">
+              <a-doption v-for="item in densityList" :key="item.value" :value="item.value" :class="{ active: item.value === size }">
                 <span>{{ item.name }}</span>
               </a-doption>
             </template>
@@ -112,9 +101,7 @@
                       <icon-drag-arrow />
                     </div>
                     <div>
-                      <a-checkbox v-model="item.checked" @change="
-                        handleChange($event, item as TableColumnData, index)
-                        ">
+                      <a-checkbox v-model="item.checked" @change="handleChange($event, item as TableColumnData, index)">
                       </a-checkbox>
                     </div>
                     <div class="title">
@@ -152,14 +139,19 @@
             <a-avatar v-else-if="record.eventType === 'Snowsports'" :size="16" shape="square">
               <img alt="avatar" src="../../../assets/skating.png" />
             </a-avatar>
-
             {{ record.eventType }}
           </a-space>
         </template>
+        <template #startDate="{ record }">
+          {{ formatDate(record.startDate) }}
+        </template>
+        <template #endDate="{ record }">
+          {{ formatDate(record.endDate) }}
+        </template>
         <template #status="{ record }">
-          <span v-if="record.status === 'offline'" class="circle"></span>
+          <span v-if="record.status === 'Awaiting Review'" class="circle"></span>
           <span v-else class="circle pass"></span>
-          {{ $t(`searchTable.form.status.${record.status}`) }}
+          {{ record.status }}
         </template>
         <template #operations>
           <a-button v-permission="['admin']" type="text" size="small" style="margin-right: 10px;">
@@ -243,27 +235,32 @@ const columns = computed<TableColumnData[]>(() => [
     dataIndex: 'id',
     slotName: 'index',
   },
-  // {
-  //   title: t('searchTable.columns.number'),
-  //   dataIndex: 'number',
-  // },
   {
     title: t('searchTable.columns.name'),
     dataIndex: 'title',
   },
   {
-    title: t('searchTable.columns.eventType'),
-    dataIndex: 'eventType',
-    slotName: 'eventType',
+    title: t('searchTable.columns.description'),
+    dataIndex: 'description',
   },
-  // {
-  //   title: t('searchTable.columns.filterType'),
-  //   dataIndex: 'filterType',
-  // },
-  // {
-  //   title: t('searchTable.columns.createdTime'),
-  //   dataIndex: 'createdTime',
-  // },
+  {
+    title: t('searchTable.columns.location'),
+    dataIndex: 'location',
+  },
+  {
+    title: t('searchTable.columns.pointsAwarded'),
+    dataIndex: 'pointsAwarded',
+  },
+  {
+    title: t('searchTable.columns.startDate'),
+    dataIndex: 'startDate',
+    slotName: 'startDate',
+  },
+  {
+    title: t('searchTable.columns.endDate'),
+    dataIndex: 'endDate',
+    slotName: 'endDate',
+  },
   {
     title: t('searchTable.columns.status'),
     dataIndex: 'status',
@@ -303,11 +300,11 @@ const eventTypeOptions = computed<SelectOptionData[]>(() => [
 ]);
 const statusOptions = computed<SelectOptionData[]>(() => [
   {
-    label: t('searchTable.form.status.online'),
+    label: t('searchTable.form.status.awaitingReview'),
     value: 'Awaiting review',
   },
   {
-    label: t('searchTable.form.status.offline'),
+    label: t('searchTable.form.status.passed'),
     value: 'Passed',
   },
 ]);
@@ -376,7 +373,6 @@ const exchangeArray = <T extends Array<any>>(
 ): T => {
   const newArray = isDeep ? cloneDeep(array) : array;
   if (beforeIdx > -1 && newIdx > -1) {
-    // 先替换后面的，然后拿到替换的结果替换前面的
     newArray.splice(
       beforeIdx,
       1,
@@ -412,6 +408,11 @@ watch(
   },
   { deep: true, immediate: true }
 );
+
+const formatDate = (dateStr: string | number | Date) => {
+  const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateStr));
+};
 </script>
 
 <script lang="ts">
