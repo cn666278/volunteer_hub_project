@@ -2,12 +2,12 @@
   <div class="container">
     <div class="sidebar">
       <el-menu
-        :default-active="activeIndex"
-        class="el-menu-vertical-demo"
-        background-color="#ffffff"
-        text-color="#303133"
-        active-text-color="#409EFF"
-        @select="handleSelect"
+          :default-active="activeIndex"
+          class="el-menu-vertical-demo"
+          background-color="#ffffff"
+          text-color="#303133"
+          active-text-color="#409EFF"
+          @select="handleSelect"
       >
         <el-menu-item index="1">
           <el-icon><search /></el-icon>
@@ -26,8 +26,8 @@
     <div class="content">
       <div v-if="activeIndex === '1'" class="search-section">
         <el-input
-          :placeholder="$t('events.searchPlaceholder')"
-          v-model="searchQuery">
+            :placeholder="$t('events.searchPlaceholder')"
+            v-model="searchQuery">
           <template #prefix>
             <el-icon><search /></el-icon>
           </template>
@@ -36,17 +36,17 @@
       <!-- All Events Section -->
       <div class="blog-section" v-if="activeIndex === '1'">
         <div class="blog-display">
-          <el-card v-for="post in allEvents" :key="post.id" class="blog-card">
-            <img :src="post.image" alt="Blog Image" class="blog-image">
+          <el-card v-for="post in filteredEvents" :key="post.id" class="blog-card">
+            <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
                   <el-icon><User /></el-icon>
-                  {{ post.author }}
+                  {{ post.organizer }}
                 </div>
                 <div class="date-details">
                   <el-icon><Calendar /></el-icon>
-                  {{ post.date }}
+                  {{ formatDate(post.date) }}
                 </div>
               </div>
               <h5>{{ post.title }}</h5>
@@ -59,16 +59,16 @@
       <div class="blog-section" v-if="activeIndex === '2'">
         <div class="blog-display">
           <el-card v-for="post in ongoingEvents" :key="post.id" class="blog-card">
-            <img :src="post.image" alt="Blog Image" class="blog-image">
+            <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
                   <el-icon><User /></el-icon>
-                  {{ post.author }}
+                  {{ post.organizerId }}
                 </div>
                 <div class="date-details">
                   <el-icon><Calendar /></el-icon>
-                  {{ post.date }}
+                  {{ formatDate(post.startDate) }}
                 </div>
               </div>
               <h5>{{ post.title }}</h5>
@@ -81,16 +81,16 @@
       <div class="blog-section" v-if="activeIndex === '3'">
         <div class="blog-display">
           <el-card v-for="post in closedEvents" :key="post.id" class="blog-card">
-            <img :src="post.image" alt="Blog Image" class="blog-image">
+            <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
                   <el-icon><User /></el-icon>
-                  {{ post.author }}
+                  {{ post.organizer }}
                 </div>
                 <div class="date-details">
                   <el-icon><Calendar /></el-icon>
-                  {{ post.date }}
+                  {{ formatDate(post.date) }}
                 </div>
               </div>
               <h5>{{ post.title }}</h5>
@@ -104,129 +104,56 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { Document, Menu as IconMenu, Search, User, Calendar } from '@element-plus/icons-vue';
+import { ref, onMounted, computed, getCurrentInstance } from 'vue';
+import { Search, User, Calendar } from '@element-plus/icons-vue';
+import { ElMessage } from "element-plus";
 
-const activeIndex = ref('1'); // Default active index set to '1' for all events
+const allEvents = ref([]);
+const ongoingEvents = ref([]);
+const closedEvents = ref([]);
+const activeIndex = ref('1');
 const searchQuery = ref('');
+const { proxy } = getCurrentInstance();
 
-const allEvents = ref([
-  {
-    id: 1,
-    image: './src/assets/event-judo.png',
-    title: 'The British Adaptive & VI Open',
-    date: '30.07.2024',
-    author: 'Welsh Judo',
-    description: 'Welsh Judo is hosting the British Adaptive & VI Open in Swansea, showcasing inclusive judo for visually impaired athletes.'
-  },
-  {
-    id: 2,
-    image: './src/assets/event-badminto.png',
-    title: 'Yonex Welsh International Challenge',
-    date: '30.07.2024',
-    author: 'Badminton Wales',
-    description: 'Badminton Wales is hosting the Yonex Welsh International Challenge in Cardiff, attracting top badminton talent from around the world.'
-  },
-  {
-    id: 3,
-    image: './src/assets/event-tabletennis.png',
-    title: 'The magic of marketing, the science of sales',
-    date: '30.07.2024',
-    author: 'Table Tennis Wales',
-    description: 'Table Tennis Wales is hosting the Senior Team Championships of Wales, featuring elite team competition in table tennis.'
-  },
-  {
-    id: 4,
-    image: './src/assets/event-hocky.png',
-    title: 'International Hockey Matches',
-    date: '30.07.2024',
-    author: 'Hockey Wales',
-    description: 'Hockey Wales is hosting an International Series over a long weekend, bringing exciting international hockey matches to Wales.'
-  },
-  {
-    id: 5,
-    image: './src/assets/event-cycling.png',
-    title: 'Masters National Track Championships',
-    date: '30.07.2024',
-    author: 'Welsh Cycling',
-    description: 'Welsh Cycling is hosting the Masters National Track Championships in Newport, highlighting competitive cycling for master athletes.'
-  },
-  {
-    id: 6,
-    image: './src/assets/event-snow.png',
-    title: 'Welsh Outdoor Championships',
-    date: '30.07.2024',
-    author: 'Snowsports Wales',
-    description: 'Snowsports Wales is hosting the Welsh Outdoor Championships in Pontypool, celebrating outdoor snow sports competitions.'
+const loadAllEvents = async () => {
+  const response = await proxy.$api.getAllEvents()
+      .catch(error => {
+        ElMessage.error(error.message);
+      });
+  if (response) {
+    allEvents.value = response; // 假设 response.data 是你想要的事件数组
   }
-]);
-
-const ongoingEvents = ref([
-  {
-    id: 1,
-    image: './src/assets/event-judo.png',
-    title: 'The British Adaptive & VI Open',
-    date: '30.07.2024',
-    author: 'Welsh Judo',
-    description: 'Welsh Judo is hosting the British Adaptive & VI Open in Swansea, showcasing inclusive judo for visually impaired athletes.'
-  },
-  {
-    id: 2,
-    image: './src/assets/event-badminto.png',
-    title: 'Yonex Welsh International Challenge',
-    date: '30.07.2024',
-    author: 'Badminton Wales',
-    description: 'Badminton Wales is hosting the Yonex Welsh International Challenge in Cardiff, attracting top badminton talent from around the world.'
-  },
-  {
-    id: 3,
-    image: './src/assets/event-tabletennis.png',
-    title: 'The magic of marketing, the science of sales',
-    date: '30.07.2024',
-    author: 'Table Tennis Wales',
-    description: 'Table Tennis Wales is hosting the Senior Team Championships of Wales, featuring elite team competition in table tennis.'
-  }
-]);
-
-const closedEvents = ref([
-  {
-    id: 4,
-    image: './src/assets/event-hocky.png',
-    title: 'International Hockey Matches',
-    date: '30.07.2024',
-    author: 'Hockey Wales',
-    description: 'Hockey Wales is hosting an International Series over a long weekend, bringing exciting international hockey matches to Wales.'
-  },
-  {
-    id: 5,
-    image: './src/assets/event-cycling.png',
-    title: 'Masters National Track Championships',
-    date: '30.07.2024',
-    author: 'Welsh Cycling',
-    description: 'Welsh Cycling is hosting the Masters National Track Championships in Newport, highlighting competitive cycling for master athletes.'
-  },
-  {
-    id: 6,
-    image: './src/assets/event-snow.png',
-    title: 'Welsh Outdoor Championships',
-    date: '30.07.2024',
-    author: 'Snowsports Wales',
-    description: 'Snowsports Wales is hosting the Welsh Outdoor Championships in Pontypool, celebrating outdoor snow sports competitions.'
-  }
-]);
-
-const handleSelect = (index: string, indexPath: string[]) => {
-  console.log('Menu item selected:', index);
-  activeIndex.value = index; // 更新活跃索引以触发内容区域的变更
+  console.log(allEvents.value); // 验证数据是否正确加载
 };
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log('Opened:', key, keyPath);
+onMounted(() => {
+  loadAllEvents();
+  // Log the initial value of filteredEvents
+  console.log(filteredEvents.value);
+});
+
+const handleSelect = (index: string) => {
+  activeIndex.value = index;
 };
 
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log('Closed:', key, keyPath);
+// Format date
+const formatDate = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return new Date(dateString).toLocaleDateString(undefined, options);
 };
+
+// Computed property for filtered events based on search query
+const filteredEvents = computed(() => {
+  if (!searchQuery.value) return allEvents.value;
+  return allEvents.value.filter(event =>
+      event.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (event.description && event.description.toLowerCase().includes(searchQuery.value.toLowerCase()))
+  );
+});
 </script>
 
 <style scoped>
@@ -252,7 +179,7 @@ const handleClose = (key: string, keyPath: string[]) => {
   justify-content: center;
 }
 
-.el-input{
+.el-input {
   --el-input-border-color: #c0c4cc;
 }
 
@@ -281,10 +208,10 @@ const handleClose = (key: string, keyPath: string[]) => {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   text-align: center;
+}
 
 h1 {
   margin-bottom: 16px;
-}
 }
 
 .blog-display {
@@ -300,9 +227,10 @@ h1 {
   overflow: hidden;
   border: 1px solid #ddd; /* Add border to the card */
   border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Light shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
 
-img {
+.blog-card img {
   width: 100%;
   height: 200px; /* Set image height */
   object-fit: cover; /* Ensure image is fully displayed */
@@ -313,6 +241,7 @@ img {
   padding: 14px;
   text-align: left;
   width: 100%;
+}
 
 .blog-author-date {
   display: flex;
@@ -320,11 +249,11 @@ img {
   color: #666;
   font-size: 0.9rem;
   margin-bottom: 10px;
+}
 
 .author-icon, .date-icon {
   color: red; /* Icon color */
   margin-right: 5px;
-}
 }
 
 h5 {
@@ -338,7 +267,12 @@ p {
   color: #666;
   font-size: 1rem;
 }
-}
+
+.placeholder-section {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 1.2rem;
 }
 
 @media (max-width: 800px) {
@@ -354,15 +288,15 @@ p {
   color: #666;
   font-size: 0.9rem;
   margin-bottom: 10px;
+}
 
 .author-details, .date-details {
   display: flex;
   align-items: center;
+}
 
 .el-icon {
   color: #007BFF; /* Changed icon color to blue */
   margin-right: 5px;
-}
-}
 }
 </style>

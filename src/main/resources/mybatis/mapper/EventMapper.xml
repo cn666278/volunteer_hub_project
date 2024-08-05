@@ -9,10 +9,29 @@
         VALUES (#{organizerId}, #{title}, #{description}, #{location}, #{pointsAwarded}, #{startDate}, #{endDate})
     </insert>
 
+    <select id="findAllEvents" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+    </select>
+
+    <select id="findAllEventsPaged" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getTotalEventsCount" resultType="int">
+        SELECT COUNT(*) FROM events
+    </select>
+
     <select id="findEventsByMonth" resultType="com.wsa.model.Event">
         SELECT * FROM events
         WHERE MONTH(startDate) = #{month} AND YEAR(startDate) = #{year}
     </select>
+
+    <select id="findEventsByDateRange" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+        WHERE startDate &gt;= #{startDate} AND endDate &lt;= #{endDate}
+    </select>
+
     <select id="getEventsByOrganizerIdAndFilters" resultType="com.wsa.model.Event">
         SELECT * FROM events
         WHERE organizerId = #{organizerId}
@@ -51,9 +70,9 @@
             f.name AS facilityName
         FROM
             events e
-        LEFT JOIN
+                LEFT JOIN
             eventRoles r ON e.id = r.eventId
-        LEFT JOIN
+                LEFT JOIN
             eventFacilities f ON e.id = f.eventId
         WHERE
             e.id = #{id}

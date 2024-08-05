@@ -17,4 +17,8 @@ public class Event implements Serializable {
     private String status;
     private Integer pointsAwarded;
 
+    private String eventPic;
+
+    private Long organizerID;
+
 }
