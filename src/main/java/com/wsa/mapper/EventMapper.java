@@ -6,13 +6,26 @@ import com.wsa.model.EventRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.Date;
 
 @Mapper
 public interface EventMapper {
 
     void saveEvent(Event event);
 
+    @Select("SELECT * FROM events LIMIT #{offset}, #{pageSize}")
+    List<Event> getEventsByPage(@Param("offset") int offset, @Param("pageSize") int pageSize);
+
+    int getTotalEventsCount();
+
+    List<Event> findAllEvents();
+
     List<Event> findEventsByMonth(int month, int year);
+
+    List<Event> findEventsByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     List<Event> getEventsByOrganizerIdAndFilters(EventReqByOrganizerId eventRequest);
 

@@ -5,12 +5,12 @@ import com.wsa.model.*;
 import com.wsa.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -19,6 +19,39 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @GetMapping("/getEventList")
+    public ResultVO<Map<String, Object>> getAllEvents(
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
+        List<Event> allEvents = eventService.getEventsByPage(current, pageSize);
+        int total = eventService.getTotalEventsCount();
+        List<EventRes> eventResList = new ArrayList<>();
+        for (Event e : allEvents) {
+            EventRes eRes = new EventRes();
+            eRes.setId(e.getId());
+            eRes.setTitle(e.getTitle());
+            eRes.setDescription(e.getDescription());
+            eRes.setLocation(e.getLocation());
+            eRes.setPointsAwarded(e.getPointsAwarded());
+            eRes.setStartDate(e.getStartDate());
+            eRes.setEndDate(e.getEndDate());
+            eRes.setStatus(e.getStatus());
+            eventResList.add(eRes);
+        }
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("list", eventResList);
+        resultMap.put("total", total);
+
+        if (allEvents != null) {
+            return ResultVO.success(resultMap);
+        } else {
+            return ResultVO.failure("not found!");
+        }
+    }
+
 
     @GetMapping("/getEventsByDate")
     public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
@@ -34,6 +67,27 @@ public class EventController {
             eventRes.add(eRes);
         }
         if (eventsByMonth != null) {
+            return ResultVO.success(eventRes);
+        } else {
+            return ResultVO.failure("not found!");
+        }
+    }
+
+    @GetMapping("/getEventsByDateRange")
+    public ResultVO<List<EventRes>> getEventsByDateRange(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        List<Event> eventsByDateRange = eventService.getEventsByDateRange(startDate, endDate);
+        List<EventRes> eventRes = new ArrayList<>();
+        for (Event e: eventsByDateRange) {
+            EventRes eRes = new EventRes();
+            eRes.setId(e.getId());
+            eRes.setTitle(e.getTitle());
+            eRes.setStartDate(e.getStartDate());
+            eRes.setEndDate(e.getEndDate());
+            eventRes.add(eRes);
+        }
+        if (eventsByDateRange != null) {
             return ResultVO.success(eventRes);
         } else {
             return ResultVO.failure("not found!");

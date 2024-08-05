@@ -9,7 +9,7 @@ export default {
       url: "/login",
       method: "post",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
   getLoginUserInfo(params: any) {
@@ -17,7 +17,7 @@ export default {
       url: "/getLoginUserInfo",
       method: "post",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
   /** Admin */
@@ -134,15 +134,24 @@ export default {
       mock: false,
     });
   },
-  // list组件
+  // event approve 组件
   getEventList(params: any) {
     return request({
-      url: "/admin/list/evnets",
+      url: "/event/getEventList",
       method: "get",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
+  getEventsByDateRange(params: any) {
+      return request({
+      url: "/event/getEventsByDateRange",
+      method: "post",
+      data: params,
+      mock: false,
+      });
+  },
+
   // 根据用户名不同，返回不一样的菜单列表
   //   getMenu(prams: any){
   //     return request({
