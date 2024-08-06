@@ -47,6 +47,19 @@ public class EventService {
         return eventMapper.findEventsByDateRange(startDate, endDate);
     }
 
+    public List<Event> getEventsByPage(int current, int pageSize) {
+        int offset = (current - 1) * pageSize;
+        return eventMapper.getEventsByPage(offset, pageSize);
+    }
+
+    public int getTotalEventsCount() {
+        return eventMapper.getTotalEventsCount();
+    }
+
+    public List<Event> getEventsByDateRange(Date startDate, Date endDate) {
+        return eventMapper.findEventsByDateRange(startDate, endDate);
+    }
+
     public List<Event> getEventsByMonth(int month, int year) {
         return eventMapper.findEventsByMonth(month, year);
     }
@@ -123,5 +136,9 @@ public class EventService {
 
     public void updateVolunteerStatus(Long id, String status) {
         eventRegistrationsMapper.updateStatusById(id, status);
+    }
+
+    public List<Event> getAllEvents() {
+        return eventMapper.findAllEvents();
     }
 }

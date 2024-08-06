@@ -70,9 +70,9 @@
             f.name AS facilityName
         FROM
             events e
-        LEFT JOIN
+                LEFT JOIN
             eventRoles r ON e.id = r.eventId
-        LEFT JOIN
+                LEFT JOIN
             eventFacilities f ON e.id = f.eventId
         WHERE
             e.id = #{id}

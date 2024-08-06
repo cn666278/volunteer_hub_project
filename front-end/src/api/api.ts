@@ -129,7 +129,7 @@ export default {
   deleteUser(params: any) {
     return request({
       url: "/admin/user/deleteUser",
-      method: "post", 
+      method: "post",
       data: params,
       mock: false,
     });
@@ -272,5 +272,19 @@ export default {
       responseType: 'text',
       mock: false,
     });
-  }
-};
+  },
+
+
+    //Adding, deleting, and checking events
+  getAllEvents(params: any) {
+    return request({
+      url: "/event/getAllEvents",
+      method: "get",
+      data: params,
+      mock: false,
+    });
+  },
+
+
+}
+

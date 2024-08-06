@@ -58,7 +58,7 @@ public class EventController {
         List<Event> eventsByMonth = eventService.getEventsByMonth(month, year);
         List<EventRes> eventRes = new ArrayList<>();
         for (Event e: eventsByMonth
-             ) {
+        ) {
             EventRes eRes = new EventRes();
             eRes.setId(e.getId());
             eRes.setTitle(e.getTitle());
@@ -150,6 +150,28 @@ public class EventController {
             return ResultVO.success("Status updated successfully");
         } catch (Exception e) {
             return ResultVO.failure("Failed to update status");
+        }
+    }
+
+    @GetMapping("/getAllEvents")
+    public ResultVO<List<EventRes>> getAllEvents() {
+        try {
+            List<Event> events = eventService.getAllEvents();
+            List<EventRes> eventResList = new ArrayList<>();
+            for (Event e : events) {
+                EventRes eRes = new EventRes();
+                eRes.setId(e.getId());
+                eRes.setTitle(e.getTitle()); // Ensure the field name matches 'title'
+                eRes.setStartDate(e.getStartDate()); // Ensure the field name matches 'startDate'
+                eRes.setEndDate(e.getEndDate());
+                eRes.setDescription(e.getDescription()); // Ensure the field name matches 'description'
+                eRes.setId(e.getId()); // Ensure the field name matches 'organizer'
+                eRes.setEventPic(e.getEventPic()); // Ensure the field name matches 'eventPic'
+                eventResList.add(eRes);
+            }
+            return ResultVO.success(eventResList);
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to fetch events");
         }
     }
 }
