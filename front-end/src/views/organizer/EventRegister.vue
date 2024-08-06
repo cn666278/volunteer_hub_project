@@ -1,39 +1,39 @@
 <template>
   <div>
     <el-form :model="form" ref="formRef" label-width="120px">
-      <el-form-item label="Title" prop="title">
+      <el-form-item :label="translatedLabels.title" prop="title">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
-      <el-form-item label="Description" prop="description">
+      <el-form-item :label="translatedLabels.description" prop="description">
         <el-input v-model="form.description"></el-input>
       </el-form-item>
-      <el-form-item label="Location" prop="location">
+      <el-form-item :label="translatedLabels.location" prop="location">
         <el-input id="autocomplete" v-model="form.location" @focus="openMap"></el-input>
       </el-form-item>
-      <el-form-item label="Points Awarded" prop="pointsAwarded">
+      <el-form-item :label="translatedLabels.pointsAwarded" prop="pointsAwarded">
         <el-input-number v-model="form.pointsAwarded"></el-input-number>
       </el-form-item>
-      <el-form-item label="Start Date" prop="startDate">
+      <el-form-item :label="translatedLabels.startDate" prop="startDate">
         <el-date-picker
             v-model="form.startDate"
             type="datetime"
             placeholder="choose start date">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="End Date" prop="endDate">
+      <el-form-item :label="translatedLabels.endDate" prop="endDate">
         <el-date-picker
             v-model="form.endDate"
             type="datetime"
             placeholder="choose end date">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="Role" prop="roles" required>
+      <el-form-item :label="translatedLabels.roles" prop="roles" required>
         <div v-for="role in availableRoles" :key="role" style="display: flex; align-items: center; margin-bottom: 8px;">
           <el-checkbox :label="role" v-model="form.roles">{{ role }}</el-checkbox>
           <el-input-number v-if="form.roles.includes(role)" v-model="form.rolesQuantities[role]" :min="1" style="margin-left: 8px;"></el-input-number>
         </div>
       </el-form-item>
-      <el-form-item label="Nearby Facilities" prop="nearbyFacilities">
+      <el-form-item :label="translatedLabels.nearbyFacilities" prop="nearbyFacilities">
         <el-select v-model="form.nearbyFacilities" multiple>
           <el-option
               v-for="facility in nearbyFacilities"
@@ -44,8 +44,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm">Register</el-button>
-        <el-button @click="resetForm">Reset</el-button>
+        <el-button type="primary" @click="submitForm">{{ translatedLabels.register }}</el-button>
+        <el-button @click="resetForm">{{ translatedLabels.reset }}</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -54,6 +54,7 @@
 <script setup lang='ts'>
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
 import { ElMessage, ElForm } from 'element-plus';
+import { translateText } from '../../api/translate';
 
 const { proxy } = getCurrentInstance();
 
@@ -65,13 +66,27 @@ const form = reactive({
   pointsAwarded: 0,
   startDate: '',
   endDate: '',
-  roles: [],
+  roles: [] as string[], // Ensure roles is an array of strings
   rolesQuantities: {} as Record<string, number>,
   nearbyFacilities: []
 });
 
 const availableRoles = ['Event Coordinator', 'Event Welcome Desk', 'Athlete Registration Desk', 'Transport Operations', 'Event Greeter / Fan Experience', 'Entertainment Coordinator'];
 const nearbyFacilities = ref<any[]>([]);
+
+// Add translated labels
+const translatedLabels = reactive({
+  title: 'Title',
+  description: 'Description',
+  location: 'Location',
+  pointsAwarded: 'Points Awarded',
+  startDate: 'Start Date',
+  endDate: 'End Date',
+  roles: 'Roles',
+  nearbyFacilities: 'Nearby Facilities',
+  register: 'Register',
+  reset: 'Reset'
+});
 
 const submitForm = () => {
   const roles = form.roles.map(role => ({
@@ -158,12 +173,27 @@ const fetchNearbyFacilities = (location) => {
   });
 };
 
-onMounted(() => {
+// Function to translate labels
+const translateLabels = async (language: string) => {
+  const labels = Object.keys(translatedLabels);
+  const translations = await Promise.all(
+      labels.map(label => translateText(translatedLabels[label], language))
+  );
+  labels.forEach((label, index) => {
+    translatedLabels[label] = translations[index];
+  });
+};
+
+onMounted(async () => {
   if (window.google) {
     openMap();
   } else {
     window.addEventListener('load', openMap);
   }
+
+  // Get the saved language from local storage or default to 'en'
+  const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+  await translateLabels(selectedLanguage);
 });
 </script>
 

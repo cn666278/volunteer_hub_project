@@ -34,9 +34,9 @@
       </el-menu>
     </div>
     <div class="right">
-        <div class="top">
-          <el-menu router mode="horizontal" background-color="#a9181a" text-color="#fff" active-text-color="rgb(255, 143, 15)"
-                   :ellipsis="false">
+      <div class="top">
+        <el-menu router mode="horizontal" background-color="#a9181a" text-color="#fff" active-text-color="rgb(255, 143, 15)"
+                 :ellipsis="false">
           <el-menu-item index="1">
             <el-icon><House /></el-icon>
             Home
@@ -54,15 +54,24 @@
               <el-icon><User /></el-icon>
               Admin
             </template>
-            <el-menu-item index="2-1">Personal</el-menu-item>
-            <el-menu-item index="2-2">Password</el-menu-item>
+            <el-menu-item index="4-1">Personal</el-menu-item>
+            <el-menu-item index="4-2">Password</el-menu-item>
             <el-menu-item index="" @click="exit">Exit</el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="5">
+            <template #title>
+              <span>
+                Language<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+            </template>
+            <el-menu-item @click="handleLanguageChange('en')">English</el-menu-item>
+            <el-menu-item @click="handleLanguageChange('cy')">Welsh</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
       <div class="content">
         <!-- add router, render content -->
-        <router-view></router-view> 
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -106,6 +115,16 @@ const exit = () => {
   });
 };
 
+const handleLanguageChange = async (language: string) => {
+  // Save selected language in local storage
+  localStorage.setItem('selectedLanguage', language);
+  // Translate labels
+  await translateLabels(language);
+  location.reload();  // Reload the page to apply translations
+};
+const translateLabels = async (language: string) => {
+  // Implement translation logic here, similar to the example provided earlier
+};
 </script>
 
 <style lang="scss">
@@ -141,6 +160,10 @@ const exit = () => {
       .el-menu {
         // delete the bottom border
         border-bottom: none;
+      }
+      .el-sub-menu {
+        cursor: pointer;
+        color: white;
       }
     }
     .content {

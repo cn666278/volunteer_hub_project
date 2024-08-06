@@ -13,6 +13,7 @@
     "@fullcalendar/core": "^6.1.14",
     "@fullcalendar/daygrid": "^6.1.14",
     "@fullcalendar/vue3": "^6.1.14",
+    "@google-cloud/translate": "^8.3.0",
     "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.2",
     "echarts": "^5.5.1",
