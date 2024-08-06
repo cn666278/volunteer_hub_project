@@ -34,7 +34,8 @@ const routes = createRouter({
           path: "",
           name: "Volunteer Home",
           meta: { title: "Home" },
-          component: () => import("../views/volunteer/Home.vue"),
+          // component: () => import("../views/volunteer/Home.vue"),
+          component: () => import("../views/volunteer/Events_detail.vue"),
         },
         {
           path: "/volunteer/personalInfo",
@@ -59,6 +60,12 @@ const routes = createRouter({
           name: "Events",
           meta: { title: "Events" },
           component: () => import("../views/volunteer/Events.vue"),
+        },
+        {
+          path: "/volunteer/event/:id",
+          name: "EventDetail",
+          meta: { title: "Event Detail" },
+          component: () => import("../views/volunteer/Events_detail.vue"),
         },
         {
           path: "/volunteer/events_volunteer",

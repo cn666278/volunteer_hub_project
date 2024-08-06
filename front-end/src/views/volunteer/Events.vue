@@ -36,7 +36,7 @@
       <!-- All Events Section -->
       <div class="blog-section" v-if="activeIndex === '1'">
         <div class="blog-display">
-          <el-card v-for="post in filteredEvents" :key="post.id" class="blog-card">
+          <el-card v-for="post in filteredEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
             <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
@@ -58,7 +58,7 @@
       <!-- Ongoing Events Section -->
       <div class="blog-section" v-if="activeIndex === '2'">
         <div class="blog-display">
-          <el-card v-for="post in ongoingEvents" :key="post.id" class="blog-card">
+          <el-card v-for="post in ongoingEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
             <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
@@ -80,7 +80,7 @@
       <!-- Closed Events Section -->
       <div class="blog-section" v-if="activeIndex === '3'">
         <div class="blog-display">
-          <el-card v-for="post in closedEvents" :key="post.id" class="blog-card">
+          <el-card v-for="post in closedEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
             <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
@@ -107,6 +107,7 @@
 import { ref, onMounted, computed, getCurrentInstance } from 'vue';
 import { Search, User, Calendar } from '@element-plus/icons-vue';
 import { ElMessage } from "element-plus";
+import { useRouter } from 'vue-router';
 
 const allEvents = ref([]);
 const ongoingEvents = ref([]);
@@ -114,6 +115,7 @@ const closedEvents = ref([]);
 const activeIndex = ref('1');
 const searchQuery = ref('');
 const { proxy } = getCurrentInstance();
+const router = useRouter();
 
 const loadAllEvents = async () => {
   const response = await proxy.$api.getAllEvents()
@@ -121,14 +123,13 @@ const loadAllEvents = async () => {
         ElMessage.error(error.message);
       });
   if (response) {
-    allEvents.value = response; // 假设 response.data 是你想要的事件数组
+    allEvents.value = response;
   }
-  console.log(allEvents.value); // 验证数据是否正确加载
+  console.log(allEvents.value);
 };
 
 onMounted(() => {
   loadAllEvents();
-  // Log the initial value of filteredEvents
   console.log(filteredEvents.value);
 });
 
@@ -136,7 +137,10 @@ const handleSelect = (index: string) => {
   activeIndex.value = index;
 };
 
-// Format date
+const navigateToEvent = (eventId: string) => {
+  router.push({ name: 'EventDetail', params: { id: eventId } });
+};
+
 const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -146,7 +150,6 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-// Computed property for filtered events based on search query
 const filteredEvents = computed(() => {
   if (!searchQuery.value) return allEvents.value;
   return allEvents.value.filter(event =>
@@ -273,30 +276,5 @@ p {
   text-align: center;
   color: #999;
   font-size: 1.2rem;
-}
-
-@media (max-width: 800px) {
-  .blog-display {
-    grid-template-columns: 1fr;
-  }
-}
-
-.blog-author-date {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
-
-.author-details, .date-details {
-  display: flex;
-  align-items: center;
-}
-
-.el-icon {
-  color: #007BFF; /* Changed icon color to blue */
-  margin-right: 5px;
 }
 </style>
