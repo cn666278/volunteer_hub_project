@@ -198,12 +198,14 @@ const generateFormModel = () => {
 const { loading, setLoading } = useLoading(true);
 const { t } = useI18n();
 const renderData = ref<PolicyRecord[]>([]);
+const fullData = ref<PolicyRecord[]>([]);
 const formModel = ref(generateFormModel());
 const cloneColumns = ref<Column[]>([]);
 const showColumns = ref<Column[]>([]);
 
 const size = ref<SizeProps>('medium');
 
+// 控制分页显示的数据条数
 const basePagination: Pagination = {
   current: 1,
   pageSize: 10,
@@ -211,6 +213,7 @@ const basePagination: Pagination = {
 const pagination = reactive({
   ...basePagination,
 });
+
 const densityList = computed(() => [
   {
     name: t('searchTable.size.mini'),
@@ -229,6 +232,7 @@ const densityList = computed(() => [
     value: 'large',
   },
 ]);
+
 const columns = computed<TableColumnData[]>(() => [
   {
     title: t('searchTable.columns.index'),
@@ -272,6 +276,7 @@ const columns = computed<TableColumnData[]>(() => [
     slotName: 'operations',
   },
 ]);
+
 const eventTypeOptions = computed<SelectOptionData[]>(() => [
   {
     label: t('searchTable.form.eventType.Judo'),
@@ -298,6 +303,7 @@ const eventTypeOptions = computed<SelectOptionData[]>(() => [
     value: 'Snowsports',
   },
 ]);
+
 const statusOptions = computed<SelectOptionData[]>(() => [
   {
     label: t('searchTable.form.status.awaitingReview'),
@@ -309,18 +315,16 @@ const statusOptions = computed<SelectOptionData[]>(() => [
   },
 ]);
 
-const fetchData = async (
-  params: PolicyParams = { current: 1, pageSize: 10 }
-) => {
+const fetchData = async () => {
   setLoading(true);
   try {
-    let res = await proxy.$api.getEventList(params);
+    let res = await proxy.$api.getEventList();
     console.log(res);
-    let { list, total } = res;
-    // 使用后端分页
-    renderData.value = list;
-    pagination.current = params.current;
-    pagination.total = total;
+    let { list } = res;
+    fullData.value = list;
+    pagination.total = list.length;
+    // 前端分页
+    updateRenderData(); // Update render data after fetching 
   } catch (err) {
     // you can report use errorHandler or other
   } finally {
@@ -328,20 +332,28 @@ const fetchData = async (
   }
 };
 
+// 前端分页
+const updateRenderData = () => {
+  const start = (pagination.current - 1) * pagination.pageSize;
+  const end = start + pagination.pageSize;
+  renderData.value = fullData.value.slice(start, end);
+};
+
 const search = () => {
-  fetchData({
-    ...basePagination,
-    ...formModel.value,
-  } as unknown as PolicyParams);
+  pagination.current = 1; // Reset to first page on new search
+  updateRenderData();
 };
 
 const onPageChange = (current: number) => {
-  fetchData({ ...basePagination, current });
+  pagination.current = current;
+  updateRenderData();
 };
 
 fetchData();
+
 const reset = () => {
   formModel.value = generateFormModel();
+  search();
 };
 
 const handleSelectDensity = (
