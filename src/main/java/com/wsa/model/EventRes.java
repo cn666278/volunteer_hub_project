@@ -19,5 +19,4 @@ public class EventRes implements Serializable {
     private String status;
 
 }
-=======
 }
