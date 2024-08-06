@@ -17,5 +17,7 @@ public class EventRes implements Serializable {
     private Date startDate;
     private Date endDate;
     private String status;
-    private String eventPic;
+
+}
+=======
 }

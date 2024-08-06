@@ -30,6 +30,22 @@ public class EventService {
     @Autowired
     private EventRegistrationsMapper eventRegistrationsMapper;
 
+    public List<Event> getAllEvents() {
+        return eventMapper.findAllEvents();
+    }
+
+    public List<Event> getEventsByPage(int current, int pageSize) {
+        int offset = (current - 1) * pageSize;
+        return eventMapper.getEventsByPage(offset, pageSize);
+    }
+
+    public int getTotalEventsCount() {
+        return eventMapper.getTotalEventsCount();
+    }
+
+    public List<Event> getEventsByDateRange(Date startDate, Date endDate) {
+        return eventMapper.findEventsByDateRange(startDate, endDate);
+    }
 
     public List<Event> getEventsByPage(int current, int pageSize) {
         int offset = (current - 1) * pageSize;
