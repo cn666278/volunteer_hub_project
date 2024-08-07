@@ -91,7 +91,7 @@
             </template>
           </a-dropdown>
           <a-tooltip :content="$t('searchTable.actions.columnSetting')">
-            <a-popover trigger="click" position="bl" @popup-visible-change="popupVisibleChange">
+            <a-popover trigger="click" position="bl" @popupVisibleChange="popupVisibleChange">
               <div class="action-icon"><icon-settings size="18" /></div>
               <template #content>
                 <div id="tableSetting">
@@ -175,10 +175,11 @@
         :column="2"
         border
       >
-        <el-descriptions-item label="ID">{{ currentEvent.id }}</el-descriptions-item>
-        <el-descriptions-item label="Points Awarded">{{ currentEvent.pointsAwarded }}</el-descriptions-item>
-        <el-descriptions-item label="Description" :span="3">{{ currentEvent.description }}</el-descriptions-item>
-        <el-descriptions-item label="Location" :span="3">{{ currentEvent.location }}</el-descriptions-item>
+        <el-descriptions-item label="ID" :span="2">{{ currentEvent.id }}</el-descriptions-item>
+        <el-descriptions-item label="Organizer">{{ userInfo?.username }}</el-descriptions-item>
+        <el-descriptions-item label="Organizer Email">{{ userInfo?.email }}</el-descriptions-item>
+        <el-descriptions-item label="Description" :span="2">{{ currentEvent.description }}</el-descriptions-item>
+        <el-descriptions-item label="Location" :span="2">{{ currentEvent.location }}</el-descriptions-item>
         <el-descriptions-item label="Start Date">{{ formatDate(currentEvent.startDate) }}</el-descriptions-item>
         <el-descriptions-item label="End Date">{{ formatDate(currentEvent.endDate) }}</el-descriptions-item>
         <el-descriptions-item label="Status">
@@ -190,6 +191,7 @@
             {{ currentEvent.status }}
           </el-button>
         </el-descriptions-item>
+        <el-descriptions-item label="Points Awarded">{{ currentEvent.pointsAwarded }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
         <div class="dialog-footer">
@@ -206,7 +208,7 @@
 import { computed, ref, reactive, watch, nextTick, getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useLoading from '../../../hooks/loading.ts';
-import { PolicyRecord, PolicyParams } from './list.ts';
+import { EventType } from './list.ts';
 import { Pagination } from '../../../types/global';
 import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
 import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
@@ -230,13 +232,14 @@ const generateFormModel = () => {
 };
 const { loading, setLoading } = useLoading(true);
 const { t } = useI18n();
-const renderData = ref<PolicyRecord[]>([]);
-const fullData = ref<PolicyRecord[]>([]);
+const renderData = ref<EventType[]>([]);
+const fullData = ref<EventType[]>([]);
 const formModel = ref(generateFormModel());
 const cloneColumns = ref<Column[]>([]);
 const showColumns = ref<Column[]>([]);
 const dialogVisible = ref(false);
-const currentEvent = ref<PolicyRecord | null>(null);
+const currentEvent = ref<EventType | null>(null);
+const userInfo = ref<any>(); // Add this line to store userInfo
 
 const size = ref<SizeProps>('medium');
 
@@ -355,9 +358,9 @@ const fetchData = async () => {
   try {
     let res = await proxy.$api.getEventList();
     console.log(res);
-    let { list } = res;
-    fullData.value = list;
-    pagination.total = list.length;
+    // let { list } = res;
+    fullData.value = res;
+    pagination.total = res.length;
     // 前端分页
     updateRenderData(); // Update render data after fetching 
   } catch (err) {
@@ -461,9 +464,22 @@ const formatDate = (dateStr: string | number | Date) => {
   return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateStr));
 };
 
-const viewDetails = (record: PolicyRecord) => {
+const viewDetails = async (record: EventType) => {
   currentEvent.value = record;
   dialogVisible.value = true;
+  if (record.organizerId) {
+    await fetchUserInfo(record.organizerId);
+  }
+};
+
+const fetchUserInfo = async (organizerId: number) => {
+  try {
+    const res = await proxy.$api.getUserInfoByOrganizerId({ organizerId });
+    userInfo.value = res;
+  } catch (error) {
+    userInfo.value = 'Error fetching user info';
+    console.error(error);
+  }
 };
 
 const approveEvent = () => {
