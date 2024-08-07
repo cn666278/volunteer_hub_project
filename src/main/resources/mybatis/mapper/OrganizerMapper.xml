@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsa.mapper.OrganizerMapper">
+
+    <!-- 根据organizerId查找userId -->
+    <select id="findUserIdByOrganizerId" resultType="Long">
+        SELECT userId FROM organizer WHERE id = #{organizerId}
+    </select>
+
+    <!-- 根据userId获取用户信息 -->
+    <select id="getUserInfoById" resultType="com.wsa.model.UserInfo">
+        SELECT * FROM users WHERE id = #{userId}
+    </select>
+
+    <!-- 分页获取所有组织者 -->
+    <select id="getOrganizersByPage" resultType="com.wsa.model.Organizer">
+        SELECT * FROM organizer LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 获取所有组织者 -->
+    <select id="getAllOrganizers" resultType="com.wsa.model.Organizer">
+        SELECT * FROM organizer
+    </select>
+</mapper>
