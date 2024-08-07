@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.list', 'menu.list.searchTable']" />
     <a-card class="general-card" :title="$t('menu.list.searchTable')">
       <a-row>
         <a-col :flex="1">
@@ -153,8 +152,8 @@
           <span v-else class="circle pass"></span>
           {{ record.status }}
         </template>
-        <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small" style="margin-right: 10px;">
+        <template #operations="{ record }">
+          <a-button v-permission="['admin']" type="text" size="small" style="margin-right: 10px;" @click="viewDetails(record)">
             {{ $t('searchTable.columns.operations.view') }}
           </a-button>
           <a-button v-permission="['admin']" status="success" size="small" style="margin-right: 10px;">
@@ -166,6 +165,40 @@
         </template>
       </a-table>
     </a-card>
+
+    <!-- Event Details Dialog -->
+    <el-dialog v-model="dialogVisible" title="Event Details" width="800">
+      <el-descriptions
+        v-if="currentEvent"
+        :title="currentEvent.title"
+        direction="vertical"
+        :column="2"
+        border
+      >
+        <el-descriptions-item label="ID">{{ currentEvent.id }}</el-descriptions-item>
+        <el-descriptions-item label="Points Awarded">{{ currentEvent.pointsAwarded }}</el-descriptions-item>
+        <el-descriptions-item label="Description" :span="3">{{ currentEvent.description }}</el-descriptions-item>
+        <el-descriptions-item label="Location" :span="3">{{ currentEvent.location }}</el-descriptions-item>
+        <el-descriptions-item label="Start Date">{{ formatDate(currentEvent.startDate) }}</el-descriptions-item>
+        <el-descriptions-item label="End Date">{{ formatDate(currentEvent.endDate) }}</el-descriptions-item>
+        <el-descriptions-item label="Status">
+          <el-button
+            :type="currentEvent.status === 'Passed' ? 'success' : currentEvent.status === 'Awaiting Review' ? 'warning' : 'danger'"
+            size="small"
+            round
+          >
+            {{ currentEvent.status }}
+          </el-button>
+        </el-descriptions-item>
+      </el-descriptions>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="success" @click="approveEvent">Approve</el-button>
+          <el-button type="danger" @click="rejectEvent">Reject</el-button>
+          <el-button @click="dialogVisible = false">Close</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -202,6 +235,8 @@ const fullData = ref<PolicyRecord[]>([]);
 const formModel = ref(generateFormModel());
 const cloneColumns = ref<Column[]>([]);
 const showColumns = ref<Column[]>([]);
+const dialogVisible = ref(false);
+const currentEvent = ref<PolicyRecord | null>(null);
 
 const size = ref<SizeProps>('medium');
 
@@ -425,6 +460,26 @@ const formatDate = (dateStr: string | number | Date) => {
   const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
   return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateStr));
 };
+
+const viewDetails = (record: PolicyRecord) => {
+  currentEvent.value = record;
+  dialogVisible.value = true;
+};
+
+const approveEvent = () => {
+  if (currentEvent.value) {
+    currentEvent.value.status = 'Passed';
+    dialogVisible.value = false;
+  }
+};
+
+const rejectEvent = () => {
+  if (currentEvent.value) {
+    // todo: implement reject event
+    // currentEvent.value.status = 'Rejected';
+    dialogVisible.value = false;
+  }
+};
 </script>
 
 <script lang="ts">
@@ -465,5 +520,9 @@ export default {
     margin-left: 12px;
     cursor: pointer;
   }
+}
+
+.dialog-footer {
+  text-align: right;
 }
 </style>

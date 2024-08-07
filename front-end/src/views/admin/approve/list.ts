@@ -5,12 +5,16 @@ import type { DescData } from '@arco-design/web-vue/es/descriptions/interface';
 export interface PolicyRecord {
   id: string;
   number: number;
-  name: string;
-  eventType: 'img' | 'horizontalVideo' | 'verticalVideo';
+  title: string;  // 修改 name 为 title
+  description: string;  // 新增字段
+  location: string;  // 新增字段
+  pointsAwarded: number;  // 新增字段
+  eventType: 'Judo' | 'Badminton' | 'Table Tennis' | 'Hockey' | 'Cycling' | 'Snowsports';
   filterType: 'artificial' | 'rules';
   count: number;
-  status: 'online' | 'offline';
-  createdTime: string;
+  status: 'Awaiting Review' | 'Passed';
+  startDate: string;  // 修改 createdTime 为 startDate
+  endDate: string;  // 新增字段
 }
 
 export interface PolicyParams extends Partial<PolicyRecord> {
@@ -23,8 +27,9 @@ export interface PolicyListRes {
   total: number;
 }
 
-// export function queryPolicyList(params: PolicyParams) {
-//   return axios.get<PolicyListRes>('/api/list/policy', {
+// 获取事件列表的方法
+// export function queryEventList(params: PolicyParams) {
+//   return axios.get<PolicyListRes>('/api/list/event', {
 //     params,
 //     paramsSerializer: (obj) => {
 //       return qs.stringify(obj);
@@ -43,6 +48,7 @@ export interface ServiceRecord {
   enable?: boolean;
   expires?: boolean;
 }
+
 export function queryInspectionList() {
   return axios.get('/api/list/quality-inspection');
 }
