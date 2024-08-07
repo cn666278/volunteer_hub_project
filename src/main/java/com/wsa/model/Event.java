@@ -19,6 +19,5 @@ public class Event implements Serializable {
 
     private String eventPic;
 
-    private Long organizerID;
 
 }

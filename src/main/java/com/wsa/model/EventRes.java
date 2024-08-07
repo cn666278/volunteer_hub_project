@@ -10,6 +10,7 @@ import java.util.Date;
 public class EventRes implements Serializable {
     private static final long serialVersionUID = -3563391820302790205L;
     private Long id;
+    private Long organizerId;
     private String title;
     private String description;
     private String location;
