@@ -21,32 +21,27 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/getEventList")
-    public ResultVO<Map<String, Object>> getAllEvents(
-            @RequestParam(defaultValue = "1") int current,
-            @RequestParam(defaultValue = "10") int pageSize) {
+    public ResultVO<List<EventRes>> getAllEventsList() {
 
-        List<Event> allEvents = eventService.getEventsByPage(current, pageSize);
-        int total = eventService.getTotalEventsCount();
+        List<Event> allEvents = eventService.getAllEvents();
         List<EventRes> eventResList = new ArrayList<>();
         for (Event e : allEvents) {
             EventRes eRes = new EventRes();
             eRes.setId(e.getId());
             eRes.setTitle(e.getTitle());
+            eRes.setOrganizerId(e.getOrganizerId());
             eRes.setDescription(e.getDescription());
             eRes.setLocation(e.getLocation());
             eRes.setPointsAwarded(e.getPointsAwarded());
             eRes.setStartDate(e.getStartDate());
             eRes.setEndDate(e.getEndDate());
             eRes.setStatus(e.getStatus());
+            eRes.setEventPic(e.getEventPic());
             eventResList.add(eRes);
         }
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("list", eventResList);
-        resultMap.put("total", total);
-
         if (allEvents != null) {
-            return ResultVO.success(resultMap);
+            return ResultVO.success(eventResList);
         } else {
             return ResultVO.failure("not found!");
         }

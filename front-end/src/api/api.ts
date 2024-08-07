@@ -151,6 +151,14 @@ export default {
       mock: false,
       });
   },
+  getUserInfoByOrganizerId(params: any) {
+    return request({
+      url: "/organizer/getUserByOrganizerId",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
 
   // 根据用户名不同，返回不一样的菜单列表
   //   getMenu(prams: any){

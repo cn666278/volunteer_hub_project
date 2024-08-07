@@ -1,36 +1,33 @@
-import axios from 'axios';
 // import qs from 'query-string';
 import type { DescData } from '@arco-design/web-vue/es/descriptions/interface';
 
-export interface PolicyRecord {
+export interface EventType {
   id: string;
+  organizerId: number;
   number: number;
-  name: string;
-  eventType: 'img' | 'horizontalVideo' | 'verticalVideo';
+  title: string;  
+  description: string;  
+  location: string;  
+  pointsAwarded: number;  
+  eventType: 'Judo' | 'Badminton' | 'Table Tennis' | 'Hockey' | 'Cycling' | 'Snowsports';
   filterType: 'artificial' | 'rules';
   count: number;
-  status: 'online' | 'offline';
-  createdTime: string;
+  status: 'Awaiting Review' | 'Passed';
+  startDate: string;  
+  endDate: string;  
+  eventPic: string;  
 }
 
-export interface PolicyParams extends Partial<PolicyRecord> {
+export interface PolicyParams extends Partial<EventType> {
   current: number;
   pageSize: number;
 }
 
 export interface PolicyListRes {
-  list: PolicyRecord[];
+  list: EventType[];
   total: number;
 }
 
-// export function queryPolicyList(params: PolicyParams) {
-//   return axios.get<PolicyListRes>('/api/list/policy', {
-//     params,
-//     paramsSerializer: (obj) => {
-//       return qs.stringify(obj);
-//     },
-//   });
-// }
 
 export interface ServiceRecord {
   id: number;
@@ -42,15 +39,4 @@ export interface ServiceRecord {
   data?: DescData[];
   enable?: boolean;
   expires?: boolean;
-}
-export function queryInspectionList() {
-  return axios.get('/api/list/quality-inspection');
-}
-
-export function queryTheServiceList() {
-  return axios.get('/api/list/the-service');
-}
-
-export function queryRulesPresetList() {
-  return axios.get('/api/list/rules-preset');
 }
