@@ -127,4 +127,8 @@ public class EventService {
     public List<Event> getAllEvents() {
         return eventMapper.findAllEvents();
     }
+
+    public Event getEventById(Long id) {
+        return eventMapper.getEventById(id);
+    }
 }

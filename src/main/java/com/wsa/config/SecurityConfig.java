@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .cors().and() // Enable CORS
+                .cors().and() // Remove or comment out this line to disable CORS
                 .authorizeRequests()
                 .antMatchers("/login", "/static/**", "/**/*.png", "/ws/**", "/app/**", "/topic/**", "/uploads/**", "/files/**").permitAll()
                 .anyRequest().authenticated()

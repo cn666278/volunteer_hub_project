@@ -199,7 +199,7 @@ const closedEvents = ref([
   },
   {
     id: 5,
-    image: './src/assets/event-cycling.png',
+    image: '',
     title: 'Masters National Track Championships',
     date: '30.07.2024',
     author: 'Welsh Cycling',

@@ -169,4 +169,18 @@ public class EventController {
             return ResultVO.failure("Failed to fetch events");
         }
     }
+
+    @GetMapping("/{id}")
+    public ResultVO<Event> getEventById(@PathVariable Long id) {
+        try {
+            Event event = eventService.getEventById(id);
+            if (event != null) {
+                return ResultVO.success(event);
+            } else {
+                return ResultVO.failure("Event not found");
+            }
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to fetch event details");
+        }
+    }
 }
