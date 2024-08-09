@@ -292,6 +292,19 @@ export default {
       mock: false,
     });
   },
+  getEventById(params: any) {
+    return request({
+      url: `/event/${params.id}`,
+      method: 'get',
+      mock: false,
+    });
+  },
+
+
+  navigateToEvent(params: any) {
+    router.push({ name: 'EventDetail', params: { id: params.id } });
+  },
+
 
 
 }

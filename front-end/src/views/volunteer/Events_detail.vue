@@ -26,7 +26,7 @@
     <div class="description">
       <h3>{{ $t('home.descriptionTitle') }}</h3>
       <div class="section-content">
-        <p>{{ event.descriptionText }}</p>
+        <p>{{ event.description }}</p>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
     <div class="description-role">
       <h3>{{ $t('home.volunteerInfoTitle') }}</h3>
       <div class="section-content">
-        <p>{{ event.roleDescriptionText }}</p>
+        <p>{{ event.description }}</p> <!-- 修改为 description -->
       </div>
     </div>
   </div>
@@ -47,7 +47,8 @@
 import { ElIcon, ElMessage } from "element-plus";
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { ref, onMounted, getCurrentInstance } from 'vue';
+import { ref, onMounted } from 'vue';
+import api from '../../api/api';
 
 export default {
   name: 'EventDetail',
@@ -57,7 +58,6 @@ export default {
   setup() {
     const route = useRoute();
     const event = ref(null);
-    const { proxy } = getCurrentInstance();
     const { t } = useI18n();
 
     const introSections = ref([
@@ -82,11 +82,17 @@ export default {
     ]);
 
     const loadEvent = async () => {
-      const response = await proxy.$api.getEventById(route.params.id).catch((error) => {
-        ElMessage.error(error.message);
-      });
-      if (response) {
-        event.value = response;
+      const eventId = route.params.id;
+      if (eventId) {
+        const response = await api.getEventById({ id: eventId })
+            .catch(error => {
+              ElMessage.error(error.message);
+            });
+        if (response) {
+          event.value = response; // 确保你从API得到的数据结构正确
+        }
+      } else {
+        ElMessage.error('Event ID is not provided');
       }
     };
 

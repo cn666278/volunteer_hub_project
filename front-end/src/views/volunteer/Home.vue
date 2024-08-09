@@ -109,7 +109,7 @@ export default {
         }
       ],
       activities: [
-        { id: 1, title: 'Activity 1', image: './src/assets/activity1.jpg' },
+        { id: 1, title: 'Activity 1', image: '' },
         { id: 2, title: 'Activity 2', image: './src/assets/activity2.jpg' },
         { id: 3, title: 'Activity 3', image: './src/assets/activity3.jpg' },
         { id: 4, title: 'Activity 4', image: './src/assets/activity4.jpg' },

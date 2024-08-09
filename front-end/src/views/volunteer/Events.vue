@@ -33,54 +33,9 @@
           </template>
         </el-input>
       </div>
-      <!-- All Events Section -->
       <div class="blog-section" v-if="activeIndex === '1'">
         <div class="blog-display">
           <el-card v-for="post in filteredEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
-            <img :src="post.eventPic" alt="Event Image" class="blog-image">
-            <div class="blog-info">
-              <div class="blog-author-date">
-                <div class="author-details">
-                  <el-icon><User /></el-icon>
-                  {{ post.organizer }}
-                </div>
-                <div class="date-details">
-                  <el-icon><Calendar /></el-icon>
-                  {{ formatDate(post.date) }}
-                </div>
-              </div>
-              <h5>{{ post.title }}</h5>
-              <p>{{ post.description }}</p>
-            </div>
-          </el-card>
-        </div>
-      </div>
-      <!-- Ongoing Events Section -->
-      <div class="blog-section" v-if="activeIndex === '2'">
-        <div class="blog-display">
-          <el-card v-for="post in ongoingEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
-            <img :src="post.eventPic" alt="Event Image" class="blog-image">
-            <div class="blog-info">
-              <div class="blog-author-date">
-                <div class="author-details">
-                  <el-icon><User /></el-icon>
-                  {{ post.organizerId }}
-                </div>
-                <div class="date-details">
-                  <el-icon><Calendar /></el-icon>
-                  {{ formatDate(post.startDate) }}
-                </div>
-              </div>
-              <h5>{{ post.title }}</h5>
-              <p>{{ post.description }}</p>
-            </div>
-          </el-card>
-        </div>
-      </div>
-      <!-- Closed Events Section -->
-      <div class="blog-section" v-if="activeIndex === '3'">
-        <div class="blog-display">
-          <el-card v-for="post in closedEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
             <img :src="post.eventPic" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
@@ -107,30 +62,25 @@
 import { ref, onMounted, computed, getCurrentInstance } from 'vue';
 import { Search, User, Calendar } from '@element-plus/icons-vue';
 import { ElMessage } from "element-plus";
-import { useRouter } from 'vue-router';
+import api from '../../api/api';
 
 const allEvents = ref([]);
-const ongoingEvents = ref([]);
-const closedEvents = ref([]);
 const activeIndex = ref('1');
 const searchQuery = ref('');
 const { proxy } = getCurrentInstance();
-const router = useRouter();
 
 const loadAllEvents = async () => {
-  const response = await proxy.$api.getAllEvents()
+  const response = await api.getAllEvents()
       .catch(error => {
         ElMessage.error(error.message);
       });
   if (response) {
     allEvents.value = response;
   }
-  console.log(allEvents.value);
 };
 
 onMounted(() => {
   loadAllEvents();
-  console.log(filteredEvents.value);
 });
 
 const handleSelect = (index: string) => {
@@ -138,8 +88,9 @@ const handleSelect = (index: string) => {
 };
 
 const navigateToEvent = (eventId: string) => {
-  router.push({ name: 'EventDetail', params: { id: eventId } });
+  proxy.$router.push({ name: 'EventDetail', params: { id: eventId } });
 };
+
 
 const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -162,18 +113,18 @@ const filteredEvents = computed(() => {
 <style scoped>
 .container {
   display: flex;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
 }
 
 .sidebar {
-  flex: 0 0 200px; /* Sidebar width is fixed to 200px */
+  flex: 0 0 200px;
   background: #fff;
-  overflow-y: auto; /* Makes the sidebar scrollable */
+  overflow-y: auto;
 }
 
 .content {
-  flex-grow: 1; /* Content takes up the remaining space */
-  overflow-y: auto; /* Makes the content area scrollable */
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .search-section {
@@ -200,7 +151,7 @@ const filteredEvents = computed(() => {
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 100%; /* Use full width of the sidebar */
+  width: 100%;
   min-height: 400px;
 }
 
@@ -228,16 +179,16 @@ h1 {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  border: 1px solid #ddd; /* Add border to the card */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .blog-card img {
   width: 100%;
-  height: 200px; /* Set image height */
-  object-fit: cover; /* Ensure image is fully displayed */
-  border-radius: 8px; /* Rounded corners for the image */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .blog-info {
@@ -255,7 +206,7 @@ h1 {
 }
 
 .author-icon, .date-icon {
-  color: red; /* Icon color */
+  color: red;
   margin-right: 5px;
 }
 

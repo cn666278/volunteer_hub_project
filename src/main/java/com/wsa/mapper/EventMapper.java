@@ -23,6 +23,9 @@ public interface EventMapper {
 
     List<Event> findAllEvents();
 
+    @Select("SELECT * FROM events WHERE id = #{id}")
+    Event getEventById(@Param("id") Long id);
+
     List<Event> findEventsByMonth(int month, int year);
 
     List<Event> findEventsByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
