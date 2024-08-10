@@ -34,4 +34,6 @@ public interface EventMapper {
     EventRequest getEventDetailById(Long id);
 
     void editEventById(Event event);
+
+    Event getEventById(Long eventId);
 }

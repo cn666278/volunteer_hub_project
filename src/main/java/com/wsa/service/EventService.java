@@ -59,7 +59,7 @@ public class EventService {
         event.setPointsAwarded(eventRequest.getPointsAwarded());
         event.setStartDate(eventRequest.getStartDate());
         event.setEndDate(eventRequest.getEndDate());
-
+        event.setEventPic(String.valueOf(eventRequest.getFileIds().get(0)));
         eventMapper.saveEvent(event);
         Long eventId = event.getId();
 
@@ -100,6 +100,7 @@ public class EventService {
         event.setPointsAwarded(eventRequest.getPointsAwarded());
         event.setStartDate(eventRequest.getStartDate());
         event.setEndDate(eventRequest.getEndDate());
+        event.setEventPic(String.valueOf(eventRequest.getFileIds().get(1)));
         eventMapper.editEventById(event);
 
         eventRolesMapper.deleteEventRolesByEventId(id);
@@ -126,5 +127,9 @@ public class EventService {
 
     public List<Event> getAllEvents() {
         return eventMapper.findAllEvents();
+    }
+
+    public Event getEventById(EventRequest eventRequest) {
+        return eventMapper.getEventById(eventRequest.getEventId());
     }
 }

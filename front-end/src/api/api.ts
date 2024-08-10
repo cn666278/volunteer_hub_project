@@ -181,6 +181,14 @@ export default {
       mock: false,
     });
   },
+  getEventById(params: any) {
+    return request({
+      url: "/event/getEventById",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
   getEventsByOrganizerIdAndFilters(params: any) {
     return request({
       url: "/event/getEventsByOrganizerIdAndFilters",
