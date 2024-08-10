@@ -23,7 +23,9 @@ const route = useRoute();
 const event = JSON.parse(route.query.event);
 const messages = ref([]);
 const newMessage = ref('');
-// const userStore = useUserStore();
+import useUser from "../../store/user";
+// user store
+const userStore = useUser();
 let stompClient;
 
 const fetchMessages = async () => {
@@ -39,7 +41,7 @@ const sendMessage = () => {
   const localTime = new Date(now.getTime() - (offset * 60 * 1000)).toISOString();
   const message = {
     eventId: event.eventId,
-    senderId: 1,
+    senderId: userStore.user.id,
     content: newMessage.value,
     timestamp: localTime
   };

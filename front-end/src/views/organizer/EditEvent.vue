@@ -66,7 +66,9 @@ import { useRoute } from 'vue-router';
 import { nextTick } from 'vue';
 const { proxy } = getCurrentInstance();
 const route = useRoute();
-
+import useUser from "../../store/user";
+// user store
+const userStore = useUser();
 const formRef = ref<InstanceType<typeof ElForm>>();
 const form = reactive({
   title: '',
@@ -163,7 +165,7 @@ const submitForm = () => {
 
   const payload = {
     eventId: eventId,
-    organizerId: 1,
+    organizerId: userStore.user.id,
     title: form.title,
     description: form.description,
     location: form.location,

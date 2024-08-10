@@ -2,12 +2,12 @@
   <div>
     <el-table :data="volunteers" stripe>
       <el-table-column prop="username" label="Username"></el-table-column>
-      <el-table-column label="Contact">
-        <template v-slot="scope">
-          <div>{{ scope.row.phone }}</div>
-          <div>{{ scope.row.email }}</div>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="Contact">-->
+<!--        <template v-slot="scope">-->
+<!--          <div>{{ scope.row.phone }}</div>-->
+<!--          <div>{{ scope.row.email }}</div>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column prop="experience" label="Experience"></el-table-column>
       <el-table-column prop="eventCount" label="Event Count"></el-table-column>
       <el-table-column prop="roleName" label="Role"></el-table-column>
