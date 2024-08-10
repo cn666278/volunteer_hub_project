@@ -4,12 +4,12 @@
       <el-form-item label="Username">
         <el-input v-model="volunteer.username" disabled></el-input>
       </el-form-item>
-      <el-form-item label="Phone">
-        <el-input v-model="volunteer.phone" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="Email">
-        <el-input v-model="volunteer.email" disabled></el-input>
-      </el-form-item>
+<!--      <el-form-item label="Phone">-->
+<!--        <el-input v-model="volunteer.phone" disabled></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="Email">-->
+<!--        <el-input v-model="volunteer.email" disabled></el-input>-->
+<!--      </el-form-item>-->
       <el-form-item label="Star">
         <el-rate v-model="volunteer.rating"></el-rate>
       </el-form-item>

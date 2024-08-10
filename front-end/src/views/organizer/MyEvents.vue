@@ -42,7 +42,9 @@ import { ElMessage } from 'element-plus';
 import dayjs from 'dayjs';
 import { useRouter } from "vue-router";
 let router = useRouter();
-
+import useUser from "../../store/user";
+// user store
+const userStore = useUser();
 const { proxy } = getCurrentInstance();
 const convertToCustomFormat = (isoString: string) => {
   return dayjs(isoString).format('HH:mm:ss DD/MM/YYYY');
@@ -55,7 +57,7 @@ const totalEvents = ref(0);
 
 const fetchEvents = async () => {
   const params = {
-    organizerId: 1,
+    organizerId: userStore.user.id,
     title: search.value.title,
     status: search.value.status,
     page: currentPage.value,
