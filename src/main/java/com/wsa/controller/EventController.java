@@ -96,7 +96,7 @@ public class EventController {
     }
     @PostMapping("/getEventById")
     public ResultVO<Event> getEventById(@RequestBody EventRequest eventRequest) {
-        Event event = eventService.getEventById(eventRequest);
+        Event event = eventService.getEventById(eventRequest.getEventId());
         return ResultVO.success(event);
     }
     @PostMapping("/getEventsByOrganizerIdAndFilters")

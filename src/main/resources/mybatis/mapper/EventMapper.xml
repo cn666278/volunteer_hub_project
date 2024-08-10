@@ -105,8 +105,4 @@
         WHERE id = #{id};
     </update>
 
-    <select id="getEventById" resultType="com.wsa.model.Event">
-        SELECT * FROM events
-        WHERE id = #{eventId}
-    </select>
 </mapper>
