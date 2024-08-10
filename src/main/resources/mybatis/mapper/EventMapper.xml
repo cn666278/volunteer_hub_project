@@ -5,8 +5,8 @@
 
 <mapper namespace="com.wsa.mapper.EventMapper">
     <insert id="saveEvent" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO events (organizerId, title, description, location, pointsAwarded, startDate, endDate)
-        VALUES (#{organizerId}, #{title}, #{description}, #{location}, #{pointsAwarded}, #{startDate}, #{endDate})
+        INSERT INTO events (organizerId, title, description, location, pointsAwarded, startDate, endDate, eventPic)
+        VALUES (#{organizerId}, #{title}, #{description}, #{location}, #{pointsAwarded}, #{startDate}, #{endDate}, #{eventPic})
     </insert>
 
     <select id="findAllEvents" resultType="com.wsa.model.Event">
@@ -65,6 +65,7 @@
             e.endDate,
             e.status,
             e.pointsAwarded,
+            e.eventPic,
             r.roleName,
             r.volunteerCount,
             f.name AS facilityName
@@ -88,6 +89,7 @@
         <result column="endDate" property="endDate"/>
         <result column="status" property="status"/>
         <result column="pointsAwarded" property="pointsAwarded"/>
+        <result column="eventPic" property="eventPic"/>
         <collection property="roles" ofType="com.wsa.model.EventRequest$RoleQuantity">
             <result column="roleName" property="role"/>
             <result column="volunteerCount" property="quantity"/>
@@ -99,8 +101,12 @@
 
     <update id="editEventById">
         UPDATE events
-        SET organizerId = #{organizerId}, title = #{title}, description = #{description}, location = #{location}, pointsAwarded = #{pointsAwarded}, startDate = #{startDate}, endDate = #{endDate}
+        SET organizerId = #{organizerId}, title = #{title}, description = #{description}, location = #{location}, pointsAwarded = #{pointsAwarded}, startDate = #{startDate}, endDate = #{endDate}, eventPic = #{eventPic}
         WHERE id = #{id};
     </update>
 
+    <select id="getEventById" resultType="com.wsa.model.Event">
+        SELECT * FROM events
+        WHERE id = #{eventId}
+    </select>
 </mapper>

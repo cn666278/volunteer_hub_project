@@ -20,7 +20,8 @@ public class EventRequest implements Serializable {
     private Timestamp endDate;
     private List<RoleQuantity> roles;
     private List<String> nearbyFacilities;
-
+    private List<Long> fileIds;
+    private String eventPic;
     @Data
     public static class RoleQuantity {
         private String role;

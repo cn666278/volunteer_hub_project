@@ -10,6 +10,14 @@
       <el-form-item :label="translatedLabels.location" prop="location">
         <el-input id="autocomplete" v-model="form.location" @focus="openMap"></el-input>
       </el-form-item>
+      <el-form-item :label="translatedLabels.file">
+        <input type="file" @change="onFileChange" />
+        <el-input v-model="filename" placeholder="Enter file name" />
+        <!-- 显示文件预览图 -->
+        <div v-if="uploadedFilePath">
+          <img :src="uploadedFilePath" alt="File Preview" style="max-width: 100px; max-height: 100px; margin-top: 10px;" />
+        </div>
+      </el-form-item>
       <el-form-item :label="translatedLabels.pointsAwarded" prop="pointsAwarded">
         <el-input-number v-model="form.pointsAwarded"></el-input-number>
       </el-form-item>
@@ -27,7 +35,7 @@
             placeholder="choose end date">
         </el-date-picker>
       </el-form-item>
-      <el-form-item :label="translatedLabels.roles" prop="roles" required>
+      <el-form-item :label="translatedLabels.roles" prop="roles">
         <div v-for="role in availableRoles" :key="role" style="display: flex; align-items: center; margin-bottom: 8px;">
           <el-checkbox :label="role" v-model="form.roles">{{ role }}</el-checkbox>
           <el-input-number v-if="form.roles.includes(role)" v-model="form.rolesQuantities[role]" :min="1" style="margin-left: 8px;"></el-input-number>
@@ -53,7 +61,7 @@
 
 <script setup lang='ts'>
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
-import { ElMessage, ElForm } from 'element-plus';
+import { ElMessage, ElForm, ElMessageBox } from 'element-plus';
 import { translateText } from '../../api/translate';
 
 const { proxy } = getCurrentInstance();
@@ -66,19 +74,20 @@ const form = reactive({
   pointsAwarded: 0,
   startDate: '',
   endDate: '',
-  roles: [] as string[], // Ensure roles is an array of strings
+  roles: [] as string[],
   rolesQuantities: {} as Record<string, number>,
-  nearbyFacilities: []
+  nearbyFacilities: [],
+  fileIds: [] as number[] // 存储文件ID
 });
 
-const availableRoles = ['Event Coordinator', 'Event Welcome Desk', 'Athlete Registration Desk', 'Transport Operations', 'Event Greeter / Fan Experience', 'Entertainment Coordinator'];
+const availableRoles = ['Default', 'Event Coordinator', 'Event Welcome Desk', 'Athlete Registration Desk', 'Transport Operations', 'Event Greeter / Fan Experience', 'Entertainment Coordinator'];
 const nearbyFacilities = ref<any[]>([]);
 
-// Add translated labels
 const translatedLabels = reactive({
   title: 'Title',
   description: 'Description',
   location: 'Location',
+  file: 'File',
   pointsAwarded: 'Points Awarded',
   startDate: 'Start Date',
   endDate: 'End Date',
@@ -87,6 +96,56 @@ const translatedLabels = reactive({
   register: 'Register',
   reset: 'Reset'
 });
+
+const file = ref(null);
+const filename = ref('');
+const uploadedFilePath = ref('');
+
+const onFileChange = async (e) => {
+  file.value = e.target.files[0];
+  filename.value = file.value.name; // 设置文件名
+  await uploadFile(); // 自动上传文件
+};
+
+const uploadFile = async () => {
+  if (!file.value || !filename.value.trim()) {
+    alert("Please select a file and enter a filename.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', file.value);
+  formData.append('filename', filename.value.trim());
+
+  try {
+    const response = await proxy.$api.uploadFile(formData);
+    const fileId = response.match(/\d+$/)[0];
+    form.fileIds.push(fileId);
+    await fetchAndDisplayImage(fileId); // 上传后立即获取并显示图片
+    console.log("File uploaded successfully:", response);
+  } catch (error) {
+    console.error("File upload failed:", error);
+  }
+};
+
+const fetchAndDisplayImage = async (fileId: number) => {
+  try {
+    const response = await proxy.$api.getfiles({ id: fileId });
+    if (response) {
+      const base64Data = response;
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      uploadedFilePath.value = URL.createObjectURL(blob);
+    }
+  } catch (error) {
+    console.error("Error fetching file", error);
+  }
+};
 
 const submitForm = () => {
   const roles = form.roles.map(role => ({
@@ -103,7 +162,8 @@ const submitForm = () => {
     startDate: form.startDate,
     endDate: form.endDate,
     roles: roles,
-    nearbyFacilities: form.nearbyFacilities
+    nearbyFacilities: form.nearbyFacilities,
+    fileIds: form.fileIds
   };
   console.log("submitForm payload:",payload)
   proxy.$api.registerEvent(payload)
@@ -126,6 +186,8 @@ const resetForm = () => {
   form.roles = [];
   form.rolesQuantities = {};
   form.nearbyFacilities = [];
+  form.fileIds = [];
+  uploadedFilePath.value = '';
 };
 
 const openMap = () => {

@@ -94,7 +94,11 @@ public class EventController {
         eventService.registerEvent(eventRequest);
         return ResultVO.success("success");
     }
-
+    @PostMapping("/getEventById")
+    public ResultVO<Event> getEventById(@RequestBody EventRequest eventRequest) {
+        Event event = eventService.getEventById(eventRequest);
+        return ResultVO.success(event);
+    }
     @PostMapping("/getEventsByOrganizerIdAndFilters")
     public ResultVO<PageInfo<EventRequest>> getEventsByOrganizerIdAndFilters(@RequestBody EventReqByOrganizerId eventRequest) {
         PageInfo<Event> events = eventService.getEventsByOrganizerIdAndFilters(eventRequest);
