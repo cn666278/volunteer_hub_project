@@ -179,7 +179,7 @@ nohup ./mvnw spring-boot:run &
 #front-end
 cd front-end
 npm install
-npm run dev
+npm run dev -- --host 0.0.0.0
 
 #ls
 #java -jar SmartTowns-0.0.1-SNAPSHOT.jar --server.port=8080
