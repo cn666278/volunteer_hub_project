@@ -62,13 +62,13 @@ sudo chmod 644 /var/lib/jenkins/.ssh/known_hosts
 
 sudo systemctl start jenkins
 
-echo "-----Change Jenkins port to 8083-----"
-# If you want jenkins on port 8083 so you can run your app on 8080 then change the default jenkins port.
-sudo systemctl stop jenkins
-# does not work
-#sudo sed -i 's/JENKINS_PORT="8080"/JENKINS_PORT="8083"/g' /etc/default/jenkins
-sudo sed --i 's/JENKINS_PORT=8080/JENKINS_PORT=8083/g' /usr/lib/systemd/system/jenkins.service
-sudo systemctl daemon-reload
-sudo systemctl restart jenkins
-sudo systemctl status jenkins
-sudo systemctl enable jenkins
+# echo "-----Change Jenkins port to 8083-----"
+# # If you want jenkins on port 8083 so you can run your app on 8080 then change the default jenkins port.
+# sudo systemctl stop jenkins
+# # does not work
+# #sudo sed -i 's/JENKINS_PORT="8080"/JENKINS_PORT="8083"/g' /etc/default/jenkins
+# sudo sed --i 's/JENKINS_PORT=8080/JENKINS_PORT=8083/g' /usr/lib/systemd/system/jenkins.service
+# sudo systemctl daemon-reload
+# sudo systemctl restart jenkins
+# sudo systemctl status jenkins
+# sudo systemctl enable jenkins

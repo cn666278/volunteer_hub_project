@@ -42,7 +42,6 @@ echo "running mysql_secure_installation..."
 sudo mysql_secure_installation < mysql_secure_installation.txt
 
 echo "change root password..."
-# we dont need this?
 sudo mysql -u root -pcomsc -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'comsc';"
 
 echo "--------------------ls files-------------------"
@@ -70,61 +69,59 @@ chmod 644 .ssh/known_hosts
 echo "installing gitlab deployment key..."
 echo "now needs to be in debian user directory"
 cd /home/debian
-touch cn_keypair.key
-cat << `EOF` >> cn_keypair.key
+touch wsa_keypair.key
+cat << `EOF` >> wsa_keypair.key
 -----BEGIN OPENSSH PRIVATE KEY-----
 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
-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
+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
 -----END OPENSSH PRIVATE KEY-----
 `EOF`
-chmod 400 cn_keypair.key
+chmod 400 wsa_keypair.key
 
 echo "cloning repository..."
 echo $PWD
-ssh-agent bash -c 'ssh-add cn_keypair.key; git clone git@git.cardiff.ac.uk:c23091223/team-2-smart-towns-test.git'
+ssh-agent bash -c 'ssh-add wsa_keypair.key; git clone git@git.cardiff.ac.uk:c23031770/wsa_volunteer_hub.git'
 
 echo "whoami..."
 whoami
 
-echo "ls"
+echo "link to database..."
 ls
-cd team-2-smart-towns-test/SmartTowns
 mysql -u root -pcomsc < src/main/resources/schema.sql
-mysql -u root -pcomsc < src/main/resources/data.sql
 
 
 echo "installing Java 17..."
@@ -132,6 +129,16 @@ sudo apt update
 sudo apt install openjdk-17-jdk -y
 echo java --version
 
+echo "Installing Node.js and npm..."
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install -y npm
+node -v
+npm -v
+ 
+echo "Installing maven..."
+sudo apt-get install maven -y
+mvn -v
 
 echo "Link to Jenkins repository"
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
@@ -152,25 +159,24 @@ sudo chmod 644 /var/lib/jenkins/.ssh/known_hosts
 
 sudo systemctl start jenkins
 
-echo "-----Change Jenkins port to 8083-----"
-# If you want jenkins on port 8083 so you can run your app on 8080 then change the default jenkins port.
-sudo systemctl stop jenkins
-# does not work
-#sudo sed -i 's/JENKINS_PORT="8080"/JENKINS_PORT="8083"/g' /etc/default/jenkins
-sudo sed --i 's/JENKINS_PORT=8080/JENKINS_PORT=8083/g' /usr/lib/systemd/system/jenkins.service
-sudo systemctl daemon-reload
-sudo systemctl restart jenkins
-sudo systemctl status jenkins
-sudo systemctl enable jenkins
+# echo "-----Change Jenkins port to 8083-----"
+# # If you want jenkins on port 8083 so you can run your app on 8080 then change the default jenkins port.
+# sudo systemctl stop jenkins
+# sudo sed --i 's/JENKINS_PORT=8080/JENKINS_PORT=8083/g' /usr/lib/systemd/system/jenkins.service
+# sudo systemctl daemon-reload
+# sudo systemctl restart jenkins
+# sudo systemctl status jenkins
+# sudo systemctl enable jenkins
 
-echo "Installing gradle..."
-wget https://services.gradle.org/distributions/gradle-7.6-bin.zip
-sudo mkdir /opt/gradle
-sudo unzip -d /opt/gradle gradle-7.6-bin.zip
-export PATH=$PATH:/opt/gradle/gradle-7.6/bin
-gradle -v
-echo "gradle build and run..."
-gradle bootrun &
+# build
+#back-end
+./mvnw install
+nohup ./mvnw spring-boot:run &
+ 
+#front-end
+cd front-end
+npm install
+npm run dev
 
 #ls
 #java -jar SmartTowns-0.0.1-SNAPSHOT.jar --server.port=8080
@@ -180,24 +186,3 @@ cd /home/debian
 wget https://releases.hashicorp.com/terraform/1.1.5/terraform_1.1.5_linux_amd64.zip
 unzip terraform_1.1.5_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
-
-# Install Docker
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-
-# Install Docker Packages:
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-# Start and enable the Docker service:
-#docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17

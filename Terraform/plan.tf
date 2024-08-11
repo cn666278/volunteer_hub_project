@@ -29,7 +29,7 @@ resource "openstack_compute_secgroup_v2" "security_group" {
   }
   rule {
     from_port   = 8081
-    to_port     = 8083
+    to_port     = 8081
     ip_protocol = "tcp"
     cidr        = "0.0.0.0/0"
   }
