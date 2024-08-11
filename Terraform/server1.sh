@@ -48,7 +48,7 @@ echo "--------------------ls files-------------------"
 ls
 echo in directory: $PWD
 
-sudo apt update && sudo apt upgrade -y
+# sudo apt update && sudo apt upgrade -y
 sudo apt-get install wget -y
 sudo apt-get install unzip -y
 sudo apt-get install git -y
