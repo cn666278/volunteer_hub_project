@@ -1,7 +1,10 @@
 package com.wsa.config;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -13,23 +16,37 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String instanceIp = getInstanceIp();
-
+        String instanceIp = getExternalIp();
+        System.out.println("External IP: " + instanceIp);
         registry.addMapping("/**")
-                .allowedOrigins("http://" + instanceIp + ":5173")  // 使用动态IP设置allowedOrigins
+                .allowedOrigins("http://" + instanceIp + ":5173")  // 使用动态获取的外部IP设置allowedOrigins
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
-// 获取实例的IP地址
-    private String getInstanceIp() {
+
+    // 获取实例的外部IP地址
+    private String getExternalIp() {
         try {
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            return inetAddress.getHostAddress();
-        } catch (UnknownHostException e) {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
+                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+                while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                        String ip = inetAddress.getHostAddress();
+                        if (ip.startsWith("10.") || ip.startsWith("172.") || ip.startsWith("192.168.")) {
+                            continue; // 跳过私有IP，寻找外部IP
+                        }
+                        return ip; // 返回外部IP
+                    }
+                }
+            }
+        } catch (SocketException e) {
             e.printStackTrace();
-            return "localhost";  // 如果无法获取IP地址，回退到localhost
         }
+        return "localhost";  // 如果无法获取外部IP地址，回退到localhost
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
