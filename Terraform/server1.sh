@@ -118,9 +118,11 @@ ssh-agent bash -c 'ssh-add wsa_keypair.key; git clone git@git.cardiff.ac.uk:c230
 
 echo "whoami..."
 whoami
+echo "ls"
+ls
+cd wsa_volunteer_hub
 
 echo "link to database..."
-ls
 mysql -u root -pcomsc < src/main/resources/schema.sql
 
 
@@ -170,6 +172,7 @@ sudo systemctl start jenkins
 
 # build
 #back-end
+ls
 ./mvnw install
 nohup ./mvnw spring-boot:run &
  
