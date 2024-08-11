@@ -169,7 +169,8 @@ sudo systemctl start jenkins
 # sudo systemctl restart jenkins
 # sudo systemctl status jenkins
 # sudo systemctl enable jenkins
-
+# 获取实例的当前IP地址
+INSTANCE_IP=$(hostname -I | awk '{print $1}')
 # build
 #back-end
 ls
@@ -179,7 +180,8 @@ nohup ./mvnw spring-boot:run &
 #front-end
 cd front-end
 npm install
-npm run dev -- --host 0.0.0.0
+# 设置 VITE_API_BASE_URL 环境变量并启动前端开发服务器
+VITE_API_BASE_URL="http://$INSTANCE_IP:8081" npm run dev -- --host 0.0.0.0
 
 #ls
 #java -jar SmartTowns-0.0.1-SNAPSHOT.jar --server.port=8080
