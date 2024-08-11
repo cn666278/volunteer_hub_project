@@ -9,7 +9,7 @@ const env = import.meta.env.MODE || 'prod'
 
 const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
     development: { // 开发环境 development environment
-        baseApi: 'http://localhost:8080', // 接口请求地址 interface request address
+        baseApi: 'http://localhost:8081', // 接口请求地址 interface request address
         // 使用本地数据 mock data
         // baseApi: '/api',
         // 使用apifox模拟数据

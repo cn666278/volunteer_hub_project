@@ -25,3 +25,6 @@ logging:
   level:
     root: INFO
     com.wsa: DEBUG
+
+server:
+  port: 8081

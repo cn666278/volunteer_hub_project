@@ -51,7 +51,7 @@ const sendMessage = () => {
 };
 
 const connect = () => {
-  const socket = new SockJS('http://localhost:8080/ws'); // 使用后端服务器地址和端口
+  const socket = new SockJS('http://localhost:8081/ws'); // 使用后端服务器地址和端口
   stompClient = Stomp.over(socket);
   stompClient.connect({}, (frame) => {
     stompClient.subscribe('/topic/messages', (message) => {
