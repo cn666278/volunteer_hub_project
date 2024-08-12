@@ -34,8 +34,8 @@ const routes = createRouter({
           path: "",
           name: "Volunteer Home",
           meta: { title: "Home" },
-          // component: () => import("../views/volunteer/Home.vue"),
-          component: () => import("../views/volunteer/Events_detail.vue"),
+          component: () => import("../views/volunteer/Home.vue"),
+
         },
         {
           path: "/volunteer/personalInfo",

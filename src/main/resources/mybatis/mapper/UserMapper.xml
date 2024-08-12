@@ -45,4 +45,10 @@
         VALUES
             (#{loginId}, #{username}, #{password}, #{phone}, #{email}, #{phone})
     </insert>
+
+    <update id="updateUserProfile" parameterType="com.wsa.model.User">
+        UPDATE users
+        SET username = #{username}, phone = #{phone}, email = #{email}
+        WHERE loginId = #{loginId}
+    </update>
 </mapper>

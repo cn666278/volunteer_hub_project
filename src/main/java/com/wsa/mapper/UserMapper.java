@@ -27,5 +27,11 @@ public interface UserMapper {
     void updateUser(User user);
 
     void deleteUser(UserReq request);
+
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    User getUserById(@Param("id") Long id);
+
+
+    void updateUserProfile(User user);
 }
 
