@@ -61,4 +61,25 @@ public class UserController {
         userService.deleteUser(request);
         return ResultVO.success("delete success");
     }
+
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @PutMapping("/user/updateProfile")
+    public ResultVO<String> updateUserProfile(@RequestBody User user) {
+        // 从 User 对象中获取 loginId, username, phone 和 email
+        Long loginId = user.getLoginId();
+        String username = user.getUsername();
+        String phone = user.getPhone();
+        String email = user.getEmail();
+
+        // 调用服务层的方法来更新用户信息
+        userService.updateUserProfile(loginId, username, phone, email);
+
+        return ResultVO.success("User profile updated successfully");
+    }
+
+
 }

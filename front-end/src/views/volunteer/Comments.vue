@@ -12,14 +12,11 @@
     <div class="all-comments">
       <div v-for="comment in comments" :key="comment.id" class="custom-card">
         <div class="comment-content">
-          <div class="avatar-name">
-          <div class="comment-avatar">
-            <el-avatar :src="comment.avatar"></el-avatar>
-            <div class="comment-name">{{ comment.name }}</div>
-          </div>
+          <div class="comment-info">
+            <div class="event-name">{{ comment.eventName }}</div>
+            <div class="comment-text">{{ comment.text }}</div>
           </div>
           <div class="divider1"></div>
-          <div class="comment-text">{{ comment.text }}</div>
           <div class="rating-section">
             <el-rate v-model="comment.rating" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" />
           </div>
@@ -31,19 +28,18 @@
 
 <script lang='ts'>
 import { ref } from 'vue';
-import { ElRate, ElAvatar, ElInput } from 'element-plus';
+import { ElRate, ElInput } from 'element-plus';
 
 export default {
   components: {
     ElRate,
-    ElAvatar,
     ElInput
   },
   setup() {
     const comments = ref([
-      { id: 1, avatar: 'url-to-avatar1', name: 'Organizer1', text: 'Very Good！', rating: 5 },
-      { id: 2, avatar: 'url-to-avatar2', name: 'Organizer2', text: 'Satisfied!', rating: 4 },
-      { id: 2, avatar: 'url-to-avatar2', name: 'Organizer3', text: 'Not so good.', rating: 3 },
+      { id: 1, eventName: 'Event 1', text: 'Very Good！', rating: 5 },
+      { id: 2, eventName: 'Event 2', text: 'Satisfied!', rating: 4 },
+      { id: 3, eventName: 'Event 3', text: 'Not so good.', rating: 3 },
     ]);
 
     return { comments };
@@ -89,7 +85,7 @@ export default {
   flex-direction: row;
   align-items: center;
   border-radius: 10px;
-  margin-bottom: 20px; // Added margin for separation between cards
+  margin-bottom: 20px;
 
   &:hover {
     transform: translateY(-5px);
@@ -105,32 +101,28 @@ export default {
   padding: 10px;
 }
 
-.avatar-name{
-  padding: 20px;
-}
-.comment-avatar {
+.comment-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
-  flex: 0 0 auto;
+  align-items: flex-start;
 }
 
-.comment-name {
-  margin-top: 5px;
+.event-name {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
+
 .comment-text {
-  flex-grow: 1;
-  overflow: hidden; // 防止内容溢出
+  overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis; // 添加省略号以避免过长的文本
+  text-overflow: ellipsis;
   margin-right: 10px;
 }
 
 .rating-section {
   flex-shrink: 0;
-  margin-left: auto; // 推向右侧
-  padding-right: 10px; // 保证距离边缘有一定空间
+  margin-left: auto;
+  padding-right: 10px;
 }
 
 .divider1 {

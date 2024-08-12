@@ -132,4 +132,29 @@ public class UserService {
         userMapper.deleteUser(request);
         authorityMapper.deleteAuthority(request);
     }
+
+    public User getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+
+    public void updateUserProfile(Long loginId, String username, String phone, String email) {
+        try {
+            logger.debug("Attempting to update user profile for loginId: {}", loginId);
+            User user = userMapper.findById(loginId);
+            if (user == null) {
+                logger.error("User not found with loginId: {}", loginId);
+                throw new ResourceNotFoundException("User not found with id: " + loginId);
+            }
+
+            user.setUsername(username);
+            user.setPhone(phone);
+            user.setEmail(email);
+            userMapper.updateUserProfile(user);
+            logger.debug("User profile updated successfully for loginId: {}", loginId);
+        } catch (Exception e) {
+            logger.error("Error updating user profile", e);
+            throw e;
+        }
+    }
+
 }

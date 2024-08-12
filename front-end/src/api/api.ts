@@ -283,7 +283,7 @@ export default {
   },
 
 
-    //Adding, deleting, and checking events
+    //Hao Li, Adding, deleting, and checking events
   getAllEvents(params: any) {
     return request({
       url: "/event/getAllEvents",
@@ -305,6 +305,22 @@ export default {
     router.push({ name: 'EventDetail', params: { id: params.id } });
   },
 
+  getUserById(params: any) {
+    return request({
+      url: `/user/${params.id}`,
+      method: "get",
+      mock: false,
+    });
+  },
+
+  updateUserProfile(params) {
+    return request({
+      url: "/user/updateProfile",
+      method: "put",
+      data: params,
+      mock: false,
+    });
+  },
 
 
 }
