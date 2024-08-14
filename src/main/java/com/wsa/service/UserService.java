@@ -161,4 +161,11 @@ public class UserService {
         return userMapper.findRatingsByVolunteerId(volunteerId);
     }
 
+
+
+    public List<VolunteerInfo> getVolunteerInfoByVolunteerId(Long volunteerId) {
+        return userMapper.findVolunteerInfoByVolunteerId(volunteerId);
+    }
+
+
 }
