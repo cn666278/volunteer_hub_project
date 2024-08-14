@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -81,5 +82,14 @@ public class UserController {
         return ResultVO.success("User profile updated successfully");
     }
 
+    @GetMapping("/user/{volunteerId}/ratings")
+    public ResultVO<List<VolunteerRating>> getRatingsByVolunteerId(@PathVariable Long volunteerId) {
+        List<VolunteerRating> ratings = userService.getRatingsByVolunteerId(volunteerId);
+        if (ratings != null && !ratings.isEmpty()) {
+            return ResultVO.success(ratings);
+        } else {
+            return ResultVO.success(Collections.emptyList()); // 返回空数组，而不是500错误
+        }
+    }
 
 }

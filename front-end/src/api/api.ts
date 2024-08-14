@@ -322,6 +322,14 @@ export default {
     });
   },
 
+  getRatingsByVolunteerId(params) {
+    return request({
+      url: `/user/${params.volunteerId}/ratings`,
+      method: "get",
+      mock: false,
+    });
+  },
+
 
 }
 

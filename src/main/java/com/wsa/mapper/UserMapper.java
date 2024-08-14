@@ -33,5 +33,10 @@ public interface UserMapper {
 
 
     void updateUserProfile(User user);
+
+    @Select("SELECT vr.*, e.title AS eventName FROM volunteerratings vr " +
+            "JOIN events e ON vr.eventId = e.id " +
+            "WHERE vr.volunteerId = #{volunteerId}")
+    List<VolunteerRating> findRatingsByVolunteerId(@Param("volunteerId") Long volunteerId);
 }
 
