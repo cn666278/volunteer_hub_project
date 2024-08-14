@@ -22,9 +22,13 @@
         </el-form-item>
         <el-form-item :label="$t('register.role')" prop="role">
             <el-select v-model="formData.role" placeholder="Select Role">
-                <el-option label="Volunteer" value="volunteer"></el-option>
-                <el-option label="Admin" value="admin"></el-option>
-                <el-option label="Organizer" value="organizer"></el-option>
+                <el-option
+                    v-for="role in roleList"
+                    :key="role.roleId"
+                    :label="role.roleName"
+                    :value="role.roleId"
+                >
+                </el-option>
             </el-select>
         </el-form-item>
         <el-form-item>
@@ -64,6 +68,18 @@ const formData = reactive({
     email: "",
     role: "",
 });
+
+// role list
+let roleList = ref<any[]>([]);
+
+// load role list
+const getRoleList = async () => {
+    // 获取角色列表
+    const roles = await proxy.$api.getRoleList();
+
+    // 删除roleName为admin的角色
+    roleList.value = roles.filter((role: { roleName: string; }) => role.roleName !== 'admin');
+};
 
 // 验证用户名
 const validateUsername = (_: any, value: any, callback: any) => {
@@ -121,22 +137,12 @@ const submitForm = (formRef: FormInstance | undefined) => {
                 // 提交注册请求
                 const res = await proxy.$api.register(formData);
                 if (res) {
+                    resetForm(formRef); // 注册成功后，重置表单
                     ElNotification({
                         title: proxy.$t('notification.title'),
                         message: res.message,
                         type: "success",
                     });
-
-                    // 根据角色跳转到不同页面
-                    if (formData.role === "volunteer") {
-                        router.push("/volunteer");
-                    } else if (formData.role === "admin") {
-                        router.push("/admin");
-                    } else if (formData.role === "organizer") {
-                        router.push("/organizer");
-                    } else {
-                        console.log("Role error");
-                    }
                 } else {
                     ElNotification({
                         title: proxy.$t('notification.title'),
@@ -161,6 +167,7 @@ const resetForm = (formRef: FormInstance | undefined) => {
 
 // 组件挂载后检查用户是否已登录，如果已登录则跳转到对应页面
 onMounted(() => {
+    getRoleList();
     if (userStore.user.username) {
         if (userStore.user.role.roleName == "volunteer") {
             router.push("/volunteer");
