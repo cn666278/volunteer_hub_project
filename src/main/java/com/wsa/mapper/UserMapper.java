@@ -33,5 +33,7 @@ public interface UserMapper {
 
 
     void updateUserProfile(User user);
+
+    void updateLoginTime(String username);
 }
 

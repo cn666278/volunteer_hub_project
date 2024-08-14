@@ -2,6 +2,7 @@ package com.wsa.model;
 
 import lombok.Data;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 public class UserInfo implements Serializable {
@@ -15,6 +16,7 @@ public class UserInfo implements Serializable {
     private String phone;
     private String email;
     private String photo;
+    private Timestamp lastLoginTime;
     private Role role;
 
     @Data

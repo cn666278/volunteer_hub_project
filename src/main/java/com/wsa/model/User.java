@@ -3,6 +3,7 @@ package com.wsa.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 public class User implements Serializable {
@@ -15,7 +16,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private boolean enabled;
-
+    private Timestamp lastLoginTime;
     public Long getId() {
         return id;
     }

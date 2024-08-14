@@ -37,6 +37,7 @@ public class UserService {
                 userInfo.setPhoto(user.getPhoto());
                 userInfo.setEmail(user.getEmail());
                 userInfo.setPhone(user.getPhone());
+                userInfo.setLastLoginTime(user.getLastLoginTime());
                 findAuthoritiesByUserId(userInfo);
                 userInfos.add(userInfo);
             }
@@ -77,6 +78,7 @@ public class UserService {
             userInfo.setPhoto(user.getPhoto());
             userInfo.setEmail(user.getEmail());
             userInfo.setPhone(user.getPhone());
+            userInfo.setLastLoginTime(user.getLastLoginTime());
         }
 
         if (userInfo != null) {
@@ -155,6 +157,10 @@ public class UserService {
             logger.error("Error updating user profile", e);
             throw e;
         }
+    }
+
+    public void updateLoginTime(JwtRequest authenticationRequest) {
+        userMapper.updateLoginTime(authenticationRequest.getUsername());
     }
 
 }
