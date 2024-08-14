@@ -92,4 +92,15 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/{volunteerId}/volunteerinfo")
+    public ResultVO<List<VolunteerInfo>> getVolunteerInfo(@PathVariable Long volunteerId) {
+        List<VolunteerInfo> volunteerInfoList = userService.getVolunteerInfoByVolunteerId(volunteerId);
+        if (volunteerInfoList != null && !volunteerInfoList.isEmpty()) {
+            return ResultVO.success(volunteerInfoList);
+        } else {
+            return ResultVO.success(Collections.emptyList()); // Return an empty list instead of a 500 error
+        }
+    }
+
+
 }

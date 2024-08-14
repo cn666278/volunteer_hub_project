@@ -1,5 +1,5 @@
 <template>
-  <div class="Information">
+  <div class="VolunteerInfo">
     <div class="search-section">
       <el-input
           placeholder="Type here to search..."
@@ -11,44 +11,75 @@
     </div>
     <div class="all-comments">
       <div v-for="comment in comments" :key="comment.id" class="custom-card">
+        <div class="event-name">{{ comment.eventName }}</div> <!-- Display event name -->
+        <div class="divider2"></div>
         <div class="comment-content">
-          <div class="avatar-name">
-            <div class="comment-avatar">
-              <el-avatar :src="comment.avatar"></el-avatar>
-              <div class="comment-name">{{ comment.name }}</div>
-            </div>
-          </div>
-          <div class="divider1"></div>
-          <div class="comment-text">{{ comment.text }}</div>
+          <div class="comment-text">{{ comment.infoTitle }}</div>
         </div>
+        <div class="comment-time">{{ comment.sendTime }}</div>
       </div>
     </div>
   </div>
 </template>
 
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+import useUser from '../../store/user';
+import api from '../../api/api';  // Ensure the correct path to your API management file
 
+const userStore = useUser();
+const comments = ref([]);
 
-<script lang='ts'>
-import { ref } from 'vue';
-import { ElAvatar, ElInput } from 'element-plus';
-
-export default {
-  components: {
-    ElAvatar,
-    ElInput
-  },
-  setup() {
-    const comments = ref([
-      { id: 1, avatar: 'url-to-avatar1', name: 'Organizer1', text: 'Very Good！' },
-      { id: 2, avatar: 'url-to-avatar2', name: 'Organizer2', text: 'Satisfied!' },
-      { id: 3, avatar: 'url-to-avatar3', name: 'Organizer3', text: 'Not so good.' },
-    ]);
-
-    return { comments };
+const fetchEventName = async (id) => {
+  try {
+    const response = await api.getEventById({ id });
+    if (response) {
+      return response.title; // Assuming the response has the event title under 'title'
+    } else {
+      console.error('Failed to fetch event title');
+      return 'Unknown Event';
+    }
+  } catch (error) {
+    console.error('Failed to fetch event title:', error.message || 'Request failed');
+    return 'Unknown Event';
   }
-}
-</script>
+};
 
+const fetchVolunteerInfo = async () => {
+  try {
+    const volunteerId = userStore.user.loginId; // Assuming loginId corresponds to volunteerId
+    const response = await api.getVolunteerInfoByVolunteerId({ volunteerId });
+
+    if (response && Array.isArray(response)) {
+      if (response.length > 0) {
+        const commentsWithEventNames = await Promise.all(
+            response.map(async (info) => {
+              const eventName = await fetchEventName(info.eventId);
+              return {
+                id: info.informationId,
+                eventName: eventName, // Use eventName from the fetched data
+                infoTitle: info.infoTitle,
+                sendTime: info.sendTime,
+              };
+            })
+        );
+        comments.value = commentsWithEventNames;
+      } else {
+        console.log('No information found for the given volunteerId');
+      }
+    } else {
+      console.error('Failed to fetch volunteer information:', response?.msg || 'Unknown error');
+    }
+  } catch (error) {
+    console.error('Failed to fetch volunteer information:', error.message || 'Request failed');
+  }
+};
+
+// Fetch volunteer information when the component is mounted
+onMounted(() => {
+  fetchVolunteerInfo();
+});
+</script>
 
 
 <style lang='scss'>
@@ -80,16 +111,16 @@ export default {
 
 .custom-card {
   width: 80%;
-  min-height: 120px;
+  min-height: 150px;
   border: 1px solid #ccc;
   background-color: #f5f5f5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   border-radius: 10px;
-  margin-bottom: 20px; // Added margin for separation between cards
+  margin-bottom: 20px;
 
   &:hover {
     transform: translateY(-5px);
@@ -97,46 +128,39 @@ export default {
   }
 }
 
+.event-name {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.divider2 {
+  width: 90%;
+  height: 2px;
+  background-color: #ddd;
+  margin: 10px 0;
+}
+
 .comment-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
   padding: 10px;
 }
 
-.avatar-name{
-  padding: 20px;
-}
-.comment-avatar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
-  flex: 0 0 auto;
-}
-
-.comment-name {
-  margin-top: 5px;
-}
 .comment-text {
-  flex-grow: 1;
-  overflow: hidden; // 防止内容溢出
+  overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis; // 添加省略号以避免过长的文本
+  text-overflow: ellipsis;
   margin-right: 10px;
 }
 
-.rating-section {
-  flex-shrink: 0;
-  margin-left: auto; // 推向右侧
-  padding-right: 10px; // 保证距离边缘有一定空间
-}
-
-.divider1 {
-  height: 70%;
-  width: 2px;
-  background-color: #ddd;
-  margin-right: 20px;
+.comment-time {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  color: #999;
+  font-size: 0.85rem;
 }
 </style>

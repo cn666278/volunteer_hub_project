@@ -330,6 +330,16 @@ export default {
     });
   },
 
+  getVolunteerInfoByVolunteerId(params: any) {
+    return request({
+      url: `/user/${params.volunteerId}/volunteerinfo`,
+      method: "get",
+      mock: false,
+    });
+  },
+
+
+
 
 }
 

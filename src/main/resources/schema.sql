@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : s
+ Source Server         : mysql
  Source Server Type    : MySQL
- Source Server Version : 100427
+ Source Server Version : 50731
  Source Host           : localhost:3306
  Source Schema         : wsa
 
  Target Server Type    : MySQL
- Target Server Version : 100427
+ Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 15/08/2024 00:11:28
+ Date: 31/07/2024 01:17:09
 */
 CREATE DATABASE IF NOT EXISTS `wsa` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 use wsa;
@@ -350,6 +350,25 @@ CREATE TABLE `volunteer`  (
 -- ----------------------------
 INSERT INTO `volunteer` VALUES (1, 3, 'Olympic', 1, 1, 7, 2, 'Newbie');
 INSERT INTO `volunteer` VALUES (2, 4, 'Olympic', 1, 0, 11, 1, 'Newbie');
+
+-- ----------------------------
+-- Table structure for volunteerinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `volunteerinfo`;
+CREATE TABLE `volunteerinfo`  (
+  `InformationId` int NOT NULL AUTO_INCREMENT,
+  `volunteerId` int NULL DEFAULT NULL,
+  `InfoTitle` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `eventId` int NULL DEFAULT NULL,
+  `SendTime` timestamp NULL DEFAULT NULL,
+  `InfoBody` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  PRIMARY KEY (`InformationId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of volunteerinfo
+-- ----------------------------
+INSERT INTO `volunteerinfo` VALUES (1, 3, 'Congrats! You are approved!', 1, '2024-08-14 23:26:37', '123456');
 
 -- ----------------------------
 -- Table structure for volunteerratings

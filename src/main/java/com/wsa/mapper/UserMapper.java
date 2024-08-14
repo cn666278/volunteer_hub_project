@@ -39,6 +39,11 @@ public interface UserMapper {
             "WHERE vr.volunteerId = #{volunteerId}")
     List<VolunteerRating> findRatingsByVolunteerId(@Param("volunteerId") Long volunteerId);
 
+    @Select("SELECT * FROM volunteerinfo WHERE volunteerId = #{volunteerId}")
+    List<VolunteerInfo> findVolunteerInfoByVolunteerId(@Param("volunteerId") Long volunteerId);
+
+
+
     void updateLoginTime(String username);
 }
 
