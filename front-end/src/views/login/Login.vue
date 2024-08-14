@@ -10,13 +10,15 @@
     <LoginBanner />
     <div class="content">
       <div class="content-inner">
-        <el-tabs type="border-card">
+        <el-tabs type="border-card" style="width: 500px;">
           <el-tab-pane :label="$t('login.volunteer')">
             <VolunteerLoginForm />
           </el-tab-pane>
           <el-tab-pane :label="$t('login.organizer')">{{ $t('login.organizer') }}</el-tab-pane>
-          <el-tab-pane :label="$t('login.admin')">{{ $t('login.admin') }}</el-tab-pane>
-          <el-tab-pane :label="$t('login.register')">{{ $t('login.register') }}</el-tab-pane>
+          <!-- <el-tab-pane :label="$t('login.admin')">{{ $t('login.admin') }}</el-tab-pane> -->
+          <el-tab-pane :label="$t('login.register')">
+            <RegisterForm />
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="footer">
@@ -30,6 +32,7 @@
 import Footer from './components/Footer.vue';
 import LoginBanner from './components/banner.vue';
 import VolunteerLoginForm from './components/VolunteerLoginForm.vue';
+import RegisterForm from './Register.vue';
 import changeLanguage from '../../components/changeLanguage.vue';
 </script>
 
