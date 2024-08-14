@@ -358,5 +358,7 @@ CREATE TABLE `volunteerratings`  (
 -- ----------------------------
 INSERT INTO `volunteerratings` VALUES (6, 4, 1, 1, 3, 'ew', '2024-07-23 14:15:49');
 INSERT INTO `volunteerratings` VALUES (7, 4, 1, 2, 4, 'gj', '2024-07-31 00:04:15');
+INSERT INTO `volunteerratings` (`id`, `eventId`, `organizerId`, `volunteerId`, `rating`, `comment`, `createdAt`) VALUES (8, 1, 1, 3, 5, 'good job', '2024-08-14 07:34:56');
+
 
 SET FOREIGN_KEY_CHECKS = 1;

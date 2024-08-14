@@ -157,4 +157,8 @@ public class UserService {
         }
     }
 
+    public List<VolunteerRating> getRatingsByVolunteerId(Long volunteerId) {
+        return userMapper.findRatingsByVolunteerId(volunteerId);
+    }
+
 }
