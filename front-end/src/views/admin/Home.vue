@@ -120,7 +120,7 @@ let userStore = useUser();
 // tableData使用let定义，因为后续会对其进行赋值, tableData is defined using let because it will be assigned later
 let tableData = ref([]); // 双向绑定，使用ref包裹数组，实现响应式数据, Two-way binding, use ref to wrap the array to achieve responsive data
 let countData = ref({});
-// 今日购买，本月购买，总购买 Today's purchases, Monthly purchases, Total purchases
+// Event数据的表头
 const tableLable = {
   name: 'event',
   todayPurchase: 'todaysActiveUsers',

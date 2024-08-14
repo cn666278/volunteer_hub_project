@@ -239,6 +239,8 @@ CREATE TABLE `organizer`  (
                               PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
+INSERT INTO `organizer` VALUES (1, 1, 'Cardiff University', 'Cardiff University is a public research university in Cardiff, Wales.');
+INSERT INTO `organizer` VALUES (2, 2, 'Cardiff Biking', 'Cardiff Biking is a cycling club in Cardiff, Wales.');
 -- ----------------------------
 -- Table structure for redemptionrecords
 -- ----------------------------

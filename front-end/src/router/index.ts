@@ -11,8 +11,6 @@ const routes = createRouter({
       name: "Login",
       meta: { title: "Login" },
       component: () => import("../views/login/Login.vue"),
-
-
     },
     {
       path: "/login",

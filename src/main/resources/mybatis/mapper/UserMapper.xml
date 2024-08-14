@@ -51,4 +51,10 @@
         SET username = #{username}, phone = #{phone}, email = #{email}
         WHERE loginId = #{loginId}
     </update>
+
+    <update id="updateLoginTime" parameterType="string">
+        UPDATE users
+        SET lastLoginTime = now()
+        WHERE username = #{username}
+    </update>
 </mapper>

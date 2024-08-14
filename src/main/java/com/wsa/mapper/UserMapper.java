@@ -38,5 +38,7 @@ public interface UserMapper {
             "JOIN events e ON vr.eventId = e.id " +
             "WHERE vr.volunteerId = #{volunteerId}")
     List<VolunteerRating> findRatingsByVolunteerId(@Param("volunteerId") Long volunteerId);
+
+    void updateLoginTime(String username);
 }
 
