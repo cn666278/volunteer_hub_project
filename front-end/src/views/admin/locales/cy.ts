@@ -14,6 +14,6 @@ export default {
     "home.monthlyRegistedUsers": "Defnyddwyr cofrestredig misol",
     "home.registerUser": "Cofrestrwch Defnyddiwr",
     "home.activeUsers": "Defnyddwyr Gweithgar",
-    "home.events": "Digwyddiadau",
+    "home.organizerData.title": "Data Trefnydd",
   };
   

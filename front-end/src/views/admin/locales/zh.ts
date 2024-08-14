@@ -14,6 +14,6 @@ export default {
     "home.monthlyRegistedUsers": "本月注册用户",
     "home.registerUser": "注册用户",
     "home.activeUsers": "活跃用户",
-    "home.events": "事件",
+    "home.organizerData.title": "组织者数据",
   };
   

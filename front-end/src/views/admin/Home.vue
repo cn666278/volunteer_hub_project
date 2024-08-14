@@ -43,7 +43,7 @@
                     {{ $t('home.lastLoginTime') }}
                   </div>
                 </template>
-                2024-03-24 12:00:00
+                {{ formattedLastLoginTime }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template #label>
@@ -99,8 +99,8 @@
           <div ref="userEchart" style="height: 240px"></div>
         </el-card>
         <el-card style="height: 300px">
-          <p>{{ $t('home.events') }}</p>
-          <div ref="videoEchart" style="height: 240px"></div>
+          <p>{{ $t('home.organizerData.title') }}</p>
+          <div ref="organizerData" style="height: 240px"></div>
         </el-card>
       </div>
     </el-col>
@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, getCurrentInstance, reactive } from "vue";
+import { onMounted, ref, getCurrentInstance, reactive, computed } from "vue";
 import useUser from "../../store/user.ts";
 import * as echarts from "echarts";
 
@@ -120,15 +120,30 @@ let userStore = useUser();
 // tableData使用let定义，因为后续会对其进行赋值, tableData is defined using let because it will be assigned later
 let tableData = ref([]); // 双向绑定，使用ref包裹数组，实现响应式数据, Two-way binding, use ref to wrap the array to achieve responsive data
 let countData = ref({});
+
+// 格式化最后登录时间
+const formattedLastLoginTime = computed(() => {
+    const date = new Date(userStore.user.lastLoginTime);
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    };
+    return date.toLocaleDateString('en-GB', options);
+});
+
 // Event数据的表头
 const tableLable = {
   name: 'event',
-  todayPurchase: 'todaysActiveUsers',
-  monthlyPurchase: 'monthlyActiveUsers',
-  totalPurchase: 'totalActiveUsers',
+  today: 'todaysActiveUsers',
+  monthly: 'monthlyActiveUsers',
+  total: 'totalActiveUsers',
 };
 
-// 获取表格数据
+// 获取Event表格数据
 const getTableList = async () => {
   let res = await proxy.$api.getTableData();
   tableData.value = res;
@@ -255,8 +270,8 @@ const getEchartData = async () => {
     },
   ];
   pieOptions.series = videoData.series;
-  let videoEcharts = echarts.init(proxy.$refs["videoEchart"]); // 获取dom节点 ref="videoEchart"
-  videoEcharts.setOption(pieOptions);
+  let organizerEcharts = echarts.init(proxy.$refs["organizerData"]); // 获取dom节点 ref="videoEchart"
+  organizerEcharts.setOption(pieOptions);
 };
 
 onMounted(() => {

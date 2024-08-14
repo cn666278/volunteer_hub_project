@@ -14,6 +14,6 @@ export default {
     "home.monthlyRegistedUsers": "Monthly registed users",
     "home.registerUser": "Register User",
     "home.activeUsers": "Active Users",
-    "home.events": "Events",
+    "home.organizerData.title": "Organizer Data",
   };
   
