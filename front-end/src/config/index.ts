@@ -28,6 +28,6 @@ const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
 export default {
     env,
     // mock 总开关，是否开启模拟数据功能 whether to enable mock data function
-    mock: true, 
+    mock: false,
     ...EnvConfig[env]
 }
