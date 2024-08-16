@@ -44,6 +44,13 @@ export default {
       mock: true,
     });
   },
+  getEventStatus(){
+    return request({
+      url: "/event/getEventStats",
+      method: "get",
+      mock: false,
+    });
+  },
   // role组件
   getRoleList(params: any) {
     return request({

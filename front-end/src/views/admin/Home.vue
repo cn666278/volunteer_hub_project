@@ -43,7 +43,7 @@
                     {{ $t('home.lastLoginTime') }}
                   </div>
                 </template>
-                2024-03-24 12:00:00
+                {{ formattedLastLoginTime }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template #label>
@@ -60,8 +60,9 @@
           </div>
         </div>
       </el-card>
-      <el-card shadow="hover" style="margin-top: 20px" height="450px">
-        <el-table :data="tableData">
+      <!-- 固定高度的卡片，添加滚动条 -->
+      <el-card shadow="hover" style="margin-top: 20px; height: 490px;">
+        <el-table :data="tableData" style="width: 100%;" height="450px">
           <el-table-column
             v-for="(val, key) in tableLable"
             :key="key"
@@ -89,9 +90,9 @@
           </div>
         </el-card>
       </div>
-      <el-card style="height: 300px">
+      <el-card style="height: 230px">
         <p>{{ $t('home.registerUser') }}</p>
-        <div ref="echart" style="height: 280px"></div>
+        <div ref="echart" style="height: 250px; margin-top: -30px;"></div>
       </el-card>
       <div class="graph">
         <el-card style="height: 300px">
@@ -99,16 +100,17 @@
           <div ref="userEchart" style="height: 240px"></div>
         </el-card>
         <el-card style="height: 300px">
-          <p>{{ $t('home.events') }}</p>
-          <div ref="videoEchart" style="height: 240px"></div>
+          <p>{{ $t('home.organizerData.title') }}</p>
+          <div ref="organizerData" style="height: 190px"></div>
         </el-card>
       </div>
     </el-col>
   </el-row>
 </template>
 
+
 <script setup>
-import { onMounted, ref, getCurrentInstance, reactive } from "vue";
+import { onMounted, ref, getCurrentInstance, reactive, computed } from "vue";
 import useUser from "../../store/user.ts";
 import * as echarts from "echarts";
 
@@ -120,23 +122,47 @@ let userStore = useUser();
 // tableData使用let定义，因为后续会对其进行赋值, tableData is defined using let because it will be assigned later
 let tableData = ref([]); // 双向绑定，使用ref包裹数组，实现响应式数据, Two-way binding, use ref to wrap the array to achieve responsive data
 let countData = ref({});
+
+// 格式化最后登录时间
+const formattedLastLoginTime = computed(() => {
+  const date = new Date(userStore.user.lastLoginTime);
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+  return date.toLocaleDateString('en-GB', options);
+});
+
 // Event数据的表头
 const tableLable = {
   name: 'event',
-  todayPurchase: 'todaysActiveUsers',
-  monthlyPurchase: 'monthlyActiveUsers',
-  totalPurchase: 'totalActiveUsers',
+  today: 'todaysActiveUsers',
+  monthly: 'monthlyActiveUsers',
+  total: 'totalActiveUsers',
 };
 
-// 获取表格数据
+// 获取Event表格数据
 const getTableList = async () => {
-  let res = await proxy.$api.getTableData();
-  tableData.value = res;
+  try {
+    let res = await proxy.$api.getEventStatus();
+    console.log("EventStatus:", res);
+    tableData.value = res;
+  } catch (error) {
+    console.error("Error fetching table data:", error);
+  }
 };
 // 获取首页count统计数据
 const getCountData = async () => {
-  let res = await proxy.$api.getCountData();
-  countData.value = res;
+  try {
+    let res = await proxy.$api.getCountData();
+    countData.value = res;
+  } catch (error) {
+    console.error("Error fetching count data:", error);
+  }
 };
 // 关于echarts的渲染部分，可以参考echarts官网的文档
 let xOptions = reactive({
@@ -177,6 +203,7 @@ let xOptions = reactive({
   color: ["#2ec7c9", "#b6a2de", "#5ab1ef", "#ffb980", "#d87a80", "#8d98b3"],
   series: [],
 });
+
 let pieOptions = reactive({
   tooltip: {
     trigger: "item",
@@ -192,16 +219,18 @@ let pieOptions = reactive({
   ],
   series: [],
 });
-// order data, user data, video data
+// order data, user data, organizer data
 let orderData = reactive({
   xData: [],
   series: [],
 });
+
 let userData = reactive({
   xData: [],
   series: [],
 });
-let videoData = reactive({
+
+let organizerData = reactive({
   series: [],
 });
 
@@ -210,7 +239,8 @@ const getEchartData = async () => {
   let result = await proxy.$api.getEchartData();
   let res = result.orderData;
   let userRes = result.userData;
-  let videoRes = result.videoData;
+  let organizerRes = result.organizerData;
+
   orderData.xData = res.date;
   const keyArray = Object.keys(res.data[0]);
   const series = [];
@@ -221,11 +251,11 @@ const getEchartData = async () => {
       type: "line",
     });
   });
+
   orderData.series = series;
   xOptions.xAxis.data = orderData.xData;
   xOptions.series = orderData.series;
-  // 渲染echarts: orderData
-  let hEcharts = echarts.init(proxy.$refs["echart"]); // 获取dom节点 ref="echart"
+  let hEcharts = echarts.init(proxy.$refs["echart"]);
   hEcharts.setOption(xOptions);
 
   // 渲染柱状图: userData
@@ -244,19 +274,19 @@ const getEchartData = async () => {
   ];
   xOptions.xAxis.data = userData.xData;
   xOptions.series = userData.series;
-  let userEcharts = echarts.init(proxy.$refs["userEchart"]); // 获取dom节点 ref="userEchart"
+  let userEcharts = echarts.init(proxy.$refs["userEchart"]);
   userEcharts.setOption(xOptions);
 
-  // 渲染饼图: videoData
-  videoData.series = [
+  // 渲染饼图: organizerData
+  organizerData.series = [
     {
-      data: videoRes,
+      data: organizerRes,
       type: "pie",
     },
   ];
-  pieOptions.series = videoData.series;
-  let videoEcharts = echarts.init(proxy.$refs["videoEchart"]); // 获取dom节点 ref="videoEchart"
-  videoEcharts.setOption(pieOptions);
+  pieOptions.series = organizerData.series;
+  let organizerEcharts = echarts.init(proxy.$refs["organizerData"]);
+  organizerEcharts.setOption(pieOptions);
 };
 
 onMounted(() => {
@@ -271,9 +301,7 @@ onMounted(() => {
   .user {
     display: flex;
     align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
+
     img {
       width: 70px;
       height: 70px;
@@ -281,49 +309,60 @@ onMounted(() => {
       margin-right: 20px;
     }
   }
+
   .num {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
     .el-card {
       width: 32%;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%; /* 设置卡片高度自动撑满父容器 */
     }
+
     .icons {
-      width: 80px;
-      height: 80px;
-      font-size: 30px;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
       text-align: center;
-      line-height: 80px;
+      line-height: 50px;
       color: #fff;
+      flex-shrink: 0; /* 固定大小 */
     }
+
     .details {
       margin-left: 8px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-around; /* 让元素在父容器内均匀分布 */
+      flex-grow: 1; /* 让details占满剩余空间 */
+
       .num {
-        font-size: 20px;
-        margin-bottom: 10px;
+        font-size: 16px;
+        // margin-bottom: 10px;
       }
+
       .text {
         font-size: 13px;
-        // text-align: center;
         color: #999;
       }
     }
   }
+
   .graph {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+
     .el-card {
       width: 48%;
     }
   }
 }
-
-.el-table .cell {
-  padding: 0 3px;
-}
 </style>
+
+

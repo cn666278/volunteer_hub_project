@@ -30,6 +30,36 @@ public class EventService {
     @Autowired
     private EventRegistrationsMapper eventRegistrationsMapper;
 
+    // 其他方法省略...
+
+    // 新增获取事件统计数据的方法
+    public List<EventDataRes> getEventStats() {
+        // 获取所有事件列表
+        List<Event> events = eventMapper.findAllEvents();
+        List<EventDataRes> eventDataResList = new ArrayList<>();
+
+        for (Event event : events) {
+            EventDataRes eventDataRes = new EventDataRes();
+            eventDataRes.setName(event.getTitle());
+
+            // 获取今日活跃用户数
+            Integer todayActiveUsers = eventRegistrationsMapper.getTodayActiveUsers(event.getId());
+            eventDataRes.setToday(todayActiveUsers);
+
+            // 获取本月活跃用户数
+            Integer monthlyActiveUsers = eventRegistrationsMapper.getMonthlyActiveUsers(event.getId());
+            eventDataRes.setMonthly(monthlyActiveUsers);
+
+            // 获取总用户数
+            Integer totalUsers = eventRegistrationsMapper.getTotalUsers(event.getId());
+            eventDataRes.setTotal(totalUsers);
+
+            eventDataResList.add(eventDataRes);
+        }
+
+        return eventDataResList;
+    }
+
     public List<Event> getEventsByPage(int current, int pageSize) {
         int offset = (current - 1) * pageSize;
         return eventMapper.getEventsByPage(offset, pageSize);
@@ -42,9 +72,6 @@ public class EventService {
     public List<Event> getEventsByDateRange(Date startDate, Date endDate) {
         return eventMapper.findEventsByDateRange(startDate, endDate);
     }
-
-
-
 
     public List<Event> getEventsByMonth(int month, int year) {
         return eventMapper.findEventsByMonth(month, year);
