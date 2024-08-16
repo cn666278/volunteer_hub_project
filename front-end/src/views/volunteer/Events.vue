@@ -1,28 +1,5 @@
 <template>
   <div class="container">
-    <div class="sidebar">
-      <el-menu
-          :default-active="activeIndex"
-          class="el-menu-vertical-demo"
-          background-color="#ffffff"
-          text-color="#303133"
-          active-text-color="#409EFF"
-          @select="handleSelect"
-      >
-        <el-menu-item index="1">
-          <el-icon><search /></el-icon>
-          <span slot="title">{{ $t('events.allEvents') }}</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <span slot="title">{{ $t('events.ongoingEvents') }}</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <el-icon><document /></el-icon>
-          <span slot="title">{{ $t('events.closedEvents') }}</span>
-        </el-menu-item>
-      </el-menu>
-    </div>
     <div class="content">
       <div v-if="activeIndex === '1'" class="search-section">
         <el-input
@@ -41,11 +18,11 @@
               <div class="blog-author-date">
                 <div class="author-details">
                   <el-icon><User /></el-icon>
-                  {{ post.organizer }}
+                  {{ post.organizationName }}
                 </div>
                 <div class="date-details">
                   <el-icon><Calendar /></el-icon>
-                  {{ formatDate(post.date) }}
+                  {{ formatDate(post.startDate) }}
                 </div>
               </div>
               <h5>{{ post.title }}</h5>
@@ -58,6 +35,7 @@
   </div>
 </template>
 
+
 <script lang="ts" setup>
 import { ref, onMounted, computed, getCurrentInstance } from 'vue';
 import { Search, User, Calendar } from '@element-plus/icons-vue';
@@ -69,28 +47,23 @@ const activeIndex = ref('1');
 const searchQuery = ref('');
 const { proxy } = getCurrentInstance();
 
+// 获取事件列表并且加载每个事件的组织信息
 const loadAllEvents = async () => {
   const response = await api.getAllEvents()
       .catch(error => {
         ElMessage.error(error.message);
       });
-  if (response) {
-    allEvents.value = response;
-  }
+
+  allEvents.value = response;
 };
 
 onMounted(() => {
   loadAllEvents();
 });
 
-const handleSelect = (index: string) => {
-  activeIndex.value = index;
-};
-
 const navigateToEvent = (eventId: string) => {
   proxy.$router.push({ name: 'EventDetail', params: { id: eventId } });
 };
-
 
 const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -110,16 +83,11 @@ const filteredEvents = computed(() => {
 });
 </script>
 
+
 <style scoped>
 .container {
   display: flex;
   height: 100vh;
-}
-
-.sidebar {
-  flex: 0 0 200px;
-  background: #fff;
-  overflow-y: auto;
 }
 
 .content {
@@ -148,11 +116,6 @@ const filteredEvents = computed(() => {
 .el-input .el-icon {
   margin-right: 8px;
   color: #409EFF;
-}
-
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 100%;
-  min-height: 400px;
 }
 
 .blog-section {

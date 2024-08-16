@@ -3,6 +3,7 @@ package com.wsa.controller;
 import com.github.pagehelper.PageInfo;
 import com.wsa.model.*;
 import com.wsa.service.EventService;
+import com.wsa.service.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,9 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private OrganizerService organizerService;
 
     @GetMapping("/getEventList")
     public ResultVO<List<EventRes>> getAllEventsList() {
@@ -158,8 +162,10 @@ public class EventController {
             List<Event> events = eventService.getAllEvents();
             List<EventRes> eventResList = new ArrayList<>();
             for (Event e : events) {
+                Organizer o = organizerService.getOrganizersById(e.getOrganizerId());
                 EventRes eRes = new EventRes();
                 eRes.setId(e.getId());
+                eRes.setOrganizationName(o.getOrganizationName());
                 eRes.setTitle(e.getTitle()); // Ensure the field name matches 'title'
                 eRes.setStartDate(e.getStartDate()); // Ensure the field name matches 'startDate'
                 eRes.setEndDate(e.getEndDate());
@@ -187,4 +193,47 @@ public class EventController {
             return ResultVO.failure("Failed to fetch event details");
         }
     }
+
+    @PostMapping("/subscribeForEvent")
+    public ResultVO<String> subscribeForEvent(@RequestBody EventRegistrations eventRegistration) {
+        try {
+            eventService.subscribeForEvent(eventRegistration);
+            return ResultVO.success("Successfully subscribed to the event");
+        } catch (IllegalStateException e) {
+            return ResultVO.failure("You have already subscribed to this event");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVO.failure("Failed to subscribe to the event: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/getSubscribedEvents")
+    public ResultVO<List<EventRes>> getSubscribedEvents(@RequestBody EventRegistrations volunteerId) {
+        try {
+            List<Event> events = eventService.getSubscribedEventsByVolunteerId(volunteerId.getVolunteerId());
+            List<EventRes> eventResList = new ArrayList<>();
+            for (Event e : events) {
+                Organizer organizer = organizerService.getOrganizersById(e.getOrganizerId());
+                EventRes eRes = new EventRes();
+
+                eRes.setId(e.getId());
+                eRes.setTitle(e.getTitle());
+                eRes.setOrganizerId(e.getOrganizerId());
+                eRes.setOrganizationName(organizer.getOrganizationName());  // 设置 organizationName
+                eRes.setDescription(e.getDescription());
+                eRes.setLocation(e.getLocation());
+                eRes.setPointsAwarded(e.getPointsAwarded());
+                eRes.setStartDate(e.getStartDate());
+                eRes.setEndDate(e.getEndDate());
+                eRes.setStatus(e.getStatus());
+                eRes.setEventPic(e.getEventPic());
+                eventResList.add(eRes);
+            }
+            return ResultVO.success(eventResList);
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to fetch subscribed events: " + e.getMessage());
+        }
+    }
+
+
 }

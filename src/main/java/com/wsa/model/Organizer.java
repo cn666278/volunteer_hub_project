@@ -1,10 +1,14 @@
 package com.wsa.model;
 
+import lombok.Data;
+
+@Data
 public class Organizer {
     private Long id;
-    private String name;
-    private String description;
+
     private Long userId;
+    private String organizationName;
+    private String organizationDescription;
 
     // Getters and setters
 }

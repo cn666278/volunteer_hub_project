@@ -27,4 +27,8 @@ public class OrganizerService {
         int offset = (current - 1) * pageSize;
         return organizerMapper.getOrganizersByPage(offset, pageSize);
     }
+
+    public Organizer getOrganizersById(Long organizerId) {
+        return organizerMapper.getOrganizersById(organizerId);
+    }
 }

@@ -121,7 +121,7 @@ CREATE TABLE `eventregistrations`  (
   `eventId` bigint NOT NULL,
   `volunteerId` bigint NOT NULL,
   `roleId` bigint NOT NULL,
-  `status` enum('pending','accepted','rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending',
+  `status` enum('pending', 'accepted', 'rejected', 'subscribed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 

@@ -21,4 +21,6 @@ public class EventRes implements Serializable {
 
     private String eventPic;
 
+    private String organizationName;
+
 }

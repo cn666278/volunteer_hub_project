@@ -300,20 +300,15 @@ export default {
     });
   },
 
+  // getUserById(params: any) {
+  //   return request({
+  //     url: `/user/${params.id}`,
+  //     method: "get",
+  //     mock: false,
+  //   });
+  // },
 
-  navigateToEvent(params: any) {
-    router.push({ name: 'EventDetail', params: { id: params.id } });
-  },
-
-  getUserById(params: any) {
-    return request({
-      url: `/user/${params.id}`,
-      method: "get",
-      mock: false,
-    });
-  },
-
-  updateUserProfile(params) {
+  updateUserProfile(params: any) {
     return request({
       url: "/user/updateProfile",
       method: "put",
@@ -322,7 +317,7 @@ export default {
     });
   },
 
-  getRatingsByVolunteerId(params) {
+  getRatingsByVolunteerId(params: any) {
     return request({
       url: `/user/${params.volunteerId}/ratings`,
       method: "get",
@@ -337,6 +332,29 @@ export default {
       mock: false,
     });
   },
+
+  subscribeForEvent(params: any) {
+    return request({
+      url: "/event/subscribeForEvent",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+
+  getSubscribedEvents(params: any) {
+    return request({
+      url: "/event/getSubscribedEvents",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+
+  // navigateToEvent(params: any) {
+  //   router.push({ name: 'EventDetail', params: { id: params.id } });
+  // },
+
 
 
 

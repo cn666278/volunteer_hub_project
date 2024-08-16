@@ -132,4 +132,31 @@ public class EventService {
     public Event getEventById(Long id) {
         return eventMapper.getEventById(id);
     }
+
+    public boolean hasAlreadySubscribed(Long eventId, Long volunteerId) {
+        return eventRegistrationsMapper.countByEventIdAndVolunteerId(eventId, volunteerId) > 0;
+    }
+
+    public void subscribeForEvent(EventRegistrations eventRegistration) {
+        if (!hasAlreadySubscribed(eventRegistration.getEventId(), eventRegistration.getVolunteerId())) {
+            eventRegistrationsMapper.saveEventRegistration(eventRegistration);
+        } else {
+            throw new IllegalStateException("User has already subscribed to this event");
+        }
+    }
+
+    public List<Event> getSubscribedEventsByVolunteerId(Long volunteerId) {
+        List<EventRegistrations> registrations = eventRegistrationsMapper.findByVolunteerIdAndStatus(volunteerId, "subscribed");
+        List<Event> subscribedEvents = new ArrayList<>();
+
+        for (EventRegistrations registration : registrations) {
+            Event event = eventMapper.getEventById(registration.getEventId());
+            if (event != null) {
+                subscribedEvents.add(event);
+            }
+        }
+
+        return subscribedEvents;
+    }
+
 }

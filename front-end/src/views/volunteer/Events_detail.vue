@@ -34,8 +34,18 @@
     <div class="description-role">
       <h3>{{ $t('home.volunteerInfoTitle') }}</h3>
       <div class="section-content">
-        <p>{{ event.description }}</p> <!-- 修改为 description -->
+        <p>{{ event.description }}</p>
       </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <el-button type="primary" class="styled-button">
+        Apply to be a volunteer
+      </el-button>
+      <el-button type="success" class="styled-button" @click="subscribeToEvent">
+        Subscribe This Event
+      </el-button>
     </div>
   </div>
   <div v-else>
@@ -44,55 +54,89 @@
 </template>
 
 <script lang="ts">
-import { ElIcon, ElMessage } from "element-plus";
+import { ElIcon, ElButton, ElMessage } from "element-plus";
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import api from '../../api/api';
+import useUser from '../../store/user';
 
 export default {
   name: 'EventDetail',
   components: {
     ElIcon,
+    ElButton,
   },
   setup() {
     const route = useRoute();
     const event = ref(null);
     const { t } = useI18n();
+    const userStore = useUser();
 
     const introSections = ref([
       {
         icon: 'el-icon-service',
         component: 'Service',
         title: 'SUPPORT',
-        text: t('home.projectIntro.supportText'),
       },
       {
         icon: 'el-icon-user',
         component: 'User',
         title: 'ROLE',
-        text: t('home.projectIntro.roleText'),
       },
       {
         icon: 'el-icon-star',
         component: 'Star',
         title: 'OPPORTUNITY',
-        text: t('home.projectIntro.opportunityText'),
       },
     ]);
 
     const loadEvent = async () => {
       const eventId = route.params.id;
       if (eventId) {
-        const response = await api.getEventById({ id: eventId })
-            .catch(error => {
-              ElMessage.error(error.message);
-            });
+        const response = await api.getEventById({ id: eventId }).catch(error => {
+          console.error(error.message);
+        });
         if (response) {
-          event.value = response; // 确保你从API得到的数据结构正确
+          event.value = response;
         }
       } else {
-        ElMessage.error('Event ID is not provided');
+        console.error('Event ID is not provided');
+      }
+    };
+
+    const subscribeToEvent = async () => {
+      try {
+        const loginId = userStore.user.loginId;
+        if (!loginId) {
+          ElMessage.error('Please log in to subscribe to this event');
+          return;
+        }
+
+        const eventId = event.value?.id;
+        if (!eventId) {
+          ElMessage.error('Event ID is missing');
+          return;
+        }
+
+        // 调用API来插入数据
+        const response = await api.subscribeForEvent({
+          eventId: eventId,
+          volunteerId: loginId,
+          roleId: 1,  // 默认设置roleId为1
+          status: 'subscribed',
+        });
+
+        if (response.success) {
+          ElMessage.success('Successfully subscribed to the event');
+        } else if (response.message.includes("already subscribed")) {
+          ElMessage.warning('You have already subscribed to this event');
+        } else {
+          throw new Error(response.message || 'Failed to subscribe to the event');
+        }
+      } catch (error) {
+        console.error('Error subscribing to event:', error);
+        ElMessage.error('Failed to subscribe to the event');
       }
     };
 
@@ -103,6 +147,7 @@ export default {
     return {
       event,
       introSections,
+      subscribeToEvent,
       t,
     };
   },
@@ -166,6 +211,7 @@ export default {
 
       .text-content {
         padding-bottom: 20px;
+        text-align: center;
       }
     }
   }
@@ -226,6 +272,31 @@ export default {
       padding: 20px;
       font-size: 1rem;
       color: #666;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    border-top: 2px solid #ececec;
+    margin-top: 20px;
+
+    .el-button.styled-button {
+      width: 45%;
+      height: 100px;
+      font-size: 1rem;
+      background-color: #a9181a;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      outline: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken(#a9181a, 10%);
+      }
     }
   }
 }

@@ -17,4 +17,7 @@ public interface OrganizerMapper {
 
 //    @Select("SELECT * FROM organizers LIMIT #{offset}, #{pageSize}")
     List<Organizer> getOrganizersByPage(@Param("offset") int offset, @Param("pageSize") int pageSize);
+
+    @Select("SELECT * FROM organizer WHERE id = #{organizerId}")
+    Organizer getOrganizersById(Long organizerId);
 }
