@@ -10,5 +10,7 @@ public class UpdateStatusRequest implements Serializable {
 
     private Long id;
     private String status;
+    private String email;
 
+    private Long eventId;
 }

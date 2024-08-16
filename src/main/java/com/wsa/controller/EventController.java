@@ -145,7 +145,7 @@ public class EventController {
     @PostMapping("/updateVolunteerStatus")
     public ResultVO<String> updateVolunteerStatus(@RequestBody UpdateStatusRequest request) {
         try {
-            eventService.updateVolunteerStatus(request.getId(), request.getStatus());
+            eventService.updateVolunteerStatus(request.getId(), request.getEmail(),request.getEventId(),request.getStatus());
             return ResultVO.success("Status updated successfully");
         } catch (Exception e) {
             return ResultVO.failure("Failed to update status");

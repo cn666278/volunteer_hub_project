@@ -169,9 +169,15 @@ public class UserService {
         return userMapper.findVolunteerInfoByVolunteerId(volunteerId);
     }
 
+    public void addVolunteerInfo(VolunteerInfo volunteerInfo) {
+        userMapper.addVolunteerInfo(volunteerInfo);
+    }
 
     public void updateLoginTime(JwtRequest authenticationRequest) {
         userMapper.updateLoginTime(authenticationRequest.getUsername());
     }
 
+    public User getUserByEmail(String to) {
+        return userMapper.getUserByEmail(to);
+    }
 }

@@ -11,6 +11,20 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/, file:///D:/uploads/
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: 13253348930@163.com
+    password: OVWYXNHXIPLKVTPG
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
 mybatis:
   type-aliases-package: com.wsa.model
   mapper-locations: classpath:mybatis/mapper/*.xml

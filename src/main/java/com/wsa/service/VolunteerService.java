@@ -25,5 +25,9 @@ public class VolunteerService {
     public void submitComment(SubmitCommentRequest request) {
         volunteerMapper.insertVolunteerRating(request);
     }
+
+    public Volunteer getVolunteerByUserId(Long userId) {
+        return volunteerMapper.getVolunteerByUserId(userId);
+    }
 }
 
