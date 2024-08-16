@@ -60,8 +60,9 @@
           </div>
         </div>
       </el-card>
-      <el-card shadow="hover" style="margin-top: 20px" height="450px">
-        <el-table :data="tableData">
+      <!-- 固定高度的卡片，添加滚动条 -->
+      <el-card shadow="hover" style="margin-top: 20px; height: 490px;">
+        <el-table :data="tableData" style="width: 100%;" height="450px">
           <el-table-column
             v-for="(val, key) in tableLable"
             :key="key"
@@ -89,9 +90,9 @@
           </div>
         </el-card>
       </div>
-      <el-card style="height: 300px">
+      <el-card style="height: 230px">
         <p>{{ $t('home.registerUser') }}</p>
-        <div ref="echart" style="height: 280px"></div>
+        <div ref="echart" style="height: 250px; margin-top: -30px;"></div>
       </el-card>
       <div class="graph">
         <el-card style="height: 300px">
@@ -100,7 +101,7 @@
         </el-card>
         <el-card style="height: 300px">
           <p>{{ $t('home.organizerData.title') }}</p>
-          <div ref="organizerData" style="height: 240px"></div>
+          <div ref="organizerData" style="height: 190px"></div>
         </el-card>
       </div>
     </el-col>
@@ -146,15 +147,22 @@ const tableLable = {
 
 // 获取Event表格数据
 const getTableList = async () => {
-  //let res = await proxy.$api.getTableData();
-  let res = await proxy.$api.getEventStatus();
-  console.log("EventStatus:", res);
-  tableData.value = res;
+  try {
+    let res = await proxy.$api.getEventStatus();
+    console.log("EventStatus:", res);
+    tableData.value = res;
+  } catch (error) {
+    console.error("Error fetching table data:", error);
+  }
 };
 // 获取首页count统计数据
 const getCountData = async () => {
-  let res = await proxy.$api.getCountData();
-  countData.value = res;
+  try {
+    let res = await proxy.$api.getCountData();
+    countData.value = res;
+  } catch (error) {
+    console.error("Error fetching count data:", error);
+  }
 };
 // 关于echarts的渲染部分，可以参考echarts官网的文档
 let xOptions = reactive({
@@ -195,6 +203,7 @@ let xOptions = reactive({
   color: ["#2ec7c9", "#b6a2de", "#5ab1ef", "#ffb980", "#d87a80", "#8d98b3"],
   series: [],
 });
+
 let pieOptions = reactive({
   tooltip: {
     trigger: "item",
@@ -210,15 +219,17 @@ let pieOptions = reactive({
   ],
   series: [],
 });
-// order data, user data, video data
+// order data, user data, organizer data
 let orderData = reactive({
   xData: [],
   series: [],
 });
+
 let userData = reactive({
   xData: [],
   series: [],
 });
+
 let organizerData = reactive({
   series: [],
 });
@@ -229,6 +240,7 @@ const getEchartData = async () => {
   let res = result.orderData;
   let userRes = result.userData;
   let organizerRes = result.organizerData;
+
   orderData.xData = res.date;
   const keyArray = Object.keys(res.data[0]);
   const series = [];
@@ -239,11 +251,11 @@ const getEchartData = async () => {
       type: "line",
     });
   });
+
   orderData.series = series;
   xOptions.xAxis.data = orderData.xData;
   xOptions.series = orderData.series;
-  // 渲染echarts: orderData
-  let hEcharts = echarts.init(proxy.$refs["echart"]); // 获取dom节点 ref="echart"
+  let hEcharts = echarts.init(proxy.$refs["echart"]);
   hEcharts.setOption(xOptions);
 
   // 渲染柱状图: userData
@@ -262,7 +274,7 @@ const getEchartData = async () => {
   ];
   xOptions.xAxis.data = userData.xData;
   xOptions.series = userData.series;
-  let userEcharts = echarts.init(proxy.$refs["userEchart"]); // 获取dom节点 ref="userEchart"
+  let userEcharts = echarts.init(proxy.$refs["userEchart"]);
   userEcharts.setOption(xOptions);
 
   // 渲染饼图: organizerData
@@ -273,7 +285,7 @@ const getEchartData = async () => {
     },
   ];
   pieOptions.series = organizerData.series;
-  let organizerEcharts = echarts.init(proxy.$refs["organizerData"]); // 获取dom节点 ref="videoEchart"
+  let organizerEcharts = echarts.init(proxy.$refs["organizerData"]);
   organizerEcharts.setOption(pieOptions);
 };
 
@@ -289,9 +301,6 @@ onMounted(() => {
   .user {
     display: flex;
     align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
 
     img {
       width: 70px;
@@ -308,32 +317,37 @@ onMounted(() => {
 
     .el-card {
       width: 32%;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%; /* 设置卡片高度自动撑满父容器 */
     }
 
     .icons {
       width: 50px;
       height: 50px;
-      font-size: 30px;
+      font-size: 20px;
       text-align: center;
       line-height: 50px;
       color: #fff;
+      flex-shrink: 0; /* 固定大小 */
     }
 
     .details {
       margin-left: 8px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-around; /* 让元素在父容器内均匀分布 */
+      flex-grow: 1; /* 让details占满剩余空间 */
 
       .num {
-        font-size: 20px;
+        font-size: 16px;
         // margin-bottom: 10px;
       }
 
       .text {
         font-size: 13px;
-        // text-align: center;
         color: #999;
       }
     }
@@ -349,8 +363,6 @@ onMounted(() => {
     }
   }
 }
-
-.el-table .cell {
-  padding: 0 3px;
-}
 </style>
+
+

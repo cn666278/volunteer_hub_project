@@ -130,7 +130,7 @@
   <style lang="scss">
   .index {
     width: 100vw; // 100% of the viewport width
-    height: 100vh;
+    height: 100vh; // 100% of the viewport height
     display: flex;
     .left {
       width: 200px;
