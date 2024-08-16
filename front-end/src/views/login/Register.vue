@@ -134,13 +134,21 @@ const submitForm = (formRef: FormInstance | undefined) => {
     formRef.validate(async (valid) => {
         if (valid) {
             try {
+              const payload = {
+                email: formData.email,
+                password: formData.password,
+                roleId: formData.role,
+                username: formData.username,
+              };
+              console.log("submitForm payload:", payload)
                 // 提交注册请求
-                const res = await proxy.$api.register(formData);
-                if (res) {
+                const res = await proxy.$api.addUser(payload);
+              console.log("addUser res:", res)
+              if (res) {
                     resetForm(formRef); // 注册成功后，重置表单
                     ElNotification({
                         title: proxy.$t('notification.title'),
-                        message: res.message,
+                        message: res,
                         type: "success",
                     });
                 } else {

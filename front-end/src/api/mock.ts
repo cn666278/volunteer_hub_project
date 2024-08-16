@@ -12,9 +12,9 @@ Mock.mock('/home/getData', homeApi.getHomeData)
 // user
 Mock.mock(/\/admin\/user\/getUserList/, 'get', userApi.getUserList)
 Mock.mock(/\/admin\/user\/getUserById/, 'post', userApi.getUserById)
-Mock.mock(/\/admin\/user\/addUser/, 'post', userApi.addUser)
-Mock.mock(/\/admin\/user\/updateUser/, 'post', userApi.updateUser)
-Mock.mock(/\/admin\/user\/deleteUser/, 'post', userApi.deleteUser)
+// Mock.mock(/\/admin\/user\/addUser/, 'post', userApi.addUser)
+// Mock.mock(/\/admin\/user\/updateUser/, 'post', userApi.updateUser)
+// Mock.mock(/\/admin\/user\/deleteUser/, 'post', userApi.deleteUser)
 // role
 Mock.mock(/\/admin\/role\/getRoleList/, 'get', roleApi.getRoleList)
 Mock.mock(/\/admin\/role\/getSingleRole/, 'get', roleApi.getSingleRole)

@@ -42,8 +42,10 @@ public interface UserMapper {
     @Select("SELECT * FROM volunteerinfo WHERE volunteerId = #{volunteerId}")
     List<VolunteerInfo> findVolunteerInfoByVolunteerId(@Param("volunteerId") Long volunteerId);
 
-
+    void addVolunteerInfo(VolunteerInfo volunteerInfo);
 
     void updateLoginTime(String username);
+    @Select("SELECT * FROM users WHERE email = #{to}")
+    User getUserByEmail(String to);
 }
 

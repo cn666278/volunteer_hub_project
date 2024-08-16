@@ -121,7 +121,7 @@ public class EventService {
         }
     }
 
-    public void updateVolunteerStatus(Long id, String status) {
+    public void updateVolunteerStatus(Long id, String email,Long eventId,String status) {
         eventRegistrationsMapper.updateStatusById(id, status);
     }
 

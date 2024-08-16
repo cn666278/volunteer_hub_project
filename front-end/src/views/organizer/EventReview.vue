@@ -2,12 +2,14 @@
   <div>
     <el-table :data="volunteers" stripe>
       <el-table-column prop="username" label="Username"></el-table-column>
-<!--      <el-table-column label="Contact">-->
-<!--        <template v-slot="scope">-->
-<!--          <div>{{ scope.row.phone }}</div>-->
-<!--          <div>{{ scope.row.email }}</div>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <div style="display: none">
+        <el-table-column label="Contact">
+          <template v-slot="scope">
+            <div>{{ scope.row.phone }}</div>
+            <div>{{ scope.row.email }}</div>
+          </template>
+        </el-table-column>
+      </div>
       <el-table-column prop="experience" label="Experience"></el-table-column>
       <el-table-column prop="eventCount" label="Event Count"></el-table-column>
       <el-table-column prop="roleName" label="Role"></el-table-column>
@@ -22,8 +24,8 @@
       </el-table-column>
       <el-table-column label="Actions">
         <template v-slot="scope">
-          <el-button @click="acceptVolunteer(scope.row.id)">Accept</el-button>
-          <el-button @click="rejectVolunteer(scope.row.id)">Reject</el-button>
+          <el-button @click="acceptVolunteer(scope.row.id,scope.row.email)">Accept</el-button>
+          <el-button @click="rejectVolunteer(scope.row.id,scope.row.email)">Reject</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,19 +100,20 @@ const handlePageChange = (page) => {
   fetchVolunteers();
 };
 
-const acceptVolunteer = async (id) => {
-  await updateVolunteerStatus(id, 'accepted');
+const acceptVolunteer = async (id,email) => {
+  await updateVolunteerStatus(id,email, 'accepted');
   fetchVolunteers();
 };
 
-const rejectVolunteer = async (id) => {
-  await updateVolunteerStatus(id, 'rejected');
+const rejectVolunteer = async (id,email) => {
+  await updateVolunteerStatus(id,email, 'rejected');
   fetchVolunteers();
 };
 
-const updateVolunteerStatus = async (id, status) => {
+const updateVolunteerStatus = async (id, email,status) => {
   try {
-    await proxy.$api.updateVolunteerStatus({ id, status });
+    let eventId = event.eventId;
+    await proxy.$api.updateVolunteerStatus({ id, email,eventId,status });
     ElMessage.success(`Volunteer has been ${status}.`);
   } catch (error) {
     ElMessage.error('Failed to update volunteer status.');
