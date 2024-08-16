@@ -107,6 +107,7 @@
   </el-row>
 </template>
 
+
 <script setup>
 import { onMounted, ref, getCurrentInstance, reactive, computed } from "vue";
 import useUser from "../../store/user.ts";
@@ -123,16 +124,16 @@ let countData = ref({});
 
 // 格式化最后登录时间
 const formattedLastLoginTime = computed(() => {
-    const date = new Date(userStore.user.lastLoginTime);
-    const options = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-    };
-    return date.toLocaleDateString('en-GB', options);
+  const date = new Date(userStore.user.lastLoginTime);
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+  return date.toLocaleDateString('en-GB', options);
 });
 
 // Event数据的表头
@@ -145,7 +146,9 @@ const tableLable = {
 
 // 获取Event表格数据
 const getTableList = async () => {
-  let res = await proxy.$api.getTableData();
+  //let res = await proxy.$api.getTableData();
+  let res = await proxy.$api.getEventStatus();
+  console.log("EventStatus:", res);
   tableData.value = res;
 };
 // 获取首页count统计数据
@@ -216,7 +219,7 @@ let userData = reactive({
   xData: [],
   series: [],
 });
-let videoData = reactive({
+let organizerData = reactive({
   series: [],
 });
 
@@ -225,7 +228,7 @@ const getEchartData = async () => {
   let result = await proxy.$api.getEchartData();
   let res = result.orderData;
   let userRes = result.userData;
-  let videoRes = result.videoData;
+  let organizerRes = result.organizerData;
   orderData.xData = res.date;
   const keyArray = Object.keys(res.data[0]);
   const series = [];
@@ -262,14 +265,14 @@ const getEchartData = async () => {
   let userEcharts = echarts.init(proxy.$refs["userEchart"]); // 获取dom节点 ref="userEchart"
   userEcharts.setOption(xOptions);
 
-  // 渲染饼图: videoData
-  videoData.series = [
+  // 渲染饼图: organizerData
+  organizerData.series = [
     {
-      data: videoRes,
+      data: organizerRes,
       type: "pie",
     },
   ];
-  pieOptions.series = videoData.series;
+  pieOptions.series = organizerData.series;
   let organizerEcharts = echarts.init(proxy.$refs["organizerData"]); // 获取dom节点 ref="videoEchart"
   organizerEcharts.setOption(pieOptions);
 };
@@ -289,6 +292,7 @@ onMounted(() => {
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
+
     img {
       width: 70px;
       height: 70px;
@@ -296,14 +300,17 @@ onMounted(() => {
       margin-right: 20px;
     }
   }
+
   .num {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
     .el-card {
       width: 32%;
       margin-bottom: 20px;
     }
+
     .icons {
       width: 80px;
       height: 80px;
@@ -312,15 +319,18 @@ onMounted(() => {
       line-height: 80px;
       color: #fff;
     }
+
     .details {
       margin-left: 8px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+
       .num {
         font-size: 20px;
         margin-bottom: 10px;
       }
+
       .text {
         font-size: 13px;
         // text-align: center;
@@ -328,10 +338,12 @@ onMounted(() => {
       }
     }
   }
+
   .graph {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+
     .el-card {
       width: 48%;
     }
