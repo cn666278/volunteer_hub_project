@@ -3,12 +3,13 @@ import localeAdminEventApprove from '../views/admin/approve/locales/zh'
 import localeAdminUser from '../views/admin/user/locales/zh'
 import localeAdminEditComponent from '../components/user/locales/zh'
 import localeVolunteerHome from '../views/volunteer/locales/zh'
+
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
-    chinese: 'Chinese',
-    english: 'English',
-    welsh: 'Welsh'
+    chinese: '中文',
+    english: '英文',
+    welsh: '威尔士语'
   },
   header: {
     actions: {
@@ -46,6 +47,20 @@ const zh = {
     usernameRequired: '请输入用户名',
     passwordRequired: '请输入密码'
   },
+  register: {
+    title: '注册',
+    username: '用户名',
+    password: '密码',
+    email: '邮箱',
+    role: '角色',
+    register: '注册',
+    reset: '重置',
+    usernameRequired: '请输入用户名',
+    passwordRequired: '请输入密码',
+    emailRequired: '请输入邮箱地址',
+    emailInvalid: '请输入有效的邮箱地址',
+    roleRequired: '请选择一个角色'
+  },
   banner: {
     slogan1: '欢迎来到WSA志愿者中心',
     subSlogan1: '你好',
@@ -55,7 +70,8 @@ const zh = {
     subSlogan3: '你可以有所作为'
   },
   notification: {
-    title: '通知'
+    title: '通知',
+    registrationFailed: '注册失败'
   },
   logout: {
     title: '系统通知',
@@ -69,4 +85,5 @@ const zh = {
   ...localeAdminEditComponent,
   ...localeVolunteerHome,
 }
+
 export { zh }

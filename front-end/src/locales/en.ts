@@ -3,6 +3,7 @@ import localeAdminEventApprove from '../views/admin/approve/locales/en'
 import localeAdminUser from '../views/admin/user/locales/en'
 import localeAdminEditComponent from '../components/user/locales/en'
 import localeVolunteerHome from '../views/volunteer/locales/en'
+
 const en = {
   appName: 'WSA Volunteer Hub',
   language: {
@@ -46,6 +47,20 @@ const en = {
     usernameRequired: 'Please enter the username',
     passwordRequired: 'Please enter the password'
   },
+  register: {
+    title: 'Registration',
+    username: 'Username',
+    password: 'Password',
+    email: 'Email',
+    role: 'Role',
+    register: 'Register',
+    reset: 'Reset',
+    usernameRequired: 'Please enter the username',
+    passwordRequired: 'Please enter the password',
+    emailRequired: 'Please enter the email address',
+    emailInvalid: 'Please enter a valid email address',
+    roleRequired: 'Please select a role'
+  },
   banner: {
     slogan1: 'Welcome to WSA Volunteer Hub',
     subSlogan1: 'hello',
@@ -55,7 +70,8 @@ const en = {
     subSlogan3: 'you can make a difference'
   },
   notification: {
-    title: 'Notification'
+    title: 'Notification',
+    registrationFailed: 'Registration failed'
   },
   logout: {
     title: 'System Notification',
@@ -69,4 +85,5 @@ const en = {
   ...localeAdminEditComponent,
   ...localeVolunteerHome,
 }
+
 export { en }
