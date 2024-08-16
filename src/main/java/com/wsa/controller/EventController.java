@@ -47,7 +47,6 @@ public class EventController {
         }
     }
 
-
     @GetMapping("/getEventsByDate")
     public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
         List<Event> eventsByMonth = eventService.getEventsByMonth(month, year);
@@ -94,17 +93,20 @@ public class EventController {
         eventService.registerEvent(eventRequest);
         return ResultVO.success("success");
     }
+
     @PostMapping("/getEventById")
     public ResultVO<Event> getEventById(@RequestBody EventRequest eventRequest) {
         Event event = eventService.getEventById(eventRequest.getEventId());
         return ResultVO.success(event);
     }
+
     @PostMapping("/getEventsByOrganizerIdAndFilters")
     public ResultVO<PageInfo<EventRequest>> getEventsByOrganizerIdAndFilters(@RequestBody EventReqByOrganizerId eventRequest) {
         PageInfo<Event> events = eventService.getEventsByOrganizerIdAndFilters(eventRequest);
         PageInfo<EventRequest> eventRequestPageInfo = convertPageInfo(events);
         return ResultVO.success(eventRequestPageInfo);
     }
+
     public PageInfo<EventRequest> convertPageInfo(PageInfo<Event> eventsPage) {
         List<EventRequest> eventRequests = eventsPage.getList().stream()
                 .map(event -> convertEventToEventRequest(event))
@@ -186,5 +188,12 @@ public class EventController {
         } catch (Exception e) {
             return ResultVO.failure("Failed to fetch event details");
         }
+    }
+
+    // 获取事件统计数据的接口
+    @GetMapping("/getEventStats")
+    public ResultVO<List<EventDataRes>> getEventStats() {
+        List<EventDataRes> stats = eventService.getEventStats();
+        return ResultVO.success(stats);
     }
 }
