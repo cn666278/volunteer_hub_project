@@ -312,7 +312,7 @@ CREATE TABLE `users`  (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `enabled` tinyint(1) DEFAULT 1,
-  `lastLoginTime` timestamp(0) DEFAULT NULL,
+  `lastLoginTime` timestamp(0),
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -360,7 +360,7 @@ CREATE TABLE `volunteerinfo`  (
   `volunteerId` int(11) DEFAULT NULL,
   `InfoTitle` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `eventId` int(11) DEFAULT NULL,
-  `SendTime` timestamp(0) DEFAULT NULL,
+  `SendTime` timestamp(0),
   `InfoBody` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`InformationId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
