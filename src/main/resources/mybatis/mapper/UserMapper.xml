@@ -45,6 +45,11 @@
         VALUES
             (#{loginId}, #{username}, #{password}, #{phone}, #{email}, #{phone})
     </insert>
+    <insert id="addVolunteerInfo">
+        INSERT INTO volunteerInfo (volunteerId, InfoTitle, eventId, SendTime, InfoBody)
+        VALUES
+            (#{volunteerId}, #{infoTitle}, #{eventId}, #{sendTime}, #{infoBody})
+    </insert>
 
     <update id="updateUserProfile" parameterType="com.wsa.model.User">
         UPDATE users
