@@ -53,9 +53,16 @@ const handleCurrentChange = (val: number) => {
 // load role list
 const getRoleList = async () => {
   console.log(t('role.loadRoleList'));
-  roleList.value = await proxy.$api.getRoleList();
-  isUpdate.value = !isUpdate.value; // update role list
+  // 从后端获取角色列表
+  let res = await proxy.$api.getRoleList();
+  // 对角色列表根据 roleId 进行排序
+  res.sort((a: { roleId: number; }, b: { roleId: number; }) => a.roleId - b.roleId);
+  // 将排序后的列表赋值给 roleList
+  roleList.value = res;
+  // 触发更新
+  isUpdate.value = !isUpdate.value;
 };
+
 // edit role
 const handleEdit = async (roleId: number) => {
   const role = roleList.value.find((role: any) => role.roleId === roleId);
@@ -77,7 +84,7 @@ const handleDelete = (row: any) => {
       if (res) {
         ElNotification({
           title: t('role.notification'),
-          message: res.message,
+          message: res,
           type: 'success',
         });
         // delete successfully, reload role list
@@ -86,7 +93,7 @@ const handleDelete = (row: any) => {
       } else {
         ElNotification({
           title: t('role.notification'),
-          message: res.message,
+          message: res,
           type: 'error',
         });
       }

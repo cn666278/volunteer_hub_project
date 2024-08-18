@@ -27,10 +27,10 @@ public class UserService {
     public List<UserInfo> getAllUsers() {
         List<UserInfo> userInfos = new ArrayList<>();
         List<User> users = userMapper.selectAllUsers();
-        UserInfo userInfo = new UserInfo();
         if(users != null){
             for (User user:users
                  ) {
+                UserInfo userInfo = new UserInfo();
                 userInfo.setUsername(user.getUsername());
                 userInfo.setId(user.getId());
                 userInfo.setLoginId(user.getLoginId());
@@ -54,7 +54,7 @@ public class UserService {
             Authority authority = authoritiesByUserId.get(0);
             UserInfo.Role role = new UserInfo.Role();
             role.setRoleName(authority.getAuthority());
-            role.setRoleId(String.valueOf(authority.getId()));
+            role.setRoleId(String.valueOf(authority.getRoleId()));
             userInfo.setRole(role);
         }
     }
@@ -115,17 +115,16 @@ public class UserService {
         User user = new User();
         user.setLoginId(request.getLoginId());
         user.setUsername(request.getUsername());
-        user.setPassword(PasswordUtils.generateBCryptPassword(request.getPassword()));
         user.setPhoto(request.getPhoto());
         user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());
         user.setId(request.getId());
         userMapper.updateUser(user);
         Authority authority = new Authority();
-        authority.setRoleId(request.getRoleId());
+        authority.setRoleId(request.getRoleName());
         authority.setUserId(request.getId());
         authority.setUsername(request.getUsername());
-        Role role = roleMapper.selectRoleById(request.getRoleId());
+        Role role = roleMapper.selectRoleById(request.getRoleName());
         authority.setAuthority(role.getRoleName());
         authorityMapper.updateAuthority(authority);
     }
