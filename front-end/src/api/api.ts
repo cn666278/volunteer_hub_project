@@ -32,9 +32,9 @@ export default {
   },
   getEchartData() {
     return request({
-      url: "/admin/home/getEchartData",
+      url: "/admin/getEchartData",
       method: "get",
-      mock: true,
+      mock: false,
     });
   },
   getEventStatus(){
