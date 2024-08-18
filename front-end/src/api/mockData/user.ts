@@ -99,90 +99,90 @@ export default {
   },
 
   // Add user
-  // addUser: (params: any) => {
-  //   let { id, role, roleId } = JSON.parse(params.body);
-  //   // add id, avoid duplicate id
-  //   id = mockData.data[mockData.data.length - 1].id + 1;
-  //   // md5 password
-  //   // params.password = md5(
-  //   //   md5(params.password, 32).split("").reverse().join(""),
-  //   //   32
-  //   // );
-  //   // check if roleName
-  //   if (roleId == 1) {
-  //     role = { roleId: 1, roleName: "admin" };
-  //   } else if (roleId == 2) {
-  //     role = { roleId: 2, roleName: "organizer" };
-  //   } else {
-  //     role = { roleId: 3, roleName: "volunteer" };
-  //   }
-  //
-  //   mockData.data.push({
-  //     id: id,
-  //     role: role,
-  //     ...JSON.parse(params.body),
-  //   });
-  //   return {
-  //     code: 200,
-  //     data: {
-  //       message: "Add user successfully",
-  //     },
-  //   };
-  // },
+  addUser: (params: any) => {
+    let { id, role, roleId } = JSON.parse(params.body);
+    // add id, avoid duplicate id
+    id = mockData.data[mockData.data.length - 1].id + 1;
+    // md5 password
+    // params.password = md5(
+    //   md5(params.password, 32).split("").reverse().join(""),
+    //   32
+    // );
+    // check if roleName
+    if (roleId == 1) {
+      role = { roleId: 1, roleName: "admin" };
+    } else if (roleId == 2) {
+      role = { roleId: 2, roleName: "organizer" };
+    } else {
+      role = { roleId: 3, roleName: "volunteer" };
+    }
+  
+    mockData.data.push({
+      id: id,
+      role: role,
+      ...JSON.parse(params.body),
+    });
+    return {
+      code: 200,
+      data: {
+        message: "Add user successfully",
+      },
+    };
+  },
 
   /**
    * Edit user
    * @param id, username, phone, email, photo, roleId
    * @return {{code: number, data: {message: string}}}
    */
-  // updateUser: (params: any) => {
-  //   const { id, username, phone, email, photo, roleId } = JSON.parse(
-  //     params.body
-  //   );
-  //   //check roleName
-  //   let roleName = "";
-  //   if (roleId == 1) {
-  //     roleName = "admin";
-  //   } else if (roleId == 2) {
-  //     roleName = "organizer";
-  //   } else {
-  //     roleName = "volunteer";
-  //   }
-  //   mockData.data = mockData.data.map((user) => {
-  //     if (user.id === id) {
-  //       return {
-  //         ...user,
-  //         username,
-  //         phone,
-  //         email,
-  //         photo,
-  //         roleId,
-  //         role: { roleId, roleName },
-  //       };
-  //     }
-  //     return user;
-  //   });
-  //   return {
-  //     code: 200,
-  //     data: {
-  //       message: "Edit user successfully",
-  //     },
-  //   };
-  // },
+  updateUser: (params: any) => {
+    const { id, username, phone, email, photo, roleId } = JSON.parse(
+      params.body
+    );
+    //check roleName
+    let roleName = "";
+    if (roleId == 1) {
+      roleName = "admin";
+    } else if (roleId == 2) {
+      roleName = "organizer";
+    } else {
+      roleName = "volunteer";
+    }
+    mockData.data = mockData.data.map((user) => {
+      if (user.id === id) {
+        return {
+          ...user,
+          username,
+          phone,
+          email,
+          photo,
+          roleId,
+          role: { roleId, roleName },
+        };
+      }
+      return user;
+    });
+    return {
+      code: 200,
+      data: {
+        message: "Edit user successfully",
+      },
+    };
+  },
 
   /**
    * Delete user
    * @param id
    * @return {{code: number, data: {message: string}}}
    */
-  // deleteUser: (params: any) => {
-  //   const { id } = JSON.parse(params.body);
-  //   mockData.data = mockData.data.filter((user) => user.id !== id);
-  //   return {
-  //     code: 200,
-  //     data: {
-  //       message: "Delete user successfully",
-  //     },
-  //   };
-  // },
+  deleteUser: (params: any) => {
+    const { id } = JSON.parse(params.body);
+    mockData.data = mockData.data.filter((user) => user.id !== id);
+    return {
+      code: 200,
+      data: {
+        message: "Delete user successfully",
+      },
+    };
+  },
 };
