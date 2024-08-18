@@ -17,6 +17,8 @@ public class User implements Serializable {
     private String phone;
     private boolean enabled;
     private Timestamp lastLoginTime;
+
+    private Timestamp registerTime;
     public Long getId() {
         return id;
     }
