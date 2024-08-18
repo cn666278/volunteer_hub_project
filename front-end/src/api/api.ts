@@ -358,6 +358,15 @@ export default {
     });
   },
 
+  registerForEvent(params: any) {
+    return request({
+      url: "/event/registerForEvent",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+
   // navigateToEvent(params: any) {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },

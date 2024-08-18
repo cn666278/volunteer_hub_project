@@ -1,8 +1,10 @@
 package com.wsa.mapper;
 
 import com.wsa.model.Event;
+import com.wsa.model.EventRegistrations;
 import com.wsa.model.EventReqByOrganizerId;
 import com.wsa.model.EventRequest;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -37,6 +39,16 @@ public interface EventMapper {
     EventRequest getEventDetailById(Long id);
 
     void editEventById(Event event);
+
+    // 插入注册信息到 eventregistrations 表
+    @Insert("INSERT INTO eventregistrations (eventId, volunteerId, roleId, status) " +
+            "VALUES (#{eventId}, #{volunteerId}, #{roleId}, #{status})")
+    void saveEventRegistration(EventRegistrations eventRegistration);
+
+    // 检查某个志愿者是否已经为某个事件注册
+    @Select("SELECT COUNT(*) FROM eventregistrations WHERE eventId = #{eventId} AND volunteerId = #{volunteerId}")
+    int countByEventIdAndVolunteerId(@Param("eventId") Long eventId, @Param("volunteerId") Long volunteerId);
+
 
 
 
