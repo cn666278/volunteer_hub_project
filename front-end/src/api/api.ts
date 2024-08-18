@@ -367,6 +367,15 @@ export default {
     });
   },
 
+  getParticipatedEvents(params: any) {
+    return request({
+      url: "/event/getParticipatedEvents",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+
   // navigateToEvent(params: any) {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },

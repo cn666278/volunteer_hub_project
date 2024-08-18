@@ -198,5 +198,9 @@ public class EventService {
         }
     }
 
+    public List<Event> getParticipatedEventsByVolunteerId(Long volunteerId) {
+        return eventMapper.findParticipatedEventsByVolunteerId(volunteerId);
+    }
+
 
 }

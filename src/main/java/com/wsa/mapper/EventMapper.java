@@ -49,6 +49,12 @@ public interface EventMapper {
     @Select("SELECT COUNT(*) FROM eventregistrations WHERE eventId = #{eventId} AND volunteerId = #{volunteerId}")
     int countByEventIdAndVolunteerId(@Param("eventId") Long eventId, @Param("volunteerId") Long volunteerId);
 
+    @Select("SELECT e.id,e.organizerId,e.title,e.description,e.location,e.startDate,e.endDate,e.pointsAwarded,e.eventPic, er.status FROM events e " +
+            "JOIN eventregistrations er ON e.id = er.eventId " +
+            "WHERE er.volunteerId = #{volunteerId} AND er.status IN ('pending', 'accepted')")
+    List<Event> findParticipatedEventsByVolunteerId(@Param("volunteerId") Long volunteerId);
+
+
 
 
 
