@@ -23,7 +23,7 @@
       <!-- Events Participated Section -->
       <div class="blog-section" v-if="activeIndex === '2'">
         <div class="blog-display">
-          <el-card v-for="post in ongoingEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
+          <el-card v-for="post in participatedEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
             <img :src="post.image" alt="Blog Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
@@ -38,6 +38,9 @@
               </div>
               <h5>{{ post.title }}</h5>
               <p>{{ post.description }}</p>
+              <div class="status-box" :class="{'status-pending': post.status === 'pending', 'status-accepted': post.status === 'accepted'}">
+                {{ post.status }}
+              </div>
             </div>
           </el-card>
         </div>
@@ -60,6 +63,9 @@
               </div>
               <h5>{{ post.title }}</h5>
               <p>{{ post.description }}</p>
+              <div class="status-box" :class="{'status-pending': post.status === 'pending', 'status-accepted': post.status === 'accepted'}">
+                {{ post.status }}
+              </div>
             </div>
           </el-card>
         </div>
@@ -67,7 +73,6 @@
     </div>
   </div>
 </template>
-
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
@@ -80,41 +85,63 @@ const searchQuery = ref('');
 
 const userStore = useUser();
 const subscribedEvents = ref([]); // 保存已订阅活动的列表
+const participatedEvents = ref([]); // 保存用户参与的活动列表
 
-const ongoingEvents = ref([
-  // Ongoing event data...
-]);
-
+// 获取用户订阅的活动
 const fetchSubscribedEvents = async () => {
   try {
     const volunteerId = userStore.user.loginId;
     const response = await api.getSubscribedEvents({ volunteerId });
     subscribedEvents.value = response.map(event => ({
       id: event.id,
-      image: event.eventPic, // 确保 eventPic 是正确的字段名
+      image: event.eventPic,
       title: event.title,
-      date: event.startDate, // 确保 startDate 是正确的字段名
-      organizationName: event.organizationName, // 确保 organizerName 是正确的字段名，显示组织者名称
+      date: event.startDate,
+      organizationName: event.organizationName,
       description: event.description,
+      status: event.status, // 确保从后端获取status
     }));
   } catch (error) {
     console.error('Error fetching subscribed events:', error);
   }
 };
 
+// 获取用户参与的活动
+const fetchParticipatedEvents = async () => {
+  try {
+    const volunteerId = userStore.user.loginId;
+    const response = await api.getParticipatedEvents({ volunteerId });
+    participatedEvents.value = response.map(event => ({
+      id: event.id,
+      image: event.eventPic,
+      title: event.title,
+      date: event.startDate,
+      organizationName: event.organizationName,
+      description: event.description,
+      status: event.status, // 确保从后端获取status
+    }));
+  } catch (error) {
+    console.error('Error fetching participated events:', error);
+  }
+};
+
+// 处理菜单选择
 const handleSelect = (index: string) => {
   activeIndex.value = index;
   if (index === '3') {
     fetchSubscribedEvents();
+  } else if (index === '2') {
+    fetchParticipatedEvents();
   }
 };
 
+// 导航到活动详情页
 const navigateToEvent = (eventId: string) => {
   proxy.$router.push({ name: 'EventDetail', params: { id: eventId } });
 };
 
 onMounted(() => {
-  // 初始化其他数据
+  fetchParticipatedEvents(); // 页面加载时获取参与的活动
 });
 </script>
 
@@ -196,6 +223,27 @@ h5 {
 p {
   color: #666;
   font-size: 1rem;
+}
+
+.status-box {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: white;
+  text-align: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  background-color:  #a9181a;
+}
+
+.status-pending {
+  background-color: #f39c12; /* Pending 状态的背景颜色 */
+}
+
+.status-accepted {
+  background-color: #27ae60; /* Accepted 状态的背景颜色 */
 }
 
 @media (max-width: 800px) {

@@ -248,6 +248,34 @@ public class EventController {
         }
     }
 
+    @PostMapping("/getParticipatedEvents")
+    public ResultVO<List<EventRes>> getParticipatedEvents(@RequestBody EventRegistrations volunteerId) {
+        try {
+            List<Event> events = eventService.getParticipatedEventsByVolunteerId(volunteerId.getVolunteerId());
+            List<EventRes> eventResList = new ArrayList<>();
+            for (Event e : events) {
+                Organizer organizer = organizerService.getOrganizersById(e.getOrganizerId());
+                EventRes eRes = new EventRes();
+                eRes.setId(e.getId());
+                eRes.setTitle(e.getTitle());
+                eRes.setOrganizerId(e.getOrganizerId());
+                eRes.setOrganizationName(organizer.getOrganizationName());
+                eRes.setDescription(e.getDescription());
+                eRes.setLocation(e.getLocation());
+                eRes.setPointsAwarded(e.getPointsAwarded());
+                eRes.setStartDate(e.getStartDate());
+                eRes.setEndDate(e.getEndDate());
+                eRes.setStatus(e.getStatus());
+                eRes.setEventPic(e.getEventPic());
+                eventResList.add(eRes);
+            }
+            return ResultVO.success(eventResList);
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to fetch participated events: " + e.getMessage());
+        }
+    }
+
+
 
     // 获取事件统计数据的接口
     @GetMapping("/getEventStats")
@@ -255,4 +283,5 @@ public class EventController {
         List<EventDataRes> stats = eventService.getEventStats();
         return ResultVO.success(stats);
     }
+
 }
