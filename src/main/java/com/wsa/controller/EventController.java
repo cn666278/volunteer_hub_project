@@ -202,10 +202,10 @@ public class EventController {
             eventService.subscribeForEvent(eventRegistration);
             return ResultVO.success("Successfully subscribed to the event");
         } catch (IllegalStateException e) {
-            return ResultVO.failure("You have already subscribed to this event");
+            return ResultVO.success("You have already subscribed to this event");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultVO.failure("Failed to subscribe to the event: " + e.getMessage());
+            return ResultVO.success("Failed to subscribe to the event: " + e.getMessage());
         }
     }
 
@@ -237,6 +237,16 @@ public class EventController {
         }
     }
 
+    @PostMapping("/registerForEvent")
+    public ResultVO<String> registerForEvent(@RequestBody EventRegistrations eventRegistration) {
+        try {
+            eventService.registerForEvent(eventRegistration);
+            return ResultVO.success("Application submitted successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVO.success("Failed to submit application: " + e.getMessage());
+        }
+    }
 
 
     // 获取事件统计数据的接口
