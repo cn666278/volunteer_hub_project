@@ -25,7 +25,7 @@ public class EmailNotificationAspect {
 
     @Autowired
     private VolunteerService volunteerService;
-    @AfterReturning(pointcut = "execution(* com.wsa.service.EventService.updateVolunteerStatus(..)) && args(id, email, status)")
+    @AfterReturning(pointcut = "execution(* com.wsa.service.EventService.updateVolunteerStatus(..)) && args(id, email, eventId, status)")
     public void sendNotificationEmail(Long id, String email,Long eventId, String status) {
         // 创建邮件内容
         String subject = "Event Registration Status";
