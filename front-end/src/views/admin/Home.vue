@@ -220,7 +220,7 @@ let pieOptions = reactive({
   series: [],
 });
 // order data, user data, organizer data
-let orderData = reactive({
+let eventData = reactive({
   xData: [],
   series: [],
 });
@@ -237,11 +237,11 @@ let organizerData = reactive({
 // get Echart Data
 const getEchartData = async () => {
   let result = await proxy.$api.getEchartData();
-  let res = result.orderData;
+  let res = result.eventData;
   let userRes = result.userData;
   let organizerRes = result.organizerData;
 
-  orderData.xData = res.date;
+  eventData.xData = res.date;
   const keyArray = Object.keys(res.data[0]);
   const series = [];
   keyArray.forEach((key) => {
@@ -252,9 +252,9 @@ const getEchartData = async () => {
     });
   });
 
-  orderData.series = series;
-  xOptions.xAxis.data = orderData.xData;
-  xOptions.series = orderData.series;
+  eventData.series = series;
+  xOptions.xAxis.data = eventData.xData;
+  xOptions.series = eventData.series;
   let hEcharts = echarts.init(proxy.$refs["echart"]);
   hEcharts.setOption(xOptions);
 
