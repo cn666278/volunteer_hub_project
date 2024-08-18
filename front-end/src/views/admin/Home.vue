@@ -155,7 +155,7 @@ const getTableList = async () => {
     console.error("Error fetching table data:", error);
   }
 };
-// 获取首页count统计数据
+// 获取首页count统计数据: event / user / register user
 const getCountData = async () => {
   try {
     let res = await proxy.$api.getCountData();
