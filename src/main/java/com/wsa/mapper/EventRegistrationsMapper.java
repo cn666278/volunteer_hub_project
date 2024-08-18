@@ -14,7 +14,7 @@ public interface EventRegistrationsMapper {
 
     void updateStatusById(@Param("id") Long id, @Param("status") String status);
 
-    @Select("SELECT COUNT(*) FROM eventregistrations WHERE eventId = #{eventId} AND volunteerId = #{volunteerId}")
+    @Select("SELECT COUNT(*) FROM eventregistrations WHERE eventId = #{eventId} AND volunteerId = #{volunteerId} AND status = 'subscribed'")
     int countByEventIdAndVolunteerId(@Param("eventId") Long eventId, @Param("volunteerId") Long volunteerId);
 
     @Insert("INSERT INTO eventregistrations (eventId, volunteerId, roleId, status) VALUES (#{eventId}, #{volunteerId}, #{roleId}, #{status})")
@@ -49,4 +49,6 @@ public interface EventRegistrationsMapper {
             "WHERE er.eventId = #{eventId} " +
             "AND er.status = 'accepted'")
     Integer getTotalUsers(@Param("eventId") Long eventId);
+    @Select("SELECT COUNT(*) FROM eventregistrations WHERE eventId = #{eventId} AND volunteerId = #{volunteerId} AND status IN ('pending', 'accepted')")
+    int countByEventIdAndVolunteerIdForRegistered(Long eventId, Long volunteerId);
 }

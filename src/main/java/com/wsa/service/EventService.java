@@ -163,7 +163,9 @@ public class EventService {
     public boolean hasAlreadySubscribed(Long eventId, Long volunteerId) {
         return eventRegistrationsMapper.countByEventIdAndVolunteerId(eventId, volunteerId) > 0;
     }
-
+    public boolean hasAlreadyRegistered(Long eventId, Long volunteerId) {
+        return eventRegistrationsMapper.countByEventIdAndVolunteerIdForRegistered(eventId, volunteerId) > 0;
+    }
     public void subscribeForEvent(EventRegistrations eventRegistration) {
         if (!hasAlreadySubscribed(eventRegistration.getEventId(), eventRegistration.getVolunteerId())) {
             eventRegistrationsMapper.saveEventRegistration(eventRegistration);
@@ -185,5 +187,16 @@ public class EventService {
 
         return subscribedEvents;
     }
+
+    public void registerForEvent(EventRegistrations eventRegistration) {
+        // 检查是否已经注册
+        if (!hasAlreadyRegistered(eventRegistration.getEventId(), eventRegistration.getVolunteerId())) {
+            // 插入注册记录
+            eventRegistrationsMapper.saveEventRegistration(eventRegistration);
+        } else {
+            throw new IllegalStateException("User has already registered for this event");
+        }
+    }
+
 
 }

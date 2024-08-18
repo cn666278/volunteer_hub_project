@@ -14,9 +14,6 @@
     <!-- Introduction Sections -->
     <div class="project-introduction-middle">
       <div class="column" v-for="(item, index) in introSections" :key="index">
-        <el-icon :name="item.icon" :size="50">
-          <component :is="item.component" />
-        </el-icon>
         <h3>{{ $t(`home.projectIntro.${item.title.toLowerCase()}Title`) }}</h3>
         <p>{{ $t(`home.projectIntro.${item.title.toLowerCase()}Text`) }}</p>
       </div>
@@ -40,12 +37,33 @@
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-      <el-button type="primary" class="styled-button">
+      <button class="styled-button primary" @click="openApplyDialog">
         Apply to be a volunteer
-      </el-button>
-      <el-button type="success" class="styled-button" @click="subscribeToEvent">
+      </button>
+      <button class="styled-button success" @click="subscribeToEvent">
         Subscribe This Event
-      </el-button>
+      </button>
+    </div>
+
+    <!-- Apply Modal -->
+    <div v-if="applyDialogVisible" class="modal">
+      <div class="modal-content">
+        <h3>Apply to be a Volunteer</h3>
+        <div class="apply-form">
+          <div class="form-group">
+            <label for="event-name">Event name</label>
+            <input id="event-name" v-model="event.title" readonly />
+          </div>
+          <div class="form-group">
+            <label for="event-date">Event date</label>
+            <input id="event-date" v-model="formattedEventDate" readonly />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button @click="applyDialogVisible = false">Cancel</button>
+          <button class="primary" @click="submitApplication">Submit</button>
+        </div>
+      </div>
     </div>
   </div>
   <div v-else>
@@ -54,19 +72,15 @@
 </template>
 
 <script lang="ts">
-import { ElIcon, ElButton, ElMessage } from "element-plus";
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import api from '../../api/api';
 import useUser from '../../store/user';
+import { ElMessage } from 'element-plus';
 
 export default {
   name: 'EventDetail',
-  components: {
-    ElIcon,
-    ElButton,
-  },
   setup() {
     const route = useRoute();
     const event = ref(null);
@@ -74,27 +88,18 @@ export default {
     const userStore = useUser();
 
     const introSections = ref([
-      {
-        icon: 'el-icon-service',
-        component: 'Service',
-        title: 'SUPPORT',
-      },
-      {
-        icon: 'el-icon-user',
-        component: 'User',
-        title: 'ROLE',
-      },
-      {
-        icon: 'el-icon-star',
-        component: 'Star',
-        title: 'OPPORTUNITY',
-      },
+      { title: 'SUPPORT' },
+      { title: 'ROLE' },
+      { title: 'OPPORTUNITY' },
     ]);
+
+    const applyDialogVisible = ref(false);
+    const applyForm = ref({});
 
     const loadEvent = async () => {
       const eventId = route.params.id;
       if (eventId) {
-        const response = await api.getEventById({ id: eventId }).catch(error => {
+        const response = await api.getEventById({ id: eventId }).catch((error) => {
           console.error(error.message);
         });
         if (response) {
@@ -109,36 +114,94 @@ export default {
       try {
         const loginId = userStore.user.loginId;
         if (!loginId) {
-          ElMessage.error('Please log in to subscribe to this event');
+          alert('Please log in to subscribe to this event');
           return;
         }
 
         const eventId = event.value?.id;
         if (!eventId) {
-          ElMessage.error('Event ID is missing');
+          alert('Event ID is missing');
           return;
         }
 
-        // 调用API来插入数据
         const response = await api.subscribeForEvent({
           eventId: eventId,
           volunteerId: loginId,
-          roleId: 1,  // 默认设置roleId为1
+          roleId: 1,
           status: 'subscribed',
         });
 
-        if (response.success) {
-          ElMessage.success('Successfully subscribed to the event');
-        } else if (response.message.includes("already subscribed")) {
-          ElMessage.warning('You have already subscribed to this event');
-        } else {
-          throw new Error(response.message || 'Failed to subscribe to the event');
+        if (response.includes('Successfully subscribed to the event')) {
+          ElMessage({
+            message: 'Successfully subscribed to the event.',
+            type: 'success',
+          });
+        } else if (response.includes('already subscribed')) {
+          ElMessage({
+            message: 'You have already subscribed to this event',
+            type: 'warning',
+          });
         }
       } catch (error) {
         console.error('Error subscribing to event:', error);
-        ElMessage.error('Failed to subscribe to the event');
+        alert('Failed to subscribe to the event');
       }
     };
+
+    const openApplyDialog = () => {
+      applyDialogVisible.value = true;
+    };
+
+    const submitApplication = async () => {
+      try {
+        const loginId = userStore.user.loginId;
+        if (!loginId) {
+          alert('Please log in to apply for this event');
+          return;
+        }
+
+        const eventId = event.value?.id;
+        if (!eventId) {
+          alert('Event ID is missing');
+          return;
+        }
+
+        const response = await api.registerForEvent({
+          eventId: eventId,
+          volunteerId: loginId,
+          roleId: 1, // 假设 roleId 是 1，你可以根据需要调整
+          status: 'pending',
+        });
+
+        if (response.includes('Application submitted successfully')) {
+          ElMessage({
+            message: 'Application submitted successfully.',
+            type: 'success',
+          });
+          applyDialogVisible.value = false;
+        } else {
+          // throw new Error(response.message || 'Failed to submit application');
+          ElMessage({
+            message: 'Failed to submit application.',
+            type: 'warning',
+          });
+        }
+      } catch (error) {
+        console.error('Error submitting application:', error);
+        alert('Failed to submit application');
+      }
+    };
+
+    const formattedEventDate = computed(() => {
+      if (event.value) {
+        return new Date(event.value.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+      }
+      return '';
+    });
 
     onMounted(() => {
       loadEvent();
@@ -148,6 +211,11 @@ export default {
       event,
       introSections,
       subscribeToEvent,
+      openApplyDialog,
+      applyDialogVisible,
+      applyForm,
+      submitApplication,
+      formattedEventDate,
       t,
     };
   },
@@ -283,19 +351,98 @@ export default {
     border-top: 2px solid #ececec;
     margin-top: 20px;
 
-    .el-button.styled-button {
+    .styled-button {
       width: 45%;
-      height: 100px;
+      height: 50px;
       font-size: 1rem;
       background-color: #a9181a;
       color: #fff;
       font-weight: bold;
       border: none;
       outline: none;
+      cursor: pointer;
       transition: all 0.3s ease;
 
       &:hover {
         background-color: darken(#a9181a, 10%);
+      }
+
+      &.primary {
+        background-color: #a9181a;
+      }
+
+      &.success {
+        background-color: #28a745;
+      }
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+
+      .apply-form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        .form-group {
+          margin-bottom: 15px;
+          text-align: left;
+
+          label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+          }
+
+          input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background-color: #f0f0f0;
+          }
+        }
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #ccc;
+          }
+
+          &.primary {
+            background-color: #a9181a;
+            color: #fff;
+          }
+        }
       }
     }
   }

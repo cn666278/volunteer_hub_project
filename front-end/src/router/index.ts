@@ -23,6 +23,12 @@ const routes = createRouter({
       component: () => import("../views/login/Register.vue"),
     },
     {
+      path: "/demo",
+      name: "Demo",
+      meta: { title: "Register" },
+      component: () => import("../views/volunteer/EventRegister.vue"),
+    },
+    {
       path: "/volunteer",
       name: "Volunteer Page",
       meta: { title: "Volunteer Page" },
