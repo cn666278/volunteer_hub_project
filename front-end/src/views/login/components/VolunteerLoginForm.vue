@@ -1,13 +1,13 @@
 <template>
     <el-form size="default" ref="formRef" style="max-width: 600px" :model="formData" status-icon :rules="rules" label-width="80px">
         <div class="form-header">
-            <p>{{ $t('login.volunteerLogin') }}</p>
+            <p>{{ $t('login.login') }}</p>
         </div>
         <el-form-item :label="$t('login.username')" prop="username">
             <el-input v-model="formData.username" />
         </el-form-item>
         <el-form-item :label="$t('login.password')" prop="password">
-            <el-input v-model="formData.password" type="password" />
+            <el-input v-model="formData.password" type="password" show-password/>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm(formRef)">
