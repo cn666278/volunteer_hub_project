@@ -1,69 +1,71 @@
 <template>
   <div>
-    <el-form :model="form" ref="formRef" label-width="120px">
-      <el-form-item :label="translatedLabels.title" prop="title">
+    <el-form :model="form" ref="formRef" label-width="180px">
+      <el-form-item :label="t('editEvent.title')" prop="title">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
-      <el-form-item :label="translatedLabels.description" prop="description">
+      <el-form-item :label="t('editEvent.description')" prop="description">
         <el-input v-model="form.description"></el-input>
       </el-form-item>
-      <el-form-item :label="translatedLabels.location" prop="location">
+      <el-form-item :label="t('editEvent.location')" prop="location">
         <el-input id="autocomplete" v-model="form.location" @focus="openMap"></el-input>
       </el-form-item>
-      <el-form-item :label="translatedLabels.file">
+      <el-form-item :label="t('editEvent.file')" prop="file">
         <input type="file" @change="onFileChange" />
-        <el-input v-model="filename" placeholder="Enter file name" />
+        <el-input v-model="filename" :placeholder="t('editEvent.enterFileName')" />
         <div v-if="uploadedFilePath">
-          <img :src="imagePreviewUrl" alt="File Preview" style="max-width: 200px; margin-top: 10px;" />
+          <img :src="imagePreviewUrl" :alt="t('editEvent.filePreview')" style="max-width: 200px; margin-top: 10px;" />
         </div>
       </el-form-item>
-      <el-form-item :label="translatedLabels.pointsAwarded" prop="pointsAwarded">
+      <el-form-item :label="t('editEvent.pointsAwarded')" prop="pointsAwarded">
         <el-input-number v-model="form.pointsAwarded"></el-input-number>
       </el-form-item>
-      <el-form-item :label="translatedLabels.startDate" prop="startDate">
+      <el-form-item :label="t('editEvent.startDate')" prop="startDate">
         <el-date-picker
-            v-model="form.startDate"
-            type="datetime"
-            placeholder="choose start date">
-        </el-date-picker>
+          v-model="form.startDate"
+          type="datetime"
+          :placeholder="t('editEvent.chooseStartDate')"
+        ></el-date-picker>
       </el-form-item>
-      <el-form-item :label="translatedLabels.endDate" prop="endDate">
+      <el-form-item :label="t('editEvent.endDate')" prop="endDate">
         <el-date-picker
-            v-model="form.endDate"
-            type="datetime"
-            placeholder="choose end date">
-        </el-date-picker>
+          v-model="form.endDate"
+          type="datetime"
+          :placeholder="t('editEvent.chooseEndDate')"
+        ></el-date-picker>
       </el-form-item>
-      <el-form-item :label="translatedLabels.roles" prop="roles">
+      <el-form-item :label="t('editEvent.roles')" prop="roles">
         <div v-for="role in availableRoles" :key="role" style="display: flex; align-items: center; margin-bottom: 8px;">
           <el-checkbox :label="role" v-model="form.roles">{{ role }}</el-checkbox>
           <el-input-number v-if="form.roles.includes(role)" v-model="form.rolesQuantities[role]" :min="1" style="margin-left: 8px;"></el-input-number>
         </div>
       </el-form-item>
-      <el-form-item :label="translatedLabels.nearbyFacilities" prop="nearbyFacilities">
+      <el-form-item :label="t('editEvent.nearbyFacilities')" prop="nearbyFacilities">
         <el-select v-model="form.nearbyFacilities" multiple>
           <el-option
-              v-for="facility in nearbyFacilities"
-              :key="facility.place_id"
-              :label="facility.name"
-              :value="facility.name">
-          </el-option>
+            v-for="facility in nearbyFacilities"
+            :key="facility.place_id"
+            :label="facility.name"
+            :value="facility.name"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm">{{ translatedLabels.save }}</el-button>
-        <el-button @click="resetForm">{{ translatedLabels.reset }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ t('editEvent.save') }}</el-button>
+        <el-button @click="resetForm">{{ t('editEvent.reset') }}</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ElMessage, ElForm } from 'element-plus';
 import { translateText } from '../../api/translate';
 import { useRoute } from 'vue-router';
 import { nextTick } from 'vue';
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 import useUser from "../../store/user";
@@ -87,17 +89,17 @@ const availableRoles = ['Default', 'Event Coordinator', 'Event Welcome Desk', 'A
 const nearbyFacilities = ref<any[]>([]);
 
 const translatedLabels = reactive({
-  title: 'Title',
-  description: 'Description',
-  location: 'Location',
-  file: 'File',
-  pointsAwarded: 'Points Awarded',
-  startDate: 'Start Date',
-  endDate: 'End Date',
-  roles: 'Roles',
-  nearbyFacilities: 'Nearby Facilities',
-  save: 'Save',
-  reset: 'Reset'
+  title: t('editEvent.title'),
+  description: t('editEvent.description'),
+  location: t('editEvent.location'),
+  file: t('editEvent.file'),
+  pointsAwarded: t('editEvent.pointsAwarded'),
+  startDate: t('editEvent.startDate'),
+  endDate: t('editEvent.endDate'),
+  roles: t('editEvent.roles'),
+  nearbyFacilities: t('editEvent.nearbyFacilities'),
+  save: t('editEvent.save'),
+  reset: t('editEvent.reset')
 });
 
 const file = ref(null);

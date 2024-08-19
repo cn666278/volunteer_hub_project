@@ -1,17 +1,17 @@
 <template>
   <div>
     <el-table :data="volunteers" stripe>
-      <el-table-column prop="username" label="Username"></el-table-column>
-<!--      <el-table-column label="Contact">-->
+      <el-table-column prop="username" :label="t('commentVolunteer.username')"></el-table-column>
+<!--      <el-table-column :label="t('commentVolunteer.contact')">-->
 <!--        <template v-slot="scope">-->
 <!--          <div>{{ scope.row.phone }}</div>-->
 <!--          <div>{{ scope.row.email }}</div>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column prop="experience" label="Experience"></el-table-column>
-      <el-table-column prop="eventCount" label="Event Count"></el-table-column>
-      <el-table-column prop="roleName" label="Role"></el-table-column>
-      <el-table-column label="Credentials">
+      <el-table-column prop="experience" :label="t('commentVolunteer.experience')"></el-table-column>
+      <el-table-column prop="eventCount" :label="t('commentVolunteer.eventCount')"></el-table-column>
+      <el-table-column prop="roleName" :label="t('commentVolunteer.role')"></el-table-column>
+      <el-table-column :label="t('commentVolunteer.credentials')">
         <template v-slot="scope">
           <div v-for="credential in scope.row.credentialList" :key="credential.credentialName">
             <el-link type="primary" @click="viewCredential1(credential.credentialUrl)">
@@ -20,15 +20,15 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Actions">
+      <el-table-column :label="t('commentVolunteer.actions')">
         <template v-slot="scope">
-          <el-button @click="commentVolunteer(scope.row)">Comment</el-button>
+          <el-button @click="commentVolunteer(scope.row)">{{ t('commentVolunteer.comment') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" title="Credential Image">
-      <img :src="currentCredentialUrl" alt="Credential Image" class="img-fluid"/>
+    <el-dialog :visible.sync="dialogVisible" :title="t('commentVolunteer.credentialImage')">
+      <img :src="currentCredentialUrl" :alt="t('commentVolunteer.credentialImage')" class="img-fluid"/>
     </el-dialog>
   </div>
 </template>
@@ -37,7 +37,9 @@
 import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -60,7 +62,6 @@ const viewCredential1 = (url) => {
 }
 
 const fetchVolunteers = async () => {
-  console.log("getVolunteersByEventId event",event)
   const response = await proxy.$api.getVolunteersByEventId({
     eventId: event.eventId,
     status: 'accepted',

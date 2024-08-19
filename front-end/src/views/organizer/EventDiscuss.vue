@@ -6,8 +6,8 @@
         <span class="timestamp">{{ formatTimestamp(msg.timestamp) }}</span>
       </p>
     </div>
-    <el-input v-model="newMessage" placeholder="Type your message..." @keyup.enter="sendMessage" />
-    <el-button @click="sendMessage">Send</el-button>
+    <el-input v-model="newMessage" :placeholder="t('eventDiscuss.placeholder')" @keyup.enter="sendMessage" />
+    <el-button @click="sendMessage">{{ t('eventDiscuss.send') }}</el-button>
   </div>
 </template>
 
@@ -16,14 +16,15 @@ import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-// import { useUserStore } from '@/stores/userStore'; // 确保引入了正确的userStore
+import { useI18n } from 'vue-i18n';
+import useUser from "../../store/user";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const event = JSON.parse(route.query.event);
 const messages = ref([]);
 const newMessage = ref('');
-import useUser from "../../store/user";
 // user store
 const userStore = useUser();
 let stompClient;

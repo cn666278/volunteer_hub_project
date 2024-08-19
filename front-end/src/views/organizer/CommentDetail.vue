@@ -1,24 +1,24 @@
 <template>
   <div>
     <el-form :model="volunteer">
-      <el-form-item label="Username">
+      <el-form-item :label="t('commentDetail.username')">
         <el-input v-model="volunteer.username" disabled></el-input>
       </el-form-item>
-<!--      <el-form-item label="Phone">-->
+<!--      <el-form-item :label="t('commentDetail.phone')">-->
 <!--        <el-input v-model="volunteer.phone" disabled></el-input>-->
 <!--      </el-form-item>-->
-<!--      <el-form-item label="Email">-->
+<!--      <el-form-item :label="t('commentDetail.email')">-->
 <!--        <el-input v-model="volunteer.email" disabled></el-input>-->
 <!--      </el-form-item>-->
-      <el-form-item label="Star">
+      <el-form-item :label="t('commentDetail.star')">
         <el-rate v-model="volunteer.rating"></el-rate>
       </el-form-item>
-      <el-form-item label="Comment">
+      <el-form-item :label="t('commentDetail.comment')">
         <el-input v-model="volunteer.comment" type="textarea"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitComment">Submit</el-button>
-        <el-button @click="cancel">Cancel</el-button>
+        <el-button type="primary" @click="submitComment">{{ t('commentDetail.submit') }}</el-button>
+        <el-button @click="cancel">{{ t('commentDetail.cancel') }}</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -28,6 +28,9 @@
 import {getCurrentInstance, ref} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
@@ -43,12 +46,10 @@ const submitComment = async () => {
       rating: volunteer.value.rating,
       comment: volunteer.value.comment,
     });
-    console.log("volunteer.value.volunteerId",volunteer.value.volunteerId)
-    ElMessage.success('Comment submitted successfully.');
-    console.log("submitComment event",event.value)
+    ElMessage.success(t('commentDetail.commentSuccess'));
     router.push({ name: 'CommentVolunteer', query: { event: JSON.stringify(event.value) } });
   } catch (error) {
-    ElMessage.error('Failed to submit comment.');
+    ElMessage.error(t('commentDetail.commentFailure'));
   }
 };
 
