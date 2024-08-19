@@ -90,7 +90,7 @@ const participatedEvents = ref([]); // 保存用户参与的活动列表
 // 获取用户订阅的活动
 const fetchSubscribedEvents = async () => {
   try {
-    const volunteerId = userStore.user.loginId;
+    const volunteerId = userStore.user.id;
     const response = await api.getSubscribedEvents({ volunteerId });
     subscribedEvents.value = response.map(event => ({
       id: event.id,
@@ -109,7 +109,7 @@ const fetchSubscribedEvents = async () => {
 // 获取用户参与的活动
 const fetchParticipatedEvents = async () => {
   try {
-    const volunteerId = userStore.user.loginId;
+    const volunteerId = userStore.user.id;
     const response = await api.getParticipatedEvents({ volunteerId });
     participatedEvents.value = response.map(event => ({
       id: event.id,

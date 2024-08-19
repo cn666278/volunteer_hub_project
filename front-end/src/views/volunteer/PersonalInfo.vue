@@ -75,7 +75,7 @@ const editEmail = ref(userStore.user.email);
 const updateUserProfile = async () => {
   try {
     const response = await proxy.$api.updateUserProfile({
-      loginId: userStore.user.loginId,  // loginId 对应 User 类的字段
+      loginId: userStore.user.id,  // loginId 对应 User 类的字段
       username: editUsername.value,
       phone: editPhone.value,
       email: editEmail.value,
@@ -101,7 +101,7 @@ const updateUserProfile = async () => {
 
 // 查询用户个人信息
 onMounted(async () => {
-  if (!userStore.user.loginId) {
+  if (!userStore.user.id) {
     const loginId = sessionStorage.getItem('loginId');
     if (loginId) {
       try {

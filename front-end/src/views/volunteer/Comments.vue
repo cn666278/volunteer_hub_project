@@ -41,7 +41,7 @@ const comments = ref([]);
 
 const fetchVolunteerRatings = async () => {
   try {
-    const volunteerId = userStore.user.loginId; // 假设 loginId 对应 volunteerId
+    const volunteerId = userStore.user.id; // 假设 loginId 对应 volunteerId
     const response = await proxy.$api.getRatingsByVolunteerId({ volunteerId });
 
     if (response && Array.isArray(response)) {  // 确保响应对象存在且data为数组

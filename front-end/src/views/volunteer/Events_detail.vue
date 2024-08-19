@@ -112,7 +112,7 @@ export default {
 
     const subscribeToEvent = async () => {
       try {
-        const loginId = userStore.user.loginId;
+        const loginId = userStore.user.id;
         if (!loginId) {
           alert('Please log in to subscribe to this event');
           return;
@@ -154,7 +154,8 @@ export default {
 
     const submitApplication = async () => {
       try {
-        const loginId = userStore.user.loginId;
+        const loginId = userStore.user.id;
+        console.log('loginIddadaada:', loginId);
         if (!loginId) {
           alert('Please log in to apply for this event');
           return;

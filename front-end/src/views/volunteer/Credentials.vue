@@ -23,7 +23,7 @@ const items = ref([]);
 const userStore = useUser();
 
 onMounted(async () => {
-  const loginId = userStore.user.loginId;
+  const loginId = userStore.user.id;
 
   if (loginId) {
     try {

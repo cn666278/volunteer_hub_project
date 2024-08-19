@@ -63,7 +63,8 @@
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
 import { ElMessage, ElForm, ElMessageBox } from 'element-plus';
 import { translateText } from '../../api/translate';
-
+import useUser from "../../../store/user.ts";
+let userStore = useUser();
 const { proxy } = getCurrentInstance();
 
 const formRef = ref<InstanceType<typeof ElForm>>();
@@ -154,7 +155,7 @@ const submitForm = () => {
   }));
 
   const payload = {
-    organizerId: 1,
+    organizerId: userStore.user.id,
     title: form.title,
     description: form.description,
     location: form.location,

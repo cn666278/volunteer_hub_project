@@ -47,7 +47,7 @@ const fetchEventName = async (id) => {
 
 const fetchVolunteerInfo = async () => {
   try {
-    const volunteerId = userStore.user.loginId; // Assuming loginId corresponds to volunteerId
+    const volunteerId = userStore.user.id; // Assuming loginId corresponds to volunteerId
     const response = await api.getVolunteerInfoByVolunteerId({ volunteerId });
 
     if (response && Array.isArray(response)) {

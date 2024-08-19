@@ -4,7 +4,7 @@ export default defineStore("user", {
   state: () => ({
     user: {
       username: "",
-      loginId: "",
+      id: "",
       photo: "",
       phone: "",
       email: "",
@@ -17,7 +17,7 @@ export default defineStore("user", {
   actions: {
     setUser(user: {
       username: string;
-      loginId: string;
+      id: string;
       photo: string;
       phone: string;
       email: string;
@@ -29,7 +29,7 @@ export default defineStore("user", {
       sessionStorage.clear();
       this.user = {
         username: "",
-        loginId: "",
+        id: "",
         photo: "",
         phone: "",
         email: "",

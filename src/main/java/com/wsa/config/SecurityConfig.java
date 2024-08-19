@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors().and() // Remove or comment out this line to disable CORS
                 .authorizeRequests()
-                .antMatchers("/login", "/admin/user/addUser", "/static/**", "/**/*.png", "/ws/**", "/app/**", "/topic/**", "/uploads/**", "/files/**").permitAll()
+                .antMatchers("/login", "/admin/user/addUser", "/admin/role/getRoleList","/static/**", "/**/*.png", "/ws/**", "/app/**", "/topic/**", "/uploads/**", "/files/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
