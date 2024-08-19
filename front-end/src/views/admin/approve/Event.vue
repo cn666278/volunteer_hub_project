@@ -246,7 +246,7 @@ const size = ref<SizeProps>('medium');
 // 控制分页显示的数据条数
 const basePagination: Pagination = {
   current: 1,
-  pageSize: 10,
+  pageSize: 3,
 };
 const pagination = reactive({
   ...basePagination,
@@ -378,9 +378,37 @@ const updateRenderData = () => {
 };
 
 const search = () => {
-  pagination.current = 1; // Reset to first page on new search
-  updateRenderData();
+  // 将表单数据转化为小写以便更好地匹配
+  const searchData = {
+    number: formModel.value.number?.trim().toLowerCase(),
+    name: formModel.value.name?.trim().toLowerCase(),
+    eventType: formModel.value.eventType,
+    status: formModel.value.status,
+    createdTime: formModel.value.createdTime,
+  };
+
+  // 对数据进行筛选
+  const filteredData = fullData.value.filter((item) => {
+    const matchesNumber = !searchData.number || item.id.toString().includes(searchData.number);
+    const matchesName = !searchData.name || item.title.toLowerCase().includes(searchData.name);
+    const matchesEventType = !searchData.eventType || item.eventType === searchData.eventType;
+    const matchesStatus = !searchData.status || item.status === searchData.status;
+    const matchesCreatedTime =
+      !searchData.createdTime.length ||
+      (new Date(item.startDate) >= new Date(searchData.createdTime[0]) &&
+        new Date(item.endDate) <= new Date(searchData.createdTime[1]));
+
+    return matchesNumber && matchesName && matchesEventType && matchesStatus && matchesCreatedTime;
+  });
+
+  // 更新渲染数据
+  renderData.value = filteredData.slice(0, pagination.pageSize);
+  pagination.total = filteredData.length;
+
+  // 如果需要，重置分页页码
+  pagination.current = 1;
 };
+
 
 const onPageChange = (current: number) => {
   pagination.current = current;
