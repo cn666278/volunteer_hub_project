@@ -49,6 +49,7 @@
             <el-icon><ChatDotRound /></el-icon>
             Message
           </el-menu-item>
+          <changeLanguage />
           <el-sub-menu index="4">
             <template #title>
               <el-icon><User /></el-icon>
@@ -57,15 +58,6 @@
             <el-menu-item index="4-1">Personal</el-menu-item>
             <el-menu-item index="4-2">Password</el-menu-item>
             <el-menu-item index="" @click="exit">Exit</el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="5">
-            <template #title>
-              <span>
-                Language<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-            </template>
-            <el-menu-item @click="handleLanguageChange('en')">English</el-menu-item>
-            <el-menu-item @click="handleLanguageChange('cy')">Welsh</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
@@ -90,7 +82,7 @@ import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import useUser from "../../store/user.ts";
 import { ElMessageBox } from 'element-plus'
-
+import changeLanguage from "../../components/changeLanguage.vue";
 let userStore = useUser();
 let router = useRouter();
 // check if the user is logged in, if not, redirect to the login page
@@ -115,16 +107,6 @@ const exit = () => {
   });
 };
 
-const handleLanguageChange = async (language: string) => {
-  // Save selected language in local storage
-  localStorage.setItem('selectedLanguage', language);
-  // Translate labels
-  await translateLabels(language);
-  location.reload();  // Reload the page to apply translations
-};
-const translateLabels = async (language: string) => {
-  // Implement translation logic here, similar to the example provided earlier
-};
 </script>
 
 <style lang="scss">
