@@ -20,9 +20,9 @@ export default {
 
   // 用户注册相关
   "home.totalUsers": "总用户数",
-  "home.todayRegistedUsers": "今日注册用户",
+  "home.todaysRegisterUsers": "今日注册用户",
   "home.totalRegisterUsers": "总注册用户",
-  "home.monthlyRegistedUsers": "本月注册用户",
+  "home.monthlyRegisterUsers": "本月注册用户",
   "home.registerUser": "注册用户",
 
   // 组织者数据相关
