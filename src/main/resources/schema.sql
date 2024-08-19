@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : s
- Source Server Type    : MySQL
+ Source Server         : cn
+ Source Server Type    : MariaDB
  Source Server Version : 100427
  Source Host           : localhost:3306
  Source Schema         : wsa
 
- Target Server Type    : MySQL
+ Target Server Type    : MariaDB
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 19/08/2024 02:13:02
+ Date: 19/08/2024 23:55:43
 */
 CREATE DATABASE IF NOT EXISTS `wsa` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 use wsa;
@@ -23,14 +23,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `authorities`;
 CREATE TABLE `authorities`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `roleId` int NOT NULL,
+  `roleId` int(11) NOT NULL,
   `authority` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `userId` int NOT NULL,
+  `userId` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+  INDEX `username`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of authorities
@@ -38,22 +38,22 @@ CREATE TABLE `authorities`  (
 INSERT INTO `authorities` VALUES (1, 'organizer', 1, 'organizer', 1);
 INSERT INTO `authorities` VALUES (2, 'admin', 3, 'admin', 2);
 INSERT INTO `authorities` VALUES (3, 'volunteer', 2, 'volunteer', 3);
-INSERT INTO `authorities` VALUES (4, 'test', 2, 'volunteer', 5);
-INSERT INTO `authorities` VALUES (5, 'test1', 2, 'volunteer', 6);
-INSERT INTO `authorities` VALUES (6, 'test2', 2, 'volunteer', 7);
-INSERT INTO `authorities` VALUES (7, 'test3', 2, 'volunteer', 8);
+INSERT INTO `authorities` VALUES (4, 'test', 1, 'organizer', 5);
+INSERT INTO `authorities` VALUES (6, 'test2', 3, 'admin', 7);
+INSERT INTO `authorities` VALUES (10, 'volunteer2', 2, 'volunteer', 4);
+INSERT INTO `authorities` VALUES (11, 'cn', 1, 'organizer', 11);
 
 -- ----------------------------
 -- Table structure for credentials
 -- ----------------------------
 DROP TABLE IF EXISTS `credentials`;
 CREATE TABLE `credentials`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `volunteerId` int NULL DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `volunteerId` int(11) NULL DEFAULT NULL,
   `credentialName` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `credentialUrl` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of credentials
@@ -67,15 +67,15 @@ INSERT INTO `credentials` VALUES (3, 2, 'first aid', '/files/4');
 -- ----------------------------
 DROP TABLE IF EXISTS `emails`;
 CREATE TABLE `emails`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `toEmail` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status` enum('pending','sent','failed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending',
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   `sendAt` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of emails
@@ -86,11 +86,11 @@ CREATE TABLE `emails`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `eventfacilities`;
 CREATE TABLE `eventfacilities`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `eventId` int NULL DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eventId` int(11) NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of eventfacilities
@@ -121,32 +121,36 @@ INSERT INTO `eventfacilities` VALUES (28, 4, 'Cardiff Royal Infirmary');
 -- ----------------------------
 DROP TABLE IF EXISTS `eventregistrations`;
 CREATE TABLE `eventregistrations`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `eventId` bigint NOT NULL,
-  `volunteerId` bigint NOT NULL,
-  `roleId` bigint NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventId` bigint(20) NOT NULL,
+  `volunteerId` bigint(20) NOT NULL,
+  `roleId` bigint(20) NOT NULL,
   `status` enum('pending','accepted','rejected','subscribed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending',
+  `registrationTime` timestamp NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of eventregistrations
 -- ----------------------------
-INSERT INTO `eventregistrations` VALUES (1, 4, 1, 2, 'pending');
-INSERT INTO `eventregistrations` VALUES (2, 4, 2, 1, 'accepted');
+INSERT INTO `eventregistrations` VALUES (1, 4, 1, 2, 'pending', '2024-08-19 21:47:33');
+INSERT INTO `eventregistrations` VALUES (2, 4, 2, 1, 'accepted', '2024-08-18 21:47:33');
+INSERT INTO `eventregistrations` VALUES (3, 6, 3, 2, 'accepted', '2024-08-19 21:47:33');
+INSERT INTO `eventregistrations` VALUES (4, 6, 4, 2, 'accepted', '2024-08-17 21:47:33');
+INSERT INTO `eventregistrations` VALUES (5, 4, 5, 2, 'accepted', '2024-08-19 23:02:43');
 
 -- ----------------------------
 -- Table structure for eventroles
 -- ----------------------------
 DROP TABLE IF EXISTS `eventroles`;
 CREATE TABLE `eventroles`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `eventId` bigint NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventId` bigint(20) NOT NULL,
   `roleName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `roleDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `volunteerCount` int NULL DEFAULT NULL,
+  `roleDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `volunteerCount` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of eventroles
@@ -163,38 +167,38 @@ INSERT INTO `eventroles` VALUES (18, 4, 'role3', NULL, 3);
 -- ----------------------------
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `organizerId` bigint NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `organizerId` bigint(20) NOT NULL,
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `status` enum('Awaiting review','Passed','Rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'Awaiting review',
-  `pointsAwarded` int NULL DEFAULT 0,
+  `pointsAwarded` int(11) NULL DEFAULT 0,
   `startDate` datetime NOT NULL,
   `endDate` datetime NOT NULL,
   `eventPic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of events
 -- ----------------------------
-INSERT INTO `events` VALUES (1, 1, 'Welsh Judo are hosting the British Adaptive & VI Open in Swansea', 'Welsh Judo are hosting the British Adaptive & VI Open in Swansea.', 'cardiff', 'Passed', 100, '2024-07-29 04:26:05', '2024-07-29 07:26:16', 'src/assets/event-judo.png');
-INSERT INTO `events` VALUES (4, 1, 'Badminton Wales are hosting the Yonex Welsh International Challenge in Cardiff​', 'Badminton Wales are hosting the Yonex Welsh International Challenge in Cardiff​', '15 Pen-Y-Lan Rd, Cardiff CF24 3PG, UK', 'Awaiting review', 77, '2024-07-30 09:00:00', '2024-07-30 22:00:00', 'src/assets/event-badminto.png');
-INSERT INTO `events` VALUES (5, 1, 'Table Tennis Wales hosting the Senior Team Championships of Wales ​', 'Table Tennis Wales hosting the Senior Team Championships of Wales ​', 'Julian Hodge Building, Colum Dr, Cardiff CF10 3EU, UK', 'Awaiting review', 2, '2024-08-02 01:08:36', '2024-08-02 09:06:42', 'src/assets/event-tabletennis.png');
-INSERT INTO `events` VALUES (6, 1, 'Hockey Wales hosting International Series over a long weekend', 'Hockey Wales hosting International Series over a long weekend', '5 Pen-Y-Lan Rd, Cardiff CF24 3PG, UK', 'Awaiting review', 2, '2024-08-01 08:00:00', '2024-08-01 15:00:00', 'src/assets/hocky.png');
+INSERT INTO `events` VALUES (1, 1, 'Welsh Judo', 'Welsh Judo are hosting the British Adaptive & VI Open in Swansea.', 'cardiff', 'Passed', 100, '2024-07-29 04:26:05', '2024-07-29 07:26:16', 'src/assets/event-judo.png');
+INSERT INTO `events` VALUES (4, 1, 'Badminton Wales', 'Badminton Wales are hosting the Yonex Welsh International Challenge in Cardiff​', '15 Pen-Y-Lan Rd, Cardiff CF24 3PG, UK', 'Awaiting review', 77, '2024-07-30 09:00:00', '2024-07-30 22:00:00', 'src/assets/event-badminto.png');
+INSERT INTO `events` VALUES (5, 1, 'Table Tennis Wales', 'Table Tennis Wales hosting the Senior Team Championships of Wales ​', 'Julian Hodge Building, Colum Dr, Cardiff CF10 3EU, UK', 'Awaiting review', 2, '2024-08-02 01:08:36', '2024-08-02 09:06:42', 'src/assets/event-tabletennis.png');
+INSERT INTO `events` VALUES (6, 1, 'Hockey Wales', 'Hockey Wales hosting International Series over a long weekend', '5 Pen-Y-Lan Rd, Cardiff CF24 3PG, UK', 'Awaiting review', 2, '2024-08-18 08:00:00', '2024-08-20 15:00:00', 'src/assets/hocky.png');
 
 -- ----------------------------
 -- Table structure for files
 -- ----------------------------
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files`  (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `filename` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `content_type` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `data` longblob NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of files
@@ -209,15 +213,15 @@ INSERT INTO `files` VALUES (4, 'first aid.jpg', 'image/jpeg', 0xFFD8FFE000104A46
 -- ----------------------------
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `eventId` bigint NULL DEFAULT NULL,
-  `senderId` bigint NULL DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventId` bigint(20) NULL DEFAULT NULL,
+  `senderId` bigint(20) NULL DEFAULT NULL,
   `content` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `timestamp` datetime NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+  `timestamp` datetime NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `event_id`(`eventId` ASC) USING BTREE,
-  INDEX `sender_id`(`senderId` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+  INDEX `event_id`(`eventId`) USING BTREE,
+  INDEX `sender_id`(`senderId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of messages
@@ -238,12 +242,12 @@ INSERT INTO `messages` VALUES (10, 4, 1, '23321421', '2024-07-31 00:54:32');
 -- ----------------------------
 DROP TABLE IF EXISTS `organizer`;
 CREATE TABLE `organizer`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `userId` bigint NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) NOT NULL,
   `organizationName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `organizationDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `organizationDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of organizer
@@ -256,13 +260,13 @@ INSERT INTO `organizer` VALUES (2, 2, 'Cardiff Biking', 'Cardiff Biking is a cyc
 -- ----------------------------
 DROP TABLE IF EXISTS `redemptionrecords`;
 CREATE TABLE `redemptionrecords`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `userId` bigint NOT NULL,
-  `itemId` bigint NOT NULL,
-  `pointsUsed` int NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) NOT NULL,
+  `itemId` bigint(20) NOT NULL,
+  `pointsUsed` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of redemptionrecords
@@ -273,14 +277,14 @@ CREATE TABLE `redemptionrecords`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `rewardstore`;
 CREATE TABLE `rewardstore`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `itemUrl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `itemName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `itemDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `pointsRequired` int NOT NULL,
-  `stock` int NULL DEFAULT 0,
+  `itemDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `pointsRequired` int(11) NOT NULL,
+  `stock` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rewardstore
@@ -294,17 +298,19 @@ INSERT INTO `rewardstore` VALUES (3, 'src/assets/kebab.png', 'kebab', 'food', 3,
 -- ----------------------------
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles`  (
-  `roleId` bigint NOT NULL AUTO_INCREMENT,
+  `roleId` bigint(20) NOT NULL AUTO_INCREMENT,
   `roleName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`roleId`) USING BTREE,
-  UNIQUE INDEX `role_name`(`roleName` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `role_name`(`roleName`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
+INSERT INTO `roles` VALUES (16, '2121');
 INSERT INTO `roles` VALUES (3, 'admin');
 INSERT INTO `roles` VALUES (1, 'organizer');
+INSERT INTO `roles` VALUES (8, 'vip');
 INSERT INTO `roles` VALUES (2, 'volunteer');
 
 -- ----------------------------
@@ -312,67 +318,67 @@ INSERT INTO `roles` VALUES (2, 'volunteer');
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `loginId` bigint NULL DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `loginId` bigint(20) NULL DEFAULT NULL,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `enabled` tinyint(1) NULL DEFAULT 1,
-  `lastLoginTime` timestamp NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
-  `registerTime` timestamp NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+  `lastLoginTime` timestamp NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP,
+  `registerTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `username`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 1, 'organizer', '07961555608', '$2a$10$Xr6WrdQBrtCumI6T9UN8cOaLkgNUQzEw5sIyw3lDjMSFOrOo2KlRi', '13253348930@163.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1, '2024-08-18 05:22:25', '2024-08-19 02:12:22');
-INSERT INTO `users` VALUES (2, 2, 'admin', '13253348930', '$2a$10$oerriH6/v5CkxPgoIJpNv.jJj1h7ATIqfpXmlyHDPbR2M7HXJpUoe', 'gongj13@cardiff.ac.uk', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1, '2024-08-18 05:23:45', '2024-08-19 02:12:22');
+INSERT INTO `users` VALUES (2, 2, 'admin', '13253348930', '$2a$10$oerriH6/v5CkxPgoIJpNv.jJj1h7ATIqfpXmlyHDPbR2M7HXJpUoe', 'gongj13@cardiff.ac.uk', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1, '2024-08-19 22:04:50', '2024-08-19 22:04:50');
 INSERT INTO `users` VALUES (3, 3, 'volunteer', '13370776044', '$2a$10$Xr6WrdQBrtCumI6T9UN8cOaLkgNUQzEw5sIyw3lDjMSFOrOo2KlRi', '543800896@qq.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1, '2024-08-18 05:20:09', '2024-08-19 02:12:22');
 INSERT INTO `users` VALUES (4, 4, 'volunteer2', '15616547894', '$10$Xr6WrdQBrtCumI6T9UN8cOaLkgNUQzEw5sIyw3lDjMSFOrOo2KlRi', 'gjaiodjoia@163.com', 'https://s2.loli.net/2024/06/07/hjc65p2HRtKYFbG.png', 1, '2024-08-18 05:20:09', '2024-08-19 02:12:22');
-INSERT INTO `users` VALUES (5, NULL, 'test', NULL, '$2a$10$ln7aztnZw5GJp.F2UyUdHOByB4E739K1Nx0dHxStjGZZwVe8Yh3I6', 'gongj13@cardiff.ac.uk', NULL, 1, '2024-08-15 02:31:24', '2024-08-19 02:12:22');
-INSERT INTO `users` VALUES (6, NULL, 'test1', NULL, '$2a$10$ndSqGglEpM9RdKNaz31INuH73DtT9E1rqMAXIMBArly9aO4McCzOO', '13253348930@163.com', NULL, 1, '2024-08-15 02:32:40', '2024-08-19 02:12:22');
-INSERT INTO `users` VALUES (7, NULL, 'test2', NULL, '$2a$10$2MDh62cv2zxDYHQ9PI/zGu9s2ZRrb15ljm2DbsuoIDV5V2XTf62Hm', '13253348930@163.com', NULL, 1, '2024-08-18 05:20:09', '2024-08-19 02:12:22');
-INSERT INTO `users` VALUES (8, NULL, 'test3', NULL, '$2a$10$8cgykT8VpjTIXUI7dfRFb.oulS1LMgDgDmof7OVDjN1sIol3J.RvW', '13253348930@163.com', NULL, 1, '2024-08-18 05:20:09', '2024-08-19 02:12:22');
+INSERT INTO `users` VALUES (5, NULL, 'test', '122', NULL, 'gongj13@cardiff.ac.uk', NULL, 1, '2024-08-19 03:13:34', '2024-08-19 03:13:34');
+INSERT INTO `users` VALUES (7, NULL, 'test2', '222', NULL, '13253348930@163.com', NULL, 1, '2024-08-19 03:59:28', '2024-08-19 03:59:28');
+INSERT INTO `users` VALUES (11, 99, 'cn', '22', NULL, '23@s.com', '22', 1, '2024-08-19 03:36:03', '2024-08-19 03:36:03');
 
 -- ----------------------------
 -- Table structure for volunteer
 -- ----------------------------
 DROP TABLE IF EXISTS `volunteer`;
 CREATE TABLE `volunteer`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `userId` bigint NOT NULL,
-  `experience` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) NOT NULL,
+  `experience` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `firstAid` tinyint(1) NULL DEFAULT NULL,
   `dbs` tinyint(1) NULL DEFAULT NULL,
-  `kudosPoints` int NULL DEFAULT 0,
-  `eventCount` int NULL DEFAULT 0,
+  `kudosPoints` int(11) NULL DEFAULT 0,
+  `eventCount` int(11) NULL DEFAULT 0,
   `level` enum('Newbie','Bronze','Silver','Gold') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'Newbie',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of volunteer
 -- ----------------------------
 INSERT INTO `volunteer` VALUES (1, 3, 'Olympic', 1, 1, 7, 2, 'Newbie');
 INSERT INTO `volunteer` VALUES (2, 4, 'Olympic', 1, 0, 11, 1, 'Newbie');
+INSERT INTO `volunteer` VALUES (4, 5, 'Olympic', 1, 0, 0, 1, 'Newbie');
 
 -- ----------------------------
 -- Table structure for volunteerinfo
 -- ----------------------------
 DROP TABLE IF EXISTS `volunteerinfo`;
 CREATE TABLE `volunteerinfo`  (
-  `InformationId` int NOT NULL AUTO_INCREMENT,
-  `volunteerId` int NULL DEFAULT NULL,
-  `InfoTitle` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `eventId` int NULL DEFAULT NULL,
-  `SendTime` timestamp NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
-  `InfoBody` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `InformationId` int(11) NOT NULL AUTO_INCREMENT,
+  `volunteerId` int(11) NULL DEFAULT NULL,
+  `InfoTitle` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `eventId` int(11) NULL DEFAULT NULL,
+  `SendTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP,
+  `InfoBody` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`InformationId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of volunteerinfo
@@ -384,15 +390,15 @@ INSERT INTO `volunteerinfo` VALUES (1, 3, 'Congrats! You are approved!', 1, '202
 -- ----------------------------
 DROP TABLE IF EXISTS `volunteerratings`;
 CREATE TABLE `volunteerratings`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `eventId` bigint NOT NULL,
-  `organizerId` bigint NOT NULL,
-  `volunteerId` bigint NOT NULL,
-  `rating` int NULL DEFAULT NULL,
-  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventId` bigint(20) NOT NULL,
+  `organizerId` bigint(20) NOT NULL,
+  `volunteerId` bigint(20) NOT NULL,
+  `rating` int(11) NULL DEFAULT NULL,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of volunteerratings
