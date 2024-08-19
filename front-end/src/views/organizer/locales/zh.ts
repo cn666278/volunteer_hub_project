@@ -75,4 +75,21 @@ export default {
   "myEvent.comment": "评论",
   "myEvent.delete": "删除",
   "myEvent.fetchEventsError": "获取事件失败",
+
+  // EditEvent 页面
+  "editEvent.title": "标题",
+  "editEvent.description": "描述",
+  "editEvent.location": "地点",
+  "editEvent.file": "文件",
+  "editEvent.enterFileName": "输入文件名",
+  "editEvent.filePreview": "文件预览",
+  "editEvent.pointsAwarded": "奖励积分",
+  "editEvent.startDate": "开始日期",
+  "editEvent.endDate": "结束日期",
+  "editEvent.roles": "角色",
+  "editEvent.nearbyFacilities": "附近设施",
+  "editEvent.save": "保存",
+  "editEvent.reset": "重置",
+  "editEvent.chooseStartDate": "选择开始日期",
+  "editEvent.chooseEndDate": "选择结束日期",
 };

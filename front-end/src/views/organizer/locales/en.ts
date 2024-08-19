@@ -75,4 +75,21 @@ export default {
   "myEvent.comment": "Comment",
   "myEvent.delete": "Delete",
   "myEvent.fetchEventsError": "Failed to fetch events",
+
+  // EditEvent Page
+  "editEvent.title": "Title",
+  "editEvent.description": "Description",
+  "editEvent.location": "Location",
+  "editEvent.file": "File",
+  "editEvent.enterFileName": "Enter file name",
+  "editEvent.filePreview": "File Preview",
+  "editEvent.pointsAwarded": "Points Awarded",
+  "editEvent.startDate": "Start Date",
+  "editEvent.endDate": "End Date",
+  "editEvent.roles": "Roles",
+  "editEvent.nearbyFacilities": "Nearby Facilities",
+  "editEvent.save": "Save",
+  "editEvent.reset": "Reset",
+  "editEvent.chooseStartDate": "Choose start date",
+  "editEvent.chooseEndDate": "Choose end date",
 };

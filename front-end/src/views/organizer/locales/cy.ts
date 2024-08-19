@@ -75,4 +75,21 @@ export default {
   "myEvent.comment": "Sylw",
   "myEvent.delete": "Dileu",
   "myEvent.fetchEventsError": "Methu â nôl digwyddiadau",
+
+  // Tudalen EditEvent
+  "editEvent.title": "Teitl",
+  "editEvent.description": "Disgrifiad",
+  "editEvent.location": "Lleoliad",
+  "editEvent.file": "Ffeil",
+  "editEvent.enterFileName": "Rhowch enw'r ffeil",
+  "editEvent.filePreview": "Rhagolwg Ffeil",
+  "editEvent.pointsAwarded": "Pwyntiau a ddyfarnwyd",
+  "editEvent.startDate": "Dyddiad Dechrau",
+  "editEvent.endDate": "Dyddiad Gorffen",
+  "editEvent.roles": "Rolau",
+  "editEvent.nearbyFacilities": "Cyfleusterau Agos",
+  "editEvent.save": "Cadw",
+  "editEvent.reset": "Ailosod",
+  "editEvent.chooseStartDate": "Dewiswch ddyddiad cychwyn",
+  "editEvent.chooseEndDate": "Dewiswch ddyddiad gorffen",
 };
