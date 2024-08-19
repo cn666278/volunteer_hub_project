@@ -233,42 +233,43 @@ let organizerData = reactive({
   series: [],
 });
 
-// get Echart Data
+// 获取echarts数据
 const getEchartData = async () => {
   let result = await proxy.$api.getEchartData();
-  // let res = result.eventData;
-  // BUG: 后端查询错误，暂时使用假数据
-  let res = {
-    date: [
-      "2024-08-13",
-      "2024-08-14",
-      "2024-08-15",
-      "2024-08-16",
-      "2024-08-17",
-      "2024-08-18",
-      "2024-08-19"
-    ],
-    data: [
-      { Judo: 10, Badminton: 15, Table_Tennis: 12 },
-      { Judo: 18, Badminton: 20, Table_Tennis: 22 },
-      { Judo: 14, Badminton: 25, Table_Tennis: 17 },
-      { Judo: 22, Badminton: 19, Table_Tennis: 25 },
-      { Judo: 28, Badminton: 23, Table_Tennis: 20 },
-      { Judo: 25, Badminton: 30, Table_Tennis: 28 },
-      { Judo: 30, Badminton: 28, Table_Tennis: 32 }
-    ],
-  };
-  let userRes = result.userData;
-  let organizerRes = result.organizerData;
+  let res = result.eventData;
+  console.log(res);
 
+  // 对日期和对应的数据进行排序（日期升序）
+  let sortedData = res.date.map((date, index) => {
+    return {
+      date: date,
+      data: res.data[index]
+    };
+  });
+
+  sortedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // 提取排序后的日期和数据
+  res.date = sortedData.map(item => item.date);
+  res.data = sortedData.map(item => item.data);
+
+  console.log(res);
+
+  // 处理数据以确保无空对象
   eventData.xData = res.date;
-  const keyArray = Object.keys(res.data[0]);
-  console.log(keyArray);
   const series = [];
-  keyArray.forEach((key) => {
+  
+  // 获取所有非空数据的键
+  const keySet = new Set();
+  res.data.forEach((item) => {
+    Object.keys(item).forEach((key) => keySet.add(key));
+  });
+  
+  // 构建series数据
+  keySet.forEach((key) => {
     series.push({
       name: key,
-      data: res.data.map((item) => item[key]),
+      data: res.data.map((item) => item[key] || 0), // 处理空值，使用0代替
       type: "line",
     });
   });
@@ -276,39 +277,47 @@ const getEchartData = async () => {
   eventData.series = series;
   xOptions.xAxis.data = eventData.xData;
   xOptions.series = eventData.series;
+
   let hEcharts = echarts.init(proxy.$refs["echart"]);
   hEcharts.setOption(xOptions);
 
   // 渲染柱状图: userData
+  let userRes = result.userData;
   userData.xData = userRes.map((item) => item.date);
   userData.series = [
     {
       name: "New users",
-      data: userRes.map((item) => item.newUsers),
+      data: userRes.map((item) => item.newUsers || 0), // 使用0替代空值
       type: "bar",
     },
     {
       name: "Active users",
-      data: userRes.map((item) => item.activeUsers),
+      data: userRes.map((item) => item.activeUsers || 0), // 使用0替代空值
       type: "bar",
     },
   ];
+
   xOptions.xAxis.data = userData.xData;
   xOptions.series = userData.series;
+
   let userEcharts = echarts.init(proxy.$refs["userEchart"]);
   userEcharts.setOption(xOptions);
 
   // 渲染饼图: organizerData
+  let organizerRes = result.organizerData;
   organizerData.series = [
     {
       data: organizerRes,
       type: "pie",
     },
   ];
+  
   pieOptions.series = organizerData.series;
+
   let organizerEcharts = echarts.init(proxy.$refs["organizerData"]);
   organizerEcharts.setOption(pieOptions);
 };
+
 
 onMounted(() => {
   getTableList();
