@@ -37,7 +37,7 @@
       <div class="top">
         <el-menu router mode="horizontal" background-color="#a9181a" text-color="#fff" active-text-color="rgb(255, 143, 15)"
                  :ellipsis="false">
-          <el-menu-item index="1">
+          <el-menu-item index="/organizer">
             <el-icon><House /></el-icon>
             {{ $t('topbar.home') }}
           </el-menu-item>
