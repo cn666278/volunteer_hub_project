@@ -2,34 +2,34 @@
   <div class="index">
     <div class="left">
       <div class="title">
-        <h2>WSA Volunteer Hub</h2>
+        <h2>{{ $t('sidebar.title') }}</h2>
       </div>
       <el-menu router active-text-color="#ffd04b" background-color="#a9181a" class="el-menu-vertical-demo"
                default-active="2" text-color="#fff">
         <el-sub-menu index="1">
           <template #title>
             <el-icon><Briefcase /></el-icon>
-            <span>Event</span>
+            <span>{{ $t('sidebar.event') }}</span>
           </template>
-          <el-menu-item index="/eventRegister">EventRegister</el-menu-item>
-          <el-menu-item index="/myEvents">MyEvents</el-menu-item>
-          <el-menu-item index="/uploadTest">Upload Test</el-menu-item>
+          <el-menu-item index="/eventRegister">{{ $t('sidebar.eventRegister') }}</el-menu-item>
+          <el-menu-item index="/myEvents">{{ $t('sidebar.myEvents') }}</el-menu-item>
+          <el-menu-item index="/uploadTest">{{ $t('sidebar.uploadTest') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>
             <el-icon><Tools /></el-icon>
-            <span>System</span>
+            <span>{{ $t('sidebar.system') }}</span>
           </template>
-          <el-menu-item index="2-1">Menu</el-menu-item>
-          <el-menu-item index="2-2">Dictionary</el-menu-item>
+          <el-menu-item index="2-1">{{ $t('sidebar.menu') }}</el-menu-item>
+          <el-menu-item index="2-2">{{ $t('sidebar.dictionary') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
             <el-icon><Avatar /></el-icon>
-            <span>Account</span>
+            <span>{{ $t('sidebar.account') }}</span>
           </template>
-          <el-menu-item index="3-1">Role</el-menu-item>
-          <el-menu-item index="3-2">User</el-menu-item>
+          <el-menu-item index="3-1">{{ $t('sidebar.role') }}</el-menu-item>
+          <el-menu-item index="3-2">{{ $t('sidebar.user') }}</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
@@ -39,25 +39,25 @@
                  :ellipsis="false">
           <el-menu-item index="1">
             <el-icon><House /></el-icon>
-            Home
+            {{ $t('topbar.home') }}
           </el-menu-item>
           <el-menu-item index="2">
             <el-icon><Message /></el-icon>
-            Mail
+            {{ $t('topbar.mail') }}
           </el-menu-item>
           <el-menu-item index="3">
             <el-icon><ChatDotRound /></el-icon>
-            Message
+            {{ $t('topbar.message') }}
           </el-menu-item>
           <changeLanguage />
           <el-sub-menu index="4">
             <template #title>
               <el-icon><User /></el-icon>
-              Admin
+              {{ $t('topbar.admin') }}
             </template>
-            <el-menu-item index="4-1">Personal</el-menu-item>
-            <el-menu-item index="4-2">Password</el-menu-item>
-            <el-menu-item index="" @click="exit">Exit</el-menu-item>
+            <el-menu-item index="4-1">{{ $t('topbar.personal') }}</el-menu-item>
+            <el-menu-item index="4-2">{{ $t('topbar.password') }}</el-menu-item>
+            <el-menu-item index="" @click="exit">{{ $t('topbar.exit') }}</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
@@ -68,6 +68,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import {
   House,
@@ -81,10 +82,15 @@ import {
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import useUser from "../../store/user.ts";
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus';
 import changeLanguage from "../../components/changeLanguage.vue";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 let userStore = useUser();
 let router = useRouter();
+
 // check if the user is logged in, if not, redirect to the login page
 onMounted(() => {
   console.log(userStore.user);
@@ -95,18 +101,17 @@ onMounted(() => {
 
 // exit
 const exit = () => {
-  ElMessageBox.confirm('Do you confirm to exit?', 'System Notification', {
-    confirmButtonText: 'Confirm',
-    cancelButtonText: 'Cancel',
+  ElMessageBox.confirm(t('messages.confirmExit'), t('messages.systemNotification'), {
+    confirmButtonText: t('buttons.confirm'),
+    cancelButtonText: t('buttons.cancel'),
     type: 'warning'
   }).then(() => {
     userStore.clearUser();
     router.push('/');
   }).catch(() => {
-    console.log('Cancel exit');
+    console.log(t('messages.cancelExit'));
   });
 };
-
 </script>
 
 <style lang="scss">
