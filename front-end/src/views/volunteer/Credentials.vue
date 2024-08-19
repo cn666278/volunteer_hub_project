@@ -1,32 +1,79 @@
 <template>
   <div class="container">
-    <el-button type="primary" class="upload-button">Upload Credentials</el-button> <!-- 新增上传按钮 -->
+    <el-button type="primary" class="upload-button">Upload Credentials</el-button>
     <div class="credentials">
       <el-card v-for="item in items" :key="item.id" class="card">
-        <template #header>{{ item.title }}</template>
-        <img :src="item.imgSrc" class="card-image" />
+        <template #header>{{ item.credentialName }}</template>
+        <img :src="item.credentialUrl" class="card-image" />
         <div class="actions">
-          <el-button type="info">Edit</el-button>
-          <el-button type="primary">Awaiting Approval</el-button>
+          <el-button type="danger" @click="confirmDelete(item.id)">Delete</el-button>
         </div>
       </el-card>
     </div>
   </div>
 </template>
 
-
-
-
-
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { ElMessageBox } from 'element-plus';
+import useUser from '../../store/user';
+import api from '../../api/api';  // 确保引入API管理文件
 
-const items = ref([
-  { id: 1, title: 'Volunteer certificate', imgSrc: './src/assets/cer1.png' },
-  { id: 2, title: 'Credential2', imgSrc: './src/assets/cer2.jpg'},
-]);
+const items = ref([]);
+const userStore = useUser();
+
+onMounted(async () => {
+  const loginId = userStore.user.loginId;
+
+  if (loginId) {
+    try {
+      const response = await api.getCredentialsByVolunteerId({ volunteerId: loginId });
+      if (response) {
+        items.value = response;
+      } else {
+        console.error('Failed to load credentials');
+      }
+    } catch (error) {
+      console.error('Error fetching credentials:', error);
+    }
+  } else {
+    console.error('loginId not found');
+  }
+});
+
+// Function to confirm delete a credential
+const confirmDelete = (id) => {
+  ElMessageBox.confirm(
+      'Are you sure you want to delete this credential?',
+      'Warning',
+      {
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        deleteCredential(id);
+      })
+      .catch(() => {
+        console.log('Delete canceled');
+      });
+};
+
+// Function to delete a credential
+const deleteCredential = async (id) => {
+  try {
+    const response = await api.deleteCredential({ id });
+    if (response) {
+      items.value = items.value.filter(item => item.id !== id);
+    } else {
+      console.error('Failed to delete credential');
+    }
+  } catch (error) {
+    console.error('Error deleting credential:', error);
+  }
+};
 </script>
-
 
 <style lang="scss" scoped>
 .container {
@@ -38,7 +85,7 @@ const items = ref([
 
 .upload-button {
   margin-top: 20px;
-  margin-bottom: 20px; /* 确保按钮与卡片之间有适当的间距 */
+  margin-bottom: 20px; /* Ensures proper spacing between the button and cards */
 }
 
 .credentials {
@@ -70,7 +117,7 @@ const items = ref([
 .actions {
   padding: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Centering the delete button */
 }
 
 .card:hover {
@@ -78,7 +125,7 @@ const items = ref([
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-el-button--primary {
-  background-color:#a9181a;
+.el-button--primary {
+  background-color: #a9181a;
 }
 </style>
