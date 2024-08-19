@@ -149,7 +149,6 @@ const tableLable = {
 const getTableList = async () => {
   try {
     let res = await proxy.$api.getEventStatus();
-    console.log("EventStatus:", res);
     tableData.value = res;
   } catch (error) {
     console.error("Error fetching table data:", error);
@@ -237,12 +236,34 @@ let organizerData = reactive({
 // get Echart Data
 const getEchartData = async () => {
   let result = await proxy.$api.getEchartData();
-  let res = result.eventData;
+  // let res = result.eventData;
+  // BUG: 后端查询错误，暂时使用假数据
+  let res = {
+    date: [
+      "2024-08-13",
+      "2024-08-14",
+      "2024-08-15",
+      "2024-08-16",
+      "2024-08-17",
+      "2024-08-18",
+      "2024-08-19"
+    ],
+    data: [
+      { Judo: 10, Badminton: 15, Table_Tennis: 12 },
+      { Judo: 18, Badminton: 20, Table_Tennis: 22 },
+      { Judo: 14, Badminton: 25, Table_Tennis: 17 },
+      { Judo: 22, Badminton: 19, Table_Tennis: 25 },
+      { Judo: 28, Badminton: 23, Table_Tennis: 20 },
+      { Judo: 25, Badminton: 30, Table_Tennis: 28 },
+      { Judo: 30, Badminton: 28, Table_Tennis: 32 }
+    ],
+  };
   let userRes = result.userData;
   let organizerRes = result.organizerData;
 
   eventData.xData = res.date;
   const keyArray = Object.keys(res.data[0]);
+  console.log(keyArray);
   const series = [];
   keyArray.forEach((key) => {
     series.push({
@@ -263,12 +284,12 @@ const getEchartData = async () => {
   userData.series = [
     {
       name: "New users",
-      data: userRes.map((item) => item.new),
+      data: userRes.map((item) => item.newUsers),
       type: "bar",
     },
     {
       name: "Active users",
-      data: userRes.map((item) => item.active),
+      data: userRes.map((item) => item.activeUsers),
       type: "bar",
     },
   ];

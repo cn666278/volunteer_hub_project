@@ -18,7 +18,7 @@ public class CountDataService {
     public List<CountDataRes> getCountData() {
         List<CountDataRes> countDataResList = new ArrayList<>();
 
-        // 获取事件统计数据
+        // totalEvents
         CountDataRes totalEvents = new CountDataRes();
         totalEvents.setName("totalEvents");
         totalEvents.setIcon("success-filled");
@@ -26,21 +26,7 @@ public class CountDataService {
         totalEvents.setValue(countDataMapper.getTotalEvents());
         countDataResList.add(totalEvents);
 
-        CountDataRes todaysActiveEvents = new CountDataRes();
-        todaysActiveEvents.setName("todaysActiveEvents");
-        todaysActiveEvents.setIcon("success-filled");
-        todaysActiveEvents.setColor("#2ec7c9");
-        todaysActiveEvents.setValue(countDataMapper.getTodaysActiveEvents());
-        countDataResList.add(todaysActiveEvents);
-
-        CountDataRes monthlyActiveEvents = new CountDataRes();
-        monthlyActiveEvents.setName("monthlyActiveEvents");
-        monthlyActiveEvents.setIcon("success-filled");
-        monthlyActiveEvents.setColor("#2ec7c9");
-        monthlyActiveEvents.setValue(countDataMapper.getMonthlyActiveEvents());
-        countDataResList.add(monthlyActiveEvents);
-
-        // 获取用户统计数据
+        // totalUsers
         CountDataRes totalUsers = new CountDataRes();
         totalUsers.setName("totalUsers");
         totalUsers.setIcon("star-filled");
@@ -48,21 +34,7 @@ public class CountDataService {
         totalUsers.setValue(countDataMapper.getTotalUsers());
         countDataResList.add(totalUsers);
 
-        CountDataRes todaysActiveUsers = new CountDataRes();
-        todaysActiveUsers.setName("todaysActiveUsers");
-        todaysActiveUsers.setIcon("star-filled");
-        todaysActiveUsers.setColor("#ffb980");
-        todaysActiveUsers.setValue(countDataMapper.getTodaysActiveUsers());
-        countDataResList.add(todaysActiveUsers);
-
-        CountDataRes monthlyActiveUsers = new CountDataRes();
-        monthlyActiveUsers.setName("monthlyActiveUsers");
-        monthlyActiveUsers.setIcon("star-filled");
-        monthlyActiveUsers.setColor("#ffb980");
-        monthlyActiveUsers.setValue(countDataMapper.getMonthlyActiveUsers());
-        countDataResList.add(monthlyActiveUsers);
-
-        // 获取注册用户统计数据
+        // totalRegisterUsers
         CountDataRes totalRegisterUsers = new CountDataRes();
         totalRegisterUsers.setName("totalRegisterUsers");
         totalRegisterUsers.setIcon("goods-filled");
@@ -70,6 +42,23 @@ public class CountDataService {
         totalRegisterUsers.setValue(countDataMapper.getTotalRegisterUsers());
         countDataResList.add(totalRegisterUsers);
 
+        // todaysActiveEvents
+        CountDataRes todaysActiveEvents = new CountDataRes();
+        todaysActiveEvents.setName("todaysActiveEvents");
+        todaysActiveEvents.setIcon("success-filled");
+        todaysActiveEvents.setColor("#2ec7c9");
+        todaysActiveEvents.setValue(countDataMapper.getTodaysActiveEvents());
+        countDataResList.add(todaysActiveEvents);
+
+        // todaysActiveUsers
+        CountDataRes todaysActiveUsers = new CountDataRes();
+        todaysActiveUsers.setName("todaysActiveUsers");
+        todaysActiveUsers.setIcon("star-filled");
+        todaysActiveUsers.setColor("#ffb980");
+        todaysActiveUsers.setValue(countDataMapper.getTodaysActiveUsers());
+        countDataResList.add(todaysActiveUsers);
+
+        // todaysRegisterUsers
         CountDataRes todaysRegisterUsers = new CountDataRes();
         todaysRegisterUsers.setName("todaysRegisterUsers");
         todaysRegisterUsers.setIcon("goods-filled");
@@ -77,6 +66,23 @@ public class CountDataService {
         todaysRegisterUsers.setValue(countDataMapper.getTodaysRegisterUsers());
         countDataResList.add(todaysRegisterUsers);
 
+        // monthlyActiveEvents
+        CountDataRes monthlyActiveEvents = new CountDataRes();
+        monthlyActiveEvents.setName("monthlyActiveEvents");
+        monthlyActiveEvents.setIcon("success-filled");
+        monthlyActiveEvents.setColor("#2ec7c9");
+        monthlyActiveEvents.setValue(countDataMapper.getMonthlyActiveEvents());
+        countDataResList.add(monthlyActiveEvents);
+
+        // monthlyActiveUsers
+        CountDataRes monthlyActiveUsers = new CountDataRes();
+        monthlyActiveUsers.setName("monthlyActiveUsers");
+        monthlyActiveUsers.setIcon("star-filled");
+        monthlyActiveUsers.setColor("#ffb980");
+        monthlyActiveUsers.setValue(countDataMapper.getMonthlyActiveUsers());
+        countDataResList.add(monthlyActiveUsers);
+
+        // monthlyRegisterUsers
         CountDataRes monthlyRegisterUsers = new CountDataRes();
         monthlyRegisterUsers.setName("monthlyRegisterUsers");
         monthlyRegisterUsers.setIcon("goods-filled");
