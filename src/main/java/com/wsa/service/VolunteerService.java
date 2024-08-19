@@ -2,7 +2,9 @@ package com.wsa.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.wsa.mapper.CredentialMapper;
 import com.wsa.mapper.VolunteerMapper;
+import com.wsa.model.Credential;
 import com.wsa.model.SubmitCommentRequest;
 import com.wsa.model.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,22 @@ public class VolunteerService {
 
     public Volunteer getVolunteerByUserId(Long userId) {
         return volunteerMapper.getVolunteerByUserId(userId);
+    }
+
+    @Autowired
+    private CredentialMapper credentialMapper;
+
+    public List<Credential> getCredentialsByVolunteerId(Long volunteerId) {
+        // 调用Mapper方法获取凭证数据
+        return credentialMapper.findCredentialsByVolunteerId(volunteerId);
+    }
+
+    public void deleteCredentialById(Long id) {
+        credentialMapper.deleteCredentialById(id);
+    }
+
+    public void updateCredential(Credential credential) {
+        credentialMapper.updateCredential(credential);
     }
 }
 

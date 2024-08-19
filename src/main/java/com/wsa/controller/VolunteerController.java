@@ -1,6 +1,7 @@
 package com.wsa.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.wsa.model.Credential;
 import com.wsa.model.ResultVO;
 import com.wsa.model.SubmitCommentRequest;
 import com.wsa.model.Volunteer;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -57,6 +60,37 @@ public class VolunteerController {
             return ResultVO.success("submitComment success");
         } catch (Exception e) {
             return ResultVO.failure("submitComment failure");
+        }
+    }
+
+    @PostMapping("/getCredentialsByVolunteerId")
+    public ResultVO<List<Credential>> getCredentialsByVolunteerId(@RequestBody Credential credential) {
+
+        List<Credential> credentials = volunteerService.getCredentialsByVolunteerId(credential.getVolunteerId());
+        if (credentials != null && !credentials.isEmpty()) {
+            return ResultVO.success(credentials);
+        } else {
+            return ResultVO.failure("No credentials found for this volunteerId.");
+        }
+    }
+
+    @PostMapping("/deleteCredential")
+    public ResultVO<String> deleteCredential(@RequestBody Credential credential) {
+        try {
+            volunteerService.deleteCredentialById(credential.getId());
+            return ResultVO.success("Credential deleted successfully.");
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to delete credential.");
+        }
+    }
+
+    @PostMapping("/updateCredential")
+    public ResultVO<String> updateCredential(@RequestBody Credential credential) {
+        try {
+            volunteerService.updateCredential(credential);
+            return ResultVO.success("Credential updated successfully.");
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to update credential.");
         }
     }
 }

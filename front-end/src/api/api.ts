@@ -376,6 +376,33 @@ export default {
     });
   },
 
+  getCredentialsByVolunteerId(params: any) {
+    return request({
+      url: "/volunteer/getCredentialsByVolunteerId",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+
+  deleteCredential(params: any) {
+    return request({
+      url: '/volunteer/deleteCredential',
+      method: 'post',
+      data: params,
+      mock: false,
+    });
+  },
+
+  updateCredential(params: any) {
+    return request({
+      url: '/volunteer/updateCredential',
+      method: 'post',
+      data: params,
+      mock: false,
+    });
+  },
+
   // navigateToEvent(params: any) {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },
