@@ -102,4 +102,13 @@ export default {
   "commentVolunteer.actions": "操作",
   "commentVolunteer.comment": "评论",
   "commentVolunteer.credentialImage": "凭证图片",
+
+  // CommentDetail 页面
+  "commentDetail.username": "用户名",
+  "commentDetail.star": "星级",
+  "commentDetail.comment": "评论",
+  "commentDetail.submit": "提交",
+  "commentDetail.cancel": "取消",
+  "commentDetail.commentSuccess": "评论提交成功。",
+  "commentDetail.commentFailure": "提交评论失败。",
 };

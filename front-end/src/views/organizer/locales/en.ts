@@ -102,4 +102,13 @@ export default {
   "commentVolunteer.actions": "Actions",
   "commentVolunteer.comment": "Comment",
   "commentVolunteer.credentialImage": "Credential Image",
+
+   // CommentDetail Page
+   "commentDetail.username": "Username",
+   "commentDetail.star": "Star",
+   "commentDetail.comment": "Comment",
+   "commentDetail.submit": "Submit",
+   "commentDetail.cancel": "Cancel",
+   "commentDetail.commentSuccess": "Comment submitted successfully.",
+   "commentDetail.commentFailure": "Failed to submit comment.",
 };

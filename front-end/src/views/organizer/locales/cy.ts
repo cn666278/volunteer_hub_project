@@ -102,4 +102,13 @@ export default {
   "commentVolunteer.actions": "Gweithredoedd",
   "commentVolunteer.comment": "Sylw",
   "commentVolunteer.credentialImage": "Delwedd Tystysgrif",
+
+  // Tudalen CommentDetail
+  "commentDetail.username": "Enw Defnyddiwr",
+  "commentDetail.star": "Seren",
+  "commentDetail.comment": "Sylw",
+  "commentDetail.submit": "Cyflwyno",
+  "commentDetail.cancel": "Canslo",
+  "commentDetail.commentSuccess": "Sylw wedi'i gyflwyno'n llwyddiannus.",
+  "commentDetail.commentFailure": "Methwyd â chyflwyno sylw.",
 };
