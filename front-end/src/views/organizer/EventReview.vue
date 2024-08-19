@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-table :data="volunteers" stripe>
-      <el-table-column prop="username" label="Username"></el-table-column>
+      <el-table-column prop="username" :label="t('eventReview.username')"></el-table-column>
       <div style="display: none">
-        <el-table-column label="Contact">
+        <el-table-column :label="t('eventReview.contact')">
           <template v-slot="scope">
             <div>{{ scope.row.phone }}</div>
             <div>{{ scope.row.email }}</div>
           </template>
         </el-table-column>
       </div>
-      <el-table-column prop="experience" label="Experience"></el-table-column>
-      <el-table-column prop="eventCount" label="Event Count"></el-table-column>
-      <el-table-column prop="roleName" label="Role"></el-table-column>
-      <el-table-column label="Credentials">
+      <el-table-column prop="experience" :label="t('eventReview.experience')"></el-table-column>
+      <el-table-column prop="eventCount" :label="t('eventReview.eventCount')"></el-table-column>
+      <el-table-column prop="roleName" :label="t('eventReview.role')"></el-table-column>
+      <el-table-column :label="t('eventReview.credentials')">
         <template v-slot="scope">
           <div v-for="credential in scope.row.credentialList" :key="credential.credentialName">
             <el-link type="primary" @click="viewCredential(credential.credentialUrl)">
@@ -22,10 +22,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Actions">
+      <el-table-column :label="t('eventReview.actions')">
         <template v-slot="scope">
-          <el-button @click="acceptVolunteer(scope.row.id,scope.row.email)">Accept</el-button>
-          <el-button @click="rejectVolunteer(scope.row.id,scope.row.email)">Reject</el-button>
+          <el-button @click="acceptVolunteer(scope.row.id,scope.row.email)">{{ t('eventReview.accept') }}</el-button>
+          <el-button @click="rejectVolunteer(scope.row.id,scope.row.email)">{{ t('eventReview.reject') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,7 +36,9 @@
 import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 
@@ -71,7 +73,7 @@ const viewCredential = async (url) => {
 
       ElMessageBox.alert(
           `<img src="${imgURL}" alt="Credential Image" class="img-fluid">`,
-          'Credential Image',
+          t('eventReview.credentialImage'),
           {
             dangerouslyUseHTMLString: true,
             customClass: 'custom-el-messagebox',
@@ -84,6 +86,7 @@ const viewCredential = async (url) => {
     console.error("Error fetching file", error);
   }
 };
+
 const fetchVolunteers = async () => {
   const response = await proxy.$api.getVolunteersByEventId({
     eventId: event.eventId,
@@ -110,13 +113,13 @@ const rejectVolunteer = async (id,email) => {
   fetchVolunteers();
 };
 
-const updateVolunteerStatus = async (id, email,status) => {
+const updateVolunteerStatus = async (id, email, status) => {
   try {
     let eventId = event.eventId;
-    await proxy.$api.updateVolunteerStatus({ id, email,eventId,status });
-    ElMessage.success(`Volunteer has been ${status}.`);
+    await proxy.$api.updateVolunteerStatus({ id, email, eventId, status });
+    ElMessage.success(t('eventReview.volunteerStatusUpdated', { status }));
   } catch (error) {
-    ElMessage.error('Failed to update volunteer status.');
+    ElMessage.error(t('eventReview.updateStatusFailed'));
   }
 };
 onMounted(() => {

@@ -1,47 +1,47 @@
 <template>
   <div>
     <el-form :model="form" ref="formRef" label-width="120px">
-      <el-form-item :label="translatedLabels.title" prop="title">
+      <el-form-item :label="t('eventRegistration.title')" prop="title">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
-      <el-form-item :label="translatedLabels.description" prop="description">
+      <el-form-item :label="t('eventRegistration.description')" prop="description">
         <el-input v-model="form.description"></el-input>
       </el-form-item>
-      <el-form-item :label="translatedLabels.location" prop="location">
+      <el-form-item :label="t('eventRegistration.location')" prop="location">
         <el-input id="autocomplete" v-model="form.location" @focus="openMap"></el-input>
       </el-form-item>
-      <el-form-item :label="translatedLabels.file">
+      <el-form-item :label="t('eventRegistration.file')">
         <input type="file" @change="onFileChange" />
-        <el-input v-model="filename" placeholder="Enter file name" />
+        <el-input v-model="filename" :placeholder="t('eventRegistration.enterFileName')" />
         <!-- 显示文件预览图 -->
         <div v-if="uploadedFilePath">
-          <img :src="uploadedFilePath" alt="File Preview" style="max-width: 100px; max-height: 100px; margin-top: 10px;" />
+          <img :src="uploadedFilePath" :alt="t('eventRegistration.filePreview')" style="max-width: 100px; max-height: 100px; margin-top: 10px;" />
         </div>
       </el-form-item>
-      <el-form-item :label="translatedLabels.pointsAwarded" prop="pointsAwarded">
+      <el-form-item :label="t('eventRegistration.pointsAwarded')" prop="pointsAwarded">
         <el-input-number v-model="form.pointsAwarded"></el-input-number>
       </el-form-item>
-      <el-form-item :label="translatedLabels.startDate" prop="startDate">
+      <el-form-item :label="t('eventRegistration.startDate')" prop="startDate">
         <el-date-picker
             v-model="form.startDate"
             type="datetime"
-            placeholder="choose start date">
+            :placeholder="t('eventRegistration.chooseStartDate')">
         </el-date-picker>
       </el-form-item>
-      <el-form-item :label="translatedLabels.endDate" prop="endDate">
+      <el-form-item :label="t('eventRegistration.endDate')" prop="endDate">
         <el-date-picker
             v-model="form.endDate"
             type="datetime"
-            placeholder="choose end date">
+            :placeholder="t('eventRegistration.chooseEndDate')">
         </el-date-picker>
       </el-form-item>
-      <el-form-item :label="translatedLabels.roles" prop="roles">
+      <el-form-item :label="t('eventRegistration.roles')" prop="roles">
         <div v-for="role in availableRoles" :key="role" style="display: flex; align-items: center; margin-bottom: 8px;">
           <el-checkbox :label="role" v-model="form.roles">{{ role }}</el-checkbox>
           <el-input-number v-if="form.roles.includes(role)" v-model="form.rolesQuantities[role]" :min="1" style="margin-left: 8px;"></el-input-number>
         </div>
       </el-form-item>
-      <el-form-item :label="translatedLabels.nearbyFacilities" prop="nearbyFacilities">
+      <el-form-item :label="t('eventRegistration.nearbyFacilities')" prop="nearbyFacilities">
         <el-select v-model="form.nearbyFacilities" multiple>
           <el-option
               v-for="facility in nearbyFacilities"
@@ -52,8 +52,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm">{{ translatedLabels.register }}</el-button>
-        <el-button @click="resetForm">{{ translatedLabels.reset }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ t('eventRegistration.register') }}</el-button>
+        <el-button @click="resetForm">{{ t('eventRegistration.reset') }}</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -61,7 +61,8 @@
 
 <script setup lang='ts'>
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
-import { ElMessage, ElForm, ElMessageBox } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+import { ElMessage, ElForm } from 'element-plus';
 import { translateText } from '../../api/translate';
 import useUser from "../../store/user";
 let userStore = useUser();
@@ -110,7 +111,7 @@ const onFileChange = async (e) => {
 
 const uploadFile = async () => {
   if (!file.value || !filename.value.trim()) {
-    alert("Please select a file and enter a filename.");
+    alert(t('eventRegistration.selectFileError'));
     return;
   }
 
