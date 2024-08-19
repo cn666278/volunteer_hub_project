@@ -64,9 +64,7 @@ import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElForm } from 'element-plus';
 import { translateText } from '../../api/translate';
-import useUser from "../../../store/user.ts";
-
-const { t } = useI18n();
+import useUser from "../../store/user";
 let userStore = useUser();
 const { proxy } = getCurrentInstance();
 

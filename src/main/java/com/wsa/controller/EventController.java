@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.wsa.model.*;
 import com.wsa.service.EventService;
 import com.wsa.service.OrganizerService;
+import com.wsa.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,6 +25,8 @@ public class EventController {
     @Autowired
     private OrganizerService organizerService;
 
+    @Autowired
+    private VolunteerService volunteerService;
     @GetMapping("/getEventList")
     public ResultVO<List<EventRes>> getAllEventsList() {
 
@@ -229,6 +232,8 @@ public class EventController {
     @PostMapping("/subscribeForEvent")
     public ResultVO<String> subscribeForEvent(@RequestBody EventRegistrations eventRegistration) {
         try {
+            Volunteer volunteer = volunteerService.getVolunteerByUserId(eventRegistration.getVolunteerId());
+            eventRegistration.setVolunteerId(volunteer.getId());
             eventService.subscribeForEvent(eventRegistration);
             return ResultVO.success("Successfully subscribed to the event");
         } catch (IllegalStateException e) {
@@ -270,6 +275,8 @@ public class EventController {
     @PostMapping("/registerForEvent")
     public ResultVO<String> registerForEvent(@RequestBody EventRegistrations eventRegistration) {
         try {
+            Volunteer volunteer = volunteerService.getVolunteerByUserId(eventRegistration.getVolunteerId());
+            eventRegistration.setVolunteerId(volunteer.getId());
             eventService.registerForEvent(eventRegistration);
             return ResultVO.success("Application submitted successfully");
         } catch (Exception e) {
@@ -281,7 +288,8 @@ public class EventController {
     @PostMapping("/getParticipatedEvents")
     public ResultVO<List<EventRes>> getParticipatedEvents(@RequestBody EventRegistrations volunteerId) {
         try {
-            List<Event> events = eventService.getParticipatedEventsByVolunteerId(volunteerId.getVolunteerId());
+            Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId.getVolunteerId());
+            List<Event> events = eventService.getParticipatedEventsByVolunteerId(volunteer.getId());
             List<EventRes> eventResList = new ArrayList<>();
             for (Event e : events) {
                 Organizer organizer = organizerService.getOrganizersById(e.getOrganizerId());

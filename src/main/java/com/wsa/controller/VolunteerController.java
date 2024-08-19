@@ -1,10 +1,8 @@
 package com.wsa.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.wsa.model.Credential;
-import com.wsa.model.ResultVO;
-import com.wsa.model.SubmitCommentRequest;
-import com.wsa.model.Volunteer;
+import com.wsa.model.*;
+import com.wsa.service.EventService;
 import com.wsa.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +18,8 @@ public class VolunteerController {
     @Autowired
     private VolunteerService volunteerService;
 
+    @Autowired
+    private EventService eventService;
     @GetMapping("/getVolunteersByEventId")
     public ResultVO<PageInfo<Volunteer>> getVolunteersByEventId(
             @RequestParam Long eventId,
@@ -57,6 +57,8 @@ public class VolunteerController {
     public ResultVO<String> submitComment(@RequestBody SubmitCommentRequest request) {
         try {
             volunteerService.submitComment(request);
+            Event event = eventService.getEventById(request.getEventId());
+            volunteerService.addPointsAwarded(request.getVolunteerId(), event.getPointsAwarded());
             return ResultVO.success("submitComment success");
         } catch (Exception e) {
             return ResultVO.failure("submitComment failure");

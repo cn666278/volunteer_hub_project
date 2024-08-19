@@ -18,6 +18,8 @@ public interface OrganizerMapper {
 //    @Select("SELECT * FROM organizers LIMIT #{offset}, #{pageSize}")
     List<Organizer> getOrganizersByPage(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
-    @Select("SELECT * FROM organizer WHERE id = #{organizerId}")
+    @Select("SELECT * FROM organizer WHERE userId = #{organizerId}")
     Organizer getOrganizersById(Long organizerId);
+    @Insert("INSERT INTO organizer (userId, organizationName, organizationDescription) VALUES (#{userId}, #{organizationName}, #{organizationDescription})")
+    void addOrganizer(Organizer organizer);
 }
