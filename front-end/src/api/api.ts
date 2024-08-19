@@ -299,6 +299,15 @@ export default {
       mock: false,
     });
   },
+
+  getLatestEvents() {
+    return request({
+      url: "/event/getLatestEvents",
+      method: "get",
+      mock: false,
+    });
+  },
+
   getEventById(params: any) {
     return request({
       url: `/event/${params.id}`,
