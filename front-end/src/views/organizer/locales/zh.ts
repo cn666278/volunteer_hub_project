@@ -115,4 +115,18 @@ export default {
   // EventDiscuss 页面
   "eventDiscuss.placeholder": "输入您的消息...",
   "eventDiscuss.send": "发送",
+
+  // EventReview 页面
+  "eventReview.username": "用户名",
+  "eventReview.contact": "联系方式",
+  "eventReview.experience": "经验",
+  "eventReview.eventCount": "事件数量",
+  "eventReview.role": "角色",
+  "eventReview.credentials": "凭证",
+  "eventReview.actions": "操作",
+  "eventReview.accept": "接受",
+  "eventReview.reject": "拒绝",
+  "eventReview.credentialImage": "凭证图片",
+  "eventReview.volunteerStatusUpdated": "志愿者已被{status}。",
+  "eventReview.updateStatusFailed": "更新志愿者状态失败。",
 };

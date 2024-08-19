@@ -116,4 +116,19 @@ export default {
   // Tudalen EventDiscuss
   "eventDiscuss.placeholder": "Teipiwch eich neges...",
   "eventDiscuss.send": "Anfon",
+
+  // Tudalen Adolygu Digwyddiadau
+  "eventReview.username": "Enw Defnyddiwr",
+  "eventReview.contact": "Cyswllt",
+  "eventReview.experience": "Profiad",
+  "eventReview.eventCount": "Cyfrif Digwyddiad",
+  "eventReview.role": "Rôl",
+  "eventReview.credentials": "Tystysgrifau",
+  "eventReview.actions": "Camau",
+  "eventReview.accept": "Derbyn",
+  "eventReview.reject": "Gwrthod",
+  "eventReview.credentialImage": "Delwedd Tystysgrif",
+  "eventReview.volunteerStatusUpdated":
+    "Mae'r gwirfoddolwr wedi cael ei {status}.",
+  "eventReview.updateStatusFailed": "Methwyd diweddaru statws y gwirfoddolwr.",
 };

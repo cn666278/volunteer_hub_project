@@ -116,4 +116,18 @@ export default {
   // EventDiscuss Page
   "eventDiscuss.placeholder": "Type your message...",
   "eventDiscuss.send": "Send",
+
+  // EventReview Page
+  "eventReview.username": "Username",
+  "eventReview.contact": "Contact",
+  "eventReview.experience": "Experience",
+  "eventReview.eventCount": "Event Count",
+  "eventReview.role": "Role",
+  "eventReview.credentials": "Credentials",
+  "eventReview.actions": "Actions",
+  "eventReview.accept": "Accept",
+  "eventReview.reject": "Reject",
+  "eventReview.credentialImage": "Credential Image",
+  "eventReview.volunteerStatusUpdated": "Volunteer has been {status}.",
+  "eventReview.updateStatusFailed": "Failed to update volunteer status.",
 };
