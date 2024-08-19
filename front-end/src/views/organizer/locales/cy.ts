@@ -36,4 +36,22 @@ export default {
   "home.cellClicked": "Cell wedi ei glicio:",
   "home.initialEvents": "Digwyddiadau cychwynnol:",
   "home.watchCalendarDate": "Dyddiad calendr wedi newid:",
+
+  // Tudalen Cofrestru Digwyddiad
+  "eventRegistration.title": "Teitl",
+  "eventRegistration.description": "Disgrifiad",
+  "eventRegistration.location": "Lleoliad",
+  "eventRegistration.file": "Ffeil",
+  "eventRegistration.enterFileName": "Rhowch enw ffeil",
+  "eventRegistration.filePreview": "Rhagolwg Ffeil",
+  "eventRegistration.pointsAwarded": "Pwyntiau a ddyfarnwyd",
+  "eventRegistration.startDate": "Dyddiad Cychwyn",
+  "eventRegistration.endDate": "Dyddiad Gorffen",
+  "eventRegistration.roles": "Rolau",
+  "eventRegistration.nearbyFacilities": "Cyfleusterau Gerllaw",
+  "eventRegistration.register": "Cofrestru",
+  "eventRegistration.reset": "Ailosod",
+  "eventRegistration.selectFileError": "Dewiswch ffeil a rhowch enw ffeil.",
+  "eventRegistration.googleMapsApiError": "Google Maps API heb ei lwytho",
+  "eventRegistration.placesServiceError": "Methodd Gwasanaeth Lleoliadau: {status}",
 };

@@ -36,4 +36,22 @@ export default {
   "home.cellClicked": "Cell clicked:",
   "home.initialEvents": "Initial events:",
   "home.watchCalendarDate": "Calendar date changed:",
+
+  // Event Registration Page
+  "eventRegistration.title": "Title",
+  "eventRegistration.description": "Description",
+  "eventRegistration.location": "Location",
+  "eventRegistration.file": "File",
+  "eventRegistration.enterFileName": "Enter file name",
+  "eventRegistration.filePreview": "File Preview",
+  "eventRegistration.pointsAwarded": "Points Awarded",
+  "eventRegistration.startDate": "Start Date",
+  "eventRegistration.endDate": "End Date",
+  "eventRegistration.roles": "Roles",
+  "eventRegistration.nearbyFacilities": "Nearby Facilities",
+  "eventRegistration.register": "Register",
+  "eventRegistration.reset": "Reset",
+  "eventRegistration.selectFileError": "Please select a file and enter a filename.",
+  "eventRegistration.googleMapsApiError": "Google Maps API not loaded",
+  "eventRegistration.placesServiceError": "PlacesService failed: {status}",
 };

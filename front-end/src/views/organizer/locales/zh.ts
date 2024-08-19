@@ -36,4 +36,22 @@ export default {
   "home.cellClicked": "单元格点击:",
   "home.initialEvents": "初始事件:",
   "home.watchCalendarDate": "日历日期已更改:",
+
+  // 事件注册页面
+  "eventRegistration.title": "标题",
+  "eventRegistration.description": "描述",
+  "eventRegistration.location": "位置",
+  "eventRegistration.file": "文件",
+  "eventRegistration.enterFileName": "输入文件名",
+  "eventRegistration.filePreview": "文件预览",
+  "eventRegistration.pointsAwarded": "奖励积分",
+  "eventRegistration.startDate": "开始日期",
+  "eventRegistration.endDate": "结束日期",
+  "eventRegistration.roles": "角色",
+  "eventRegistration.nearbyFacilities": "附近设施",
+  "eventRegistration.register": "注册",
+  "eventRegistration.reset": "重置",
+  "eventRegistration.selectFileError": "请选择一个文件并输入文件名。",
+  "eventRegistration.googleMapsApiError": "Google Maps API 未加载",
+  "eventRegistration.placesServiceError": "PlacesService 失败：{status}",
 };
