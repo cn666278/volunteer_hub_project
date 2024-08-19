@@ -27,38 +27,25 @@
       </div>
     </div>
 
-    <!-- New Video Section -->
-    <div class="video-section">
-      <div class="video-content">
-        <iframe src="https://www.youtube.com/embed/OeDycAFm0Xo" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen class="video-frame"></iframe>
-      </div>
-      <div class="text-content">
-        <p>{{ $t('home.videoSection.text') }}</p>
-      </div>
-    </div>
-
-    <!-- Blog Posts Section -->
-    <div class="blog-section">
-      <h1>{{ $t('home.blogSection.title') }}</h1>
-      <div class="blog-display">
-        <el-card v-for="post in blogPosts" :key="post.id" class="blog-card">
-          <img :src="post.image" alt="Blog Image" class="blog-image">
-          <div class="blog-info">
-            <div class="blog-author-date">
+    <!-- Recent Events Section -->
+    <div class="recent-events-section">
+      <h1>Recent Events</h1>
+      <div class="event-display">
+        <el-card v-for="event in recentEvents" :key="event.id" class="event-card">
+          <img :src="event.eventPic" alt="Event Image" class="event-image">
+          <div class="event-details">
+            <div class="event-author-date">
               <div class="author-details">
-                <el-icon><User /></el-icon> <!-- Element Plus icon for author -->
-                {{ post.author }}
+                <el-icon><User /></el-icon> <!-- Event author icon -->
+                {{ event.organizerName }} <!-- Display the organizer's name next to the icon -->
               </div>
               <div class="date-details">
-                <el-icon><Calendar /></el-icon> <!-- Element Plus icon for date -->
-                {{ post.date }}
+                <el-icon><Calendar /></el-icon> <!-- Event date icon -->
+                {{ formatDate(event.startDate) }}
               </div>
             </div>
-
-            <h5>{{ post.title }}</h5>
-            <p>{{ post.description }}</p>
+            <h5>{{ event.title }}</h5>
+            <p>{{ event.description }}</p>
           </div>
         </el-card>
       </div>
@@ -68,8 +55,9 @@
 
 <script lang='ts'>
 import { ElButton, ElCard, ElCarousel, ElCarouselItem, ElIcon } from "element-plus";
-import { User, Calendar } from "@element-plus/icons-vue"; // 引入需要的图标
-import { useI18n } from 'vue-i18n';
+import { User, Calendar } from "@element-plus/icons-vue";
+import { ref, onMounted, getCurrentInstance } from 'vue';
+import { ElMessage } from 'element-plus';
 
 export default {
   name: 'Index',
@@ -82,86 +70,81 @@ export default {
     User,
     Calendar,
   },
-  data() {
-    return {
-      introImages: [
-        { id: 1, src: './src/assets/volunteer1.jpg' },
-        { id: 2, src: './src/assets/event-badminto.png' },
-        { id: 3, src: './src/assets/volunteer3.jpg' }
-      ],
-      introSections: [{
+  setup() {
+    const recentEvents = ref([]);
+    const introImages = ref([
+      { id: 1, src: './src/assets/volunteer1.jpg' },
+      { id: 2, src: './src/assets/event-badminto.png' },
+      { id: 3, src: './src/assets/volunteer3.jpg' }
+    ]);
+    const introSections = ref([
+      {
         icon: 'el-icon-service',
         component: 'Service',
         title: 'SUPPORT',
         text: 'The WSA Volunteer Hub provides critical support to ensure the smooth running of the event.'
       },
-        {
-          icon: 'el-icon-user',
-          component: 'User',
-          title: 'ROLE',
-          text: 'The role of volunteers at events is crucial and has a major impact on the smooth running and existence of the competition.'
-        },
-        {
-          icon: 'el-icon-star',
-          component: 'Star',
-          title: 'OPPORTUNITY',
-          text: 'The WSA Volunteer Hub provides opportunities for volunteers and organisations to grow and develop.'
-        }
-      ],
-      activities: [
-        { id: 1, title: 'Activity 1', image: '' },
-        { id: 2, title: 'Activity 2', image: './src/assets/activity2.jpg' },
-        { id: 3, title: 'Activity 3', image: './src/assets/activity3.jpg' },
-        { id: 4, title: 'Activity 4', image: './src/assets/activity4.jpg' },
-        { id: 5, title: 'Activity 5', image: './src/assets/activity5.jpg' },
-        { id: 6, title: 'Activity 6', image: './src/assets/activity6.jpg' }
-      ],
-      blogPosts: [
-        {
-          id: 1,
-          image: './src/assets/event-judo.png',
-          title: 'The British Adaptive & VI Open',
-          date: '30.07.2024',
-          author: 'Welsh Judo',
-          description: 'Welsh Judo is hosting the British Adaptive & VI Open in Swansea, showcasing inclusive judo for visually impaired athletes.'
-        },
-        {
-          id: 2,
-          image: './src/assets/event-badminto.png',
-          title: 'Yonex Welsh International Challenge',
-          date: '30.07.2024',
-          author: 'Badminton Wales',
-          description: 'Badminton Wales is hosting the Yonex Welsh International Challenge in Cardiff, attracting top badminton talent from around the world.'
-        },
-        {
-          id: 3,
-          image: './src/assets/event-tabletennis.png',
-          title: 'The magic of marketing, the science of sales',
-          date: '30.07.2024',
-          author: 'Table Tennis Wales',
-          description: 'Table Tennis Wales is hosting the Senior Team Championships of Wales, featuring elite team competition in table tennis.'
-        }
-      ],
-      volunteerHubText: 'Volunteer Hub',
-      displayedText: ''
+      {
+        icon: 'el-icon-user',
+        component: 'User',
+        title: 'ROLE',
+        text: 'The role of volunteers at events is crucial and has a major impact on the smooth running and existence of the competition.'
+      },
+      {
+        icon: 'el-icon-star',
+        component: 'Star',
+        title: 'OPPORTUNITY',
+        text: 'The WSA Volunteer Hub provides opportunities for volunteers and organisations to grow and develop.'
+      }
+    ]);
+    const volunteerHubText = ref('Volunteer Hub');
+    const displayedText = ref('');
+    const { proxy } = getCurrentInstance();
+
+    const fetchRecentEvents = async () => {
+      try {
+        const response = await proxy.$api.getLatestEvents();
+        recentEvents.value = response;
+      } catch (error) {
+        ElMessage.error('Failed to load recent events');
+      }
     };
-  },
-  mounted() {
-    this.animateText();
-  },
-  methods: {
-    animateText() {
-      const characters = this.volunteerHubText.split('');
+
+    const animateText = () => {
+      const characters = volunteerHubText.value.split('');
       let index = 0;
       const interval = setInterval(() => {
         if (index < characters.length) {
-          this.displayedText += characters[index];
+          displayedText.value += characters[index];
           index++;
         } else {
           clearInterval(interval);
         }
-      }, 300); // Adjust timing for effect
-    }
+      }, 300);
+    };
+
+    const formatDate = (dateString: string) => {
+      const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    onMounted(() => {
+      fetchRecentEvents();
+      animateText();
+    });
+
+    return {
+      introImages,
+      introSections,
+      recentEvents,
+      volunteerHubText,
+      displayedText,
+      formatDate,
+    };
   }
 };
 </script>
@@ -222,7 +205,7 @@ export default {
 
     .video-frame {
       width: 100%;
-      height: 400px; // Adjust based on design requirement
+      height: 400px;
       border-radius: 8px;
     }
   }
@@ -244,8 +227,6 @@ export default {
     }
   }
 }
-
-
 
 .intro-section {
   display: flex;
@@ -378,7 +359,7 @@ export default {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  border-right: .15em solid #a9181a; /* 用于模拟打字机效果的光标 */
+  border-right: .15em solid #a9181a;
   animation: typing 0.3s steps(30, end), blink-caret .75s step-end infinite;
   @keyframes typing {
     from { width: 0 }
@@ -390,7 +371,7 @@ export default {
   }
 }
 
-.blog-section {
+.recent-events-section {
   padding: 20px;
   background-color: #f5f5f5;
   margin: 20px 0;
@@ -402,84 +383,71 @@ export default {
     margin-bottom: 16px;
     color: #a9181a;
   }
-}
 
-.blog-display {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.blog-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid #ddd; // 给卡片添加边框
-  border-radius: 8px; // 圆角边框
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); // 轻微阴影
-
-  img {
-    width: 100%;
-    height: 200px; // 设置图片高度
-    object-fit: cover; // 确保图片完整显示
-    border-radius: 8px; // 图片四个角圆角
+  .event-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
 
-  .blog-info {
-    padding: 14px;
-    text-align: left;
-    width: 100%;
+  .event-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-    .blog-author-date {
-      display: flex;
-      align-items: center;
-      color: #666;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
+    .event-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
 
-      .author-icon, .date-icon {
-        color:#a9181a; // 图标颜色
-        margin-right: 5px;
+    .event-details {
+      padding: 14px;
+      text-align: left;
+      width: 100%;
+
+      h5 {
+        color: #666;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 5px 0;
       }
-    }
 
-    h5 {
-      color: #666;
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin: 5px 0;
-    }
+      p {
+        color: #666;
+        font-size: 1rem;
+      }
 
-    p {
-      color: #666;
-      font-size: 1rem;
+      .event-author-date {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+
+        .author-details, .date-details {
+          display: flex;
+          align-items: center;
+
+          .el-icon {
+            color: #a9181a;
+            margin-right: 5px;
+          }
+        }
+      }
     }
   }
 }
 
 @media (max-width: 800px) {
-  .blog-display {
+  .event-display {
     grid-template-columns: 1fr;
-  }
-}
-
-.blog-author-date {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-
-  .author-details, .date-details {
-    display: flex;
-    align-items: center;
-
-    .el-icon {
-      color: #a9181a; // Changed icon color to blue
-      margin-right: 5px;
-    }
   }
 }
 </style>

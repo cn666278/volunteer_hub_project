@@ -185,6 +185,36 @@ public class EventController {
         }
     }
 
+    @GetMapping("/getLatestEvents")
+    public ResultVO<List<EventRes>> getLatestEvents() {
+        try {
+            // 获取所有活动并按照 startDate 降序排序，限制结果数量为 3
+            List<Event> latestEvents = eventService.getLatestEvents();
+
+            // 转换为 EventRes 响应对象
+            List<EventRes> eventResList = latestEvents.stream().map(event -> {
+                EventRes eRes = new EventRes();
+                eRes.setId(event.getId());
+                eRes.setTitle(event.getTitle());
+                eRes.setOrganizerId(event.getOrganizerId());
+                eRes.setDescription(event.getDescription());
+                eRes.setLocation(event.getLocation());
+                eRes.setPointsAwarded(event.getPointsAwarded());
+                eRes.setStartDate(event.getStartDate());
+                eRes.setEndDate(event.getEndDate());
+                eRes.setStatus(event.getStatus());
+                eRes.setEventPic(event.getEventPic());
+                return eRes;
+            }).collect(Collectors.toList());
+
+            return ResultVO.success(eventResList);
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to fetch latest events");
+        }
+    }
+
+
+
     @GetMapping("/{id}")
     public ResultVO<Event> getEventById(@PathVariable Long id) {
         try {
