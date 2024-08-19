@@ -15,7 +15,7 @@
             <el-input v-model="formData.username" />
         </el-form-item>
         <el-form-item :label="$t('register.password')" prop="password">
-            <el-input v-model="formData.password" type="password" />
+            <el-input v-model="formData.password" type="password" show-password/>
         </el-form-item>
         <el-form-item :label="$t('register.email')" prop="email">
             <el-input v-model="formData.email" type="email" />
