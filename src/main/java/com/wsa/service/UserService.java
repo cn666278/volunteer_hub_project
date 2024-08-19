@@ -1,9 +1,7 @@
 package com.wsa.service;
 
 import com.wsa.exception.ResourceNotFoundException;
-import com.wsa.mapper.AuthorityMapper;
-import com.wsa.mapper.RoleMapper;
-import com.wsa.mapper.UserMapper;
+import com.wsa.mapper.*;
 import com.wsa.model.*;
 import com.wsa.util.PasswordUtils;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +20,10 @@ public class UserService {
     @Autowired
     private AuthorityMapper authorityMapper;
 
+    @Autowired
+    private OrganizerMapper organizerMapper;
+    @Autowired
+    private VolunteerMapper volunteerMapper;
     @Autowired
     private RoleMapper roleMapper;
     public List<UserInfo> getAllUsers() {
@@ -109,6 +111,18 @@ public class UserService {
         Role role = roleMapper.selectRoleById(request.getRoleId());
         authority.setAuthority(role.getRoleName());
         authorityMapper.addAuthority(authority);
+        if(request.getRoleId() == 1){
+            Organizer organizer = new Organizer();
+            organizer.setUserId(userId);
+            organizer.setOrganizationName(request.getUsername());
+            organizer.setOrganizationDescription(request.getUsername());
+            organizerMapper.addOrganizer(organizer);
+        }
+        if(request.getRoleId() == 2){
+            Volunteer volunteer = new Volunteer();
+            volunteer.setUserId(userId);
+            volunteerMapper.addVolunteer(volunteer);
+        }
     }
 
     public void updateUser(UserReq request) {

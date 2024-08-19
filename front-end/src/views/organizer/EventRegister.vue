@@ -63,7 +63,7 @@
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue';
 import { ElMessage, ElForm, ElMessageBox } from 'element-plus';
 import { translateText } from '../../api/translate';
-import useUser from "../../../store/user.ts";
+import useUser from "../../store/user";
 let userStore = useUser();
 const { proxy } = getCurrentInstance();
 

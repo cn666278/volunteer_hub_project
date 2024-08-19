@@ -47,5 +47,9 @@ public class VolunteerService {
     public void updateCredential(Credential credential) {
         credentialMapper.updateCredential(credential);
     }
+
+    public void addPointsAwarded(Long volunteerId, Integer pointsAwarded) {
+        volunteerMapper.addPointsAwarded(volunteerId, pointsAwarded);
+    }
 }
 

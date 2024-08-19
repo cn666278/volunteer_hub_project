@@ -2,6 +2,7 @@ package com.wsa.controller;
 
 import com.wsa.model.*;
 import com.wsa.service.UserService;
+import com.wsa.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private VolunteerService volunteerService;
     @PostMapping("/getLoginUserInfo")
     public ResultVO<UserInfo> getLoginUserInfo(@RequestBody UserRequest request) {
         UserInfo userInfo = userService.getUserInfoByUsername(request.getUsername());
@@ -84,7 +87,8 @@ public class UserController {
 
     @GetMapping("/user/{volunteerId}/ratings")
     public ResultVO<List<VolunteerRating>> getRatingsByVolunteerId(@PathVariable Long volunteerId) {
-        List<VolunteerRating> ratings = userService.getRatingsByVolunteerId(volunteerId);
+        Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId);
+        List<VolunteerRating> ratings = userService.getRatingsByVolunteerId(volunteer.getId());
         if (ratings != null && !ratings.isEmpty()) {
             return ResultVO.success(ratings);
         } else {
@@ -94,7 +98,8 @@ public class UserController {
 
     @GetMapping("/user/{volunteerId}/volunteerinfo")
     public ResultVO<List<VolunteerInfo>> getVolunteerInfo(@PathVariable Long volunteerId) {
-        List<VolunteerInfo> volunteerInfoList = userService.getVolunteerInfoByVolunteerId(volunteerId);
+        Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId);
+        List<VolunteerInfo> volunteerInfoList = userService.getVolunteerInfoByVolunteerId(volunteer.getId());
         if (volunteerInfoList != null && !volunteerInfoList.isEmpty()) {
             return ResultVO.success(volunteerInfoList);
         } else {

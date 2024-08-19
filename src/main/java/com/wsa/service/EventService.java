@@ -127,7 +127,7 @@ public class EventService {
         event.setPointsAwarded(eventRequest.getPointsAwarded());
         event.setStartDate(eventRequest.getStartDate());
         event.setEndDate(eventRequest.getEndDate());
-        event.setEventPic(String.valueOf(eventRequest.getFileIds().get(1)));
+        event.setEventPic(String.valueOf(eventRequest.getFileIds().get(0)));
         eventMapper.editEventById(event);
 
         eventRolesMapper.deleteEventRolesByEventId(id);
