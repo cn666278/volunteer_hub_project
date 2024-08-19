@@ -171,4 +171,9 @@ onMounted(() => {
 .el-form-item--default {
     margin-bottom: 30px;
 }
+
+.el-button.is-text:not(.is-disabled):hover {
+    color: #c52323;
+    background-color: rgba(251, 248, 248, 0.956); /* 70% opacity of gray */
+}
 </style>
