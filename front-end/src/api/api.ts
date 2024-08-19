@@ -21,7 +21,7 @@ export default {
     });
   },
   /** Admin */
-  // home组件，左侧表格数据获取
+  //  dashboard 组件
   getTableData(params: any) {
     return request({
       url: "/admin/home/getTableData",
@@ -30,23 +30,23 @@ export default {
       mock: true, // 是否使用mock数据, true则使用apifox/后端数据，false则使用本地数据
     });
   },
-  getCountData() {
-    return request({
-      url: "/admin/home/getCountData",
-      method: "get",
-      mock: true,
-    });
-  },
   getEchartData() {
     return request({
-      url: "/admin/home/getEchartData",
+      url: "/admin/getEchartData",
       method: "get",
-      mock: true,
+      mock: false,
     });
   },
   getEventStatus(){
     return request({
       url: "/event/getEventStats",
+      method: "get",
+      mock: false,
+    });
+  },
+  getCountData(){
+    return request({
+      url: "/admin/getCountData",
       method: "get",
       mock: false,
     });

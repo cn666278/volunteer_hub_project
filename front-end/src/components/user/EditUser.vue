@@ -38,7 +38,7 @@
       </el-form-item>
       <el-form-item :label="$t('user.form.roleId')" prop="roleId">
         <el-select
-          v-model="formData.roleId"
+          v-model="formData.roleName"
           :placeholder="$t('user.form.selectRole')"
           style="width: 240px"
         >
@@ -91,6 +91,8 @@ const drawer = ref(false);
 const handleOpen = (row: any) => {
   drawer.value = true;
   formData.value = { ...row };
+  console.log(formData.value);
+  formData.value.roleName = row.role.roleName;
   formData.value.roleId = row.role.roleId;
 };
 
@@ -107,6 +109,7 @@ const formRef = ref<FormInstance>();
 const formData = ref({
   id: null,
   loginId: null,
+  roleName: "",
   roleId: null,
   username: "",
   password: "",
@@ -165,7 +168,7 @@ const rules = ref<FormRules<typeof formData>>({
   loginId: [{ validator: validateLoginId, required: true, trigger: "blur" }],
   password: [{ validator: validatePassword, required: true, trigger: "blur" }],
   username: [{ required: true, message: t('user.validate.username'), trigger: "blur" }],
-  roleId: [{ required: true, message: t('user.validate.roleId'), trigger: "change" }],
+  roleName: [{ required: true, message: t('user.validate.roleId'), trigger: "change" }],
   phone: [{ required: true, message: t('user.validate.phone'), trigger: "blur" }],
   email: [{ validator: validateEmail, required: true, trigger: "blur" }],
 });
@@ -218,6 +221,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
     photo: "",
     phone: "",
     email: "",
+    roleName: "",
     roleId: null,
   };
 };

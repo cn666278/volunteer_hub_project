@@ -22,7 +22,7 @@
         <el-button type="primary" @click="submitForm(formRef)">
           {{ formData.roleId ? $t('role.edit') : $t('role.add') }}
         </el-button>
-        <el-button @click="handleClose">{{ $t('role.reset') }}</el-button>
+        <el-button @click="handleResetForm(formRef)">{{ $t('role.reset') }}</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
@@ -48,6 +48,16 @@ const handleOpen = (row: any) => {
 const handleClose = () => {
   drawer.value = false;
   resetForm(formRef.value); // reset form
+};
+
+const handleResetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.resetFields();
+  // reset form data
+  formData.value = {
+    roleId: formData.value.roleId,
+    roleName: "",
+  };
 };
 // form ref
 const formRef = ref<FormInstance>();
@@ -82,9 +92,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
         res = await proxy.$api.addRole({roleName: formData.value.roleName});
       }
       if (res) {
+        console.log("res:", res);
         ElNotification({
           title: t('role.notificationTitle'),
-          message: res.message,
+          message: res,
           type: "success",
         });
         emit("update-role-list"); // update role list
@@ -93,7 +104,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       } else {
         ElNotification({
           title: t('role.notificationTitle'),
-          message: res.message,
+          message: res,
           type: "error",
         });
         console.log("error submit!");

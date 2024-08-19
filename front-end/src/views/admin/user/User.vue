@@ -130,8 +130,9 @@ const getUserList = async () => {
   let res = await proxy.$api.getUserList();
   let { list, count } = res;
   // 当roleId改变时，筛选出对应roleId的用户，并更新用户列表
+  console.log(roleId.value);
   if (roleId.value !== 0) {
-    list = list.filter((user: any) => user.role.roleId === roleId.value);
+    list = list.filter((user: any) => Number(user.role.roleId) === roleId.value);
   }
   // Pagination前端分页
   const start = (pageIndex.value - 1) * pageSize;
@@ -164,7 +165,7 @@ const handleDelete = (row: any) => {
       if (res) {
         ElNotification({
           title: t('user.notification'),
-          message: res.message,
+          message: res,
           type: "success",
         });
         // delete successfully, reload role list
@@ -173,7 +174,7 @@ const handleDelete = (row: any) => {
       } else {
         ElNotification({
           title: t('user.notification'),
-          message: res.message,
+          message: res,
           type: "error",
         });
       }
