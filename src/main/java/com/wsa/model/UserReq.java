@@ -12,6 +12,7 @@ public class UserReq implements Serializable {
     private Long loginId;
     private Long roleId;
     private String password;
+    private Long roleName;
     private String username;
     private String phone;
     private String email;

@@ -20,9 +20,9 @@ export default {
 
   // Defnyddwyr Cofrestredig (User Registration-related)
   "home.totalUsers": "Cyfanswm y defnyddwyr",
-  "home.todayRegistedUsers": "Defnyddwyr cofrestredig heddiw",
+  "home.todaysRegisterUsers": "Defnyddwyr cofrestredig heddiw",
   "home.totalRegisterUsers": "Cyfanswm y defnyddwyr cofrestredig",
-  "home.monthlyRegistedUsers": "Defnyddwyr cofrestredig misol",
+  "home.monthlyRegisterUsers": "Defnyddwyr cofrestredig misol",
   "home.registerUser": "Cofrestrwch Defnyddiwr",
 
   // Data Trefnydd (Organizer Data-related)

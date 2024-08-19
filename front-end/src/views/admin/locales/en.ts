@@ -20,9 +20,9 @@ export default {
 
   // User Registration-related
   "home.totalUsers": "Total users",
-  "home.todayRegistedUsers": "Today registered users",
+  "home.todaysRegisterUsers": "Today registered users",
   "home.totalRegisterUsers": "Total registered users",
-  "home.monthlyRegistedUsers": "Monthly registered users",
+  "home.monthlyRegisterUsers": "Monthly registered users",
   "home.registerUser": "Register User",
 
   // Organizer Data-related
