@@ -92,4 +92,14 @@ export default {
   "editEvent.reset": "重置",
   "editEvent.chooseStartDate": "选择开始日期",
   "editEvent.chooseEndDate": "选择结束日期",
+
+  // CommentVolunteer 页面
+  "commentVolunteer.username": "用户名",
+  "commentVolunteer.experience": "经验",
+  "commentVolunteer.eventCount": "活动数量",
+  "commentVolunteer.role": "角色",
+  "commentVolunteer.credentials": "凭证",
+  "commentVolunteer.actions": "操作",
+  "commentVolunteer.comment": "评论",
+  "commentVolunteer.credentialImage": "凭证图片",
 };

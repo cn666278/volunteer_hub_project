@@ -92,4 +92,14 @@ export default {
   "editEvent.reset": "Reset",
   "editEvent.chooseStartDate": "Choose start date",
   "editEvent.chooseEndDate": "Choose end date",
+
+  // CommentVolunteer Page
+  "commentVolunteer.username": "Username",
+  "commentVolunteer.experience": "Experience",
+  "commentVolunteer.eventCount": "Event Count",
+  "commentVolunteer.role": "Role",
+  "commentVolunteer.credentials": "Credentials",
+  "commentVolunteer.actions": "Actions",
+  "commentVolunteer.comment": "Comment",
+  "commentVolunteer.credentialImage": "Credential Image",
 };

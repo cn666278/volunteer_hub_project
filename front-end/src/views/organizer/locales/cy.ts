@@ -92,4 +92,14 @@ export default {
   "editEvent.reset": "Ailosod",
   "editEvent.chooseStartDate": "Dewiswch ddyddiad cychwyn",
   "editEvent.chooseEndDate": "Dewiswch ddyddiad gorffen",
+
+  // Tudalen CommentVolunteer
+  "commentVolunteer.username": "Enw Defnyddiwr",
+  "commentVolunteer.experience": "Profiad",
+  "commentVolunteer.eventCount": "Cyfrif Digwyddiadau",
+  "commentVolunteer.role": "Rôl",
+  "commentVolunteer.credentials": "Tystysgrifau",
+  "commentVolunteer.actions": "Gweithredoedd",
+  "commentVolunteer.comment": "Sylw",
+  "commentVolunteer.credentialImage": "Delwedd Tystysgrif",
 };
