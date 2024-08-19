@@ -53,7 +53,8 @@ export default {
   "eventRegistration.reset": "Ailosod",
   "eventRegistration.selectFileError": "Dewiswch ffeil a rhowch enw ffeil.",
   "eventRegistration.googleMapsApiError": "Google Maps API heb ei lwytho",
-  "eventRegistration.placesServiceError": "Methodd Gwasanaeth Lleoliadau: {status}",
+  "eventRegistration.placesServiceError":
+    "Methodd Gwasanaeth Lleoliadau: {status}",
 
   // Tudalen MyEvent
   "myEvent.searchByTitle": "Chwilio yn ôl teitl",
@@ -111,4 +112,8 @@ export default {
   "commentDetail.cancel": "Canslo",
   "commentDetail.commentSuccess": "Sylw wedi'i gyflwyno'n llwyddiannus.",
   "commentDetail.commentFailure": "Methwyd â chyflwyno sylw.",
+
+  // Tudalen EventDiscuss
+  "eventDiscuss.placeholder": "Teipiwch eich neges...",
+  "eventDiscuss.send": "Anfon",
 };

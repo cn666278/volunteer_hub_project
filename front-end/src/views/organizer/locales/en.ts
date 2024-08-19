@@ -51,7 +51,8 @@ export default {
   "eventRegistration.nearbyFacilities": "Nearby Facilities",
   "eventRegistration.register": "Register",
   "eventRegistration.reset": "Reset",
-  "eventRegistration.selectFileError": "Please select a file and enter a filename.",
+  "eventRegistration.selectFileError":
+    "Please select a file and enter a filename.",
   "eventRegistration.googleMapsApiError": "Google Maps API not loaded",
   "eventRegistration.placesServiceError": "PlacesService failed: {status}",
 
@@ -103,12 +104,16 @@ export default {
   "commentVolunteer.comment": "Comment",
   "commentVolunteer.credentialImage": "Credential Image",
 
-   // CommentDetail Page
-   "commentDetail.username": "Username",
-   "commentDetail.star": "Star",
-   "commentDetail.comment": "Comment",
-   "commentDetail.submit": "Submit",
-   "commentDetail.cancel": "Cancel",
-   "commentDetail.commentSuccess": "Comment submitted successfully.",
-   "commentDetail.commentFailure": "Failed to submit comment.",
+  // CommentDetail Page
+  "commentDetail.username": "Username",
+  "commentDetail.star": "Star",
+  "commentDetail.comment": "Comment",
+  "commentDetail.submit": "Submit",
+  "commentDetail.cancel": "Cancel",
+  "commentDetail.commentSuccess": "Comment submitted successfully.",
+  "commentDetail.commentFailure": "Failed to submit comment.",
+
+  // EventDiscuss Page
+  "eventDiscuss.placeholder": "Type your message...",
+  "eventDiscuss.send": "Send",
 };

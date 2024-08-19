@@ -111,4 +111,8 @@ export default {
   "commentDetail.cancel": "取消",
   "commentDetail.commentSuccess": "评论提交成功。",
   "commentDetail.commentFailure": "提交评论失败。",
+
+  // EventDiscuss 页面
+  "eventDiscuss.placeholder": "输入您的消息...",
+  "eventDiscuss.send": "发送",
 };
