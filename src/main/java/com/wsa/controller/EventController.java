@@ -322,4 +322,26 @@ public class EventController {
         return ResultVO.success(stats);
     }
 
+    @PostMapping("/approveEvent")
+    public ResultVO<String> approveEvent(@RequestBody EventUpdateRes id) {
+        try {
+            // 调用service方法将事件状态更新为 "Passed"
+            eventService.updateEventStatusToPassed(id.getId());
+            return ResultVO.success("Event approved successfully");
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to approve event: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/rejectEvent")
+    public ResultVO<String> rejectEvent(@RequestBody EventUpdateRes id) {
+        try {
+            // 调用service方法将事件状态更新为 "Passed"
+            eventService.updateEventStatusToRejected(id.getId());
+            return ResultVO.success("Event rejected successfully");
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to reject event: " + e.getMessage());
+        }
+    }
+
 }

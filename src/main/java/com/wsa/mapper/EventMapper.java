@@ -4,12 +4,9 @@ import com.wsa.model.Event;
 import com.wsa.model.EventRegistrations;
 import com.wsa.model.EventReqByOrganizerId;
 import com.wsa.model.EventRequest;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 
@@ -57,9 +54,9 @@ public interface EventMapper {
     @Select("SELECT * FROM events ORDER BY startDate DESC LIMIT 3")
     List<Event> findLatestEvents();
 
+    @Update("UPDATE events SET status = #{status} WHERE id = #{id}")
+    void approveEvent(Event event);
 
-
-
-
-
+    @Update("UPDATE events SET status = #{status} WHERE id = #{id}")
+    void rejectEvent(Event event);
 }
