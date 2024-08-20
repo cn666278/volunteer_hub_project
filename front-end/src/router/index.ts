@@ -113,12 +113,6 @@ const routes = createRouter({
           meta: { title: "RewardStore" },
           component: () => import("../views/volunteer/RewardStore.vue"),
         },
-        {
-          path: "/volunteer/discussion",
-          name: "EventDiscussion",
-          meta: { title: "EventDiscussion" },
-          component: () => import("../views/volunteer/EventDiscussion.vue"),
-        },
       ],
     },
     {
