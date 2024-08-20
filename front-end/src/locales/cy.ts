@@ -3,7 +3,7 @@ import localeAdminEventApprove from '../views/admin/approve/locales/cy'
 import localeAdminUser from '../views/admin/user/locales/cy'
 import localeAdminEditComponent from '../components/user/locales/cy'
 import localeVolunteerHome from '../views/volunteer/locales/cy'
-
+import organizerLocales from '../views/organizer/locales/cy'
 const cy = {
   appName: 'Canolfan Wirfoddolwyr WSA',
   language: {
@@ -84,6 +84,7 @@ const cy = {
   ...localeAdminUser,
   ...localeAdminEditComponent,
   ...localeVolunteerHome,
+  ...organizerLocales,
 }
 
 export { cy }

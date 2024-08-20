@@ -1,26 +1,26 @@
 <template>
   <div>
-    <el-input v-model="search.title" placeholder="Search by title" @input="fetchEvents" />
-    <el-select v-model="search.status" placeholder="Filter by status" @change="fetchEvents">
-      <el-option label="Pending" value="Pending" />
-      <el-option label="Approved" value="Approved" />
-      <el-option label="Rejected" value="Rejected" />
+    <el-input v-model="search.title" :placeholder="t('myEvent.searchByTitle')" @input="fetchEvents" />
+    <el-select v-model="search.status" :placeholder="t('myEvent.filterByStatus')" @change="fetchEvents">
+      <el-option :label="t('myEvent.pending')" value="Pending" />
+      <el-option :label="t('myEvent.approved')" value="Approved" />
+      <el-option :label="t('myEvent.rejected')" value="Rejected" />
     </el-select>
     <el-table :data="events" style="width: 100%">
-      <el-table-column prop="title" label="Title" />
-      <el-table-column prop="description" label="Description" />
-      <el-table-column prop="location" label="Location" />
-      <el-table-column prop="startDateFormat" label="Start Date" />
-      <el-table-column prop="endDateFormat" label="End Date" />
-      <el-table-column prop="status" label="Status" />
-      <el-table-column prop="pointsAwarded" label="Points Awarded" />
-      <el-table-column label="Actions">
+      <el-table-column prop="title" :label="t('myEvent.title')" />
+      <el-table-column prop="description" :label="t('myEvent.description')" />
+      <el-table-column prop="location" :label="t('myEvent.location')" />
+      <el-table-column prop="startDateFormat" :label="t('myEvent.startDate')" />
+      <el-table-column prop="endDateFormat" :label="t('myEvent.endDate')" />
+      <el-table-column prop="status" :label="t('myEvent.status')" />
+      <el-table-column prop="pointsAwarded" :label="t('myEvent.pointsAwarded')" />
+      <el-table-column :label="t('myEvent.actions')">
         <template v-slot="scope">
-          <el-button @click="editEvent(scope.row)">Edit</el-button>
-          <el-button @click="reviewEvent(scope.row)">Review</el-button>
-          <el-button @click="discussEvent(scope.row)">Discuss</el-button>
-          <el-button @click="commentEvent(scope.row)">Comment</el-button>
-          <el-button @click="deleteEvent(scope.row)">Delete</el-button>
+          <el-button @click="editEvent(scope.row)">{{ t('myEvent.edit') }}</el-button>
+          <el-button @click="reviewEvent(scope.row)">{{ t('myEvent.review') }}</el-button>
+          <el-button @click="discussEvent(scope.row)">{{ t('myEvent.discuss') }}</el-button>
+          <el-button @click="commentEvent(scope.row)">{{ t('myEvent.comment') }}</el-button>
+          <el-button @click="deleteEvent(scope.row)">{{ t('myEvent.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,9 +38,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, getCurrentInstance } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
 import dayjs from 'dayjs';
 import { useRouter } from "vue-router";
+
+const { t } = useI18n();
 let router = useRouter();
 import useUser from "../../store/user";
 // user store
@@ -72,7 +75,7 @@ const fetchEvents = async () => {
     }));
     totalEvents.value = response.total;
   } catch (error) {
-    ElMessage.error('Failed to fetch events');
+    ElMessage.error(t('myEvent.fetchEventsError'));
   }
 };
 

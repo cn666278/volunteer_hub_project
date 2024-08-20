@@ -148,7 +148,7 @@
           {{ formatDate(record.endDate) }}
         </template>
         <template #status="{ record }">
-          <span v-if="record.status === 'Awaiting Review'" class="circle"></span>
+          <span v-if="record.status === 'Awaiting review'" class="circle"></span>
           <span v-else class="circle pass"></span>
           {{ record.status }}
         </template>
@@ -156,10 +156,10 @@
           <a-button v-permission="['admin']" type="text" size="small" style="margin-right: 10px;" @click="viewDetails(record)">
             {{ $t('searchTable.columns.operations.view') }}
           </a-button>
-          <a-button v-permission="['admin']" status="success" size="small" style="margin-right: 10px;">
+          <a-button v-permission="['admin']" status="success" size="small" style="margin-right: 10px;" @click="approveEvent(record)">
             {{ $t('searchTable.columns.operations.approve') }}
           </a-button>
-          <a-button v-permission="['admin']" status="danger" size="small">
+          <a-button v-permission="['admin']" status="danger" size="small" @click="rejectEvent(record)">
             {{ $t('searchTable.columns.operations.reject') }}
           </a-button>
         </template>
@@ -184,7 +184,7 @@
         <el-descriptions-item label="End Date">{{ formatDate(currentEvent.endDate) }}</el-descriptions-item>
         <el-descriptions-item label="Status">
           <el-button
-            :type="currentEvent.status === 'Passed' ? 'success' : currentEvent.status === 'Awaiting Review' ? 'warning' : 'danger'"
+            :type="currentEvent.status === 'Passed' ? 'success' : currentEvent.status === 'Awaiting review' ? 'warning' : currentEvent.status === 'Rejected' ? 'danger' : ''"
             size="small"
             round
           >
@@ -195,8 +195,8 @@
       </el-descriptions>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="success" @click="approveEvent">Approve</el-button>
-          <el-button type="danger" @click="rejectEvent">Reject</el-button>
+          <el-button type="success" @click="approveEvent(currentEvent)">Approve</el-button>
+          <el-button type="danger" @click="rejectEvent(currentEvent)">Reject</el-button>
           <el-button @click="dialogVisible = false">Close</el-button>
         </div>
       </template>
@@ -214,6 +214,7 @@ import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface'
 import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
 import cloneDeep from 'lodash/cloneDeep';
 import Sortable from 'sortablejs';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 type SizeProps = 'mini' | 'small' | 'medium' | 'large';
 type Column = TableColumnData & { checked?: true };
@@ -246,7 +247,7 @@ const size = ref<SizeProps>('medium');
 // 控制分页显示的数据条数
 const basePagination: Pagination = {
   current: 1,
-  pageSize: 10,
+  pageSize: 3,
 };
 const pagination = reactive({
   ...basePagination,
@@ -351,6 +352,10 @@ const statusOptions = computed<SelectOptionData[]>(() => [
     label: t('searchTable.form.status.passed'),
     value: 'Passed',
   },
+  {
+    label: t('searchTable.form.status.rejected'),
+    value: 'Rejected',
+  },
 ]);
 
 const fetchData = async () => {
@@ -378,9 +383,37 @@ const updateRenderData = () => {
 };
 
 const search = () => {
-  pagination.current = 1; // Reset to first page on new search
-  updateRenderData();
+  // 将表单数据转化为小写以便更好地匹配
+  const searchData = {
+    number: formModel.value.number?.trim().toLowerCase(),
+    name: formModel.value.name?.trim().toLowerCase(),
+    eventType: formModel.value.eventType,
+    status: formModel.value.status,
+    createdTime: formModel.value.createdTime,
+  };
+
+  // 对数据进行筛选
+  const filteredData = fullData.value.filter((item) => {
+    const matchesNumber = !searchData.number || item.id.toString().includes(searchData.number);
+    const matchesName = !searchData.name || item.title.toLowerCase().includes(searchData.name);
+    const matchesEventType = !searchData.eventType || item.eventType === searchData.eventType;
+    const matchesStatus = !searchData.status || item.status === searchData.status;
+    const matchesCreatedTime =
+      !searchData.createdTime.length ||
+      (new Date(item.startDate) >= new Date(searchData.createdTime[0]) &&
+        new Date(item.endDate) <= new Date(searchData.createdTime[1]));
+
+    return matchesNumber && matchesName && matchesEventType && matchesStatus && matchesCreatedTime;
+  });
+
+  // 更新渲染数据
+  renderData.value = filteredData.slice(0, pagination.pageSize);
+  pagination.total = filteredData.length;
+
+  // 如果需要，重置分页页码
+  pagination.current = 1;
 };
+
 
 const onPageChange = (current: number) => {
   pagination.current = current;
@@ -482,20 +515,66 @@ const fetchUserInfo = async (organizerId: number) => {
   }
 };
 
-const approveEvent = () => {
-  if (currentEvent.value) {
-    currentEvent.value.status = 'Passed';
-    dialogVisible.value = false;
+// Approve event
+const approveEvent = async (event: EventType) => {
+  const { id, title } = event;
+  try {
+    await ElMessageBox.confirm(
+      `Are you sure you want to approve the event "${title}"?`,
+      'Confirm Approval',
+      {
+        confirmButtonText: 'Approve',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }
+    );
+    // 如果用户点击确认，则执行以下代码
+    let res = await proxy.$api.approveEvent({id});
+    if (res) {
+      ElMessage.success(`Event "${title}" approved successfully!`);
+      fetchData(); // 更新数据
+      dialogVisible.value = false; // 关闭对话框
+    } else {
+      ElMessage.error(`Failed to approve event "${title}".`);
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error(`Error approving event "${title}": ${error}`);
+    }
   }
 };
 
-const rejectEvent = () => {
-  if (currentEvent.value) {
-    // todo: implement reject event
-    // currentEvent.value.status = 'Rejected';
-    dialogVisible.value = false;
+
+// Reject event
+const rejectEvent = async (event: EventType) => {
+  const { id, title } = event;
+  try {
+    await ElMessageBox.confirm(
+      `Are you sure you want to reject the event "${title}"?`,
+      'Confirm Rejection',
+      {
+        confirmButtonText: 'Reject',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }
+    );
+
+    // 如果用户点击确认，则执行以下代码
+    let res = await proxy.$api.rejectEvent({id});
+    if (res) {
+      ElMessage.success(`Event "${title}" rejected successfully!`);
+      fetchData(); // 更新数据
+      dialogVisible.value = false; // 关闭对话框
+    } else {
+      ElMessage.error(`Failed to reject event "${title}".`);
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error(`Error rejecting event "${title}": ${error}`);
+    }
   }
 };
+
 </script>
 
 <script lang="ts">

@@ -6,8 +6,8 @@
         <span class="timestamp">{{ formatTimestamp(msg.timestamp) }}</span>
       </p>
     </div>
-    <el-input v-model="newMessage" :placeholder="t('eventDiscuss.placeholder')" @keyup.enter="sendMessage" />
-    <el-button @click="sendMessage">{{ t('eventDiscuss.send') }}</el-button>
+    <el-input v-model="newMessage" placeholder="Type your message..." @keyup.enter="sendMessage" />
+    <el-button @click="sendMessage">Send</el-button>
   </div>
 </template>
 
@@ -16,21 +16,20 @@ import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-import { useI18n } from 'vue-i18n';
-import useUser from "../../store/user";
+// import { useUserStore } from '@/stores/userStore'; // 确保引入了正确的userStore
 
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
-const event = JSON.parse(route.query.event);
+const event = ref(route.query.event);
 const messages = ref([]);
 const newMessage = ref('');
+import useUser from "../../store/user";
 // user store
 const userStore = useUser();
 let stompClient;
 
 const fetchMessages = async () => {
-  const response = await proxy.$api.getMessagesByEventId({ eventId: event.eventId });
+  const response = await proxy.$api.getMessagesByEventId({ eventId: event.value });
   messages.value = response;
   console.log("Messages fetched:", messages.value);
 };
@@ -41,7 +40,7 @@ const sendMessage = () => {
   const offset = now.getTimezoneOffset();
   const localTime = new Date(now.getTime() - (offset * 60 * 1000)).toISOString();
   const message = {
-    eventId: event.eventId,
+    eventId: event.value,
     senderId: userStore.user.id,
     content: newMessage.value,
     timestamp: localTime
@@ -58,7 +57,6 @@ const connect = () => {
     stompClient.subscribe('/topic/messages', (message) => {
       const receivedMessage = JSON.parse(message.body);
       console.log("receivedMessage", receivedMessage)
-      // receivedMessage.username = userStore.user.username; // 确保收到的消息包含username
       messages.value.push(receivedMessage);
     });
   }, (error) => {

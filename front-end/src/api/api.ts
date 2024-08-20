@@ -166,6 +166,22 @@ export default {
       mock: false,
     });
   },
+  approveEvent(params: any) {
+    return request({
+      url: "/event/approveEvent",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
+  rejectEvent(params: any) {
+    return request({
+      url: "/event/rejectEvent",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
 
   // 根据用户名不同，返回不一样的菜单列表
   //   getMenu(prams: any){
@@ -272,6 +288,17 @@ export default {
   uploadFile(params: any) {
     return request({
       url: "/upload",
+      method: "post",
+      data: params,
+      mock: false,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
+  uploadFileForVolunteer(params: any) {
+    return request({
+      url: "/uploadForVolunteer",
       method: "post",
       data: params,
       mock: false,

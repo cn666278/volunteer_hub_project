@@ -208,7 +208,25 @@ public class EventService {
         return eventMapper.findLatestEvents();
     }
 
+    /**
+     * 更新事件的状态为"Passed"
+     * @param eventId 事件的ID
+     */
+    public void updateEventStatusToPassed(Long eventId) {
+        Event event = eventMapper.getEventById(eventId);
+        if (event != null) {
+            event.setStatus("Passed");
+            eventMapper.approveEvent(event); // 更新事件
+        }
+    }
 
+    public void updateEventStatusToRejected(Long eventId) {
+        Event event = eventMapper.getEventById(eventId);
+        if (event != null) {
+            event.setStatus("Rejected");
+            eventMapper.approveEvent(event); // 更新事件
+        }
+    }
 
 
 }

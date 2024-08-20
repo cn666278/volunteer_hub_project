@@ -1,0 +1,132 @@
+export default {
+  // Sidebar
+  "sidebar.title": "WSA 志愿者中心",
+  "sidebar.event": "事件",
+  "sidebar.eventRegister": "事件注册",
+  "sidebar.myEvents": "我的事件",
+  "sidebar.uploadTest": "上传测试",
+  "sidebar.system": "系统",
+  "sidebar.menu": "菜单",
+  "sidebar.dictionary": "字典",
+  "sidebar.account": "账户",
+  "sidebar.role": "角色",
+  "sidebar.user": "用户",
+
+  // Topbar
+  "topbar.home": "首页",
+  "topbar.mail": "邮箱",
+  "topbar.message": "消息",
+  "topbar.admin": "管理员",
+  "topbar.personal": "个人",
+  "topbar.password": "密码",
+  "topbar.exit": "退出",
+
+  // Messages
+  "messages.confirmExit": "你确认要退出吗？",
+  "messages.systemNotification": "系统通知",
+  "messages.cancelExit": "取消退出",
+
+  // Buttons
+  "buttons.confirm": "确认",
+  "buttons.cancel": "取消",
+
+  // 首页
+  "home.event1Title": "事件1",
+  "home.event2Title": "事件2",
+  "home.cellClicked": "单元格点击:",
+  "home.initialEvents": "初始事件:",
+  "home.watchCalendarDate": "日历日期已更改:",
+
+  // 事件注册页面
+  "eventRegistration.title": "标题",
+  "eventRegistration.description": "描述",
+  "eventRegistration.location": "位置",
+  "eventRegistration.file": "文件",
+  "eventRegistration.enterFileName": "输入文件名",
+  "eventRegistration.filePreview": "文件预览",
+  "eventRegistration.pointsAwarded": "奖励积分",
+  "eventRegistration.startDate": "开始日期",
+  "eventRegistration.endDate": "结束日期",
+  "eventRegistration.roles": "角色",
+  "eventRegistration.nearbyFacilities": "附近设施",
+  "eventRegistration.register": "注册",
+  "eventRegistration.reset": "重置",
+  "eventRegistration.selectFileError": "请选择一个文件并输入文件名。",
+  "eventRegistration.googleMapsApiError": "Google Maps API 未加载",
+  "eventRegistration.placesServiceError": "PlacesService 失败：{status}",
+
+  // MyEvent 页面
+  "myEvent.searchByTitle": "按标题搜索",
+  "myEvent.filterByStatus": "按状态过滤",
+  "myEvent.pending": "待处理",
+  "myEvent.approved": "已批准",
+  "myEvent.rejected": "已拒绝",
+  "myEvent.title": "标题",
+  "myEvent.description": "描述",
+  "myEvent.location": "地点",
+  "myEvent.startDate": "开始日期",
+  "myEvent.endDate": "结束日期",
+  "myEvent.status": "状态",
+  "myEvent.pointsAwarded": "奖励积分",
+  "myEvent.actions": "操作",
+  "myEvent.edit": "编辑",
+  "myEvent.review": "审核",
+  "myEvent.discuss": "讨论",
+  "myEvent.comment": "评论",
+  "myEvent.delete": "删除",
+  "myEvent.fetchEventsError": "获取事件失败",
+
+  // EditEvent 页面
+  "editEvent.title": "标题",
+  "editEvent.description": "描述",
+  "editEvent.location": "地点",
+  "editEvent.file": "文件",
+  "editEvent.enterFileName": "输入文件名",
+  "editEvent.filePreview": "文件预览",
+  "editEvent.pointsAwarded": "奖励积分",
+  "editEvent.startDate": "开始日期",
+  "editEvent.endDate": "结束日期",
+  "editEvent.roles": "角色",
+  "editEvent.nearbyFacilities": "附近设施",
+  "editEvent.save": "保存",
+  "editEvent.reset": "重置",
+  "editEvent.chooseStartDate": "选择开始日期",
+  "editEvent.chooseEndDate": "选择结束日期",
+
+  // CommentVolunteer 页面
+  "commentVolunteer.username": "用户名",
+  "commentVolunteer.experience": "经验",
+  "commentVolunteer.eventCount": "活动数量",
+  "commentVolunteer.role": "角色",
+  "commentVolunteer.credentials": "凭证",
+  "commentVolunteer.actions": "操作",
+  "commentVolunteer.comment": "评论",
+  "commentVolunteer.credentialImage": "凭证图片",
+
+  // CommentDetail 页面
+  "commentDetail.username": "用户名",
+  "commentDetail.star": "星级",
+  "commentDetail.comment": "评论",
+  "commentDetail.submit": "提交",
+  "commentDetail.cancel": "取消",
+  "commentDetail.commentSuccess": "评论提交成功。",
+  "commentDetail.commentFailure": "提交评论失败。",
+
+  // EventDiscuss 页面
+  "eventDiscuss.placeholder": "输入您的消息...",
+  "eventDiscuss.send": "发送",
+
+  // EventReview 页面
+  "eventReview.username": "用户名",
+  "eventReview.contact": "联系方式",
+  "eventReview.experience": "经验",
+  "eventReview.eventCount": "事件数量",
+  "eventReview.role": "角色",
+  "eventReview.credentials": "凭证",
+  "eventReview.actions": "操作",
+  "eventReview.accept": "接受",
+  "eventReview.reject": "拒绝",
+  "eventReview.credentialImage": "凭证图片",
+  "eventReview.volunteerStatusUpdated": "志愿者已被{status}。",
+  "eventReview.updateStatusFailed": "更新志愿者状态失败。",
+};

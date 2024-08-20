@@ -1,6 +1,8 @@
 export default {
   "searchTable.form.number": "编号",
+  "searchTable.form.number.placeholder": "请输入编号",
   "searchTable.form.name": "名称",
+  "searchTable.form.name.placeholder": "请输入名称",
   "searchTable.form.eventType": "活动类型",
   "searchTable.form.filterType": "过滤类型",
   "searchTable.form.status": "状态",
