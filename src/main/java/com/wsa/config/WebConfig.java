@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
         System.out.println("External IP: " + instanceIp);
         registry.addMapping("/**")
                 .allowedOrigins("http://10.72.102.12:5173")  // 使用动态获取的外部IP设置allowedOrigins
-                .allowedOrigins("http://localhost:5173") // 允许跨域的域名，可以设置为前端服务器的域名
+//                .allowedOrigins("http://localhost:5173") // 允许跨域的域名，可以设置为前端服务器的域名
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
