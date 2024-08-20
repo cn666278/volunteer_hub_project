@@ -51,5 +51,9 @@ public class VolunteerService {
     public void addPointsAwarded(Long volunteerId, Integer pointsAwarded) {
         volunteerMapper.addPointsAwarded(volunteerId, pointsAwarded);
     }
+
+    public void addCredential(Long id, String filename, String s) {
+        volunteerMapper.addCredential(id,filename,s);
+    }
 }
 

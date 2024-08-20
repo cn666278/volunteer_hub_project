@@ -67,8 +67,8 @@ public class VolunteerController {
 
     @PostMapping("/getCredentialsByVolunteerId")
     public ResultVO<List<Credential>> getCredentialsByVolunteerId(@RequestBody Credential credential) {
-
-        List<Credential> credentials = volunteerService.getCredentialsByVolunteerId(credential.getVolunteerId());
+        Volunteer volunteer = volunteerService.getVolunteerByUserId(credential.getVolunteerId());
+        List<Credential> credentials = volunteerService.getCredentialsByVolunteerId(volunteer.getId());
         if (credentials != null && !credentials.isEmpty()) {
             return ResultVO.success(credentials);
         } else {
