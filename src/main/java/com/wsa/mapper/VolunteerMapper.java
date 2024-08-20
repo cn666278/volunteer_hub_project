@@ -18,4 +18,6 @@ public interface VolunteerMapper {
     void addVolunteer(Volunteer volunteer);
     @Update("UPDATE volunteer SET kudosPoints = kudosPoints + #{pointsAwarded} WHERE id = #{volunteerId}")
     void addPointsAwarded(Long volunteerId, Integer pointsAwarded);
+    @Insert("INSERT INTO credentials (volunteerId,credentialName,credentialUrl) VALUES (#{id},#{filename},#{s})")
+    void addCredential(Long id, String filename, String s);
 }

@@ -296,6 +296,17 @@ export default {
       }
     });
   },
+  uploadFileForVolunteer(params: any) {
+    return request({
+      url: "/uploadForVolunteer",
+      method: "post",
+      data: params,
+      mock: false,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
   getfiles(params: any) {
     return request({
       url: `/files/${params.id}`,
