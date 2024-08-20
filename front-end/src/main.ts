@@ -22,3 +22,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 initI18n(app)
 app.config.globalProperties.$api = api;
 app.use(ElementPlus).use(router).use(pinia).mount('#app')
+
+// if (process.env.NODE_ENV === 'production') {
+    // console.log = function () {};
+//   }
+  
