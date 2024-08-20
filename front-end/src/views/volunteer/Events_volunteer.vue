@@ -23,8 +23,8 @@
       <!-- Events Participated Section -->
       <div class="blog-section" v-if="activeIndex === '2'">
         <div class="blog-display">
-          <el-card v-for="post in participatedEvents" :key="post.id" class="blog-card">
-            <img :src="post.image" alt="Blog Image" class="blog-image" @click="navigateToEvent(post.id)">
+          <el-card v-for="post in participatedEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
+            <img :src="post.image" alt="Blog Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
@@ -41,8 +41,6 @@
               <div class="status-box" :class="{'status-pending': post.status === 'pending', 'status-accepted': post.status === 'accepted'}">
                 {{ post.status }}
               </div>
-              <!-- 新增的 Discuss 按钮 -->
-              <el-button type="primary" @click="navigateToDiscussion(post.id)">Discuss</el-button>
             </div>
           </el-card>
         </div>
@@ -77,22 +75,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted,getCurrentInstance } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Document, Menu as IconMenu, User, Calendar } from '@element-plus/icons-vue';
 import api from '../../api/api'; // 引入api文件
 import useUser from '../../store/user'; // 假设您有一个用于获取用户登录信息的store
-const { proxy } = getCurrentInstance();
+
 const activeIndex = ref('2'); // 默认设置为 '2' 显示 Events Participated 页面
 const searchQuery = ref('');
-import { useRouter } from "vue-router";
-let router = useRouter();
+
 const userStore = useUser();
 const subscribedEvents = ref([]); // 保存已订阅活动的列表
 const participatedEvents = ref([]); // 保存用户参与的活动列表
-const navigateToDiscussion = (eventId: string) => {
-  console.log("navigateToDiscussion",eventId)
-  router.push({ name: 'EventDiscussion', query: { event: eventId } });
-};
 
 // 获取用户订阅的活动
 const fetchSubscribedEvents = async () => {
