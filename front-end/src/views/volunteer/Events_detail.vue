@@ -40,8 +40,13 @@
       <button class="styled-button primary" @click="openApplyDialog">
         Apply to be a volunteer
       </button>
-      <button class="styled-button success" @click="subscribeToEvent">
-        Subscribe This Event
+      <button 
+        class="styled-button success" 
+        :class="{'subscribed': isSubscribed}" 
+        @click="subscribeToEvent" 
+        :disabled="isSubscribed"
+      >
+        {{ isSubscribed ? 'Subscribed' : 'Subscribe This Event' }}
       </button>
     </div>
 
@@ -86,6 +91,7 @@ export default {
     const event = ref(null);
     const { t } = useI18n();
     const userStore = useUser();
+    const isSubscribed = ref(false); // 添加状态变量
 
     const introSections = ref([
       { title: 'SUPPORT' },
@@ -136,11 +142,13 @@ export default {
             message: 'Successfully subscribed to the event.',
             type: 'success',
           });
+          isSubscribed.value = true; // 更新状态变量
         } else if (response.includes('already subscribed')) {
           ElMessage({
             message: 'You have already subscribed to this event',
             type: 'warning',
           });
+          isSubscribed.value = true; // 更新状态变量
         }
       } catch (error) {
         console.error('Error subscribing to event:', error);
@@ -155,7 +163,6 @@ export default {
     const submitApplication = async () => {
       try {
         const loginId = userStore.user.id;
-        console.log('loginIddadaada:', loginId);
         if (!loginId) {
           alert('Please log in to apply for this event');
           return;
@@ -170,7 +177,7 @@ export default {
         const response = await api.registerForEvent({
           eventId: eventId,
           volunteerId: loginId,
-          roleId: 1, // 假设 roleId 是 1，你可以根据需要调整
+          roleId: 1, 
           status: 'pending',
         });
 
@@ -181,7 +188,6 @@ export default {
           });
           applyDialogVisible.value = false;
         } else {
-          // throw new Error(response.message || 'Failed to submit application');
           ElMessage({
             message: 'Failed to submit application.',
             type: 'warning',
@@ -218,12 +224,17 @@ export default {
       submitApplication,
       formattedEventDate,
       t,
+      isSubscribed, // 返回状态变量
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.styled-button.subscribed {
+  background-color: #6c757d !important;
+  cursor: not-allowed;
+}
 .event-detail {
   .intro-section {
     display: flex;
