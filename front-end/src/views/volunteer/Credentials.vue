@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <el-button type="primary" class="upload-button">Upload Credentials</el-button>
+    <el-button type="primary" class="upload-button" @click="triggerFileInput">Upload Credentials</el-button>
+    <input type="file" ref="fileInput" style="display: none;" @change="onFileChange" />
     <div class="credentials">
       <el-card v-for="item in items" :key="item.id" class="card">
         <template #header>{{ item.credentialName }}</template>
-        <img :src="item.credentialUrl" class="card-image" />
+        <img :src="item.credentialUrl || item.uploadedFilePath" class="card-image" />
         <div class="actions">
           <el-button type="danger" @click="confirmDelete(item.id)">Delete</el-button>
         </div>
@@ -17,19 +18,64 @@
 import { ref, onMounted } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import useUser from '../../store/user';
-import api from '../../api/api';  // 确保引入API管理文件
+import api from '../../api/api'; // 确保引入API管理文件
 
 const items = ref([]);
 const userStore = useUser();
+const fileInput = ref<HTMLInputElement | null>(null);
 
-onMounted(async () => {
+const triggerFileInput = () => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+
+// 文件上传处理逻辑
+const onFileChange = async (event: Event) => {
+  const files = (event.target as HTMLInputElement).files;
+  if (files && files.length > 0) {
+    const file = files[0];
+
+    // 获取文件名并去掉后缀
+    const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', fileNameWithoutExtension);  // 添加文件名到 formData
+    formData.append('volunteerId', userStore.user.id);
+    try {
+      const response = await api.uploadFileForVolunteer(formData);  // 假设你有一个上传文件的API
+
+      // 上传成功后刷新列表
+      await fetchCredentials();
+
+    } catch (error) {
+      console.error('File upload failed:', error);
+    }
+  }
+};
+
+// Function to fetch the credential list and display the files
+const fetchCredentials = async () => {
   const loginId = userStore.user.id;
 
   if (loginId) {
     try {
-      const response = await api.getCredentialsByVolunteerId({ volunteerId: loginId });
-      if (response) {
-        items.value = response;
+      // 获取该志愿者的 credential 列表
+      const credentialResponse = await api.getCredentialsByVolunteerId({ volunteerId: loginId });
+
+      if (credentialResponse && Array.isArray(credentialResponse)) {
+        // 遍历 credential 列表，根据每个 credentialUrl 去获取文件并展示
+        items.value = await Promise.all(
+            credentialResponse.map(async (credential) => {
+              const fileData = await fetchFile(credential.credentialUrl);
+              return {
+                id: credential.id,
+                credentialName: credential.credentialName,
+                uploadedFilePath: fileData, // 展示文件
+              };
+            })
+        );
       } else {
         console.error('Failed to load credentials');
       }
@@ -39,7 +85,31 @@ onMounted(async () => {
   } else {
     console.error('loginId not found');
   }
+};
+
+onMounted(() => {
+  fetchCredentials(); // 页面加载时获取志愿者的 credential 列表
 });
+
+// Function to fetch file using credentialUrl
+const fetchFile = async (credentialUrl: string) => {
+  try {
+    const response = await api.getfiles({ id: credentialUrl.split('/').pop() });
+    if (response) {
+      const base64Data = response;
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      return URL.createObjectURL(blob);
+    }
+  } catch (error) {
+    console.error('Error fetching file:', error);
+  }
+};
 
 // Function to confirm delete a credential
 const confirmDelete = (id) => {
@@ -65,7 +135,7 @@ const deleteCredential = async (id) => {
   try {
     const response = await api.deleteCredential({ id });
     if (response) {
-      items.value = items.value.filter(item => item.id !== id);
+      items.value = items.value.filter((item) => item.id !== id);
     } else {
       console.error('Failed to delete credential');
     }
