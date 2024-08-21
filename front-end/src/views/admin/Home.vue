@@ -62,6 +62,7 @@
       </el-card>
       <!-- 固定高度的卡片，添加滚动条 -->
       <el-card shadow="hover" style="margin-top: 20px; height: 490px;">
+        <p style="margin-bottom: 5px; margin-left: 10px">{{ $t('home.event') }}</p>
         <el-table :data="tableData" style="width: 100%;" height="450px">
           <el-table-column
             v-for="(val, key) in tableLable"
@@ -91,7 +92,7 @@
         </el-card>
       </div>
       <el-card style="height: 230px">
-        <p>{{ $t('home.registerUser') }}</p>
+        <p>{{ $t('home.registerVolunteer') }}</p>
         <div ref="echart" style="height: 250px; margin-top: -30px;"></div>
       </el-card>
       <div class="graph">
@@ -101,7 +102,7 @@
         </el-card>
         <el-card style="height: 300px">
           <p>{{ $t('home.organizerData.title') }}</p>
-          <div ref="organizerData" style="height: 190px"></div>
+          <div ref="organizerData" style="height: 190px; margin-top: 10px;"></div>
         </el-card>
       </div>
     </el-col>
@@ -154,7 +155,7 @@ const getTableList = async () => {
     console.error("Error fetching table data:", error);
   }
 };
-// 获取首页count统计数据: event / user / register user
+// 获取首页count统计数据: event / user / register volunteer
 const getCountData = async () => {
   try {
     let res = await proxy.$api.getCountData();

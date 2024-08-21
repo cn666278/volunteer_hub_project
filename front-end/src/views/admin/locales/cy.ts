@@ -23,7 +23,7 @@ export default {
   "home.todaysRegisterUsers": "Defnyddwyr cofrestredig heddiw",
   "home.totalRegisterUsers": "Cyfanswm y defnyddwyr cofrestredig",
   "home.monthlyRegisterUsers": "Defnyddwyr cofrestredig misol",
-  "home.registerUser": "Cofrestrwch Defnyddiwr",
+  "home.registerVolunteer": "Cofrestru Gwirfoddolwr",
 
   // Data Trefnydd (Organizer Data-related)
   "home.organizerData.title": "Data Trefnydd",

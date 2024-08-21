@@ -23,8 +23,28 @@ export default {
   "home.todaysRegisterUsers": "Today registered users",
   "home.totalRegisterUsers": "Total registered users",
   "home.monthlyRegisterUsers": "Monthly registered users",
-  "home.registerUser": "Register User",
+  "home.registerVolunteer": "Register Volunteer",
 
   // Organizer Data-related
   "home.organizerData.title": "Organizer Data",
+
+  // Event Data Overview Page
+  "eventDataOverview.title": "Event Data Overview",
+  "eventDataOverview.description": "This page provides an overview of the active users for each event over different time periods.",
+
+  // Dashboard Overview Page
+  "dashboardOverview.title": "Dashboard Overview",
+  "dashboardOverview.description": "This dashboard provides a quick glance at the overall activity, including events, users, and registrations.",
+
+  // Volunteer Registration Overview Page
+  "volunteerRegistrationOverview.title": "Volunteer Registration Overview",
+  "volunteerRegistrationOverview.description": "This section provides a graphical representation of the number of volunteers registered each day in the past week.",
+
+  // Active Users Overview Page
+  "activeUsersOverview.title": "Active Users Overview",
+  "activeUsersOverview.description": "This chart shows the number of active users over the past week.",
+
+  // Organizer Data Overview Page
+  "organizerDataOverview.title": "Organizer Data Overview",
+  "organizerDataOverview.description": "This pie chart shows the distribution of organizers involved in various events.",
 };

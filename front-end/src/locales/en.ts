@@ -33,7 +33,13 @@ const en = {
     message: 'Message',
     personal: 'Personal',
     password: 'Password',
-    exit: 'Exit'
+    exit: 'Exit',
+    analyse: 'Analyse',
+    eventData: 'Event Data',
+    dataCount: 'Data Count',
+    registerVolunteer: 'Register Volunteer',
+    activeUser: 'Active User',
+    organizerData: 'Organizer Data'
   },
   login: {
     volunteer: 'Volunteer',
