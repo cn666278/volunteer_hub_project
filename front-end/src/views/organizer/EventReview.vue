@@ -59,13 +59,14 @@ const viewCredential = async (url) => {
     if (response) {
       // 将Base64字符串转换为Blob
       const base64Data = response;
+      const mimeType = response.mimeType || 'image/jpeg';
       const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      const blob = new Blob([byteArray], { type: mimeType });
       console.log("blob", blob);
 
       // 创建一个URL对象并显示图片

@@ -121,13 +121,15 @@ const fetchAndDisplayImage = async (fileId: number) => {
     const response = await proxy.$api.getfiles({ id: fileId });
     if (response) {
       const base64Data = response;
+      // 假设从服务器返回的是包含图像数据的字段
+      const mimeType = response.mimeType || 'image/jpeg'; // 从响应中获取MIME类型，默认值为'jpeg'
       const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      const blob = new Blob([byteArray], { type: mimeType }); // 使用动态MIME类型
       uploadedFilePath.value = URL.createObjectURL(blob);
     }
   } catch (error) {

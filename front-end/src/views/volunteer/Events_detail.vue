@@ -167,13 +167,14 @@ export default {
       try {
         const response = await api.getfiles({ id: eventPicId });
         const base64Data = response;
+        const mimeType = response.mimeType || 'image/jpeg';
         const byteCharacters = atob(base64Data);
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        const blob = new Blob([byteArray], { type: mimeType });
         return URL.createObjectURL(blob);
       } catch (error) {
         console.error('Error fetching event image:', error);
