@@ -57,7 +57,6 @@ const viewCredential = async (url) => {
     console.log("response", response);
 
     if (response) {
-      // 将Base64字符串转换为Blob
       const base64Data = response;
       const mimeType = response.mimeType || 'image/jpeg';
       const byteCharacters = atob(base64Data);
@@ -69,7 +68,6 @@ const viewCredential = async (url) => {
       const blob = new Blob([byteArray], { type: mimeType });
       console.log("blob", blob);
 
-      // 创建一个URL对象并显示图片
       const imgURL = URL.createObjectURL(blob);
 
       ElMessageBox.alert(

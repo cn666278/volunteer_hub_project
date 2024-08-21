@@ -169,15 +169,12 @@ sudo systemctl start jenkins
 # sudo systemctl restart jenkins
 # sudo systemctl status jenkins
 # sudo systemctl enable jenkins
-# 获取实例的外部IP地址
 EXTERNAL_IP=$(openstack server show <WSAProjectBuild> -f value -c addresses | awk -F'=' '{print $2}')
 
-# 如果获取不到外部IP，则使用默认的localhost
 if [ -z "$EXTERNAL_IP" ]; then
     EXTERNAL_IP="localhost"
 fi
 
-# 打印获取的IP地址，便于调试
 echo "Using external IP: $EXTERNAL_IP"
 # build
 #back-end
@@ -188,7 +185,6 @@ nohup ./mvnw spring-boot:run &
 #front-end
 cd front-end
 npm install
-# 设置 VITE_API_BASE_URL 环境变量并启动前端开发服务器
 VITE_API_BASE_URL="http://10.72.102.12:8081" npm run dev -- --host 0.0.0.0
 
 #ls

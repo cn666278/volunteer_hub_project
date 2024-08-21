@@ -20,12 +20,12 @@ public class EmailService {
     }
     public void sendTestMail() {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("13253348930@163.com");  // 发件人邮箱
-        message.setTo("chenn16@cardiff.ac.uk");  // 收件人邮箱
-        message.setSubject("测试邮件");
-        message.setText("这是一封来自Spring Boot的测试邮件");
+        message.setFrom("13253348930@163.com");
+        message.setTo("chenn16@cardiff.ac.uk");
+        message.setSubject("test email");
+        message.setText("This is a test email from Spring Boot");
 
         mailSender.send(message);
-        System.out.println("邮件发送成功");
+        System.out.println("Email sent successfully");
     }
 }

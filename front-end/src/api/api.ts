@@ -290,7 +290,7 @@ export default {
       mock: false,
     });
   },
-  // 新增RewardStore项目
+
   addRewardStoreItem(params: any) {
     return request({
       url: '/rewardstore/add',
@@ -300,7 +300,7 @@ export default {
     });
   },
 
-// 修改RewardStore项目
+
   updateRewardStoreItem(params: any) {
     return request({
       url: '/rewardstore/update',
@@ -310,7 +310,7 @@ export default {
     });
   },
 
-// 删除RewardStore项目
+
   deleteRewardStoreItem(params: any) {
     return request({
       url: `/rewardstore/delete/${params.id}`,

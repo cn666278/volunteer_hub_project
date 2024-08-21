@@ -19,14 +19,12 @@ public class WebConfig implements WebMvcConfigurer {
         String instanceIp = getExternalIp();
         System.out.println("External IP: " + instanceIp);
         registry.addMapping("/**")
-                // 使用动态获取的外部IP设置allowedOrigins
-                .allowedOrigins("http://10.72.102.12:5173", "http://localhost:5173") // 合并 localhost 和 10.72.102.12
+                .allowedOrigins("http://10.72.102.12:5173", "http://localhost:5173")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
 
-    // 获取实例的外部IP地址
     private String getExternalIp() {
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -38,26 +36,24 @@ public class WebConfig implements WebMvcConfigurer {
                     if (!inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
                         String ip = inetAddress.getHostAddress();
                         if (ip.startsWith("172.") || ip.startsWith("192.168.")) {
-                            continue; // 跳过私有IP，寻找外部IP
+                            continue;
                         }
-                        return ip; // 返回外部IP
+                        return ip;
                     }
                 }
             }
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        return "localhost"; // 如果无法获取外部IP地址，回退到localhost
+        return "localhost";
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 添加对 D:/uploads 目录的资源映射
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:///D:/uploads/")
                 .setCachePeriod(0);
 
-        // 保留对 classpath:/static/ 目录的资源映射
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
                 .setCachePeriod(0);

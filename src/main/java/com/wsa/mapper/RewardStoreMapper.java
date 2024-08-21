@@ -18,12 +18,9 @@ public interface RewardStoreMapper {
 
     void createRedemptionRecord(@Param("userId") long userId, @Param("itemId") long itemId, @Param("pointsUsed") int pointsUsed);
 
-    // 新增物品
     void addItem(Item item);
 
-    // 修改物品
     void updateItem(Item item);
 
-    // 删除物品
     void deleteItem(@Param("id") Long id);
 }
