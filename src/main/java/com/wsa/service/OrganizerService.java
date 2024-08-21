@@ -15,9 +15,9 @@ public class OrganizerService {
     private OrganizerMapper organizerMapper;
 
     public UserInfo getUserInfoByOrganizerId(Long organizerId) {
-        Long userId = organizerMapper.findUserIdByOrganizerId(organizerId);
-        if (userId != null) {
-            return organizerMapper.getUserInfoById(userId);
+//        Long userId = organizerMapper.findUserIdByOrganizerId(organizerId);
+        if (organizerId != null) {
+            return organizerMapper.getUserInfoById(organizerId);
         } else {
             return null;
         }
