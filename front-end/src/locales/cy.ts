@@ -67,7 +67,10 @@ const cy = {
     passwordRequired: 'Rhowch gyfrinair',
     emailRequired: 'Rhowch gyfeiriad e-bost',
     emailInvalid: 'Rhowch gyfeiriad e-bost dilys',
-    roleRequired: 'Dewiswch rôl'
+    roleRequired: 'Dewiswch rôl',
+    agreeTo: 'Rwy\'n cytuno i\'r',
+    privacyPolicy: 'Polisi Preifatrwydd',
+    agreementRequired: 'Mae’n rhaid i chi gytuno i’r polisi preifatrwydd i gofrestru.'
   },
   banner: {
     slogan1: 'Croeso i Ganolfan Wirfoddolwyr WSA',

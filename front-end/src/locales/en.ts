@@ -67,7 +67,10 @@ const en = {
     passwordRequired: 'Please enter the password',
     emailRequired: 'Please enter the email address',
     emailInvalid: 'Please enter a valid email address',
-    roleRequired: 'Please select a role'
+    roleRequired: 'Please select a role',
+    agreeTo: 'I agree to the',
+    privacyPolicy: 'Privacy Policy',
+    agreementRequired: 'You must agree to the privacy policy to register.'
   },
   banner: {
     slogan1: 'Welcome to WSA Volunteer Hub',
