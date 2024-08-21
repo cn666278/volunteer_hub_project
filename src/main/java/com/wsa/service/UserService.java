@@ -197,4 +197,8 @@ public class UserService {
     public void updateUserAvator(Long volunteerId, String s) {
         userMapper.updateUserAvator(volunteerId,s);
     }
+
+    public User getUserByEventRegistrationId(Long id) {
+        return userMapper.getUserByEventRegistrationId(id);
+    }
 }

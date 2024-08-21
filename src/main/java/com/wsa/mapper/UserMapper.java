@@ -49,5 +49,7 @@ public interface UserMapper {
     User getUserByEmail(String to);
 
     void updateUserAvator(Long volunteerId, String s);
+
+    User getUserByEventRegistrationId(Long id);
 }
 

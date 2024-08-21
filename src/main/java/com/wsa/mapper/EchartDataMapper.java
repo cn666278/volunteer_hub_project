@@ -44,7 +44,7 @@ public interface EchartDataMapper {
             "o.organizationName AS name, " +
             "COUNT(e.id) AS value " +
             "FROM organizer o " +
-            "LEFT JOIN events e ON o.id = e.organizerId " +
+            "LEFT JOIN events e ON o.userId = e.organizerId " +
             "GROUP BY o.organizationName")
     List<EchartDataRes.OrganizerData> getOrganizerData();
 
@@ -59,6 +59,6 @@ public interface EchartDataMapper {
             "LEFT JOIN users u ON DATE(u.registerTime) = DATE(DATE_SUB(CURDATE(), INTERVAL seq DAY)) " +
             "OR DATE(u.lastLoginTime) = DATE(DATE_SUB(CURDATE(), INTERVAL seq DAY)) " +
             "GROUP BY seq " +
-            "ORDER BY FIELD(DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL seq DAY), '%a'), 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon')")
+            "ORDER BY FIELD(DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL seq DAY), '%a'), 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')")
     List<EchartDataRes.UserData> getUserData();
 }

@@ -24,7 +24,7 @@
       <div class="blog-section" v-if="activeIndex === '2'">
         <div class="blog-display">
           <el-card v-for="post in participatedEvents" :key="post.id" class="blog-card">
-            <img :src="post.image" alt="Blog Image" class="blog-image" @click="navigateToEvent(post.id)">
+            <img :src="post.uploadedFilePath" alt="Blog Image" class="blog-image" @click="navigateToEvent(post.id)">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
@@ -52,7 +52,7 @@
       <div class="blog-section" v-if="activeIndex === '3'">
         <div class="blog-display">
           <el-card v-for="post in subscribedEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
-            <img :src="post.image" alt="Blog Image" class="blog-image">
+            <img :src="post.uploadedFilePath" alt="Blog Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
@@ -77,7 +77,6 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import { ref, onMounted, getCurrentInstance } from 'vue';
 import { Document, Menu as IconMenu, User, Calendar } from '@element-plus/icons-vue';
@@ -99,15 +98,20 @@ const fetchSubscribedEvents = async () => {
   try {
     const volunteerId = userStore.user.id;
     const response = await api.getSubscribedEvents({ volunteerId });
-    subscribedEvents.value = response.map(event => ({
-      id: event.id,
-      image: event.eventPic,
-      title: event.title,
-      date: event.startDate,
-      organizationName: event.organizationName,
-      description: event.description,
-      status: event.status,
-    }));
+    subscribedEvents.value = await Promise.all(
+      response.map(async event => {
+        const uploadedFilePath = await fetchEventImage(event.eventPic);
+        return {
+          id: event.id,
+          uploadedFilePath,
+          title: event.title,
+          date: event.startDate,
+          organizationName: event.organizationName,
+          description: event.description,
+          status: event.status,
+        };
+      })
+    );
   } catch (error) {
     console.error('Error fetching subscribed events:', error);
   }
@@ -117,17 +121,42 @@ const fetchParticipatedEvents = async () => {
   try {
     const volunteerId = userStore.user.id;
     const response = await api.getParticipatedEvents({ volunteerId });
-    participatedEvents.value = response.map(event => ({
-      id: event.id,
-      image: event.eventPic,
-      title: event.title,
-      date: event.startDate,
-      organizationName: event.organizationName,
-      description: event.description,
-      status: event.status,
-    }));
+    participatedEvents.value = await Promise.all(
+      response.map(async event => {
+        const uploadedFilePath = await fetchEventImage(event.eventPic);
+        return {
+          id: event.id,
+          uploadedFilePath,
+          title: event.title,
+          date: event.startDate,
+          organizationName: event.organizationName,
+          description: event.description,
+          status: event.status,
+        };
+      })
+    );
   } catch (error) {
     console.error('Error fetching participated events:', error);
+  }
+};
+
+// 获取并显示事件的图片
+const fetchEventImage = async (fileId) => {
+  try {
+    const response = await proxy.$api.getfiles({ id: fileId });
+    const base64Data = response;
+    const mimeType = response.mimeType || 'image/jpeg'; // Default to JPEG if no MIME type
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: mimeType });
+    return URL.createObjectURL(blob);
+  } catch (error) {
+    console.error("Error fetching event image:", error);
+    return '';
   }
 };
 
@@ -291,4 +320,3 @@ p {
   margin-right: 5px;
 }
 </style>
-

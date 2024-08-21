@@ -30,13 +30,14 @@ public class EmailNotificationAspect {
     @AfterReturning(pointcut = "execution(* com.wsa.service.EventService.updateVolunteerStatus(..)) && args(id, email, eventId, status)")
     public void sendNotificationEmail(Long id, String email, Long eventId, String status) {
         // 创建邮件内容
+        User user = userService.getUserByEventRegistrationId(id);
         String subject = "Event Registration Status";
         String message = "Dear Volunteer, \n\nYour event registration has been " +
                 status +
                 ".\n\nThank you.";
 
         // 发送邮件
-        sendEmail(email, eventId, subject, message);
+        sendEmail(email, eventId, subject, message, user);
     }
 
     // 监控 redeemItem 方法
@@ -48,11 +49,11 @@ public class EmailNotificationAspect {
             String message = "Dear " + user.getUsername() + ", \n\nYour redemption for item was successful.\n\nThank you for your participation.";
 
             // 发送邮件
-            sendEmail(email, null, subject, message);
+            sendEmail(email, null, subject, message, user);
 
     }
 
-    private void sendEmail(String to, Long eventId, String subject, String text) {
+    private void sendEmail(String to, Long eventId, String subject, String text, User user) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("13253348930@163.com");  // 发件人邮箱
@@ -61,7 +62,6 @@ public class EmailNotificationAspect {
             message.setText(text);
 
             mailSender.send(message);
-            User user = userService.getUserByEmail(to);
             Volunteer volunteer = volunteerService.getVolunteerByUserId(user.getId());
             VolunteerInfo volunteerInfo = new VolunteerInfo();
             volunteerInfo.setVolunteerId(volunteer.getId().intValue());

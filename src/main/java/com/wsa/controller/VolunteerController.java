@@ -72,7 +72,7 @@ public class VolunteerController {
         if (credentials != null && !credentials.isEmpty()) {
             return ResultVO.success(credentials);
         } else {
-            return ResultVO.failure("No credentials found for this volunteerId.");
+            return ResultVO.success(null);
         }
     }
 

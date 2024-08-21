@@ -78,4 +78,20 @@
         WHERE id = #{volunteerId};
     </update>
 
+    <select id="getUserByEventRegistrationId" parameterType="long" resultType="com.wsa.model.User">
+        SELECT
+            users.*
+        FROM
+            eventregistrations
+                INNER JOIN
+            volunteer
+            ON
+                eventregistrations.volunteerId = volunteer.id
+                INNER JOIN
+            users
+            ON
+                volunteer.userId = users.id
+        WHERE
+            eventregistrations.id = #{id}
+    </select>
 </mapper>
