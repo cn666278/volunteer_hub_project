@@ -99,7 +99,7 @@ const submitForm = (formRef: FormInstance | undefined) => {
 
                         if (user.role.roleName === "volunteer") {
                             // jump to Main home page
-                            router.push("/volunteer");
+                            router.push("/");
                         } else if (user.role.roleName === "admin") {
                             // jump to Admin home page
                             router.push("/admin");
