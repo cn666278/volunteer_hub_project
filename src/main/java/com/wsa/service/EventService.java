@@ -208,6 +208,12 @@ public class EventService {
         return eventMapper.findLatestEvents();
     }
 
+
+
+    public List<EventRoles> getRolesByEventId(Long eventId) {
+        return eventRolesMapper.findRolesByEventId(eventId);
+    }
+
     /**
      * 更新事件的状态为"Passed"
      * @param eventId 事件的ID
