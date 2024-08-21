@@ -7,31 +7,53 @@
       </div>
       <div class="text-content">
         <h1>{{ event.title }}</h1>
-        <p>{{ event.organizerId }}</p>
+        <p>{{ event.organizationName }}</p>
       </div>
     </div>
 
     <!-- Introduction Sections -->
     <div class="project-introduction-middle">
-      <div class="column" v-for="(item, index) in introSections" :key="index">
-        <h3>{{ $t(`home.projectIntro.${item.title.toLowerCase()}Title`) }}</h3>
-        <p>{{ $t(`home.projectIntro.${item.title.toLowerCase()}Text`) }}</p>
+      <!-- LOCATION, DATE, and REWARD POINTS Cards -->
+      <div class="card-container">
+        <div v-for="(item, index) in introSections" :key="index" class="custom-card">
+          <div :class="['event-name', { 'red-title': item.title === 'LOCATION' }]">
+            {{ item.title }}
+          </div>
+          <div class="divider2"></div>
+          <div class="comment-content">
+            <div :class="['comment-text', { 'full-text': item.title === 'DATE' }]">{{ item.value }}</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Description Section -->
-    <div class="description">
-      <h3>{{ $t('home.descriptionTitle') }}</h3>
-      <div class="section-content">
-        <p>{{ event.description }}</p>
+    <div class="project-introduction-middle">
+      <div class="card-container">
+        <div class="custom-card wide-card">
+          <div class="event-name">
+            Description
+          </div>
+          <div class="divider2"></div>
+          <div class="comment-content">
+            <div class="comment-text full-text">{{ event.description }}</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Volunteer Recruitment Information Section -->
-    <div class="description-role">
-      <h3>{{ $t('home.volunteerInfoTitle') }}</h3>
-      <div class="section-content">
-        <p>{{ event.description }}</p>
+    <div class="project-introduction-middle">
+      <div class="card-container">
+        <div class="custom-card wide-card">
+          <div class="event-name">
+            Volunteer Information
+          </div>
+          <div class="divider2"></div>
+          <div class="comment-content">
+            <div class="comment-text full-text">{{ event.volunteerInformation }}</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -77,7 +99,6 @@
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { ref, onMounted, computed } from 'vue';
 import api from '../../api/api';
@@ -92,16 +113,15 @@ export default {
     const uploadedFilePath = ref(''); // 用于存储图片路径
     const { t } = useI18n();
     const userStore = useUser();
-    const isSubscribed = ref(false); // 添加状态变量
+    const isSubscribed = ref(false);
 
-    const introSections = ref([
-      { title: 'SUPPORT' },
-      { title: 'ROLE' },
-      { title: 'OPPORTUNITY' },
+    const introSections = computed(() => [
+      { title: 'LOCATION', value: event.value?.location },
+      { title: 'DATE', value: `${formattedEventStartDate.value} - ${formattedEventEndDate.value}` },
+      { title: 'Reward Points', value: event.value?.pointsAwarded },
     ]);
 
     const applyDialogVisible = ref(false);
-    const applyForm = ref({});
 
     const loadEvent = async () => {
       const eventId = route.params.id;
@@ -165,13 +185,13 @@ export default {
             message: 'Successfully subscribed to the event.',
             type: 'success',
           });
-          isSubscribed.value = true; // 更新状态变量
+          isSubscribed.value = true;
         } else if (response.includes('already subscribed')) {
           ElMessage({
             message: 'You have already subscribed to this event',
             type: 'warning',
           });
-          isSubscribed.value = true; // 更新状态变量
+          isSubscribed.value = true;
         }
       } catch (error) {
         console.error('Error subscribing to event:', error);
@@ -222,9 +242,20 @@ export default {
       }
     };
 
-    const formattedEventDate = computed(() => {
+    const formattedEventStartDate = computed(() => {
       if (event.value) {
-        return new Date(event.value.date).toLocaleDateString('en-US', {
+        return new Date(event.value.startDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+      }
+      return '';
+    });
+
+    const formattedEventEndDate = computed(() => {
+      if (event.value) {
+        return new Date(event.value.endDate).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
@@ -244,21 +275,16 @@ export default {
       subscribeToEvent,
       openApplyDialog,
       applyDialogVisible,
-      applyForm,
       submitApplication,
-      formattedEventDate,
-      t,
-      isSubscribed, // 返回状态变量
+      formattedEventStartDate,
+      formattedEventEndDate,
+      isSubscribed,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.styled-button.subscribed {
-  background-color: #6c757d !important;
-  cursor: not-allowed;
-}
 .event-detail {
   .intro-section {
     display: flex;
@@ -321,61 +347,86 @@ export default {
   }
 
   .project-introduction-middle {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    padding: 40px 20px;
-    background-color: #f5f5f5;
-    margin: 20px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    .card-container {
+      display: flex;
+      justify-content: space-around;
+      padding: 40px 20px;
+    }
 
-    .column {
+    .custom-card {
       width: 30%;
-      text-align: center;
-      padding: 10px;
+      height: auto;
+      border: 1px solid #ccc;
+      background-color: #f5f5f5;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 20px;
 
-      h3 {
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .event-name {
+        font-weight: bold;
+        text-align: center;
         margin-top: 10px;
-        font-size: 1.5rem;
+        color: #a9181a;
+        font-size: 20px;
+      }
+
+      .divider2 {
+        width: 90%;
+        height: 2px;
+        background-color: #ddd;
+        margin: 10px 0;
+      }
+
+      .comment-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        padding: 10px;
+      }
+
+      .comment-text {
+        margin-right: 10px;
+        text-align: center;
+        font-size: 18px;
+        color: #666;
+
+        &.full-text {
+          white-space: normal;
+          overflow: visible;
+        }
+      }
+
+      &.red-title .event-name {
         color: #a9181a;
       }
+    }
 
-      p {
-        font-size: 1rem;
-        color: #666;
-        margin-top: 5px;
-      }
+    .wide-card {
+      width: 90%; /* 设置宽度为90% */
     }
 
     @media (max-width: 800px) {
-      flex-direction: column;
-
-      .column {
-        width: 100%;
+      .card-container {
+        flex-direction: column;
+        align-items: center;
       }
-    }
-  }
 
-  .description,
-  .description-role {
-    padding: 20px;
-    background-color: #f5f5f5;
-    margin: 20px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
-
-    h3 {
-      margin-top: 10px;
-      font-size: 1.5rem;
-      color: #a9181a;
-    }
-
-    .section-content {
-      padding: 20px;
-      font-size: 1rem;
-      color: #666;
+      .custom-card,
+      .wide-card {
+        width: 100%;
+        margin-bottom: 20px;
+      }
     }
   }
 
