@@ -25,4 +25,8 @@ public class MessageService {
     public List<Message> getMessagesByEventId(Long eventId) {
         return messageMapper.getMessagesByEventId(eventId);
     }
+
+    public void deleteMessageById(Long messageId) {
+        messageMapper.deleteMessageById(messageId);
+    }
 }

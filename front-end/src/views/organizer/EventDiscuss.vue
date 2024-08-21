@@ -4,9 +4,22 @@
       <p>
         <strong>{{ msg.username }}:</strong> {{ msg.content }}
         <span class="timestamp">{{ formatTimestamp(msg.timestamp) }}</span>
+        <!-- 新增的删除按钮 -->
+        <el-button
+            size="mini"
+            type="danger"
+            @click="deleteMessage(msg.id)"
+            class="delete-button"
+        >
+        delete
+        </el-button>
       </p>
     </div>
-    <el-input v-model="newMessage" :placeholder="t('eventDiscuss.placeholder')" @keyup.enter="sendMessage" />
+    <el-input
+        v-model="newMessage"
+        :placeholder="t('eventDiscuss.placeholder')"
+        @keyup.enter="sendMessage"
+    />
     <el-button @click="sendMessage">{{ t('eventDiscuss.send') }}</el-button>
   </div>
 </template>
@@ -52,7 +65,7 @@ const sendMessage = () => {
 };
 
 const connect = () => {
-  const socket = new SockJS('http://localhost:8081/ws'); // 使用后端服务器地址和端口
+  const socket = new SockJS('http://10.72.102.12:8081/ws'); // 使用后端服务器地址和端口
   stompClient = Stomp.over(socket);
   stompClient.connect({}, (frame) => {
     stompClient.subscribe('/topic/messages', (message) => {
@@ -78,6 +91,21 @@ const formatTimestamp = (timestamp) => {
   });
 };
 
+// 删除消息
+const deleteMessage = async (messageId) => {
+  try {
+    const response = await proxy.$api.deleteMessage({ id: messageId });
+    if (response) {
+      messages.value = messages.value.filter(msg => msg.id !== messageId);
+      console.log("消息删除成功");
+    } else {
+      console.error("消息删除失败");
+    }
+  } catch (error) {
+    console.error("删除消息时出错:", error);
+  }
+};
+
 onMounted(() => {
   fetchMessages();
   connect();
@@ -88,9 +116,17 @@ onMounted(() => {
 .message {
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  position: relative; /* 使时间戳和删除按钮相对定位 */
 }
 .timestamp {
   float: right;
   color: #888;
+  margin-right: 100px; /* 给删除按钮留出更多空间 */
+}
+
+.delete-button {
+  position: absolute;
+  right: 10px;
+  top: 5px;
 }
 </style>

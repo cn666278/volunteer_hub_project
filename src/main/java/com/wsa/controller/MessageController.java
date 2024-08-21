@@ -20,4 +20,10 @@ public class MessageController {
     public ResultVO<List<Message>> getMessagesByEventId(@RequestBody EventRequest event) {
         return ResultVO.success(messageService.getMessagesByEventId(event.getEventId()));
     }
+
+    @PostMapping("/deleteMessage")
+    public ResultVO<String> deleteMessage(@RequestBody Message message) {
+        messageService.deleteMessageById(message.getId());
+        return ResultVO.success("Message deleted successfully.");
+    }
 }
