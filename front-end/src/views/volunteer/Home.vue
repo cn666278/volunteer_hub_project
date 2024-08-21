@@ -32,12 +32,12 @@
       <h1>Recent Events</h1>
       <div class="event-display">
         <el-card v-for="event in recentEvents" :key="event.id" class="event-card">
-          <img :src="event.eventPic" alt="Event Image" class="event-image">
+          <img :src="event.uploadedFilePath" alt="Event Image" class="event-image">
           <div class="event-details">
             <div class="event-author-date">
               <div class="author-details">
                 <el-icon><User /></el-icon> <!-- Event author icon -->
-                {{ event.organizerName }} <!-- Display the organizer's name next to the icon -->
+                {{ event.organizationName }} <!-- Display the organizer's name next to the icon -->
               </div>
               <div class="date-details">
                 <el-icon><Calendar /></el-icon> <!-- Event date icon -->
@@ -104,9 +104,38 @@ export default {
     const fetchRecentEvents = async () => {
       try {
         const response = await proxy.$api.getLatestEvents();
-        recentEvents.value = response;
+        const events = response;
+
+        // Fetch images for each event
+        recentEvents.value = await Promise.all(
+            events.map(async (event) => {
+              const uploadedFilePath = await fetchEventImage(event.eventPic);
+              return {
+                ...event,
+                uploadedFilePath,
+              };
+            })
+        );
       } catch (error) {
         ElMessage.error('Failed to load recent events');
+      }
+    };
+
+    const fetchEventImage = async (eventPicId) => {
+      try {
+        const response = await proxy.$api.getfiles({ id: eventPicId });
+        const base64Data = response;
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        return URL.createObjectURL(blob);
+      } catch (error) {
+        console.error('Error fetching event image:', error);
+        return '';
       }
     };
 

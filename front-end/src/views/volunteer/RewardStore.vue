@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2>Welcome to the Points Mall. Your current points are {{ points }}</h2>
     <div class="item-list">
       <div v-for="item in items" :key="item.id" class="item-card">
         <img :src="item.itemUrl" alt="item image" class="item-image" />
@@ -17,24 +18,39 @@ import { ref, onMounted, getCurrentInstance } from 'vue';
 import useUser from "../../store/user";
 // user store
 const userStore = useUser();
+const points = ref(0); // 用于存储当前用户的积分
 
 const { proxy } = getCurrentInstance();
 const items = ref([]);
 
+// 获取商品列表
 const fetchItems = async () => {
   const response = await proxy.$api.getItems();
   items.value = response;
 };
 
+// 获取当前用户的积分
+const fetchPoints = async () => {
+  const userId = userStore.user.id; // 获取当前登录用户的ID
+  const response = await proxy.$api.getVolunteerByUserId({ userId });
+  if (response && response.kudosPoints) {
+    points.value = response.kudosPoints; // 更新积分
+  } else {
+    console.error("Failed to fetch points");
+  }
+};
+
+// 兑换商品
 const redeemItem = async (itemId) => {
   const response = await proxy.$api.redeemItem({
     userId: userStore.user.id,
     itemId: itemId,
   });
 
-  if (response.success) {
+  if (response) {
     alert('Redemption successful!');
     fetchItems(); // Refresh items
+    fetchPoints(); // Refresh points after redemption
   } else {
     alert('Redemption failed!');
   }
@@ -42,14 +58,21 @@ const redeemItem = async (itemId) => {
 
 onMounted(() => {
   fetchItems();
+  fetchPoints(); // 页面加载时获取当前用户的积分
 });
 </script>
 
 <style scoped>
 .container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin-top: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .item-list {

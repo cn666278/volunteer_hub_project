@@ -438,7 +438,13 @@ export default {
       mock: false,
     });
   },
-
+  getVolunteerByUserId(params: any) {
+    return request({
+      url: `/volunteer/getVolunteerByUserId/${params.userId}`,
+      method: "get",
+      mock: false,
+    });
+  },
   // navigateToEvent(params: any) {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },

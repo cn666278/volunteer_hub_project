@@ -193,6 +193,7 @@ public class EventController {
 
             // 转换为 EventRes 响应对象
             List<EventRes> eventResList = latestEvents.stream().map(event -> {
+                Organizer o = organizerService.getOrganizersById(event.getOrganizerId());
                 EventRes eRes = new EventRes();
                 eRes.setId(event.getId());
                 eRes.setTitle(event.getTitle());
@@ -204,6 +205,7 @@ public class EventController {
                 eRes.setEndDate(event.getEndDate());
                 eRes.setStatus(event.getStatus());
                 eRes.setEventPic(event.getEventPic());
+                eRes.setOrganizationName(o.getOrganizationName());
                 return eRes;
             }).collect(Collectors.toList());
 
