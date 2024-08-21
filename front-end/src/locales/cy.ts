@@ -4,6 +4,7 @@ import localeAdminUser from '../views/admin/user/locales/cy'
 import localeAdminEditComponent from '../components/user/locales/cy'
 import localeVolunteerHome from '../views/volunteer/locales/cy'
 import organizerLocales from '../views/organizer/locales/cy'
+
 const cy = {
   appName: 'Canolfan Wirfoddolwyr WSA',
   language: {
@@ -32,7 +33,13 @@ const cy = {
     message: 'Neges',
     personal: 'Personol',
     password: 'Cyfrinair',
-    exit: 'Allanfa'
+    exit: 'Allanfa',
+    analyse: 'Dadansoddi',
+    eventData: 'Data Digwyddiad',
+    dataCount: 'Cyfrif Data',
+    registerVolunteer: 'Cofrestru Gwirfoddolwyr',
+    activeUser: 'Defnyddiwr Gweithgar',
+    organizerData: 'Data Trefnydd'
   },
   login: {
     volunteer: 'Gwirfoddolwr',

@@ -4,6 +4,7 @@ import localeAdminUser from '../views/admin/user/locales/zh'
 import localeAdminEditComponent from '../components/user/locales/zh'
 import localeVolunteerHome from '../views/volunteer/locales/zh'
 import organizerLocales from '../views/organizer/locales/zh'
+
 const zh = {
   appName: 'WSA 志愿者中心',
   language: {
@@ -32,7 +33,13 @@ const zh = {
     message: '消息',
     personal: '个人',
     password: '密码',
-    exit: '退出'
+    exit: '退出',
+    analyse: '分析',
+    eventData: '事件数据',
+    dataCount: '数据统计',
+    registerVolunteer: '志愿者注册',
+    activeUser: '活跃用户',
+    organizerData: '组织者数据'
   },
   login: {
     volunteer: '志愿者',
