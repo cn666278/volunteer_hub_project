@@ -218,11 +218,22 @@ public class EventController {
 
 
     @GetMapping("/{id}")
-    public ResultVO<Event> getEventById(@PathVariable Long id) {
+    public ResultVO<EventRes> getEventById(@PathVariable Long id) {
         try {
             Event event = eventService.getEventById(id);
             if (event != null) {
-                return ResultVO.success(event);
+                EventRes eRes = new EventRes();
+                eRes.setId(event.getId());
+                eRes.setTitle(event.getTitle());
+                eRes.setDescription(event.getDescription());
+                eRes.setLocation(event.getLocation());
+                eRes.setPointsAwarded(event.getPointsAwarded());
+                eRes.setStartDate(event.getStartDate());
+                eRes.setEndDate(event.getEndDate());
+                eRes.setEventPic(event.getEventPic());
+                eRes.setStatus(event.getStatus());
+                eRes.setOrganizationName(organizerService.getOrganizersById(event.getOrganizerId()).getOrganizationName());
+                return ResultVO.success(eRes);
             } else {
                 return ResultVO.failure("Event not found");
             }
@@ -230,6 +241,7 @@ public class EventController {
             return ResultVO.failure("Failed to fetch event details");
         }
     }
+
 
     @PostMapping("/subscribeForEvent")
     public ResultVO<String> subscribeForEvent(@RequestBody EventRegistrations eventRegistration) {
