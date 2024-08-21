@@ -1,13 +1,10 @@
 <template>
-  <div className="volunteerPersonal">
+  <div class="volunteerPersonal">
     <!-- Main content -->
     <el-main class="main-content">
       <div class="user-profile">
-        <img :src="userStore.user.photo" class="user-avatar">
+        <img :src="uploadedPhotoUrl || userStore.user.photo" class="user-avatar">
         <div class="username">{{ userStore.user.username }}</div>
-      </div>
-      <div class="user-rating">
-        <el-rate v-model="rating"></el-rate>
       </div>
       <el-row :gutter="20" class="feature-row">
         <el-col :span="24" :md="8" v-for="feature in features" :key="feature.name">
@@ -24,59 +21,88 @@
   </div>
 </template>
 
-<script>
-//todo: change to vue3 setup
-import useUser from "../../store/user";
-// user store
-const userStore = useUser();
 
-export default {
-  name: 'VolunteerMainPage',
-  data() {
-    return {
-      userStore,
-      rating: 4.5,
-      features: [
-        {
-          name: 'personal.personalInformation',
-          icon: './src/assets/personal.png',
-          route: '/volunteer/personalInfo',
-        },
-        {
-          name: 'personal.credentials',
-          icon: './src/assets/credentials.png',
-          route: '/volunteer/credentials',
-        },
-        {
-          name: 'personal.events',
-          icon: './src/assets/events.png',
-          route: '/volunteer/events_volunteer',
-        },
-        {
-          name: 'personal.comments',
-          icon: './src/assets/comments.png',
-          route: '/volunteer/comments',
-        },
-        {
-          name: 'personal.information',
-          icon: './src/assets/message.png',
-          route: '/volunteer/information',
-        },
-        {
-          name: 'personal.share',
-          icon: './src/assets/share.png',
-          route: '/volunteer/share',
-        }
-      ]
-    };
-  },
-  methods: {
-    navigateTo(route) {
-      this.$router.push(route);
+
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+import useUser from '../../store/user';
+import api from '../../api/api';  // Ensure the correct API import
+
+const userStore = useUser();
+const uploadedPhotoUrl = ref<string | null>(null);
+
+const fetchFile = async (fileId: string) => {
+  try {
+    const response = await api.getfiles({ id: fileId });
+    if (response) {
+      const base64Data = response;
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      return URL.createObjectURL(blob);
+    }
+  } catch (error) {
+    console.error('Error fetching file:', error);
+  }
+  return null;
+};
+
+const loadUserProfilePicture = async () => {
+  if (userStore.user.photo) {
+    const photoId = userStore.user.photo.split('/').pop(); // Extract the 'id' part
+    if (photoId) {
+      uploadedPhotoUrl.value = await fetchFile(photoId);
     }
   }
 };
+
+onMounted(async () => {
+  await loadUserProfilePicture();
+});
+
+const features = [
+  {
+    name: 'personal.personalInformation',
+    icon: './src/assets/personal.png',
+    route: '/volunteer/personalInfo',
+  },
+  {
+    name: 'personal.credentials',
+    icon: './src/assets/credentials.png',
+    route: '/volunteer/credentials',
+  },
+  {
+    name: 'personal.events',
+    icon: './src/assets/events.png',
+    route: '/volunteer/events_volunteer',
+  },
+  {
+    name: 'personal.comments',
+    icon: './src/assets/comments.png',
+    route: '/volunteer/comments',
+  },
+  {
+    name: 'personal.information',
+    icon: './src/assets/message.png',
+    route: '/volunteer/information',
+  },
+  {
+    name: 'personal.share',
+    icon: './src/assets/share.png',
+    route: '/volunteer/share',
+  }
+];
+
+const navigateTo = (route: string) => {
+  this.$router.push(route);
+};
 </script>
+
+
 
 <style scoped>
 .main-content {
@@ -85,7 +111,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  color: #a9181a;; /* 设置文本颜色为深灰色 */
+  color: #a9181a; /* 设置文本颜色为深灰色 */
 }
 
 .user-profile {
@@ -99,20 +125,17 @@ export default {
 .username {
   margin-top: 10px; /* 根据需要调整间距 */
   text-align: center; /* 确保文本居中显示 */
-  color:  #a9181a;;
-  font-size: 15px;
+  color: #a9181a;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .user-avatar {
-  width: 50px; /* 设置头像宽度 */
-  height: 50px; /* 设置头像高度 */
+  width: 100px; /* 设置头像宽度 */
+  height: 100px; /* 设置头像高度 */
   border-radius: 50%; /* 保持圆形 */
   object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
-  border: 2px solid  #a9181a;; /* 为头像添加边框 */
-}
-
-.user-rating {
-  margin-top: 0px;
+  border: 2px solid #a9181a; /* 为头像添加边框 */
 }
 
 .feature-row {
@@ -134,6 +157,7 @@ export default {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   border-radius: 10px;
 }
+
 .feature-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -154,12 +178,11 @@ export default {
 }
 
 .feature-card p {
-  color:  #a9181a;;
+  color: #a9181a;
   font-size: 14px;
 }
 
-/* 基本样式不变 */
-
+/* Remove or adjust mobile-specific styles */
 @media (max-width: 600px) {
   .main-content {
     padding: 10px; /* 调整内边距为10px */
@@ -176,42 +199,39 @@ export default {
     height: 80px; /* 将头像高度调整为80px */
   }
 
-  .user-rating {
-    margin-bottom: 20px; /* 减少与下方元素的间距 */
-  }
-
   .feature-row {
-    margin: 0 5px; /* 减少特性行的外边距 */
+    margin: 0; /* Remove the extra margins */
   }
 
   .feature-card {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed  #a9181a;;
-    padding: 15px;
-    margin: 10px auto; /* 确保卡片居中且有足够的外边距 */
-    width: calc(100% - 20px); /* 减去外边距确保完整显示边框 */
-    box-sizing: border-box; /* 包含padding和border在内的宽度计算 */
+    border: 1px solid #ccc; /* Ensure border style is consistent */
+    padding: 20px; /* Match padding to the desktop version */
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width: 100%; /* Make sure the width is consistent */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    background-color: #f5f5f5; /* Ensure background color matches */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: 10px;
   }
 
   .feature-icon {
-    width: 25px;
-    height: 25px;
+    width: 40px; /* Consistent icon size */
+    height: 40px;
   }
 
   .feature-card h3 {
-    font-size: 16px; /* 适当调整以适应显示 */
-    margin: 5px 0; /* 减少标题与其他元素的间距 */
+    font-size: 14px; /* Ensure consistency in font size */
+    margin: 10px 0;
   }
 
   .feature-card p {
-    font-size: 14px; /* 适当调整字体大小以适应空间 */
-    margin: 0 0 5px; /* 调整段落的间距 */
-    text-align: center; /* 确保文本居中对齐 */
-    word-wrap: break-word; /* 避免文字溢出 */
+    font-size: 14px; /* Consistent paragraph text size */
+    margin: 0;
+    text-align: center;
+    word-wrap: break-word;
   }
 }
 </style>
+

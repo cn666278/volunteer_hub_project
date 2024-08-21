@@ -62,4 +62,20 @@
         SET lastLoginTime = now()
         WHERE username = #{username}
     </update>
+
+    <update id="updateUserAvator">
+        UPDATE users
+        SET
+            loginId = users.loginId,
+            username = users.username,
+            phone = users.phone,
+            email = users.email,
+            password = users.password,
+            enabled = users.enabled,
+            lastLoginTime = users.lastLoginTime,
+            registerTime = users.registerTime,
+            photo = #{s}
+        WHERE id = #{volunteerId};
+    </update>
+
 </mapper>

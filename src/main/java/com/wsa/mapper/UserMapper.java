@@ -47,5 +47,7 @@ public interface UserMapper {
     void updateLoginTime(String username);
     @Select("SELECT * FROM users WHERE email = #{to}")
     User getUserByEmail(String to);
+
+    void updateUserAvator(Long volunteerId, String s);
 }
 
