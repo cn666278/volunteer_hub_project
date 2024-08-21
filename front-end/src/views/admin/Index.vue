@@ -25,17 +25,17 @@
             <span>{{ $t('menu.approve') }}</span>
           </template>
           <el-menu-item index="/admin/approve/event">{{ $t('menu.event') }}</el-menu-item>
-          <el-menu-item index="/admin/approve/organizer">{{ $t('menu.organizer') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
-            <el-icon>
-              <Avatar />
-            </el-icon>
-            <span>{{ $t('menu.system') }}</span>
+            <el-icon><TrendCharts /></el-icon>
+            <span>{{ $t('menu.analyse') }}</span>
           </template>
-          <el-menu-item index="/admin/menu">{{ $t('menu.menu') }}</el-menu-item>
-          <el-menu-item index="/admin/dict">{{ $t('menu.dict') }}</el-menu-item>
+          <el-menu-item index="/admin/eventData">{{ $t('menu.eventData') }}</el-menu-item>
+          <el-menu-item index="/admin/dataCount">{{ $t('menu.dataCount') }}</el-menu-item>
+          <el-menu-item index="/admin/registerVolunteer">{{ $t('menu.registerVolunteer') }}</el-menu-item>
+          <el-menu-item index="/admin/activeUser">{{ $t('menu.activeUser') }}</el-menu-item>
+          <el-menu-item index="/admin/organizerData">{{ $t('menu.organizerData') }}</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
@@ -49,13 +49,13 @@
             </el-icon>
             {{ $t('menu.home') }}
           </el-menu-item>
-          <el-menu-item index="/admin/mail">
+          <el-menu-item>
             <el-icon>
               <Message />
             </el-icon>
             {{ $t('menu.mail') }}
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item>
             <el-icon>
               <ChatDotRound />
             </el-icon>
@@ -70,7 +70,7 @@
               {{ userStore.user.username }}
             </template>
             <el-menu-item index="/admin/personal">{{ $t('menu.personal') }}</el-menu-item>
-            <el-menu-item index="/admin/password">{{ $t('menu.password') }}</el-menu-item>
+            <!-- <el-menu-item index="/admin/password">{{ $t('menu.password') }}</el-menu-item> -->
             <el-menu-item index="" @click="exit">{{ $t('menu.exit') }}</el-menu-item>
           </el-sub-menu>
         </el-menu>
@@ -90,7 +90,7 @@
     Tools,
     Message,
     ChatDotRound,
-    Avatar,
+    TrendCharts,
     User,
   } from "@element-plus/icons-vue";
   import { onMounted } from "vue";

@@ -33,7 +33,7 @@ public interface CountDataMapper {
     int getMonthlyActiveUsers();
 
     // 获取总注册用户数
-    @Select("SELECT COUNT(*) FROM users WHERE DATE(registerTime) = CURDATE()")
+    @Select("SELECT COUNT(*) FROM users")
     int getTotalRegisterUsers();
 
     // 获取今日注册用户数

@@ -21,7 +21,7 @@ public class CountDataService {
         // totalEvents
         CountDataRes totalEvents = new CountDataRes();
         totalEvents.setName("totalEvents");
-        totalEvents.setIcon("success-filled");
+        totalEvents.setIcon("histogram");
         totalEvents.setColor("#2ec7c9");
         totalEvents.setValue(countDataMapper.getTotalEvents());
         countDataResList.add(totalEvents);
@@ -29,23 +29,23 @@ public class CountDataService {
         // totalUsers
         CountDataRes totalUsers = new CountDataRes();
         totalUsers.setName("totalUsers");
-        totalUsers.setIcon("star-filled");
-        totalUsers.setColor("#ffb980");
+        totalUsers.setIcon("user-filled");
+        totalUsers.setColor("#5ab1ef");
         totalUsers.setValue(countDataMapper.getTotalUsers());
         countDataResList.add(totalUsers);
 
         // totalRegisterUsers
         CountDataRes totalRegisterUsers = new CountDataRes();
         totalRegisterUsers.setName("totalRegisterUsers");
-        totalRegisterUsers.setIcon("goods-filled");
-        totalRegisterUsers.setColor("#5ab1ef");
+        totalRegisterUsers.setIcon("checked");
+        totalRegisterUsers.setColor("#ffb980");
         totalRegisterUsers.setValue(countDataMapper.getTotalRegisterUsers());
         countDataResList.add(totalRegisterUsers);
 
         // todaysActiveEvents
         CountDataRes todaysActiveEvents = new CountDataRes();
         todaysActiveEvents.setName("todaysActiveEvents");
-        todaysActiveEvents.setIcon("success-filled");
+        todaysActiveEvents.setIcon("histogram");
         todaysActiveEvents.setColor("#2ec7c9");
         todaysActiveEvents.setValue(countDataMapper.getTodaysActiveEvents());
         countDataResList.add(todaysActiveEvents);
@@ -53,23 +53,23 @@ public class CountDataService {
         // todaysActiveUsers
         CountDataRes todaysActiveUsers = new CountDataRes();
         todaysActiveUsers.setName("todaysActiveUsers");
-        todaysActiveUsers.setIcon("star-filled");
-        todaysActiveUsers.setColor("#ffb980");
+        todaysActiveUsers.setIcon("user-filled");
+        todaysActiveUsers.setColor("#5ab1ef");
         todaysActiveUsers.setValue(countDataMapper.getTodaysActiveUsers());
         countDataResList.add(todaysActiveUsers);
 
         // todaysRegisterUsers
         CountDataRes todaysRegisterUsers = new CountDataRes();
         todaysRegisterUsers.setName("todaysRegisterUsers");
-        todaysRegisterUsers.setIcon("goods-filled");
-        todaysRegisterUsers.setColor("#5ab1ef");
+        todaysRegisterUsers.setIcon("checked");
+        todaysRegisterUsers.setColor("#ffb980");
         todaysRegisterUsers.setValue(countDataMapper.getTodaysRegisterUsers());
         countDataResList.add(todaysRegisterUsers);
 
         // monthlyActiveEvents
         CountDataRes monthlyActiveEvents = new CountDataRes();
         monthlyActiveEvents.setName("monthlyActiveEvents");
-        monthlyActiveEvents.setIcon("success-filled");
+        monthlyActiveEvents.setIcon("histogram");
         monthlyActiveEvents.setColor("#2ec7c9");
         monthlyActiveEvents.setValue(countDataMapper.getMonthlyActiveEvents());
         countDataResList.add(monthlyActiveEvents);
@@ -77,16 +77,16 @@ public class CountDataService {
         // monthlyActiveUsers
         CountDataRes monthlyActiveUsers = new CountDataRes();
         monthlyActiveUsers.setName("monthlyActiveUsers");
-        monthlyActiveUsers.setIcon("star-filled");
-        monthlyActiveUsers.setColor("#ffb980");
+        monthlyActiveUsers.setIcon("user-filled");
+        monthlyActiveUsers.setColor("#5ab1ef");
         monthlyActiveUsers.setValue(countDataMapper.getMonthlyActiveUsers());
         countDataResList.add(monthlyActiveUsers);
 
         // monthlyRegisterUsers
         CountDataRes monthlyRegisterUsers = new CountDataRes();
         monthlyRegisterUsers.setName("monthlyRegisterUsers");
-        monthlyRegisterUsers.setIcon("goods-filled");
-        monthlyRegisterUsers.setColor("#5ab1ef");
+        monthlyRegisterUsers.setIcon("checked");
+        monthlyRegisterUsers.setColor("#ffb980");
         monthlyRegisterUsers.setValue(countDataMapper.getMonthlyRegisterUsers());
         countDataResList.add(monthlyRegisterUsers);
 

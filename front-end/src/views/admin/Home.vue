@@ -91,7 +91,7 @@
         </el-card>
       </div>
       <el-card style="height: 230px">
-        <p>{{ $t('home.registerUser') }}</p>
+        <p>{{ $t('home.registerVolunteer') }}</p>
         <div ref="echart" style="height: 250px; margin-top: -30px;"></div>
       </el-card>
       <div class="graph">
@@ -154,7 +154,7 @@ const getTableList = async () => {
     console.error("Error fetching table data:", error);
   }
 };
-// 获取首页count统计数据: event / user / register user
+// 获取首页count统计数据: event / user / register volunteer
 const getCountData = async () => {
   try {
     let res = await proxy.$api.getCountData();
