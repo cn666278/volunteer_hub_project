@@ -29,18 +29,15 @@ public class EmailNotificationAspect {
     private VolunteerService volunteerService;
     @AfterReturning(pointcut = "execution(* com.wsa.service.EventService.updateVolunteerStatus(..)) && args(id, email, eventId, status)")
     public void sendNotificationEmail(Long id, String email, Long eventId, String status) {
-        // 创建邮件内容
         User user = userService.getUserByEventRegistrationId(id);
         String subject = "Event Registration Status";
         String message = "Dear Volunteer, \n\nYour event registration has been " +
                 status +
                 ".\n\nThank you.";
 
-        // 发送邮件
         sendEmail(email, eventId, subject, message, user);
     }
 
-    // 监控 redeemItem 方法
     @AfterReturning(pointcut = "execution(* com.wsa.service.RewardStoreService.redeemItem(..)) && args(request)", returning = "response")
     public void sendRedeemNotificationEmail(RedeemRequest request, RedeemResponse response) {
             User user = userService.getUserById(request.getUserId());
@@ -48,7 +45,6 @@ public class EmailNotificationAspect {
             String subject = "Redemption Successful";
             String message = "Dear " + user.getUsername() + ", \n\nYour redemption for item was successful.\n\nThank you for your participation.";
 
-            // 发送邮件
             sendEmail(email, null, subject, message, user);
 
     }
@@ -56,8 +52,8 @@ public class EmailNotificationAspect {
     private void sendEmail(String to, Long eventId, String subject, String text, User user) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("13253348930@163.com");  // 发件人邮箱
-            message.setTo(to);  // 收件人邮箱
+            message.setFrom("13253348930@163.com");
+            message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
 
@@ -68,16 +64,13 @@ public class EmailNotificationAspect {
             volunteerInfo.setInfoTitle(subject);
             volunteerInfo.setInfoBody(text);
 
-            // 检查 eventId 是否为 null
             if (eventId != null) {
                 volunteerInfo.setEventId(eventId.intValue());
             }
 
             userService.addVolunteerInfo(volunteerInfo);
         } catch (MailSendException e) {
-            // 打印异常详细信息
             e.printStackTrace();
-            // 你可以添加日志或进行进一步的处理
         }
     }
 }

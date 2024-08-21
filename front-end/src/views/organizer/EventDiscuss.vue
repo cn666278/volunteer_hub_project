@@ -4,7 +4,6 @@
       <p>
         <strong>{{ msg.username }}:</strong> {{ msg.content }}
         <span class="timestamp">{{ formatTimestamp(msg.timestamp) }}</span>
-        <!-- 新增的删除按钮 -->
         <el-button
             size="mini"
             type="danger"
@@ -65,13 +64,12 @@ const sendMessage = () => {
 };
 
 const connect = () => {
-  const socket = new SockJS('http://10.72.102.12:8081/ws'); // 使用后端服务器地址和端口
+  const socket = new SockJS('http://10.72.102.12:8081/ws');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, (frame) => {
     stompClient.subscribe('/topic/messages', (message) => {
       const receivedMessage = JSON.parse(message.body);
       console.log("receivedMessage", receivedMessage)
-      // receivedMessage.username = userStore.user.username; // 确保收到的消息包含username
       messages.value.push(receivedMessage);
     });
   }, (error) => {
@@ -97,12 +95,9 @@ const deleteMessage = async (messageId) => {
     const response = await proxy.$api.deleteMessage({ id: messageId });
     if (response) {
       messages.value = messages.value.filter(msg => msg.id !== messageId);
-      console.log("消息删除成功");
     } else {
-      console.error("消息删除失败");
     }
   } catch (error) {
-    console.error("删除消息时出错:", error);
   }
 };
 
@@ -116,12 +111,12 @@ onMounted(() => {
 .message {
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  position: relative; /* 使时间戳和删除按钮相对定位 */
+  position: relative;
 }
 .timestamp {
   float: right;
   color: #888;
-  margin-right: 100px; /* 给删除按钮留出更多空间 */
+  margin-right: 100px;
 }
 
 .delete-button {

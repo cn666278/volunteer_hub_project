@@ -30,23 +30,20 @@ const triggerFileInput = () => {
   }
 };
 
-// 文件上传处理逻辑
 const onFileChange = async (event: Event) => {
   const files = (event.target as HTMLInputElement).files;
   if (files && files.length > 0) {
     const file = files[0];
 
-    // 获取文件名并去掉后缀
     const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('filename', fileNameWithoutExtension);  // 添加文件名到 formData
+    formData.append('filename', fileNameWithoutExtension);
     formData.append('volunteerId', userStore.user.id);
     try {
-      const response = await api.uploadFileForVolunteer(formData);  // 假设你有一个上传文件的API
+      const response = await api.uploadFileForVolunteer(formData);
 
-      // 上传成功后刷新列表
       await fetchCredentials();
 
     } catch (error) {
@@ -61,18 +58,16 @@ const fetchCredentials = async () => {
 
   if (loginId) {
     try {
-      // 获取该志愿者的 credential 列表
       const credentialResponse = await api.getCredentialsByVolunteerId({ volunteerId: loginId });
 
       if (credentialResponse && Array.isArray(credentialResponse)) {
-        // 遍历 credential 列表，根据每个 credentialUrl 去获取文件并展示
         items.value = await Promise.all(
             credentialResponse.map(async (credential) => {
               const fileData = await fetchFile(credential.credentialUrl);
               return {
                 id: credential.id,
                 credentialName: credential.credentialName,
-                uploadedFilePath: fileData, // 展示文件
+                uploadedFilePath: fileData,
               };
             })
         );
@@ -88,7 +83,7 @@ const fetchCredentials = async () => {
 };
 
 onMounted(() => {
-  fetchCredentials(); // 页面加载时获取志愿者的 credential 列表
+  fetchCredentials();
 });
 
 // Function to fetch file using credentialUrl

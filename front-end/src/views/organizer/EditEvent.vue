@@ -149,7 +149,7 @@ const fetchAndDisplayImage = async (fileId: number) => {
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], { type: mimeType });
       console.log("blob", blob);
-      return URL.createObjectURL(blob); // 确保这里返回的是URL
+      return URL.createObjectURL(blob);
     } else {
       console.error("Failed to fetch the image data.");
       return '';
