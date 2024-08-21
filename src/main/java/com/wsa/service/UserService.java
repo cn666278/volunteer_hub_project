@@ -193,4 +193,8 @@ public class UserService {
     public User getUserByEmail(String to) {
         return userMapper.getUserByEmail(to);
     }
+
+    public void updateUserAvator(Long volunteerId, String s) {
+        userMapper.updateUserAvator(volunteerId,s);
+    }
 }

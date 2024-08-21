@@ -1,7 +1,8 @@
 <template>
   <div class="PersonalInfo">
     <div class="user-profile">
-      <img :src="userStore.user.photo" class="user-avatar" />
+      <img :src="uploadedPhotoUrl || userStore.user.photo" class="user-avatar" @click="triggerFileInput" />
+      <input type="file" ref="fileInput" style="display: none;" @change="onFileChange" />
     </div>
 
     <!-- Information Display -->
@@ -56,26 +57,97 @@
   </div>
 </template>
 
+
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
-import api from '../../api/api';  // 确保引入API管理文件
-
-// 定义 proxy 对象
-const proxy = {
-  $api: api,
-};
+import api from '../../api/api';  // Ensure you have imported your API management file
 
 const userStore = useUser();
 const showEditModal = ref(false);
 const editUsername = ref(userStore.user.username);
 const editPhone = ref(userStore.user.phone);
 const editEmail = ref(userStore.user.email);
+const uploadedPhotoUrl = ref<string | null>(null); // Track uploaded photo
+
+const fileInput = ref<HTMLInputElement | null>(null);
+
+// Trigger the file input dialog
+const triggerFileInput = () => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+
+// Handle the file change event
+const onFileChange = async (event: Event) => {
+  const files = (event.target as HTMLInputElement).files;
+  if (files && files.length > 0) {
+    const file = files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', userStore.user.username);
+    formData.append('volunteerId', userStore.user.id);
+
+    try {
+      const response = await api.uploadAvatorForVolunteer(formData); // Assuming the same upload API is used
+      const photoId = response.match(/\d+$/)[0];
+
+      // Update user's photo field in the database and userStore
+      await updateUserProfilePhoto(photoId);
+
+      // Fetch and display the uploaded image
+      uploadedPhotoUrl.value = await fetchFile(photoId);
+
+    } catch (error) {
+      console.error('File upload failed:', error);
+    }
+  }
+};
+
+// Function to fetch the uploaded photo and display it
+const fetchFile = async (fileId: string) => {
+  try {
+    const response = await api.getfiles({ id: fileId });
+    if (response) {
+      const base64Data = response;
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      return URL.createObjectURL(blob);
+    }
+  } catch (error) {
+    console.error('Error fetching file:', error);
+  }
+  return null;
+};
+
+// Function to update user profile photo
+const updateUserProfilePhoto = async (photoId: string) => {
+  try {
+
+
+
+      // Update userStore with the new photo ID
+      userStore.setUser({
+        ...userStore.user,
+        photo: photoId,
+      });
+
+  } catch (error) {
+    console.error('Error updating user photo:', error);
+  }
+};
 
 const updateUserProfile = async () => {
   try {
-    const response = await proxy.$api.updateUserProfile({
-      loginId: userStore.user.id,  // loginId 对应 User 类的字段
+    const response = await api.updateUserProfile({
+      loginId: userStore.user.id,
       username: editUsername.value,
       phone: editPhone.value,
       email: editEmail.value,
@@ -99,7 +171,18 @@ const updateUserProfile = async () => {
   }
 };
 
-// 查询用户个人信息
+// Fetch the user's profile picture based on the photo ID stored in userStore
+const loadUserProfilePicture = async () => {
+  if (userStore.user.photo) {
+    // Assuming photo is in the format "/files/id"
+    const photoId = userStore.user.photo.split('/').pop(); // This will extract the 'id' part
+    if (photoId) {
+      uploadedPhotoUrl.value = await fetchFile(photoId);
+    }
+  }
+};
+
+
 onMounted(async () => {
   if (!userStore.user.id) {
     const loginId = sessionStorage.getItem('loginId');
@@ -110,15 +193,18 @@ onMounted(async () => {
           throw new Error('Failed to fetch user details');
         }
         const data = await response.json();
-        console.log('Fetched user data:', data);  // 调试代码
+        console.log('Fetched user data:', data);
         userStore.setUser(data);
       } catch (error) {
         console.error('Failed to fetch user details:', error);
       }
     }
   }
+  await loadUserProfilePicture();
 });
 </script>
+
+
 
 
 <style lang="scss" scoped>
@@ -144,6 +230,7 @@ onMounted(async () => {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #a9181a;
+  cursor: pointer; /* Indicate clickable area */
 }
 
 .info-display {
