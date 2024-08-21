@@ -51,7 +51,11 @@
           </div>
           <div class="divider2"></div>
           <div class="comment-content">
-            <div class="comment-text full-text">{{ event.volunteerInformation }}</div>
+            <div v-for="(role, index) in roles" :key="index" class="comment-text full-text">
+              · {{ role.roleName }} (NUMBER REQUIRED: {{ role.volunteerCount }}):
+              <br />
+              {{ role.roleDescription }}
+            </div>
           </div>
         </div>
       </div>
@@ -81,9 +85,19 @@
             <label for="event-name">Event name</label>
             <input id="event-name" v-model="event.title" readonly />
           </div>
+          <!-- 新增的日期行 -->
           <div class="form-group">
-            <label for="event-date">Event date</label>
-            <input id="event-date" v-model="formattedEventDate" readonly />
+            <label for="event-dates">Event Dates</label>
+            <input id="event-dates" :value="`${formattedEventStartDate} - ${formattedEventEndDate}`" readonly />
+          </div>
+
+          <!-- 修改后的Terms & Conditions 复选框 -->
+          <div class="form-group terms-conditions">
+            <label for="terms-checkbox">
+              Please ensure that you have understood and agreed to our
+              <a href="https://wsa.wales/terms-conditions/" target="_blank">Terms & Conditions</a>.
+            </label>
+            <input type="checkbox" id="terms-checkbox" v-model="agreedToTerms" />
           </div>
         </div>
         <div class="modal-footer">
@@ -92,7 +106,9 @@
         </div>
       </div>
     </div>
+
   </div>
+
   <div v-else>
     <p>Loading...</p>
   </div>
@@ -104,16 +120,19 @@ import { ref, onMounted, computed } from 'vue';
 import api from '../../api/api';
 import useUser from '../../store/user';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'EventDetail',
   setup() {
     const route = useRoute();
     const event = ref(null);
+    const roles = ref([]); // 用于存储角色信息
     const uploadedFilePath = ref(''); // 用于存储图片路径
-    const { t } = useI18n();
+    const { t } = useI18n(); // 国际化支持
     const userStore = useUser();
     const isSubscribed = ref(false);
+    const agreedToTerms = ref(false); // 用于控制复选框是否选中
 
     const introSections = computed(() => [
       { title: 'LOCATION', value: event.value?.location },
@@ -134,6 +153,9 @@ export default {
 
           // 加载图片
           uploadedFilePath.value = await fetchEventImage(response.eventPic);
+
+          // 加载角色信息
+          roles.value = await fetchRoles(eventId);
         }
       } else {
         console.error('Event ID is not provided');
@@ -156,6 +178,17 @@ export default {
       } catch (error) {
         console.error('Error fetching event image:', error);
         return '';
+      }
+    };
+
+    // 获取角色信息
+    const fetchRoles = async (eventId) => {
+      try {
+        const response = await api.getRolesByEventId({ eventId });
+        return response;
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+        return [];
       }
     };
 
@@ -204,6 +237,16 @@ export default {
     };
 
     const submitApplication = async () => {
+      if (agreedToTerms.value == false) {
+
+        // Show an alert if the checkbox is not checked
+        ElMessage({
+          message: 'Please agree to the Terms & Conditions before submitting.',
+          type: 'warning',
+        });
+        return; // Exit the function to prevent submission
+      }
+
       try {
         const loginId = userStore.user.id;
         if (!loginId) {
@@ -243,7 +286,7 @@ export default {
     };
 
     const formattedEventStartDate = computed(() => {
-      if (event.value) {
+      if (event.value && event.value.startDate) {
         return new Date(event.value.startDate).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
@@ -254,7 +297,7 @@ export default {
     });
 
     const formattedEventEndDate = computed(() => {
-      if (event.value) {
+      if (event.value && event.value.endDate) {
         return new Date(event.value.endDate).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
@@ -264,12 +307,14 @@ export default {
       return '';
     });
 
+
     onMounted(() => {
       loadEvent();
     });
 
     return {
       event,
+      roles,
       introSections,
       uploadedFilePath, // 返回图片路径
       subscribeToEvent,
@@ -279,6 +324,7 @@ export default {
       formattedEventStartDate,
       formattedEventEndDate,
       isSubscribed,
+      agreedToTerms, // 绑定复选框的状态
     };
   },
 };
@@ -413,7 +459,7 @@ export default {
     }
 
     .wide-card {
-      width: 90%; /* 设置宽度为90% */
+      width: 90%;
     }
 
     @media (max-width: 800px) {
@@ -534,4 +580,25 @@ export default {
     }
   }
 }
+
+.form-group.terms-conditions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.form-group.terms-conditions[data-v-705ca337] {
+  font-size: x-small;
+}
+
 </style>

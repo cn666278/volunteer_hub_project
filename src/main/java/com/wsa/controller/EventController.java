@@ -327,6 +327,16 @@ public class EventController {
         }
     }
 
+    @PostMapping("/getRolesByEventId")
+    public ResultVO<List<EventRoles>> getRolesByEventId(@RequestBody EventRequest eventRequest) {
+        try {
+            List<EventRoles> roles = eventService.getRolesByEventId(eventRequest.getEventId());
+            return ResultVO.success(roles);
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to fetch roles for event: " + e.getMessage());
+        }
+    }
+
 
 
     // 获取事件统计数据的接口
