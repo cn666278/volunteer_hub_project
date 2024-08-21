@@ -4,6 +4,7 @@ import com.wsa.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -49,5 +50,9 @@ public interface UserMapper {
     User getUserByEmail(String to);
 
     void updateUserAvator(Long volunteerId, String s);
+
+    @Update("UPDATE users SET password = #{password} WHERE id = #{id}")
+    void updatePassword(@Param("id") Long id, @Param("password") String password);
+
 }
 

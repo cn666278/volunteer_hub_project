@@ -3,6 +3,8 @@ package com.wsa.controller;
 import com.wsa.model.*;
 import com.wsa.service.UserService;
 import com.wsa.service.VolunteerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -106,6 +108,24 @@ public class UserController {
             return ResultVO.success(Collections.emptyList()); // Return an empty list instead of a 500 error
         }
     }
+
+    private static final Logger logger = LogManager.getLogger(UserController.class);
+
+    @PostMapping("/user/changePassword")
+    public ResultVO<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        try {
+            boolean isChanged = userService.changePassword(request.getLoginId(), request.getCurrentPassword(), request.getNewPassword());
+            if (isChanged) {
+                return ResultVO.success("Password changed successfully");
+            } else {
+                return ResultVO.failure("Current password is incorrect");
+            }
+        } catch (Exception e) {
+            logger.error("Error changing password", e);
+            return ResultVO.failure("Failed to change password");
+        }
+    }
+
 
 
 }

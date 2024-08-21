@@ -506,6 +506,15 @@ export default {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },
 
+  changeUserPassword(params: any) {
+    return request({
+      url: "/user/changePassword",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  }
+
 
 
 

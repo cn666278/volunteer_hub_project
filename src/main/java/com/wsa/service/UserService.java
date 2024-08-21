@@ -7,6 +7,8 @@ import com.wsa.util.PasswordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -197,4 +199,19 @@ public class UserService {
     public void updateUserAvator(Long volunteerId, String s) {
         userMapper.updateUserAvator(volunteerId,s);
     }
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public boolean changePassword(Long loginId, String currentPassword, String newPassword) {
+        User user = userMapper.findById(loginId);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        // 更新密码
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userMapper.updateUser(user);
+        return true;
+    }
+
 }
