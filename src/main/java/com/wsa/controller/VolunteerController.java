@@ -95,4 +95,14 @@ public class VolunteerController {
             return ResultVO.failure("Failed to update credential.");
         }
     }
+
+    @GetMapping("/getVolunteerByUserId/{userId}")
+    public ResultVO<Volunteer> getVolunteerByUserId(@PathVariable Long userId) {
+        try {
+            Volunteer volunteer = volunteerService.getVolunteerByUserId(userId);
+            return ResultVO.success(volunteer);
+        } catch (Exception e) {
+            return ResultVO.failure("Failed to getVolunteerByUserId.");
+        }
+    }
 }

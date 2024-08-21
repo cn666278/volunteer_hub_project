@@ -6,14 +6,14 @@
             :placeholder="$t('events.searchPlaceholder')"
             v-model="searchQuery">
           <template #prefix>
-            <el-icon><search /></el-icon>
+            <el-icon><Search /></el-icon>
           </template>
         </el-input>
       </div>
       <div class="blog-section" v-if="activeIndex === '1'">
         <div class="blog-display">
           <el-card v-for="post in filteredEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
-            <img :src="post.eventPic" alt="Event Image" class="blog-image">
+            <img :src="post.uploadedFilePath" alt="Event Image" class="blog-image">
             <div class="blog-info">
               <div class="blog-author-date">
                 <div class="author-details">
@@ -49,12 +49,42 @@ const { proxy } = getCurrentInstance();
 
 // 获取事件列表并且加载每个事件的组织信息
 const loadAllEvents = async () => {
-  const response = await api.getAllEvents()
-      .catch(error => {
-        ElMessage.error(error.message);
-      });
+  try {
+    const response = await api.getAllEvents();
+    const events = response;
 
-  allEvents.value = response;
+    // Fetch images for each event
+    allEvents.value = await Promise.all(
+        events.map(async (event) => {
+          const uploadedFilePath = await fetchEventImage(event.eventPic);
+          return {
+            ...event,
+            uploadedFilePath,
+          };
+        })
+    );
+  } catch (error) {
+    ElMessage.error('Failed to load events');
+  }
+};
+
+// Fetch the image for each event
+const fetchEventImage = async (eventPicId) => {
+  try {
+    const response = await proxy.$api.getfiles({ id: eventPicId });
+    const base64Data = response;
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
+    return URL.createObjectURL(blob);
+  } catch (error) {
+    console.error('Error fetching event image:', error);
+    return '';
+  }
 };
 
 onMounted(() => {
