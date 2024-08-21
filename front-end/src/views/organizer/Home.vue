@@ -11,7 +11,7 @@
 <script setup lang='ts'>
 import {ref, onMounted, getCurrentInstance, watch} from 'vue';
 import VueCal from 'vue-cal';
-import 'vue-cal/dist/vuecal.css'; // 引入 vue-cal 的样式
+import 'vue-cal/dist/vuecal.css';
 import { useI18n } from 'vue-i18n';
 
 const { proxy } = getCurrentInstance();
@@ -23,8 +23,8 @@ interface Event {
   title: string;
   description: string;
   location: string;
-  startDate: string; // 新的开始时间字段
-  endDate: string; // 新的结束时间字段
+  startDate: string;
+  endDate: string;
   status: string;
   notifications: string;
   pointsAwarded: number;
@@ -65,7 +65,7 @@ const fetchEvents = async (month: number, year: number) => {
       id: event.id,
       start: convertToCustomFormat(event.startDate),
       end: convertToCustomFormat(event.endDate),
-      title: event.title // 确保事件有 title 字段
+      title: event.title
     }));
     console.log("fetchEvents : events :", events);
   } catch (error) {
@@ -102,7 +102,6 @@ watch(calendarDate, (newDate) => {
 </script>
 
 <style>
-/* 添加一些自定义样式以适应你的布局 */
 .vuecal__event {
   background-color: #409EFF;
   color: #ffffff;

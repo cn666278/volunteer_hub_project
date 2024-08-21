@@ -90,7 +90,7 @@ const { t } = useI18n();
 
 let userStore = useUser();
 let router = useRouter();
-const username = ref(''); // 定义一个变量存储用户名
+const username = ref('');
 
 // check if the user is logged in, if not, redirect to the login page
 onMounted(() => {
@@ -98,7 +98,7 @@ onMounted(() => {
   if (!userStore.user.username) {
     router.push('/');
   } else {
-    username.value = userStore.user.username; // 设置用户名
+    username.value = userStore.user.username;
   }
 });
 

@@ -121,5 +121,4 @@ const deleteEvent = (event: any) => {
 </script>
 
 <style scoped>
-/* 这里可以添加你的样式 */
 </style>

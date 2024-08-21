@@ -16,7 +16,7 @@ import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-// import { useUserStore } from '@/stores/userStore'; // 确保引入了正确的userStore
+// import { useUserStore } from '@/stores/userStore';
 
 const { proxy } = getCurrentInstance();
 const route = useRoute();
@@ -51,7 +51,7 @@ const sendMessage = () => {
 };
 
 const connect = () => {
-  const socket = new SockJS('http://10.72.102.12:8081/ws'); // 使用后端服务器地址和端口
+  const socket = new SockJS('http://10.72.102.12:8081/ws');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, (frame) => {
     stompClient.subscribe('/topic/messages', (message) => {

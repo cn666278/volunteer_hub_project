@@ -30,7 +30,6 @@
       <el-form-item :label="$t('rewardStore.itemImage')">
         <input type="file" @change="onFileChange" />
         <el-input v-model="filename" :placeholder="$t('rewardStore.enterFileName')" />
-        <!-- 显示文件预览图 -->
         <div v-if="uploadedFilePath">
           <img :src="uploadedFilePath" :alt="$t('rewardStore.filePreview')" style="max-width: 100px; max-height: 100px; margin-top: 10px;" />
         </div>
@@ -57,26 +56,23 @@ const { proxy }: any = getCurrentInstance();
 const emit = defineEmits(["update-item-list"]);
 // drawer
 const drawer = ref(false);
-// 修改 handleOpen 方法
 const handleOpen = (row: any) => {
   drawer.value = true;
   formData.value = { ...row };
 
-  // 重置文件上传相关的状态
   file.value = null;
   filename.value = '';
   uploadedFilePath.value = '';
 
   if (formData.value.itemUrl) {
-    fetchAndDisplayImage(formData.value.itemUrl); // 加载并显示图片
+    fetchAndDisplayImage(formData.value.itemUrl);
   }
 };
 
 const handleClose = () => {
   drawer.value = false;
-  resetForm(formRef.value); // 重置表单
+  resetForm(formRef.value);
 
-  // 重置文件上传相关的状态
   file.value = null;
   filename.value = '';
   uploadedFilePath.value = '';
@@ -103,10 +99,9 @@ const formData = ref({
   itemName: "",
   pointsRequired: 0,
   itemDescription: "",
-  itemUrl: "" // 用于存储文件ID或URL
+  itemUrl: ""
 });
 
-// 文件上传处理
 const file = ref(null);
 const filename = ref('');
 const uploadedFilePath = ref('');
@@ -115,8 +110,8 @@ const onFileChange = async (e: Event) => {
   const files = (e.target as HTMLInputElement).files;
   if (files && files.length > 0) {
     file.value = files[0];
-    filename.value = file.value.name; // 设置文件名
-    await uploadFile(); // 自动上传文件
+    filename.value = file.value.name;
+    await uploadFile();
   }
 };
 
@@ -126,7 +121,7 @@ const uploadFile = async () => {
     return;
   }
 
-  const uploadData = new FormData();  // 改名为 uploadData
+  const uploadData = new FormData();
   uploadData.append('file', file.value);
   uploadData.append('filename', filename.value.trim());
 
@@ -134,18 +129,16 @@ const uploadFile = async () => {
     const response = await proxy.$api.uploadFile(uploadData);
     const fileId = response.match(/\d+$/)[0];
 
-    // 确保外部 formData.value 已经初始化为对象
     if (!formData.value) {
       formData.value = {};
     }
 
-    // 使用解构赋值来更新 formData
     formData.value = {
-      ...formData.value,  // 保持已有属性不变
-      itemUrl: fileId    // 更新或添加 itemUrl 属性
+      ...formData.value,
+      itemUrl: fileId
     };
 
-    await fetchAndDisplayImage(fileId); // 上传后立即获取并显示图片
+    await fetchAndDisplayImage(fileId);
     console.log("File uploaded successfully:", fileId);
   } catch (error) {
     console.error("File upload failed:", error);
@@ -153,7 +146,6 @@ const uploadFile = async () => {
 };
 
 
-// 根据文件ID获取并显示图片
 const fetchAndDisplayImage = async (fileId: string | number) => {
   try {
     const response = await proxy.$api.getfiles({ id: fileId });

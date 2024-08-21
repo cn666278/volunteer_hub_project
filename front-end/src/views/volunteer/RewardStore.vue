@@ -25,16 +25,14 @@ import { ref, onMounted, getCurrentInstance } from 'vue';
 import useUser from "../../store/user";
 // user store
 const userStore = useUser();
-const points = ref(0); // 用于存储当前用户的积分
+const points = ref(0);
 
 const { proxy } = getCurrentInstance();
 const items = ref([]);
 
-// 获取商品列表
 const fetchItems = async () => {
   const response = await proxy.$api.getItems();
 
-  // 对每个商品调用 getfiles 接口获取图片
   const itemsWithImages = await Promise.all(response.map(async (item) => {
     try {
       const imageResponse = await proxy.$api.getfiles({ id: item.itemUrl });
@@ -48,13 +46,13 @@ const fetchItems = async () => {
         }
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: mimeType });
-        item.imageSrc = URL.createObjectURL(blob); // 将 blob URL 存储在 item 中
+        item.imageSrc = URL.createObjectURL(blob);
       } else {
-        item.imageSrc = ''; // 如果获取失败，则留空
+        item.imageSrc = '';
       }
     } catch (error) {
       console.error('Failed to fetch image:', error);
-      item.imageSrc = ''; // 如果发生错误，也留空
+      item.imageSrc = '';
     }
     return item;
   }));
@@ -62,18 +60,16 @@ const fetchItems = async () => {
   items.value = itemsWithImages;
 };
 
-// 获取当前用户的积分
 const fetchPoints = async () => {
-  const userId = userStore.user.id; // 获取当前登录用户的ID
+  const userId = userStore.user.id;
   const response = await proxy.$api.getVolunteerByUserId({ userId });
   if (response && response.kudosPoints) {
-    points.value = response.kudosPoints; // 更新积分
+    points.value = response.kudosPoints;
   } else {
     console.error("Failed to fetch points");
   }
 };
 
-// 兑换商品
 const redeemItem = async (itemId) => {
   const response = await proxy.$api.redeemItem({
     userId: userStore.user.id,
@@ -91,7 +87,7 @@ const redeemItem = async (itemId) => {
 
 onMounted(() => {
   fetchItems();
-  fetchPoints(); // 页面加载时获取当前用户的积分
+  fetchPoints(); 
 });
 </script>
 

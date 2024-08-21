@@ -13,7 +13,6 @@
       <el-form-item :label="$t('eventRegistration.file')">
         <input type="file" @change="onFileChange" />
         <el-input v-model="filename" :placeholder="$t('eventRegistration.enterFileName')" />
-        <!-- 显示文件预览图 -->
         <div v-if="uploadedFilePath">
           <img :src="uploadedFilePath" :alt="$t('eventRegistration.filePreview')" style="max-width: 100px; max-height: 100px; margin-top: 10px;" />
         </div>
@@ -79,7 +78,7 @@ const form = reactive({
   roles: [] as string[],
   rolesQuantities: {} as Record<string, number>,
   nearbyFacilities: [],
-  fileIds: [] as number[] // 存储文件ID
+  fileIds: [] as number[]
 });
 
 const availableRoles = ['Default', 'Event Coordinator', 'Event Welcome Desk', 'Athlete Registration Desk', 'Transport Operations', 'Event Greeter / Fan Experience', 'Entertainment Coordinator'];
@@ -91,8 +90,8 @@ const uploadedFilePath = ref('');
 
 const onFileChange = async (e) => {
   file.value = e.target.files[0];
-  filename.value = file.value.name; // 设置文件名
-  await uploadFile(); // 自动上传文件
+  filename.value = file.value.name;
+  await uploadFile();
 };
 
 const uploadFile = async () => {
@@ -109,7 +108,7 @@ const uploadFile = async () => {
     const response = await proxy.$api.uploadFile(formData);
     const fileId = response.match(/\d+$/)[0];
     form.fileIds.push(fileId);
-    await fetchAndDisplayImage(fileId); // 上传后立即获取并显示图片
+    await fetchAndDisplayImage(fileId);
     console.log("File uploaded successfully:", response);
   } catch (error) {
     console.error("File upload failed:", error);
@@ -121,15 +120,14 @@ const fetchAndDisplayImage = async (fileId: number) => {
     const response = await proxy.$api.getfiles({ id: fileId });
     if (response) {
       const base64Data = response;
-      // 假设从服务器返回的是包含图像数据的字段
-      const mimeType = response.mimeType || 'image/jpeg'; // 从响应中获取MIME类型，默认值为'jpeg'
+      const mimeType = response.mimeType || 'image/jpeg';
       const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: mimeType }); // 使用动态MIME类型
+      const blob = new Blob([byteArray], { type: mimeType });
       uploadedFilePath.value = URL.createObjectURL(blob);
     }
   } catch (error) {
