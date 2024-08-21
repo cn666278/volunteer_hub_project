@@ -1,13 +1,6 @@
 <template>
-    <el-form
-        size="default"
-        ref="formRef"
-        style="max-width: 600px"
-        :model="formData"
-        status-icon
-        :rules="rules"
-        label-width="80px"
-    >
+    <el-form size="default" ref="formRef" style="max-width: 600px" :model="formData" status-icon :rules="rules"
+        label-width="80px">
         <div class="form-header">
             <p>{{ $t('register.title') }}</p>
         </div>
@@ -15,21 +8,26 @@
             <el-input v-model="formData.username" />
         </el-form-item>
         <el-form-item :label="$t('register.password')" prop="password">
-            <el-input v-model="formData.password" type="password" show-password/>
+            <el-input v-model="formData.password" type="password" show-password />
         </el-form-item>
         <el-form-item :label="$t('register.email')" prop="email">
             <el-input v-model="formData.email" type="email" />
         </el-form-item>
         <el-form-item :label="$t('register.role')" prop="role">
             <el-select v-model="formData.role" placeholder="Select Role">
-                <el-option
-                    v-for="role in roleList"
-                    :key="role.roleId"
-                    :label="role.roleName"
-                    :value="role.roleId"
-                >
+                <el-option v-for="role in roleList" :key="role.roleId" :label="role.roleName" :value="role.roleId">
                 </el-option>
             </el-select>
+        </el-form-item>
+        <!-- Privacy Policy Agreement -->
+        <el-form-item prop="agree">
+            <el-checkbox v-model="formData.agree" style="color: white;">
+                {{ $t('register.agreeTo') }}
+                <a href="https://wsa.wales/privacy-policy/" target="_blank"
+                    style="color: white; text-decoration: underline;">
+                    {{ $t('register.privacyPolicy') }}
+                </a>
+            </el-checkbox>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm(formRef)">
@@ -67,6 +65,7 @@ const formData = reactive({
     password: "",
     email: "",
     role: "",
+    agree: false,
 });
 
 // role list
@@ -120,12 +119,22 @@ const validateRole = (_: any, value: any, callback: any) => {
     }
 };
 
+// 验证隐私条款同意
+const validateAgreement = (_: any, value: any, callback: any) => {
+    if (!value) {
+        callback(new Error(proxy.$t('register.agreementRequired')));
+    } else {
+        callback();
+    }
+};
+
 // 表单验证规则
 const rules = reactive<FormRules<typeof formData>>({
     username: [{ validator: validateUsername, trigger: "blur" }],
     password: [{ validator: validatePassword, trigger: "blur" }],
     email: [{ validator: validateEmail, trigger: "blur" }],
     role: [{ validator: validateRole, trigger: "change" }],
+    agree: [{ validator: validateAgreement, trigger: "change" }],
 });
 
 // 提交表单
@@ -189,6 +198,7 @@ onMounted(() => {
     }
 });
 </script>
+
 
 <style lang="less" scoped>
 .form-header {
