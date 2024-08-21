@@ -13,24 +13,24 @@
           </template>
           <el-menu-item index="/eventRegister">{{ $t('sidebar.eventRegister') }}</el-menu-item>
           <el-menu-item index="/myEvents">{{ $t('sidebar.myEvents') }}</el-menu-item>
-          <el-menu-item index="/uploadTest">{{ $t('sidebar.uploadTest') }}</el-menu-item>
+<!--          <el-menu-item index="/uploadTest">{{ $t('sidebar.uploadTest') }}</el-menu-item>-->
         </el-sub-menu>
-        <el-sub-menu index="2">
-          <template #title>
-            <el-icon><Tools /></el-icon>
-            <span>{{ $t('sidebar.system') }}</span>
-          </template>
-          <el-menu-item index="2-1">{{ $t('sidebar.menu') }}</el-menu-item>
-          <el-menu-item index="2-2">{{ $t('sidebar.dictionary') }}</el-menu-item>
-        </el-sub-menu>
-        <el-sub-menu index="3">
-          <template #title>
-            <el-icon><Avatar /></el-icon>
-            <span>{{ $t('sidebar.account') }}</span>
-          </template>
-          <el-menu-item index="3-1">{{ $t('sidebar.role') }}</el-menu-item>
-          <el-menu-item index="3-2">{{ $t('sidebar.user') }}</el-menu-item>
-        </el-sub-menu>
+<!--        <el-sub-menu index="2">-->
+<!--          <template #title>-->
+<!--            <el-icon><Tools /></el-icon>-->
+<!--            <span>{{ $t('sidebar.system') }}</span>-->
+<!--          </template>-->
+<!--          <el-menu-item index="2-1">{{ $t('sidebar.menu') }}</el-menu-item>-->
+<!--          <el-menu-item index="2-2">{{ $t('sidebar.dictionary') }}</el-menu-item>-->
+<!--        </el-sub-menu>-->
+<!--        <el-sub-menu index="3">-->
+<!--          <template #title>-->
+<!--            <el-icon><Avatar /></el-icon>-->
+<!--            <span>{{ $t('sidebar.account') }}</span>-->
+<!--          </template>-->
+<!--          <el-menu-item index="3-1">{{ $t('sidebar.role') }}</el-menu-item>-->
+<!--          <el-menu-item index="3-2">{{ $t('sidebar.user') }}</el-menu-item>-->
+<!--        </el-sub-menu>-->
       </el-menu>
     </div>
     <div class="right">
@@ -41,22 +41,22 @@
             <el-icon><House /></el-icon>
             {{ $t('topbar.home') }}
           </el-menu-item>
-          <el-menu-item index="2">
-            <el-icon><Message /></el-icon>
-            {{ $t('topbar.mail') }}
-          </el-menu-item>
-          <el-menu-item index="3">
-            <el-icon><ChatDotRound /></el-icon>
-            {{ $t('topbar.message') }}
-          </el-menu-item>
+<!--          <el-menu-item index="2">-->
+<!--            <el-icon><Message /></el-icon>-->
+<!--            {{ $t('topbar.mail') }}-->
+<!--          </el-menu-item>-->
+<!--          <el-menu-item index="3">-->
+<!--            <el-icon><ChatDotRound /></el-icon>-->
+<!--            {{ $t('topbar.message') }}-->
+<!--          </el-menu-item>-->
           <changeLanguage />
           <el-sub-menu index="4">
             <template #title>
               <el-icon><User /></el-icon>
-              {{ $t('topbar.admin') }}
+              {{ username }}
             </template>
-            <el-menu-item index="4-1">{{ $t('topbar.personal') }}</el-menu-item>
-            <el-menu-item index="4-2">{{ $t('topbar.password') }}</el-menu-item>
+<!--            <el-menu-item index="4-1">{{ $t('topbar.personal') }}</el-menu-item>-->
+<!--            <el-menu-item index="4-2">{{ $t('topbar.password') }}</el-menu-item>-->
             <el-menu-item index="" @click="exit">{{ $t('topbar.exit') }}</el-menu-item>
           </el-sub-menu>
         </el-menu>
@@ -79,7 +79,7 @@ import {
   Avatar,
   User,
 } from "@element-plus/icons-vue";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import useUser from "../../store/user.ts";
 import { ElMessageBox } from 'element-plus';
@@ -90,12 +90,15 @@ const { t } = useI18n();
 
 let userStore = useUser();
 let router = useRouter();
+const username = ref(''); // 定义一个变量存储用户名
 
 // check if the user is logged in, if not, redirect to the login page
 onMounted(() => {
   console.log(userStore.user);
-  if(!userStore.user.username){
+  if (!userStore.user.username) {
     router.push('/');
+  } else {
+    username.value = userStore.user.username; // 设置用户名
   }
 });
 
