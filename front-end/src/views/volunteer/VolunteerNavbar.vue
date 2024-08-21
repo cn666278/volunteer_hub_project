@@ -16,7 +16,7 @@
         text-color="#a9181a"
         active-text-color="#a9181a"
     >
-      <el-menu-item index="/volunteer">
+      <el-menu-item index="/">
         <el-icon><House /></el-icon><span class="menu-text">{{ $t('navbar.home') }}</span>
       </el-menu-item>
       <el-menu-item index="/volunteer/events">
@@ -55,7 +55,7 @@
         text-color="#a9181a"
         active-text-color="#a9181a"
     >
-      <el-menu-item index="/volunteer">
+      <el-menu-item index="/">
         <el-icon><House /></el-icon>{{ $t('navbar.home') }}
       </el-menu-item>
       <el-menu-item index="/volunteer/events">
@@ -99,7 +99,14 @@ const activeIndex = ref('1');
 const mobileMenuVisible = ref(false);
 
 const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+  // 判断用户是否登录
+  if (!userStore.user.username) {
+    // 用户未登录，跳转到登录页面
+    router.push('/login');
+  } else {
+    // 用户已登录，导航到相应页面
+    router.push(key);
+  }
 };
 
 const toggleMobileMenu = () => {
@@ -111,11 +118,19 @@ const navigateToProfile = () => {
 };
 
 const handleCommand = (command: string) => {
-  if (command === 'profile') {
-    navigateToProfile();
-  } else if (command === 'logout') {
-    exit();
+  // 判断用户是否登录
+  if (!userStore.user.username) {
+    // 用户未登录，跳转到登录页面
+    router.push('/login');
+  } else {
+    // 用户已登录，导航到相应页面
+    if (command === 'profile') {
+      navigateToProfile();
+    } else if (command === 'logout') {
+      exit();
+    }
   }
+
 };
 
 // exit
@@ -127,7 +142,7 @@ const exit = () => {
   })
       .then(() => {
         userStore.clearUser();
-        router.push('/');
+        router.push('/login');
       })
       .catch(() => {
         console.log('Cancel exit');

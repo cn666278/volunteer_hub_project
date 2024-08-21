@@ -110,7 +110,7 @@ const exit = () => {
     type: 'warning'
   }).then(() => {
     userStore.clearUser();
-    router.push('/');
+    router.push('/login');
   }).catch(() => {
     console.log(t('messages.cancelExit'));
   });

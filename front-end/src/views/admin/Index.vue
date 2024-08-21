@@ -120,7 +120,7 @@
     })
       .then(() => {
         userStore.clearUser();
-        router.push("/");
+        router.push("/login");
       })
       .catch(() => {
         console.log("Cancel exit");

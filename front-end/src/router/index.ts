@@ -7,15 +7,15 @@ const routes = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: "/",
+      path: "/login",
       name: "Login",
       meta: { title: "Login" },
       component: () => import("../views/login/Login.vue"),
     },
-    {
-      path: "/login",
-      redirect: "/",
-    },
+    // {
+    //   path: "/login",
+    //   redirect: "/",
+    // },
     {
       path: "/register",
       name: "Register",
@@ -29,7 +29,7 @@ const routes = createRouter({
       component: () => import("../views/volunteer/EventRegister.vue"),
     },
     {
-      path: "/volunteer",
+      path: "/",
       name: "Volunteer Page",
       meta: { title: "Volunteer Page" },
       component: () => import("../views/volunteer/Index.vue"),
