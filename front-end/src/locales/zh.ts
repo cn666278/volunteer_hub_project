@@ -20,6 +20,7 @@ const zh = {
     manage: '管理',
     role: '角色',
     user: '用户',
+    rewardstore: '积分商城',
     approve: '审批',
     event: '事件',
     organizer: '组织者',
