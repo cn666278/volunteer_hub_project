@@ -173,7 +173,7 @@ const exit = () => {
   display: flex;
   justify-content: center;
   background-color: #ffffff;
-  padding-right: 50px;
+  /*padding-right: 50px;*/
   width: 100%;
   z-index: 1000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);

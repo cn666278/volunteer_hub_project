@@ -1,17 +1,24 @@
 <template>
   <div class="container">
-    <h2>Welcome to the Points Mall. Your current points are {{ points }}</h2>
+    <div class="welcome-section">
+      <h2>Welcome to the Points Mall</h2>
+      <p>Your current points are {{ points }}</p>
+    </div>
     <div class="item-list">
-      <div v-for="item in items" :key="item.id" class="item-card">
+      <el-card v-for="item in items" :key="item.id" class="item-card">
         <img :src="item.imageSrc" alt="item image" class="item-image" />
-        <h3>{{ item.itemName }}</h3>
-        <p>{{ item.itemDescription }}</p>
-        <p>Points Required: {{ item.pointsRequired }}</p>
-        <el-button @click="redeemItem(item.id)">Redeem</el-button>
-      </div>
+        <div class="item-info">
+          <h3 class="item-title">{{ item.itemName }}</h3>
+          <p class="item-description">{{ item.itemDescription }}</p>
+          <p>Points Required: {{ item.pointsRequired }}</p>
+          <el-button class="redeem-button" @click="redeemItem(item.id)">REDEEM</el-button>
+        </div>
+      </el-card>
     </div>
   </div>
 </template>
+
+
 
 <script setup>
 import { ref, onMounted, getCurrentInstance } from 'vue';
@@ -93,43 +100,111 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  width: 100%;
+  max-width: 1200px;
+  padding:20px;
 }
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 30px;
 
 h2 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.item-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 1200px;
-}
-
-.item-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: calc(33.333% - 20px); /* Subtracting margin */
-  box-sizing: border-box;
-}
-
-.item-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-}
-
-h3 {
-  margin: 10px 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #a9181a;
+  margin: 0;
 }
 
 p {
-  margin: 5px 0;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 10px;
+}
+}
+
+.item-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+
+&:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ }
+}
+
+.item-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-info {
+  padding: 14px;
+  width: 100%;
+}
+
+.item-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #a9181a;
+}
+
+.item-description {
+  font-size: 1rem;
+  color: #666;
+  margin: 10px 0;
+}
+
+.redeem-button {
+  background-color: #a9181a;
+  color: #fff;
+  font-weight: bold;
+  width: 100%;
+  height: 50px;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+
+&:hover {
+   background-color: darken(#a9181a, 10%);
+ }
+}
+
+@media screen and (max-width: 768px) {
+  .item-list {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .item-list {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .item-image {
+    height: 150px;
+  }
 }
 </style>
+
+

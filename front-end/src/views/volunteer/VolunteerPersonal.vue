@@ -26,10 +26,12 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
-import api from '../../api/api';  // Ensure the correct API import
+import api from '../../api/api';
+import { useRouter } from 'vue-router';  // 导入 useRouter
 
 const userStore = useUser();
 const uploadedPhotoUrl = ref<string | null>(null);
+const router = useRouter();  // 获取 router 实例
 
 const fetchFile = async (fileId: string) => {
   try {
@@ -98,9 +100,10 @@ const features = [
 ];
 
 const navigateTo = (route: string) => {
-  this.$router.push(route);
+  router.push(route);  // 使用 router 实例进行导航
 };
 </script>
+
 
 
 

@@ -59,5 +59,6 @@ export default {
 <style scoped>
 .content{
   margin-top: 10px;
+
 }
 </style>

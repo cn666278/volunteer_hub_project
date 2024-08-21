@@ -282,6 +282,26 @@ export default {
       font-weight: bold;
       line-height: 1.2;
       margin: 0.5rem 0;
+
+      /* 适配移动设备 */
+      @media (max-width: 1200px) {
+        font-size: 3rem;
+      }
+
+      @media (max-width: 800px) {
+        font-size: 2.5rem;
+      }
+
+      @media (max-width: 600px) {
+        font-size: 2rem;
+        line-height: 1.1;
+      }
+
+      @media (max-width: 400px) {
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
       span {
         color: #a9181a;
         font-weight: bold;
@@ -292,6 +312,10 @@ export default {
       font-size: 1.2rem;
       color: #a9181a;
       margin-bottom: 20px;
+
+      @media (max-width: 600px) {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -331,6 +355,7 @@ export default {
     }
   }
 }
+
 
 .project-introduction, .activities-section {
   padding: 20px;
@@ -476,7 +501,9 @@ export default {
 
 @media (max-width: 800px) {
   .event-display {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }
+
 </style>
+
