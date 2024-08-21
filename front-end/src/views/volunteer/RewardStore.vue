@@ -33,13 +33,14 @@ const fetchItems = async () => {
       const imageResponse = await proxy.$api.getfiles({ id: item.itemUrl });
       if (imageResponse) {
         const base64Data = imageResponse;
+        const mimeType = imageResponse.mimeType || 'image/jpeg';
         const byteCharacters = atob(base64Data);
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        const blob = new Blob([byteArray], { type: mimeType });
         item.imageSrc = URL.createObjectURL(blob); // 将 blob URL 存储在 item 中
       } else {
         item.imageSrc = ''; // 如果获取失败，则留空
