@@ -24,7 +24,7 @@
     <!-- Buttons -->
     <div class="action-buttons">
       <button class="edit-button" @click="showEditModal = true">Edit Info</button>
-      <button class="change-password-button">Change Password</button>
+      <button class="change-password-button" @click="showChangePasswordModal = true">Change Password</button>
     </div>
 
     <!-- Edit Info Modal -->
@@ -54,32 +54,62 @@
         </div>
       </div>
     </div>
+
+    <!-- Change Password Modal -->
+    <div v-if="showChangePasswordModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-card custom-card">
+          <span class="close" @click="showChangePasswordModal = false">&times;</span>
+          <h2>Change Password</h2>
+          <div class="modal-body">
+            <div class="info-item custom-card">
+              <label for="currentPassword" class="info-label">Current Password:</label>
+              <input type="password" v-model="currentPassword" id="currentPassword" class="info-input" />
+            </div>
+
+            <div class="info-item custom-card">
+              <label for="newPassword" class="info-label">New Password:</label>
+              <input type="password" v-model="newPassword" id="newPassword" class="info-input" />
+            </div>
+
+            <div class="info-item custom-card">
+              <label for="confirmPassword" class="info-label">Confirm Password:</label>
+              <input type="password" v-model="confirmPassword" id="confirmPassword" class="info-input" />
+            </div>
+
+            <button @click="changePassword" class="submit-button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
-import api from '../../api/api';  // Ensure you have imported your API management file
+import api from '../../api/api';  // 确保你已经导入了API管理文件
 
 const userStore = useUser();
 const showEditModal = ref(false);
+const showChangePasswordModal = ref(false);
 const editUsername = ref(userStore.user.username);
 const editPhone = ref(userStore.user.phone);
 const editEmail = ref(userStore.user.email);
-const uploadedPhotoUrl = ref<string | null>(null); // Track uploaded photo
-
+const uploadedPhotoUrl = ref<string | null>(null); // 追踪上传的照片
+const currentPassword = ref('');
+const newPassword = ref('');
+const confirmPassword = ref('');
 const fileInput = ref<HTMLInputElement | null>(null);
 
-// Trigger the file input dialog
+// 触发文件输入对话框
 const triggerFileInput = () => {
   if (fileInput.value) {
     fileInput.value.click();
   }
 };
 
-// Handle the file change event
+// 处理文件更改事件
 const onFileChange = async (event: Event) => {
   const files = (event.target as HTMLInputElement).files;
   if (files && files.length > 0) {
@@ -91,13 +121,11 @@ const onFileChange = async (event: Event) => {
     formData.append('volunteerId', userStore.user.id);
 
     try {
-      const response = await api.uploadAvatorForVolunteer(formData); // Assuming the same upload API is used
+      const response = await api.uploadAvatorForVolunteer(formData);
       const photoId = response.match(/\d+$/)[0];
 
-      // Update user's photo field in the database and userStore
+      // 更新用户的照片字段并显示
       await updateUserProfilePhoto(photoId);
-
-      // Fetch and display the uploaded image
       uploadedPhotoUrl.value = await fetchFile(photoId);
 
     } catch (error) {
@@ -106,7 +134,7 @@ const onFileChange = async (event: Event) => {
   }
 };
 
-// Function to fetch the uploaded photo and display it
+// 获取并显示上传的照片
 const fetchFile = async (fileId: string) => {
   try {
     const response = await api.getfiles({ id: fileId });
@@ -127,23 +155,19 @@ const fetchFile = async (fileId: string) => {
   return null;
 };
 
-// Function to update user profile photo
+// 更新用户资料照片
 const updateUserProfilePhoto = async (photoId: string) => {
   try {
-
-
-
-      // Update userStore with the new photo ID
-      userStore.setUser({
-        ...userStore.user,
-        photo: photoId,
-      });
-
+    userStore.setUser({
+      ...userStore.user,
+      photo: photoId,
+    });
   } catch (error) {
     console.error('Error updating user photo:', error);
   }
 };
 
+// 更新用户资料
 const updateUserProfile = async () => {
   try {
     const response = await api.updateUserProfile({
@@ -171,17 +195,41 @@ const updateUserProfile = async () => {
   }
 };
 
-// Fetch the user's profile picture based on the photo ID stored in userStore
+// 修改密码
+const changePassword = async () => {
+  if (newPassword.value !== confirmPassword.value) {
+    alert("New passwords do not match");
+    return;
+  }
+
+  try {
+    const response = await api.changeUserPassword({
+      loginId: userStore.user.id,
+      currentPassword: currentPassword.value,
+      newPassword: newPassword.value,
+    });
+
+    if (response) {
+      alert("Password changed successfully");
+      showChangePasswordModal.value = false;
+    } else {
+      alert(response || "Failed to change password");
+    }
+  } catch (error) {
+    console.error("Error changing password:", error);
+    alert("Failed to change password");
+  }
+};
+
+// 加载用户资料图片
 const loadUserProfilePicture = async () => {
   if (userStore.user.photo) {
-    // Assuming photo is in the format "/files/id"
-    const photoId = userStore.user.photo.split('/').pop(); // This will extract the 'id' part
+    const photoId = userStore.user.photo.split('/').pop();
     if (photoId) {
       uploadedPhotoUrl.value = await fetchFile(photoId);
     }
   }
 };
-
 
 onMounted(async () => {
   if (!userStore.user.id) {
@@ -203,9 +251,6 @@ onMounted(async () => {
   await loadUserProfilePicture();
 });
 </script>
-
-
-
 
 <style lang="scss" scoped>
 .PersonalInfo {
