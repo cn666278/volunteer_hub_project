@@ -23,4 +23,22 @@
         INSERT INTO redemptionrecords (userId, itemId, pointsUsed, createdAt)
         VALUES (#{userId}, #{itemId}, #{pointsUsed}, NOW())
     </insert>
+
+    <!-- 新增物品 -->
+    <insert id="addItem">
+        INSERT INTO rewardstore (itemUrl, itemName, itemDescription, pointsRequired, stock)
+        VALUES (#{itemUrl}, #{itemName}, #{itemDescription}, #{pointsRequired}, #{stock})
+    </insert>
+
+    <!-- 修改物品 -->
+    <update id="updateItem">
+        UPDATE rewardstore
+        SET itemUrl = #{itemUrl}, itemName = #{itemName}, itemDescription = #{itemDescription}, pointsRequired = #{pointsRequired}, stock = #{stock}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除物品 -->
+    <delete id="deleteItem">
+        DELETE FROM rewardstore WHERE id = #{id}
+    </delete>
 </mapper>

@@ -31,4 +31,19 @@ public class RewardStoreService {
             return new RedeemResponse(false, "Insufficient points!");
         }
     }
+
+    // 新增物品方法
+    public void addItem(Item item) {
+        rewardStoreMapper.addItem(item);
+    }
+
+    // 修改物品方法
+    public void updateItem(Item item) {
+        rewardStoreMapper.updateItem(item);
+    }
+
+    // 删除物品方法
+    public void deleteItem(Long id) {
+        rewardStoreMapper.deleteItem(id);
+    }
 }
