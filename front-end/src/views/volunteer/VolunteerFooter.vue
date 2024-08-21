@@ -48,10 +48,12 @@
         <p>Cardiff CF11 9SW</p>
         <p>029 2033 4972</p>
         <p>admin@wsa.wales</p>
+        <p><a href="https://wsa.wales/terms-conditions/" target="_blank" class="terms-link">Terms & Conditions</a></p>
       </div>
     </div>
   </el-footer>
 </template>
+
 
 <script>
 export default {
@@ -133,6 +135,15 @@ export default {
 
 .contact {
   text-align: right; /* 联系我们部分居右 */
+}
+
+.terms-link {
+  color: inherit; /* 继承父元素的字体颜色，保持白色 */
+  text-decoration: none; /* 去掉下划线 */
+}
+
+.terms-link:hover {
+  text-decoration: underline; /* 悬停时显示下划线 */
 }
 
 @media (max-width: 768px) {
