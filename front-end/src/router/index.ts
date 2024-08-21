@@ -230,7 +230,37 @@ const routes = createRouter({
           name: "Menu",
           meta: { title: "Menu" },
           component: () => import("../views/admin/Menu.vue"),
-        }
+        },
+        {
+          path: "/admin/eventData",
+          name: "EventData",
+          meta: { title: "EventData" },
+          component: () => import("../views/admin/analyse/EventData.vue"),
+        },
+        {
+          path: "/admin/dataCount",
+          name: "DataCount",
+          meta: { title: "DataCount" },
+          component: () => import("../views/admin/analyse/DataCount.vue"),
+        },
+        {
+          path: "/admin/registerVolunteer",
+          name: "RegisterVolunteer",
+          meta: { title: "RegisterVolunteer" },
+          component: () => import("../views/admin/analyse/RegisterVolunteer.vue"),
+        },
+        {
+          path: "/admin/activeUser",
+          name: "ActiveUsers",
+          meta: { title: "ActiveUsers" },
+          component: () => import("../views/admin/analyse/ActiveUsers.vue"),
+        },
+        {
+          path: "/admin/organizerData",
+          name: "OrganizerData",
+          meta: { title: "OrganizerData" },
+          component: () => import("../views/admin/analyse/OrganizerData.vue"),
+        },
       ],
     },
   ],
