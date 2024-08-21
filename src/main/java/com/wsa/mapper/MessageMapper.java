@@ -10,4 +10,6 @@ public interface MessageMapper {
     void save(Message message);
 
     List<Message> getMessagesByEventId(Long eventId);
+
+    void deleteMessageById(Long id);
 }
