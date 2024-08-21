@@ -62,6 +62,7 @@
       </el-card>
       <!-- 固定高度的卡片，添加滚动条 -->
       <el-card shadow="hover" style="margin-top: 20px; height: 490px;">
+        <p style="margin-bottom: 5px; margin-left: 10px">{{ $t('home.event') }}</p>
         <el-table :data="tableData" style="width: 100%;" height="450px">
           <el-table-column
             v-for="(val, key) in tableLable"
@@ -101,7 +102,7 @@
         </el-card>
         <el-card style="height: 300px">
           <p>{{ $t('home.organizerData.title') }}</p>
-          <div ref="organizerData" style="height: 190px"></div>
+          <div ref="organizerData" style="height: 190px; margin-top: 10px;"></div>
         </el-card>
       </div>
     </el-col>
