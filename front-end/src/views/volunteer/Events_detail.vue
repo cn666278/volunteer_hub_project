@@ -3,7 +3,7 @@
     <!-- Intro Section with text and single image carousel -->
     <div class="intro-section">
       <div class="image-carousel">
-        <img :src="event.eventPic" alt="Event Image" class="carousel-image" />
+        <img :src="uploadedFilePath" alt="Event Image" class="carousel-image" />
       </div>
       <div class="text-content">
         <h1>{{ event.title }}</h1>
@@ -40,11 +40,11 @@
       <button class="styled-button primary" @click="openApplyDialog">
         Apply to be a volunteer
       </button>
-      <button 
-        class="styled-button success" 
-        :class="{'subscribed': isSubscribed}" 
-        @click="subscribeToEvent" 
-        :disabled="isSubscribed"
+      <button
+          class="styled-button success"
+          :class="{'subscribed': isSubscribed}"
+          @click="subscribeToEvent"
+          :disabled="isSubscribed"
       >
         {{ isSubscribed ? 'Subscribed' : 'Subscribe This Event' }}
       </button>
@@ -89,6 +89,7 @@ export default {
   setup() {
     const route = useRoute();
     const event = ref(null);
+    const uploadedFilePath = ref(''); // 用于存储图片路径
     const { t } = useI18n();
     const userStore = useUser();
     const isSubscribed = ref(false); // 添加状态变量
@@ -110,9 +111,31 @@ export default {
         });
         if (response) {
           event.value = response;
+
+          // 加载图片
+          uploadedFilePath.value = await fetchEventImage(response.eventPic);
         }
       } else {
         console.error('Event ID is not provided');
+      }
+    };
+
+    // 获取事件图片
+    const fetchEventImage = async (eventPicId) => {
+      try {
+        const response = await api.getfiles({ id: eventPicId });
+        const base64Data = response;
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        return URL.createObjectURL(blob);
+      } catch (error) {
+        console.error('Error fetching event image:', error);
+        return '';
       }
     };
 
@@ -177,7 +200,7 @@ export default {
         const response = await api.registerForEvent({
           eventId: eventId,
           volunteerId: loginId,
-          roleId: 1, 
+          roleId: 1,
           status: 'pending',
         });
 
@@ -217,6 +240,7 @@ export default {
     return {
       event,
       introSections,
+      uploadedFilePath, // 返回图片路径
       subscribeToEvent,
       openApplyDialog,
       applyDialogVisible,
