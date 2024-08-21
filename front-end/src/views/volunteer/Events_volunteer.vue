@@ -10,11 +10,11 @@
           @select="handleSelect"
       >
         <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
+          <el-icon><IconMenu /></el-icon>
           <span slot="title">Events Participated</span>
         </el-menu-item>
         <el-menu-item index="3">
-          <el-icon><document /></el-icon>
+          <el-icon><Document /></el-icon>
           <span slot="title">Events Subscribed</span>
         </el-menu-item>
       </el-menu>
@@ -38,11 +38,12 @@
               </div>
               <h5>{{ post.title }}</h5>
               <p>{{ post.description }}</p>
-              <div class="status-box" :class="{'status-pending': post.status === 'pending', 'status-accepted': post.status === 'accepted'}">
-                {{ post.status }}
+              <div class="button-container">
+                <el-button v-if="post.status === 'accepted'" type="primary" @click="navigateToDiscussion(post.id)" class="discuss-button">Discuss</el-button>
+                <div class="status-box" :class="{'status-pending': post.status === 'pending', 'status-accepted': post.status === 'accepted'}">
+                  {{ post.status }}
+                </div>
               </div>
-              <!-- 新增的 Discuss 按钮 -->
-              <el-button type="primary" @click="navigateToDiscussion(post.id)">Discuss</el-button>
             </div>
           </el-card>
         </div>
@@ -76,25 +77,24 @@
   </div>
 </template>
 
+
 <script lang="ts" setup>
-import { ref, onMounted,getCurrentInstance } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import { Document, Menu as IconMenu, User, Calendar } from '@element-plus/icons-vue';
-import api from '../../api/api'; // 引入api文件
-import useUser from '../../store/user'; // 假设您有一个用于获取用户登录信息的store
+import api from '../../api/api';
+import useUser from '../../store/user';
 const { proxy } = getCurrentInstance();
-const activeIndex = ref('2'); // 默认设置为 '2' 显示 Events Participated 页面
-const searchQuery = ref('');
+const activeIndex = ref('2');
 import { useRouter } from "vue-router";
 let router = useRouter();
 const userStore = useUser();
-const subscribedEvents = ref([]); // 保存已订阅活动的列表
-const participatedEvents = ref([]); // 保存用户参与的活动列表
+const subscribedEvents = ref([]);
+const participatedEvents = ref([]);
+
 const navigateToDiscussion = (eventId: string) => {
-  console.log("navigateToDiscussion",eventId)
   router.push({ name: 'EventDiscussion', query: { event: eventId } });
 };
 
-// 获取用户订阅的活动
 const fetchSubscribedEvents = async () => {
   try {
     const volunteerId = userStore.user.id;
@@ -106,14 +106,13 @@ const fetchSubscribedEvents = async () => {
       date: event.startDate,
       organizationName: event.organizationName,
       description: event.description,
-      status: event.status, // 确保从后端获取status
+      status: event.status,
     }));
   } catch (error) {
     console.error('Error fetching subscribed events:', error);
   }
 };
 
-// 获取用户参与的活动
 const fetchParticipatedEvents = async () => {
   try {
     const volunteerId = userStore.user.id;
@@ -125,14 +124,13 @@ const fetchParticipatedEvents = async () => {
       date: event.startDate,
       organizationName: event.organizationName,
       description: event.description,
-      status: event.status, // 确保从后端获取status
+      status: event.status,
     }));
   } catch (error) {
     console.error('Error fetching participated events:', error);
   }
 };
 
-// 处理菜单选择
 const handleSelect = (index: string) => {
   activeIndex.value = index;
   if (index === '3') {
@@ -142,31 +140,30 @@ const handleSelect = (index: string) => {
   }
 };
 
-// 导航到活动详情页
 const navigateToEvent = (eventId: string) => {
   proxy.$router.push({ name: 'EventDetail', params: { id: eventId } });
 };
 
 onMounted(() => {
-  fetchParticipatedEvents(); // 页面加载时获取参与的活动
+  fetchParticipatedEvents();
 });
 </script>
 
 <style scoped>
 .container {
   display: flex;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
 }
 
 .sidebar {
-  flex: 0 0 200px; /* Sidebar width is fixed to 200px */
+  flex: 0 0 200px;
   background: #fff;
-  overflow-y: auto; /* Makes the sidebar scrollable */
+  overflow-y: auto;
 }
 
 .content {
-  flex-grow: 1; /* Content takes up the remaining space */
-  overflow-y: auto; /* Makes the content area scrollable */
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .blog-section {
@@ -189,16 +186,17 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  border: 1px solid #ddd; /* Add border to the card */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Light shadow */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 img {
   width: 100%;
-  height: 200px; /* Set image height */
-  object-fit: cover; /* Ensure image is fully displayed */
-  border-radius: 8px; /* Rounded corners for the image */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .blog-info {
@@ -216,7 +214,7 @@ img {
 }
 
 .author-icon, .date-icon {
-  color: red; /* Icon color */
+  color: red;
   margin-right: 5px;
 }
 
@@ -233,48 +231,64 @@ p {
 }
 
 .status-box {
-  margin-top: 10px;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 0.9rem;
   color: white;
   text-align: center;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  background-color:  #a9181a;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }
 
 .status-pending {
-  background-color: #f39c12; /* Pending 状态的背景颜色 */
+  background-color: #f39c12;
 }
 
 .status-accepted {
-  background-color: #27ae60; /* Accepted 状态的背景颜色 */
+  background-color: #27ae60;
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.discuss-button {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}
+
+/* Responsive design for mobile devices */
 @media (max-width: 800px) {
+  .sidebar {
+    flex: 0 0 80px;
+  }
+
+  .el-menu-item span {
+    display: none;
+  }
+
   .blog-display {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.blog-author-date {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
+@media (max-width: 480px) {
+  .blog-display {
+    grid-template-columns: 1fr;
+  }
 
-.author-details, .date-details {
-  display: flex;
-  align-items: center;
+  img {
+    height: 150px;
+  }
 }
 
 .el-icon {
-  color: #007BFF; /* Changed icon color to blue */
+  color: #a9181a;
   margin-right: 5px;
 }
 </style>
+
