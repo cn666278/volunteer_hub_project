@@ -482,6 +482,15 @@ export default {
       mock: false,
     });
   },
+
+  getRolesByEventId(params: any) {
+    return request({
+      url: "/event/getRolesByEventId",
+      method: "post",
+      data: params,
+      mock: false,
+    });
+  },
   // navigateToEvent(params: any) {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },
