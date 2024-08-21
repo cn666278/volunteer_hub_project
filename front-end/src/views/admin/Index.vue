@@ -15,6 +15,7 @@
           </template>
           <el-menu-item index="/admin/role">{{ $t('menu.role') }}</el-menu-item>
           <el-menu-item index="/admin/user">{{ $t('menu.user') }}</el-menu-item>
+          <el-menu-item index="/admin/rewardstore">{{ $t('menu.rewardstore') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>

@@ -20,6 +20,7 @@ const cy = {
     manage: 'Rheoli',
     role: 'Rôl',
     user: 'Defnyddiwr',
+    rewardstore: 'Storfa Gwobrwyo',
     approve: 'Cymeradwyo',
     event: 'Digwyddiad',
     organizer: 'Trefnydd',

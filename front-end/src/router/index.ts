@@ -208,6 +208,12 @@ const routes = createRouter({
           component: () => import("../views/admin/user/User.vue"),
         },
         {
+          path: "/admin/rewardstore",
+          name: "RewardStoreForAdmin",
+          meta: { title: "RewardStoreForAdmin" },
+          component: () => import("../views/admin/user/RewardStore.vue"),
+        },
+        {
           path: "/admin/personal",
           name: "Personal",
           meta: { title: "Personal" },

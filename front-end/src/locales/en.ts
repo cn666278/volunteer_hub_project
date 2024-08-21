@@ -21,6 +21,7 @@ const en = {
     manage: 'Manage',
     role: 'Role',
     user: 'User',
+    rewardstore: 'RewardStore',
     approve: 'Approve',
     event: 'Event',
     organizer: 'Organizer',

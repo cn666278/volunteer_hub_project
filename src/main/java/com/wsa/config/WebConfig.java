@@ -19,8 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
         String instanceIp = getExternalIp();
         System.out.println("External IP: " + instanceIp);
         registry.addMapping("/**")
-                .allowedOrigins("http://10.72.102.12:5173")  // 使用动态获取的外部IP设置allowedOrigins
-                .allowedOrigins("http://localhost:5173") // 允许跨域的域名，可以设置为前端服务器的域名
+                // 使用动态获取的外部IP设置allowedOrigins
+                .allowedOrigins("http://10.72.102.12:5173", "http://localhost:5173") // 合并 localhost 和 10.72.102.12
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
@@ -47,8 +47,9 @@ public class WebConfig implements WebMvcConfigurer {
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        return "localhost";  // 如果无法获取外部IP地址，回退到localhost
+        return "localhost"; // 如果无法获取外部IP地址，回退到localhost
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 添加对 D:/uploads 目录的资源映射

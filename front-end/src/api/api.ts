@@ -282,6 +282,35 @@ export default {
       mock: false,
     });
   },
+  // 新增RewardStore项目
+  addRewardStoreItem(params: any) {
+    return request({
+      url: '/rewardstore/add',
+      method: 'post',
+      data: params,
+      mock: false,
+    });
+  },
+
+// 修改RewardStore项目
+  updateRewardStoreItem(params: any) {
+    return request({
+      url: '/rewardstore/update',
+      method: 'put',
+      data: params,
+      mock: false,
+    });
+  },
+
+// 删除RewardStore项目
+  deleteRewardStoreItem(params: any) {
+    return request({
+      url: `/rewardstore/delete/${params.id}`,
+      method: 'delete',
+      mock: false,
+    });
+  },
+
   /**
    * file api
    */
@@ -438,7 +467,13 @@ export default {
       mock: false,
     });
   },
-
+  getVolunteerByUserId(params: any) {
+    return request({
+      url: `/volunteer/getVolunteerByUserId/${params.userId}`,
+      method: "get",
+      mock: false,
+    });
+  },
   // navigateToEvent(params: any) {
   //   router.push({ name: 'EventDetail', params: { id: params.id } });
   // },
