@@ -111,7 +111,6 @@ onMounted(() => {
 
 .custom-card {
   width: 80%;
-  min-height: 150px;
   border: 1px solid #ccc;
   background-color: #f5f5f5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -147,19 +146,20 @@ onMounted(() => {
   justify-content: space-between;
   width: 90%;
   padding: 10px;
+  flex-wrap: wrap; /* Allow wrapping in smaller screens */
 }
 
 .comment-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  flex-grow: 1;
   margin-right: 10px;
+  word-wrap: break-word; /* Allow text to break into multiple lines */
+  white-space: normal; /* Enable wrapping for long text */
 }
 
 .rating-section {
   flex-shrink: 0;
   margin-left: auto;
-  padding-right: 10px;
+  padding-right: 5px;
 }
 
 .divider1 {
@@ -176,4 +176,28 @@ onMounted(() => {
   color: #999;
   font-size: 0.85rem;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .custom-card {
+    width: 100%;
+  }
+
+  .comment-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .divider1 {
+    display: none; /* Hide the divider on smaller screens */
+  }
+
+  .rating-section {
+    margin-left: 0;
+    padding-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+}
 </style>
+

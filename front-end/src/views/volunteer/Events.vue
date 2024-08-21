@@ -14,8 +14,8 @@
         <div class="blog-display">
           <el-card v-for="post in filteredEvents" :key="post.id" class="blog-card" @click="navigateToEvent(post.id)">
             <img :src="post.uploadedFilePath" alt="Event Image" class="blog-image">
-            <div class="blog-info">
-              <div class="blog-author-date">
+            <div class="blog-info event-details">
+              <div class="blog-author-date event-author-date">
                 <div class="author-details">
                   <el-icon><User /></el-icon>
                   {{ post.organizationName }}
@@ -34,6 +34,7 @@
     </div>
   </div>
 </template>
+
 
 
 <script lang="ts" setup>
@@ -158,13 +159,9 @@ const filteredEvents = computed(() => {
   text-align: center;
 }
 
-h1 {
-  margin-bottom: 16px;
-}
-
 .blog-display {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
 
@@ -176,6 +173,11 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.blog-card:hover {
+  transform: scale(1.05);
 }
 
 .blog-card img {
@@ -185,27 +187,33 @@ h1 {
   border-radius: 8px;
 }
 
-.blog-info {
+.event-details {
   padding: 14px;
   text-align: left;
   width: 100%;
 }
 
-.blog-author-date {
+.event-author-date {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   color: #666;
   font-size: 0.9rem;
   margin-bottom: 10px;
 }
 
-.author-icon, .date-icon {
-  color: red;
+.author-details, .date-details {
+  display: flex;
+  align-items: center;
+
+.el-icon {
+  color: #a9181a;
   margin-right: 5px;
+}
 }
 
 h5 {
-  color: #333;
+  color: #666;
   font-size: 1.2rem;
   font-weight: bold;
   margin: 5px 0;
@@ -216,10 +224,19 @@ p {
   font-size: 1rem;
 }
 
-.placeholder-section {
-  padding: 20px;
-  text-align: center;
-  color: #999;
-  font-size: 1.2rem;
+@media screen and (max-width: 768px) {
+  .blog-display {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .blog-display {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .blog-card img {
+    height: 150px;
+  }
 }
 </style>

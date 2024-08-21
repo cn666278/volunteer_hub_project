@@ -261,6 +261,8 @@ public class EventController {
     @PostMapping("/getSubscribedEvents")
     public ResultVO<List<EventRes>> getSubscribedEvents(@RequestBody EventRegistrations volunteerId) {
         try {
+            Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId.getVolunteerId());
+            volunteerId.setVolunteerId(volunteer.getId());
             List<Event> events = eventService.getSubscribedEventsByVolunteerId(volunteerId.getVolunteerId());
             List<EventRes> eventResList = new ArrayList<>();
             for (Event e : events) {
