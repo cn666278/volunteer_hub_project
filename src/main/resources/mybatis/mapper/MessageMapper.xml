@@ -10,6 +10,7 @@
     </insert>
     <select id="getMessagesByEventId" resultType="com.wsa.model.Message">
         SELECT
+        messages.id,
         messages.eventId,
         messages.senderId,
         messages.content,
@@ -21,4 +22,7 @@
         WHERE eventId = #{eventId}
     </select>
 
+    <delete id="deleteMessageById">
+        DELETE FROM messages WHERE id = #{id}
+    </delete>
 </mapper>

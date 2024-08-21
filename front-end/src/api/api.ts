@@ -244,6 +244,14 @@ export default {
       mock: false,
     });
   },
+  deleteMessage(params: any) {
+    return request({
+      url: '/messages/deleteMessage',
+      method: 'post',
+      data: params,
+      mock: false,
+    });
+  },
   /**
    * volunteer api
    */
