@@ -67,7 +67,10 @@ const zh = {
     passwordRequired: '请输入密码',
     emailRequired: '请输入邮箱地址',
     emailInvalid: '请输入有效的邮箱地址',
-    roleRequired: '请选择一个角色'
+    roleRequired: '请选择一个角色',
+    agreeTo: '我同意',
+    privacyPolicy: '隐私政策',
+    agreementRequired: '您必须同意隐私政策才能注册'
   },
   banner: {
     slogan1: '欢迎来到WSA志愿者中心',
