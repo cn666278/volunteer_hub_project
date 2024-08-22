@@ -19,6 +19,14 @@ public class UserController {
 
     @Autowired
     private VolunteerService volunteerService;
+
+    private static final Logger logger = LogManager.getLogger(UserController.class);
+
+    /**
+     * Get login user information based on username.
+     * @param request contains the username.
+     * @return user information if found.
+     */
     @PostMapping("/getLoginUserInfo")
     public ResultVO<UserInfo> getLoginUserInfo(@RequestBody UserRequest request) {
         UserInfo userInfo = userService.getUserInfoByUsername(request.getUsername());
@@ -28,6 +36,11 @@ public class UserController {
             return ResultVO.failure("getLoginUserInfo : not found!");
         }
     }
+
+    /**
+     * Get the list of all users.
+     * @return a list of all users.
+     */
     @GetMapping("/admin/user/getUserList")
     public ResultVO<UserListRes> getUserList() {
         List<UserInfo> userInfos = userService.getAllUsers();
@@ -40,6 +53,12 @@ public class UserController {
             return ResultVO.failure("getUserList : not found!");
         }
     }
+
+    /**
+     * Get user information by user ID.
+     * @param request contains the user ID.
+     * @return user information if found.
+     */
     @PostMapping("/admin/user/getUserById")
     public ResultVO<UserInfo> getUserById(@RequestBody UserRequest request) {
         UserInfo userInfo = userService.getUserInfoById(request.getId());
@@ -50,43 +69,73 @@ public class UserController {
         }
     }
 
+    /**
+     * Add a new user.
+     * @param request contains the user details.
+     * @return success message if the user is added successfully.
+     */
     @PostMapping("/admin/user/addUser")
     public ResultVO<String> addUser(@RequestBody UserReq request) {
         userService.addUser(request);
         return ResultVO.success("add success");
     }
 
+    /**
+     * Update an existing user.
+     * @param request contains the updated user details.
+     * @return success message if the user is updated successfully.
+     */
     @PostMapping("/admin/user/updateUser")
     public ResultVO<String> updateUser(@RequestBody UserReq request) {
         userService.updateUser(request);
         return ResultVO.success("update success");
     }
 
+    /**
+     * Delete a user.
+     * @param request contains the user ID to be deleted.
+     * @return success message if the user is deleted successfully.
+     */
     @PostMapping("/admin/user/deleteUser")
     public ResultVO<String> deleteUser(@RequestBody UserReq request) {
         userService.deleteUser(request);
         return ResultVO.success("delete success");
     }
 
+    /**
+     * Get user details by ID.
+     * @param id the user ID.
+     * @return the user details.
+     */
     @GetMapping("/user/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
+    /**
+     * Update the user profile.
+     * @param user contains the updated user profile details.
+     * @return success message if the profile is updated successfully.
+     */
     @PutMapping("/user/updateProfile")
     public ResultVO<String> updateUserProfile(@RequestBody User user) {
-        // 从 User 对象中获取 loginId, username, phone 和 email
+        // Extract loginId, username, phone, and email from the User object
         Long loginId = user.getLoginId();
         String username = user.getUsername();
         String phone = user.getPhone();
         String email = user.getEmail();
 
-        // 调用服务层的方法来更新用户信息
+        // Call the service layer to update the user information
         userService.updateUserProfile(loginId, username, phone, email);
 
         return ResultVO.success("User profile updated successfully");
     }
 
+    /**
+     * Get ratings by volunteer ID.
+     * @param volunteerId the volunteer ID.
+     * @return a list of ratings for the volunteer.
+     */
     @GetMapping("/user/{volunteerId}/ratings")
     public ResultVO<List<VolunteerRating>> getRatingsByVolunteerId(@PathVariable Long volunteerId) {
         Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId);
@@ -94,10 +143,15 @@ public class UserController {
         if (ratings != null && !ratings.isEmpty()) {
             return ResultVO.success(ratings);
         } else {
-            return ResultVO.success(Collections.emptyList()); // 返回空数组，而不是500错误
+            return ResultVO.success(Collections.emptyList()); // Return an empty list instead of a 500 error
         }
     }
 
+    /**
+     * Get volunteer information by volunteer ID.
+     * @param volunteerId the volunteer ID.
+     * @return a list of volunteer information.
+     */
     @GetMapping("/user/{volunteerId}/volunteerinfo")
     public ResultVO<List<VolunteerInfo>> getVolunteerInfo(@PathVariable Long volunteerId) {
         Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId);
@@ -109,8 +163,11 @@ public class UserController {
         }
     }
 
-    private static final Logger logger = LogManager.getLogger(UserController.class);
-
+    /**
+     * Change the user password.
+     * @param request contains the details for changing the password.
+     * @return success message if the password is changed successfully.
+     */
     @PostMapping("/user/changePassword")
     public ResultVO<String> changePassword(@RequestBody ChangePasswordRequest request) {
         try {
@@ -125,7 +182,4 @@ public class UserController {
             return ResultVO.failure("Failed to change password");
         }
     }
-
-
-
 }
