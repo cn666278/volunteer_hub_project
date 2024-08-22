@@ -1,5 +1,4 @@
 <template>
-  <!-- 无子选择的菜单显示 -->
   <div class="he">
     Menu
   </div>
@@ -19,15 +18,6 @@ import { useRouter } from 'vue-router'
 import changeLanguage from '../../components/changeLanguage.vue';
 const router = useRouter()
 
-// const props = defineProps({
-//   subRoutes: {
-//     type: Object,
-//     default: {}
-//   }
-// })
-// const handleClick = (path: string) => {
-//   router.push(path)
-// }
 </script>
 
 <style lang="less"></style>
