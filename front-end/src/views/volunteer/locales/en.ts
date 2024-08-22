@@ -23,6 +23,7 @@ export default {
   "home.blogSection.postAuthor3": "Table Tennis Wales",
   "home.blogSection.postDate3": "30.07.2024",
   "home.blogSection.postDescription3": "Table Tennis Wales is hosting the Senior Team Championships of Wales, featuring elite team competition in table tennis.",
+  "home.recentsEvents": "Recent Events",
   // nav
   "navbar.home": "Home",
   "navbar.events": "Events",
@@ -30,6 +31,7 @@ export default {
   "navbar.rewardStore": "Reward Store",
   "navbar.viewNotifications": "View Notifications",
   "navbar.logout": "Logout",
+  "navbar.profile": "Profile",
   "logout.message": "Are you sure you want to logout?",
   "logout.title": "Logout Confirmation",
   "logout.confirm": "Confirm",
