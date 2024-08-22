@@ -1,25 +1,25 @@
 /**
- * 环境配置文件 environment configuration file
- * 一般在企业级项目中，会有多个环境，如开发环境、测试环境、线上（生产）环境等
+ * Environment configuration file
+ * In enterprise-level projects, there are usually multiple environments, such as development environment, test environment, production environment, etc.
  */
 
-// 当前的环境变量 current environment variable
+// Current environment variable
 const env = import.meta.env.MODE || 'prod'
 
 
 const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
-    development: { // 开发环境 development environment
-        baseApi: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081', // 接口请求地址 interface request address
-        // 使用本地数据 mock data
+    development: { // Development environment
+        baseApi: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081', // Interface request address
+        // Use local data for mock data
         // baseApi: '/api',
-        // 使用apifox模拟数据
+        // Use apifox for mock data
         mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default',
     },
-    test: { // 测试环境 test environment
+    test: { // Test environment
         baseApi: '/test',
         mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default'
     },
-    prod: { // 开发（生产）环境 production environment
+    prod: { // Production environment
         baseApi: '/prod',
         mockApi: 'https://apifoxmock.com/m1/4819087-4473805-default'
     }
@@ -27,7 +27,7 @@ const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
 
 export default {
     env,
-    // mock 总开关，是否开启模拟数据功能 whether to enable mock data function
+    // Mock switch, whether to enable mock data function
     mock: false,
     ...EnvConfig[env]
 }

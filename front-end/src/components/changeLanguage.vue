@@ -14,18 +14,18 @@ import { ref, getCurrentInstance, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 
-// 获取当前实例
+// Get the current instance
 const { proxy } = getCurrentInstance() as any
 const { t } = useI18n()
 
-// 获取存储的语言，默认是中文
+// Get the stored language, default is Chinese
 const lang = ref(localStorage.getItem('lang') || 'zh')
 
 const currentLocale = computed(() => {
   return proxy.$i18n.locale;
 })
 
-// 国旗图标映射
+// Flag icon mapping
 import cnIcon from '../assets/cn-icon.png'
 import ukIcon from '../assets/uk-icon.png'
 import cyIcon from '../assets/welsh-icon.png'
@@ -40,14 +40,14 @@ const flagIcon = computed(() => {
   return flagIcons[lang.value]
 })
 
-// 切换语言函数
+// Function to change the locale
 const changeLocale = (locale: string) => {
   proxy.$i18n.locale = locale;
   localStorage.setItem('lang', locale);
   ElMessage.success(t('header.actions.locale'));
 }
 
-// 初始化时调用切换语言函数以确保语言设置正确
+// Call the changeLocale function during initialization to ensure the language setting is correct
 // changeLocale(lang.value)
 </script>
 

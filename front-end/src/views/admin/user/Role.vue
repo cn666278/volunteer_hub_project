@@ -53,13 +53,13 @@ const handleCurrentChange = (val: number) => {
 // load role list
 const getRoleList = async () => {
   console.log(t('role.loadRoleList'));
-  // 从后端获取角色列表
+  // Get role list from the backend
   let res = await proxy.$api.getRoleList();
-  // 对角色列表根据 roleId 进行排序
+  // Sort the role list by roleId
   res.sort((a: { roleId: number; }, b: { roleId: number; }) => a.roleId - b.roleId);
-  // 将排序后的列表赋值给 roleList
+  // Assign the sorted list to roleList
   roleList.value = res;
-  // 触发更新
+  // Trigger update
   isUpdate.value = !isUpdate.value;
 };
 

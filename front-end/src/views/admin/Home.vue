@@ -60,7 +60,6 @@
           </div>
         </div>
       </el-card>
-      <!-- 固定高度的卡片，添加滚动条 -->
       <el-card shadow="hover" style="margin-top: 20px; height: 490px;">
         <p style="margin-bottom: 5px; margin-left: 10px">{{ $t('home.event') }}</p>
         <el-table :data="tableData" style="width: 100%;" height="450px">
@@ -115,16 +114,16 @@ import { onMounted, ref, getCurrentInstance, reactive, computed } from "vue";
 import useUser from "../../store/user.ts";
 import * as echarts from "echarts";
 
-// proxy是vue3.0提供的一个全局对象，可以通过getCurrentInstance()获取到当前实例，
+// proxy is a global object provided by Vue 3.0, which can be obtained using getCurrentInstance()
 const { proxy } = getCurrentInstance();
 
 let userStore = useUser();
 
-// tableData使用let定义，因为后续会对其进行赋值, tableData is defined using let because it will be assigned later
-let tableData = ref([]); // 双向绑定，使用ref包裹数组，实现响应式数据, Two-way binding, use ref to wrap the array to achieve responsive data
+// tableData is defined using let because it will be assigned later
+let tableData = ref([]); // Two-way binding, use ref to wrap the array to achieve responsive data
 let countData = ref({});
 
-// 格式化最后登录时间
+// Format the last login time
 const formattedLastLoginTime = computed(() => {
   const date = new Date(userStore.user.lastLoginTime);
   const options = {
@@ -138,7 +137,7 @@ const formattedLastLoginTime = computed(() => {
   return date.toLocaleDateString('en-GB', options);
 });
 
-// Event数据的表头
+// Table header for event data
 const tableLable = {
   name: 'event',
   today: 'todaysActiveUsers',
@@ -146,7 +145,7 @@ const tableLable = {
   total: 'totalActiveUsers',
 };
 
-// 获取Event表格数据
+// Get event table data
 const getTableList = async () => {
   try {
     let res = await proxy.$api.getEventStatus();
@@ -155,7 +154,7 @@ const getTableList = async () => {
     console.error("Error fetching table data:", error);
   }
 };
-// 获取首页count统计数据: event / user / register volunteer
+// Get count data for home page: event / user / register volunteer
 const getCountData = async () => {
   try {
     let res = await proxy.$api.getCountData();
@@ -164,21 +163,21 @@ const getCountData = async () => {
     console.error("Error fetching count data:", error);
   }
 };
-// 关于echarts的渲染部分，可以参考echarts官网的文档
+// Rendering part of echarts, you can refer to the official documentation of echarts
 let xOptions = reactive({
-  // 图例文字颜色
+  // Legend text color
   textStyle: {
     color: "#333",
   },
   grid: {
     left: "20%",
   },
-  // 提示框
+  // Tooltip
   tooltip: {
     trigger: "axis",
   },
   xAxis: {
-    type: "category", // 类目轴
+    type: "category", // Category axis
     data: [],
     axisLine: {
       lineStyle: {
@@ -219,7 +218,7 @@ let pieOptions = reactive({
   ],
   series: [],
 });
-// order data, user data, organizer data
+// Order data, user data, organizer data
 let eventData = reactive({
   xData: [],
   series: [],
@@ -234,13 +233,13 @@ let organizerData = reactive({
   series: [],
 });
 
-// 获取echarts数据
+// Get echarts data
 const getEchartData = async () => {
   let result = await proxy.$api.getEchartData();
   let res = result.eventData;
   console.log(res);
 
-  // 对日期和对应的数据进行排序（日期升序）
+  // Sort the date and corresponding data (ascending order by date)
   let sortedData = res.date.map((date, index) => {
     return {
       date: date,
@@ -250,27 +249,27 @@ const getEchartData = async () => {
 
   sortedData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // 提取排序后的日期和数据
+  // Extract sorted date and data
   res.date = sortedData.map(item => item.date);
   res.data = sortedData.map(item => item.data);
 
   console.log(res);
 
-  // 处理数据以确保无空对象
+  // Process data to ensure no empty objects
   eventData.xData = res.date;
   const series = [];
   
-  // 获取所有非空数据的键
+  // Get keys of all non-empty data
   const keySet = new Set();
   res.data.forEach((item) => {
     Object.keys(item).forEach((key) => keySet.add(key));
   });
   
-  // 构建series数据
+  // Build series data
   keySet.forEach((key) => {
     series.push({
       name: key,
-      data: res.data.map((item) => item[key] || 0), // 处理空值，使用0代替
+      data: res.data.map((item) => item[key] || 0), // Replace empty values with 0
       type: "line",
     });
   });
@@ -282,18 +281,18 @@ const getEchartData = async () => {
   let hEcharts = echarts.init(proxy.$refs["echart"]);
   hEcharts.setOption(xOptions);
 
-  // 渲染柱状图: userData
+  // Render bar chart: userData
   let userRes = result.userData;
   userData.xData = userRes.map((item) => item.date);
   userData.series = [
     {
       name: "New users",
-      data: userRes.map((item) => item.newUsers || 0), // 使用0替代空值
+      data: userRes.map((item) => item.newUsers || 0), // Replace empty values with 0
       type: "bar",
     },
     {
       name: "Active users",
-      data: userRes.map((item) => item.activeUsers || 0), // 使用0替代空值
+      data: userRes.map((item) => item.activeUsers || 0), // Replace empty values with 0
       type: "bar",
     },
   ];
@@ -304,7 +303,7 @@ const getEchartData = async () => {
   let userEcharts = echarts.init(proxy.$refs["userEchart"]);
   userEcharts.setOption(xOptions);
 
-  // 渲染饼图: organizerData
+  // Render pie chart: organizerData
   let organizerRes = result.organizerData;
   organizerData.series = [
     {
@@ -352,7 +351,7 @@ onMounted(() => {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 100%; /* 设置卡片高度自动撑满父容器 */
+      height: 100%; /* Set card height to automatically fill parent container */
     }
 
     .icons {
@@ -362,15 +361,15 @@ onMounted(() => {
       text-align: center;
       line-height: 50px;
       color: #fff;
-      flex-shrink: 0; /* 固定大小 */
+      flex-shrink: 0; /* Fixed size */
     }
 
     .details {
       margin-left: 8px;
       display: flex;
       flex-direction: column;
-      justify-content: space-around; /* 让元素在父容器内均匀分布 */
-      flex-grow: 1; /* 让details占满剩余空间 */
+      justify-content: space-around; /* Distribute elements evenly within the parent container */
+      flex-grow: 1; /* Make details take up remaining space */
 
       .num {
         font-size: 16px;
@@ -395,5 +394,3 @@ onMounted(() => {
   }
 }
 </style>
-
-
