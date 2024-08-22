@@ -29,7 +29,7 @@
 
     <!-- Recent Events Section -->
     <div class="recent-events-section">
-      <h1>Recent Events</h1>
+      <h1>{{ $t('home.recentsEvents')}}</h1>
       <div class="event-display">
         <el-card v-for="event in recentEvents" :key="event.id" class="event-card">
           <img :src="event.uploadedFilePath" alt="Event Image" class="event-image">
