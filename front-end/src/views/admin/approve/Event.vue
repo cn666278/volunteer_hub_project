@@ -244,7 +244,7 @@ const userInfo = ref<any>(); // Add this line to store userInfo
 
 const size = ref<SizeProps>('medium');
 
-// 控制分页显示的数据条数
+// Pagination
 const basePagination: Pagination = {
   current: 1,
   pageSize: 3,
@@ -366,7 +366,7 @@ const fetchData = async () => {
     // let { list } = res;
     fullData.value = res;
     pagination.total = res.length;
-    // 前端分页
+    // Front-end pagination
     updateRenderData(); // Update render data after fetching 
   } catch (err) {
     // you can report use errorHandler or other
@@ -375,7 +375,7 @@ const fetchData = async () => {
   }
 };
 
-// 前端分页
+// Front-end pagination
 const updateRenderData = () => {
   const start = (pagination.current - 1) * pagination.pageSize;
   const end = start + pagination.pageSize;
@@ -383,7 +383,7 @@ const updateRenderData = () => {
 };
 
 const search = () => {
-  // 将表单数据转化为小写以便更好地匹配
+  // Convert form data to lowercase for better matching
   const searchData = {
     number: formModel.value.number?.trim().toLowerCase(),
     name: formModel.value.name?.trim().toLowerCase(),
@@ -392,7 +392,7 @@ const search = () => {
     createdTime: formModel.value.createdTime,
   };
 
-  // 对数据进行筛选
+  // Filter the data
   const filteredData = fullData.value.filter((item) => {
     const matchesNumber = !searchData.number || item.id.toString().includes(searchData.number);
     const matchesName = !searchData.name || item.title.toLowerCase().includes(searchData.name);
@@ -406,11 +406,11 @@ const search = () => {
     return matchesNumber && matchesName && matchesEventType && matchesStatus && matchesCreatedTime;
   });
 
-  // 更新渲染数据
+  // Update render data
   renderData.value = filteredData.slice(0, pagination.pageSize);
   pagination.total = filteredData.length;
 
-  // 如果需要，重置分页页码
+  // Reset pagination current page if needed
   pagination.current = 1;
 };
 

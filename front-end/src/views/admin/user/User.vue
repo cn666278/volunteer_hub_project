@@ -129,12 +129,12 @@ const getUserList = async () => {
   console.log("Load user list");
   let res = await proxy.$api.getUserList();
   let { list, count } = res;
-  // 当roleId改变时，筛选出对应roleId的用户，并更新用户列表
+  // when roleId is not 0, filter the user list
   console.log(roleId.value);
   if (roleId.value !== 0) {
     list = list.filter((user: any) => Number(user.role.roleId) === roleId.value);
   }
-  // Pagination前端分页
+  // Pagination
   const start = (pageIndex.value - 1) * pageSize;
   const end = start + pageSize;
   list = list.slice(start, end);

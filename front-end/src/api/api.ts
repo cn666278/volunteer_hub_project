@@ -1,5 +1,5 @@
 /**
- * 整个项目的api的管理文件
+ * The api module is used to encapsulate all the api interfaces of the project
  */
 import request from "./request.ts";
 export default {
