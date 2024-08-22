@@ -23,6 +23,7 @@ export default {
   "home.blogSection.postAuthor3": "Tenis Bwrdd Cymru",
   "home.blogSection.postDate3": "30.07.2024",
   "home.blogSection.postDescription3": "Mae Tenis Bwrdd Cymru yn cynnal Pencampwriaethau Tîm Hŷn Cymru, gan gynnwys cystadleuaeth tîm elitaidd mewn tenis bwrdd.",
+  "home.recentsEvents": "Digwyddiadau Diweddar",
   // nav
   "navbar.home": "Cartref",
   "navbar.events": "Digwyddiadau",
@@ -30,6 +31,7 @@ export default {
   "navbar.rewardStore": "Siop Wobrwyo",
   "navbar.viewNotifications": "Gweld Hysbysiadau",
   "navbar.logout": "Allgofnodi",
+  "navbar.profile": "Proffil",
   "logout.message": "Ydych chi'n siŵr eich bod am allgofnodi?",
   "logout.title": "Cadarnhad Allgofnodi",
   "logout.confirm": "Cadarnhau",

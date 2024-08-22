@@ -27,11 +27,11 @@
       </el-menu-item>
       <el-dropdown trigger="click" @command="handleCommand">
         <el-menu-item>
-          <el-icon><User /></el-icon><span class="menu-text">{{ $t('Profile') }}</span>
+          <el-icon><User /></el-icon><span class="menu-text">{{ $t('navbar.profile') }}</span>
         </el-menu-item>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="profile">{{ $t('Profile') }}</el-dropdown-item>
+            <el-dropdown-item command="profile">{{ $t('navbar.profile') }}</el-dropdown-item>
             <el-dropdown-item command="logout">{{ $t('navbar.logout') }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>

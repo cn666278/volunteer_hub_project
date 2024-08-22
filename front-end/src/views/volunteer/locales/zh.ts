@@ -23,6 +23,7 @@ export default {
   "home.blogSection.postAuthor3": "威尔士乒乓球",
   "home.blogSection.postDate3": "2024.07.30",
   "home.blogSection.postDescription3": "威尔士乒乓球将举办威尔士高级队锦标赛，展示乒乓球精英队比赛。",
+  "home.recentsEvents": "最近的活动",
   // nav
   "navbar.home": "首页",
   "navbar.events": "活动",
@@ -30,6 +31,7 @@ export default {
   "navbar.rewardStore": "奖励商店",
   "navbar.viewNotifications": "查看通知",
   "navbar.logout": "退出",
+  "navbar.profile": "个人资料",
   "logout.message": "您确定要退出吗？",
   "logout.title": "退出确认",
   "logout.confirm": "确认",
