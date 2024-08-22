@@ -21,8 +21,6 @@
   </el-main>
 </template>
 
-
-
 <script>
 export default {
   name: 'VolunteerMainPage',
@@ -41,12 +39,11 @@ export default {
   },
   methods: {
     navigateTo(route) {
-      this.$router.push(route);
+      this.$router.push(route); // Navigate to the specified route
     }
   }
 };
 </script>
-
 
 <style scoped>
 .main-content {
@@ -55,39 +52,38 @@ export default {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  color: #333333; /* 设置文本颜色为深灰色 */
+  color: #333333; /* Set text color to dark gray */
 }
 
 .user-profile {
   margin-bottom: 20px;
-  width: 100%; /* 确保占满整个容器宽度 */
+  width: 100%; /* Ensure it takes the full width of the container */
   display: flex;
   flex-direction: column;
-  align-items: center; /* 保证子元素居中 */
+  align-items: center; /* Center child elements */
 }
 
 .username {
-  margin-top: 10px; /* 根据需要调整间距 */
-  text-align: center; /* 确保文本居中显示 */
+  margin-top: 10px; /* Adjust spacing as needed */
+  text-align: center; /* Ensure text is centered */
   color: #6894c7;
   font-size: 30px;
-
 }
 
 .user-avatar {
-  width: 200px; /* 设置头像宽度 */
-  height: 200px; /* 设置头像高度 */
-  border-radius: 50%; /* 保持圆形 */
-  object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
-  border: 2px solid #b0bec5; /* 为头像添加边框 */
+  width: 200px; /* Set avatar width */
+  height: 200px; /* Set avatar height */
+  border-radius: 50%; /* Keep circular shape */
+  object-fit: cover; /* Cover the entire area, cropping excess */
+  border: 2px solid #b0bec5; /* Add border to the avatar */
 }
 
 .user-rating {
-  margin-bottom: 30px;
+  margin-bottom: 30px; /* Add spacing below the rating component */
 }
 
 .feature-row {
-  width: 100%;
+  width: 100%; /* Full width for the row containing feature cards */
 }
 
 .feature-card {
@@ -97,7 +93,7 @@ export default {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 2px dashed #6894c7;
+  border: 2px dashed #6894c7; /* Dashed border for feature cards */
   padding: 20px;
   margin-top: 0px;
   margin-bottom: 15px;
@@ -106,20 +102,19 @@ export default {
 .feature-icon {
   width: 40px;
   height: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 10px; /* Spacing below the icon */
 }
 
 .card-content {
-  text-align: center;
+  text-align: center; /* Center align the text content */
 }
 
 .feature-card h3 {
-  margin-top: 10px;
+  margin-top: 10px; /* Add spacing above the feature name */
 }
 
 .feature-card p {
-  color: #666;
-  font-size: 14px;
+  color: #666; /* Set text color for the description */
+  font-size: 14px; /* Set font size for the description */
 }
 </style>
-

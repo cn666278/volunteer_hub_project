@@ -79,7 +79,6 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -89,51 +88,50 @@ import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { House, Search, Star, User } from '@element-plus/icons-vue';
 
-const { t } = useI18n();
+const { t } = useI18n(); // Internationalization
 
 // user store
 const userStore = useUser();
 let router = useRouter();
 
-const activeIndex = ref('1');
-const mobileMenuVisible = ref(false);
+const activeIndex = ref('1'); // Currently active menu item index
+const mobileMenuVisible = ref(false); // Visibility state of mobile menu
 
 const handleSelect = (key: string, keyPath: string[]) => {
-  // 判断用户是否登录
+  // Check if user is logged in
   if (!userStore.user.username) {
-    // 用户未登录，跳转到登录页面
+    // If user is not logged in, redirect to login page
     router.push('/login');
   } else {
-    // 用户已登录，导航到相应页面
+    // If user is logged in, navigate to the selected route
     router.push(key);
   }
 };
 
 const toggleMobileMenu = () => {
-  mobileMenuVisible.value = !mobileMenuVisible.value;
+  mobileMenuVisible.value = !mobileMenuVisible.value; // Toggle mobile menu visibility
 };
 
 const navigateToProfile = () => {
-  router.push('/volunteer/personal');
+  router.push('/volunteer/personal'); // Navigate to the user's profile page
 };
 
 const handleCommand = (command: string) => {
-  // 判断用户是否登录
+  // Check if user is logged in
   if (!userStore.user.username) {
-    // 用户未登录，跳转到登录页面
+    // If user is not logged in, redirect to login page
     router.push('/login');
   } else {
-    // 用户已登录，导航到相应页面
+    // If user is logged in, navigate based on the command
     if (command === 'profile') {
       navigateToProfile();
     } else if (command === 'logout') {
       exit();
     }
   }
-
 };
 
-// exit
+// Logout functionality
 const exit = () => {
   ElMessageBox.confirm(t('logout.message'), t('logout.title'), {
     confirmButtonText: t('logout.confirm'),
@@ -141,15 +139,14 @@ const exit = () => {
     type: 'warning',
   })
       .then(() => {
-        userStore.clearUser();
-        router.push('/login');
+        userStore.clearUser(); // Clear user information from store
+        router.push('/login'); // Redirect to login page
       })
       .catch(() => {
-        console.log('Cancel exit');
+        console.log('Cancel exit'); // Log if logout is canceled
       });
 };
 </script>
-
 
 <style scoped>
 .navbar-top {
@@ -169,7 +166,7 @@ const exit = () => {
 }
 
 .top-logo {
-  width: 50px;
+  width: 50px; /* Logo width */
 }
 
 .language-switcher i {
@@ -184,18 +181,17 @@ const exit = () => {
 
 .navbar-container,
 .el-menu-demo {
-  margin-top: 60px; /* 在navbar-top之下，调整这个值以适应navbar-top的高度 */
+  margin-top: 60px; /* Adjust this value to fit the height of navbar-top */
   display: flex;
   justify-content: center;
   background-color: #ffffff;
-  /*padding-right: 50px;*/
   width: 100%;
   z-index: 1000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 body {
-  padding-top: 80px; /* 调整这个值以确保足够的空间给固定的导航栏 */
+  padding-top: 80px; /* Adjust this value to ensure enough space for the fixed navbar */
 }
 
 :root {
@@ -233,8 +229,8 @@ body {
 }
 
 .custom-icon {
-  width: 20px;
-  height: 20px;
+  width: 20px; /* Custom icon width */
+  height: 20px; /* Custom icon height */
 }
 
 .logout-menu-item {
@@ -259,12 +255,12 @@ body {
 
   .navbar-container,
   .el-menu-demo {
-    padding-left:0px;
-    justify-content: center; /* 居中 */
+    padding-left: 0px;
+    justify-content: center; /* Center align */
   }
 
   .mobile-menu-icon {
-    display: block;
+    display: block; /* Show mobile menu icon on smaller screens */
   }
 
   .mobile-navbar {
@@ -278,7 +274,7 @@ body {
   }
 
   .el-menu-item .menu-text {
-    display: none; /* 隐藏文本 */
+    display: none; /* Hide text on smaller screens */
   }
 }
 </style>

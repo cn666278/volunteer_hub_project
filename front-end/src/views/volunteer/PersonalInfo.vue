@@ -1,6 +1,7 @@
 <template>
   <div class="PersonalInfo">
     <div class="user-profile">
+      <!-- User Avatar -->
       <img :src="uploadedPhotoUrl || userStore.user.photo" class="user-avatar" @click="triggerFileInput" />
       <input type="file" ref="fileInput" style="display: none;" @change="onFileChange" />
     </div>
@@ -21,7 +22,7 @@
       </div>
     </div>
 
-    <!-- Buttons -->
+    <!-- Action Buttons -->
     <div class="action-buttons">
       <button class="edit-button" @click="showEditModal = true">Edit Info</button>
       <button class="change-password-button" @click="showChangePasswordModal = true">Change Password</button>
@@ -88,28 +89,28 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
-import api from '../../api/api';  // 确保你已经导入了API管理文件
+import api from '../../api/api';  // Import the API management file
 
 const userStore = useUser();
-const showEditModal = ref(false);
-const showChangePasswordModal = ref(false);
-const editUsername = ref(userStore.user.username);
-const editPhone = ref(userStore.user.phone);
-const editEmail = ref(userStore.user.email);
-const uploadedPhotoUrl = ref<string | null>(null); // 追踪上传的照片
-const currentPassword = ref('');
-const newPassword = ref('');
-const confirmPassword = ref('');
-const fileInput = ref<HTMLInputElement | null>(null);
+const showEditModal = ref(false); // Control the visibility of the edit info modal
+const showChangePasswordModal = ref(false); // Control the visibility of the change password modal
+const editUsername = ref(userStore.user.username); // Store the editable username
+const editPhone = ref(userStore.user.phone); // Store the editable phone number
+const editEmail = ref(userStore.user.email); // Store the editable email
+const uploadedPhotoUrl = ref<string | null>(null); // Track the uploaded photo URL
+const currentPassword = ref(''); // Store the current password input
+const newPassword = ref(''); // Store the new password input
+const confirmPassword = ref(''); // Store the password confirmation input
+const fileInput = ref<HTMLInputElement | null>(null); // Reference to the file input element
 
-// 触发文件输入对话框
+// Trigger file input dialog
 const triggerFileInput = () => {
   if (fileInput.value) {
     fileInput.value.click();
   }
 };
 
-// 处理文件更改事件
+// Handle file change event
 const onFileChange = async (event: Event) => {
   const files = (event.target as HTMLInputElement).files;
   if (files && files.length > 0) {
@@ -124,7 +125,7 @@ const onFileChange = async (event: Event) => {
       const response = await api.uploadAvatorForVolunteer(formData);
       const photoId = response.match(/\d+$/)[0];
 
-      // 更新用户的照片字段并显示
+      // Update the user's photo and display the new photo
       await updateUserProfilePhoto(photoId);
       uploadedPhotoUrl.value = await fetchFile(photoId);
 
@@ -134,7 +135,7 @@ const onFileChange = async (event: Event) => {
   }
 };
 
-// 获取并显示上传的照片
+// Fetch and display the uploaded photo
 const fetchFile = async (fileId: string) => {
   try {
     const response = await api.getfiles({ id: fileId });
@@ -155,7 +156,7 @@ const fetchFile = async (fileId: string) => {
   return null;
 };
 
-// 更新用户资料照片
+// Update the user's profile photo
 const updateUserProfilePhoto = async (photoId: string) => {
   try {
     userStore.setUser({
@@ -167,7 +168,7 @@ const updateUserProfilePhoto = async (photoId: string) => {
   }
 };
 
-// 更新用户资料
+// Update the user's profile information
 const updateUserProfile = async () => {
   try {
     const response = await api.updateUserProfile({
@@ -195,7 +196,7 @@ const updateUserProfile = async () => {
   }
 };
 
-// 修改密码
+// Change the user's password
 const changePassword = async () => {
   if (newPassword.value !== confirmPassword.value) {
     alert("New passwords do not match");
@@ -221,7 +222,7 @@ const changePassword = async () => {
   }
 };
 
-// 加载用户资料图片
+// Load the user's profile picture when the component is mounted
 const loadUserProfilePicture = async () => {
   if (userStore.user.photo) {
     const photoId = userStore.user.photo.split('/').pop();
@@ -231,6 +232,7 @@ const loadUserProfilePicture = async () => {
   }
 };
 
+// Fetch user data on component mount if necessary
 onMounted(async () => {
   if (!userStore.user.id) {
     const loginId = sessionStorage.getItem('loginId');

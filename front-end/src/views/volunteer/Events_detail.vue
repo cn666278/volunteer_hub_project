@@ -1,19 +1,21 @@
 <template>
   <div class="event-detail" v-if="event">
-    <!-- Intro Section with text and single image carousel -->
+    <!-- Intro Section with text and a single image carousel -->
     <div class="intro-section">
+      <!-- Image Carousel displaying the event image -->
       <div class="image-carousel">
         <img :src="uploadedFilePath" alt="Event Image" class="carousel-image" />
       </div>
+      <!-- Event title and organization name -->
       <div class="text-content">
         <h1>{{ event.title }}</h1>
         <p>{{ event.organizationName }}</p>
       </div>
     </div>
 
-    <!-- Introduction Sections -->
+    <!-- Introduction Sections including location, date, and reward points -->
     <div class="project-introduction-middle">
-      <!-- LOCATION, DATE, and REWARD POINTS Cards -->
+      <!-- Cards for LOCATION, DATE, and REWARD POINTS -->
       <div class="card-container">
         <div v-for="(item, index) in introSections" :key="index" class="custom-card">
           <div :class="['event-name', { 'red-title': item.title === 'LOCATION' }]">
@@ -27,7 +29,7 @@
       </div>
     </div>
 
-    <!-- Description Section -->
+    <!-- Description Section for the event -->
     <div class="project-introduction-middle">
       <div class="card-container">
         <div class="custom-card wide-card">
@@ -51,6 +53,7 @@
           </div>
           <div class="divider2"></div>
           <div class="comment-content">
+            <!-- Display volunteer roles needed for the event -->
             <div v-for="(role, index) in roles" :key="index" class="comment-text full-text">
               · {{ role.roleName }} (NUMBER REQUIRED: {{ role.volunteerCount }}):
               <br />
@@ -61,11 +64,13 @@
       </div>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Action Buttons for applying and subscribing to the event -->
     <div class="action-buttons">
+      <!-- Button to open the application dialog -->
       <button class="styled-button primary" @click="openApplyDialog">
         Apply to be a volunteer
       </button>
+      <!-- Button to subscribe to the event, disabled if already subscribed -->
       <button
           class="styled-button success"
           :class="{'subscribed': isSubscribed}"
@@ -76,22 +81,22 @@
       </button>
     </div>
 
-    <!-- Apply Modal -->
+    <!-- Modal for the Apply to be a Volunteer form -->
     <div v-if="applyDialogVisible" class="modal">
       <div class="modal-content">
         <h3>Apply to be a Volunteer</h3>
         <div class="apply-form">
+          <!-- Display event name (read-only) -->
           <div class="form-group">
             <label for="event-name">Event name</label>
             <input id="event-name" v-model="event.title" readonly />
           </div>
-          <!-- 新增的日期行 -->
+          <!-- Display event dates (read-only) -->
           <div class="form-group">
             <label for="event-dates">Event Dates</label>
             <input id="event-dates" :value="`${formattedEventStartDate} - ${formattedEventEndDate}`" readonly />
           </div>
-
-          <!-- 修改后的Terms & Conditions 复选框 -->
+          <!-- Terms & Conditions checkbox -->
           <div class="form-group terms-conditions">
             <label for="terms-checkbox">
               Please ensure that you have understood and agreed to our
@@ -100,6 +105,7 @@
             <input type="checkbox" id="terms-checkbox" v-model="agreedToTerms" />
           </div>
         </div>
+        <!-- Modal footer with Cancel and Submit buttons -->
         <div class="modal-footer">
           <button @click="applyDialogVisible = false">Cancel</button>
           <button class="primary" @click="submitApplication">Submit</button>
@@ -110,6 +116,7 @@
   </div>
 
   <div v-else>
+    <!-- Display loading text while event data is being fetched -->
     <p>Loading...</p>
   </div>
 </template>
@@ -125,23 +132,25 @@ import { useI18n } from 'vue-i18n';
 export default {
   name: 'EventDetail',
   setup() {
-    const route = useRoute();
-    const event = ref(null);
-    const roles = ref([]); // 用于存储角色信息
-    const uploadedFilePath = ref(''); // 用于存储图片路径
-    const { t } = useI18n(); // 国际化支持
-    const userStore = useUser();
-    const isSubscribed = ref(false);
-    const agreedToTerms = ref(false); // 用于控制复选框是否选中
+    const route = useRoute(); // Access the current route to get event ID
+    const event = ref(null); // Reactive variable to store event details
+    const roles = ref([]); // Reactive variable to store roles needed for the event
+    const uploadedFilePath = ref(''); // Reactive variable to store the event image path
+    const { t } = useI18n(); // Internationalization support
+    const userStore = useUser(); // Access user information from the store
+    const isSubscribed = ref(false); // Tracks subscription status
+    const agreedToTerms = ref(false); // Tracks if the user has agreed to terms
 
+    // Computed property to organize introduction sections for the event
     const introSections = computed(() => [
       { title: 'LOCATION', value: event.value?.location },
       { title: 'DATE', value: `${formattedEventStartDate.value} - ${formattedEventEndDate.value}` },
       { title: 'Reward Points', value: event.value?.pointsAwarded },
     ]);
 
-    const applyDialogVisible = ref(false);
+    const applyDialogVisible = ref(false); // Controls visibility of the apply dialog
 
+    // Function to load event details by event ID
     const loadEvent = async () => {
       const eventId = route.params.id;
       if (eventId) {
@@ -151,10 +160,10 @@ export default {
         if (response) {
           event.value = response;
 
-          // 加载图片
+          // Load the event image
           uploadedFilePath.value = await fetchEventImage(response.eventPic);
 
-          // 加载角色信息
+          // Load the roles needed for the event
           roles.value = await fetchRoles(eventId);
         }
       } else {
@@ -162,7 +171,7 @@ export default {
       }
     };
 
-    // 获取事件图片
+    // Function to fetch the event image by image ID
     const fetchEventImage = async (eventPicId) => {
       try {
         const response = await api.getfiles({ id: eventPicId });
@@ -182,7 +191,7 @@ export default {
       }
     };
 
-    // 获取角色信息
+    // Function to fetch roles needed for the event by event ID
     const fetchRoles = async (eventId) => {
       try {
         const response = await api.getRolesByEventId({ eventId });
@@ -193,6 +202,7 @@ export default {
       }
     };
 
+    // Function to subscribe the user to the event
     const subscribeToEvent = async () => {
       try {
         const loginId = userStore.user.id;
@@ -233,13 +243,14 @@ export default {
       }
     };
 
+    // Function to open the apply dialog
     const openApplyDialog = () => {
       applyDialogVisible.value = true;
     };
 
+    // Function to submit the volunteer application
     const submitApplication = async () => {
-      if (agreedToTerms.value == false) {
-
+      if (!agreedToTerms.value) {
         // Show an alert if the checkbox is not checked
         ElMessage({
           message: 'Please agree to the Terms & Conditions before submitting.',
@@ -286,6 +297,7 @@ export default {
       }
     };
 
+    // Computed property to format the start date of the event
     const formattedEventStartDate = computed(() => {
       if (event.value && event.value.startDate) {
         return new Date(event.value.startDate).toLocaleDateString('en-US', {
@@ -297,6 +309,7 @@ export default {
       return '';
     });
 
+    // Computed property to format the end date of the event
     const formattedEventEndDate = computed(() => {
       if (event.value && event.value.endDate) {
         return new Date(event.value.endDate).toLocaleDateString('en-US', {
@@ -308,7 +321,7 @@ export default {
       return '';
     });
 
-
+    // Lifecycle hook to load event details when the component is mounted
     onMounted(() => {
       loadEvent();
     });
@@ -317,7 +330,7 @@ export default {
       event,
       roles,
       introSections,
-      uploadedFilePath, // 返回图片路径
+      uploadedFilePath, // Return the image path
       subscribeToEvent,
       openApplyDialog,
       applyDialogVisible,
@@ -325,7 +338,7 @@ export default {
       formattedEventStartDate,
       formattedEventEndDate,
       isSubscribed,
-      agreedToTerms, // 绑定复选框的状态
+      agreedToTerms, // Bind the state of the terms and conditions checkbox
     };
   },
 };

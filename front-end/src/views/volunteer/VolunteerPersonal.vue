@@ -21,18 +21,17 @@
   </div>
 </template>
 
-
-
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
 import api from '../../api/api';
-import { useRouter } from 'vue-router';  // 导入 useRouter
+import { useRouter } from 'vue-router';  // Import useRouter to navigate between pages
 
 const userStore = useUser();
 const uploadedPhotoUrl = ref<string | null>(null);
-const router = useRouter();  // 获取 router 实例
+const router = useRouter();  // Get the router instance
 
+// Fetch the user's profile picture from the server
 const fetchFile = async (fileId: string) => {
   try {
     const response = await api.getfiles({ id: fileId });
@@ -53,9 +52,10 @@ const fetchFile = async (fileId: string) => {
   return null;
 };
 
+// Load the user's profile picture on component mount
 const loadUserProfilePicture = async () => {
   if (userStore.user.photo) {
-    const photoId = userStore.user.photo.split('/').pop(); // Extract the 'id' part
+    const photoId = userStore.user.photo.split('/').pop(); // Extract the 'id' part from the photo URL
     if (photoId) {
       uploadedPhotoUrl.value = await fetchFile(photoId);
     }
@@ -63,9 +63,10 @@ const loadUserProfilePicture = async () => {
 };
 
 onMounted(async () => {
-  await loadUserProfilePicture();
+  await loadUserProfilePicture(); // Load profile picture when component is mounted
 });
 
+// Define the feature items to be displayed on the page
 const features = [
   {
     name: 'personal.personalInformation',
@@ -99,13 +100,11 @@ const features = [
   }
 ];
 
+// Navigate to the route associated with the selected feature
 const navigateTo = (route: string) => {
-  router.push(route);  // 使用 router 实例进行导航
+  router.push(route);  // Use the router instance to navigate to the selected route
 };
 </script>
-
-
-
 
 <style scoped>
 .main-content {
@@ -114,35 +113,35 @@ const navigateTo = (route: string) => {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  color: #a9181a; /* 设置文本颜色为深灰色 */
+  color: #a9181a; /* Set text color to deep red */
 }
 
 .user-profile {
   margin-bottom: 10px;
-  width: 100%; /* 确保占满整个容器宽度 */
+  width: 100%; /* Ensure full width of the container */
   display: flex;
   flex-direction: column;
-  align-items: center; /* 保证子元素居中 */
+  align-items: center; /* Center child elements */
 }
 
 .username {
-  margin-top: 10px; /* 根据需要调整间距 */
-  text-align: center; /* 确保文本居中显示 */
+  margin-top: 10px; /* Adjust spacing as needed */
+  text-align: center; /* Center the text */
   color: #a9181a;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .user-avatar {
-  width: 100px; /* 设置头像宽度 */
-  height: 100px; /* 设置头像高度 */
-  border-radius: 50%; /* 保持圆形 */
-  object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
-  border: 2px solid #a9181a; /* 为头像添加边框 */
+  width: 100px; /* Set avatar width */
+  height: 100px; /* Set avatar height */
+  border-radius: 50%; /* Keep circular shape */
+  object-fit: cover; /* Cover the entire area, cropping excess */
+  border: 2px solid #a9181a; /* Add border to the avatar */
 }
 
 .feature-row {
-  width: 100%;
+  width: 100%; /* Full width for the row containing feature cards */
 }
 
 .feature-card {
@@ -162,18 +161,18 @@ const navigateTo = (route: string) => {
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px); /* Lift card on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
 }
 
 .feature-icon {
   width: 40px;
   height: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 10px; /* Spacing below the icon */
 }
 
 .card-content {
-  text-align: center;
+  text-align: center; /* Center align the text content */
 }
 
 .feature-card h3 {
@@ -181,39 +180,39 @@ const navigateTo = (route: string) => {
 }
 
 .feature-card p {
-  color: #a9181a;
+  color: #a9181a; /* Set paragraph text color to deep red */
   font-size: 14px;
 }
 
-/* Remove or adjust mobile-specific styles */
+/* Responsive styles for mobile devices */
 @media (max-width: 600px) {
   .main-content {
-    padding: 10px; /* 调整内边距为10px */
+    padding: 10px; /* Adjust padding for smaller screens */
   }
 
   .username {
-    font-size: 18px; /* 将字体大小调整为18px */
-    padding: 0 10px; /* 增加左右的内边距 */
-    margin-bottom: 10px; /* 增加与下方元素的间距 */
+    font-size: 18px; /* Adjust font size */
+    padding: 0 10px; /* Add left and right padding */
+    margin-bottom: 10px; /* Increase space below the username */
   }
 
   .user-avatar {
-    width: 80px; /* 将头像宽度调整为80px */
-    height: 80px; /* 将头像高度调整为80px */
+    width: 80px; /* Adjust avatar width */
+    height: 80px; /* Adjust avatar height */
   }
 
   .feature-row {
-    margin: 0; /* Remove the extra margins */
+    margin: 0; /* Remove extra margins */
   }
 
   .feature-card {
-    border: 1px solid #ccc; /* Ensure border style is consistent */
+    border: 1px solid #ccc; /* Ensure consistent border style */
     padding: 20px; /* Match padding to the desktop version */
     margin-top: 10px;
     margin-bottom: 15px;
-    width: 100%; /* Make sure the width is consistent */
+    width: 100%; /* Ensure full width on smaller screens */
     box-sizing: border-box; /* Include padding and border in the width calculation */
-    background-color: #f5f5f5; /* Ensure background color matches */
+    background-color: #f5f5f5; /* Ensure consistent background color */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent shadow */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     border-radius: 10px;
@@ -225,16 +224,15 @@ const navigateTo = (route: string) => {
   }
 
   .feature-card h3 {
-    font-size: 14px; /* Ensure consistency in font size */
+    font-size: 14px; /* Adjust font size */
     margin: 10px 0;
   }
 
   .feature-card p {
-    font-size: 14px; /* Consistent paragraph text size */
+    font-size: 14px; /* Adjust paragraph text size */
     margin: 0;
     text-align: center;
-    word-wrap: break-word;
+    word-wrap: break-word; /* Ensure text wraps properly */
   }
 }
 </style>
-

@@ -1,25 +1,23 @@
 <template>
   <div class="Index">
-    <!-- Header -->
+    <!-- Header Section -->
     <div class="header">
       <el-header>
         <Navbar/>
       </el-header>
     </div>
 
-    <!-- Main content -->
+    <!-- Main Content Area -->
     <div class="content">
-      <router-view></router-view>
+      <router-view></router-view> <!-- Dynamic content based on the current route -->
     </div>
 
-
-    <!-- Footer -->
+    <!-- Footer Section -->
     <div class="footer">
-    <VolunteerFooter/>
+      <VolunteerFooter/>
     </div>
   </div>
 </template>
-
 
 <script>
 import { ElCarousel, ElCarouselItem, ElButton, ElCard } from 'element-plus';
@@ -57,8 +55,7 @@ export default {
 </script>
 
 <style scoped>
-.content{
-  margin-top: 10px;
-
+.content {
+  margin-top: 10px; /* Adds some space above the main content */
 }
 </style>

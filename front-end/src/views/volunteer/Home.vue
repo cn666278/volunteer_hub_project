@@ -17,6 +17,7 @@
       </div>
     </div>
 
+    <!-- Project Introduction Section -->
     <div class="project-introduction-middle">
       <div class="column" v-for="(item, index) in introSections" :key="index">
         <el-icon :name="item.icon" :size="50">
@@ -101,6 +102,7 @@ export default {
     const displayedText = ref('');
     const { proxy } = getCurrentInstance();
 
+    // Fetch recent events from the API
     const fetchRecentEvents = async () => {
       try {
         const response = await proxy.$api.getLatestEvents();
@@ -121,6 +123,7 @@ export default {
       }
     };
 
+    // Fetch the image for a specific event
     const fetchEventImage = async (eventPicId) => {
       try {
         const response = await proxy.$api.getfiles({ id: eventPicId });
@@ -140,6 +143,7 @@ export default {
       }
     };
 
+    // Animate text in the introduction section
     const animateText = () => {
       const characters = volunteerHubText.value.split('');
       let index = 0;
@@ -153,6 +157,7 @@ export default {
       }, 300);
     };
 
+    // Format date to a readable format
     const formatDate = (dateString: string) => {
       const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
@@ -162,6 +167,7 @@ export default {
       return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
+    // Hook to run on component mount
     onMounted(() => {
       fetchRecentEvents();
       animateText();
@@ -284,7 +290,6 @@ export default {
       line-height: 1.2;
       margin: 0.5rem 0;
 
-      /* 适配移动设备 */
       @media (max-width: 1200px) {
         font-size: 3rem;
       }
@@ -356,7 +361,6 @@ export default {
     }
   }
 }
-
 
 .project-introduction, .activities-section {
   padding: 20px;
@@ -507,4 +511,3 @@ export default {
 }
 
 </style>
-

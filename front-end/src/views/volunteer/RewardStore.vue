@@ -1,10 +1,14 @@
 <template>
   <div class="container">
+    <!-- Welcome Section -->
     <div class="welcome-section">
       <h2>Welcome to the Points Mall</h2>
       <p>Your current points are {{ points }}</p>
     </div>
+
+    <!-- Item List Section -->
     <div class="item-list">
+      <!-- Display each item as a card -->
       <el-card v-for="item in items" :key="item.id" class="item-card">
         <img :src="item.imageSrc" alt="item image" class="item-image" />
         <div class="item-info">
@@ -18,27 +22,27 @@
   </div>
 </template>
 
-
-
 <script setup>
 import { ref, onMounted, getCurrentInstance } from 'vue';
 import useUser from "../../store/user";
-// user store
+
+// Access the user store
 const userStore = useUser();
-const points = ref(0); // 用于存储当前用户的积分
+const points = ref(0); // Stores the current user's points
 
 const { proxy } = getCurrentInstance();
-const items = ref([]);
+const items = ref([]); // Stores the list of items available for redemption
 
-// 获取商品列表
+// Fetch the list of items
 const fetchItems = async () => {
   const response = await proxy.$api.getItems();
 
-  // 对每个商品调用 getfiles 接口获取图片
+  // For each item, fetch its associated image
   const itemsWithImages = await Promise.all(response.map(async (item) => {
     try {
       const imageResponse = await proxy.$api.getfiles({ id: item.itemUrl });
       if (imageResponse) {
+        // Convert the base64 image data to a Blob and create an object URL
         const base64Data = imageResponse;
         const mimeType = imageResponse.mimeType || 'image/jpeg';
         const byteCharacters = atob(base64Data);
@@ -48,32 +52,32 @@ const fetchItems = async () => {
         }
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: mimeType });
-        item.imageSrc = URL.createObjectURL(blob); // 将 blob URL 存储在 item 中
+        item.imageSrc = URL.createObjectURL(blob); // Store the blob URL in the item object
       } else {
-        item.imageSrc = ''; // 如果获取失败，则留空
+        item.imageSrc = ''; // Leave empty if image fetch fails
       }
     } catch (error) {
       console.error('Failed to fetch image:', error);
-      item.imageSrc = ''; // 如果发生错误，也留空
+      item.imageSrc = ''; // Leave empty if an error occurs
     }
     return item;
   }));
 
-  items.value = itemsWithImages;
+  items.value = itemsWithImages; // Update the items list with the images
 };
 
-// 获取当前用户的积分
+// Fetch the current user's points
 const fetchPoints = async () => {
-  const userId = userStore.user.id; // 获取当前登录用户的ID
+  const userId = userStore.user.id; // Get the current logged-in user's ID
   const response = await proxy.$api.getVolunteerByUserId({ userId });
   if (response && response.kudosPoints) {
-    points.value = response.kudosPoints; // 更新积分
+    points.value = response.kudosPoints; // Update the points value
   } else {
     console.error("Failed to fetch points");
   }
 };
 
-// 兑换商品
+// Handle item redemption
 const redeemItem = async (itemId) => {
   const response = await proxy.$api.redeemItem({
     userId: userStore.user.id,
@@ -82,16 +86,17 @@ const redeemItem = async (itemId) => {
 
   if (response) {
     alert('Redemption successful!');
-    fetchItems(); // Refresh items
-    fetchPoints(); // Refresh points after redemption
+    fetchItems(); // Refresh the list of items
+    fetchPoints(); // Refresh the points after redemption
   } else {
     alert('Redemption failed!');
   }
 };
 
+// Fetch items and points when the component is mounted
 onMounted(() => {
   fetchItems();
-  fetchPoints(); // 页面加载时获取当前用户的积分
+  fetchPoints();
 });
 </script>
 
@@ -103,7 +108,7 @@ onMounted(() => {
   margin-top: 20px;
   width: 100%;
   max-width: 1200px;
-  padding:20px;
+  padding: 20px;
 }
 
 .welcome-section {
@@ -207,5 +212,3 @@ p {
   }
 }
 </style>
-
-

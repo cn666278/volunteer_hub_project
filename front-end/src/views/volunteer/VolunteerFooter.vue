@@ -30,7 +30,7 @@
         <a href="https://youtube.com" target="_blank">
           <font-awesome-icon :icon="['fab', 'youtube']" />
         </a>
-        <!-- 添加自定义图标 -->
+        <!-- Custom icons added -->
         <div class="custom-icons">
           <a href="https://www.linkedin.com/company/welshsportsassociation/" target="_blank">
             <img src="../../assets/linkedin.png" alt="LinkedIn" class="custom-icon" />
@@ -53,7 +53,6 @@
     </div>
   </el-footer>
 </template>
-
 
 <script>
 export default {
@@ -83,7 +82,7 @@ export default {
 }
 
 .footer-section {
-  width: 30%; /* 每个div的宽度设为30% */
+  width: 30%; /* Set width of each section to 30% */
 }
 
 .footer-section h3 {
@@ -104,16 +103,16 @@ export default {
 }
 
 .navigation ul li a {
-  color: inherit; /* 继承父元素的字体颜色，保持白色 */
-  text-decoration: none; /* 去掉下划线 */
+  color: inherit; /* Inherit font color from parent, keeping it white */
+  text-decoration: none; /* Remove underline */
 }
 
 .navigation ul li a:hover {
-  text-decoration: underline; /* 悬停时显示下划线 */
+  text-decoration: underline; /* Show underline on hover */
 }
 
 .social-media {
-  text-align: center; /* 社交媒体部分居中 */
+  text-align: center; /* Center align social media section */
 }
 
 .social-media a {
@@ -127,28 +126,28 @@ export default {
 }
 
 .custom-icon {
-  width: 60px; /* 根据需要调整图标的大小 */
+  width: 60px; /* Adjust icon size as needed */
   height: 60px;
   margin-right: 10px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1); /* Invert icon colors */
 }
 
 .contact {
-  text-align: right; /* 联系我们部分居右 */
+  text-align: right; /* Align contact section to the right */
 }
 
 .terms-link {
-  color: inherit; /* 继承父元素的字体颜色，保持白色 */
-  text-decoration: none; /* 去掉下划线 */
+  color: inherit; /* Inherit font color from parent, keeping it white */
+  text-decoration: none; /* Remove underline */
 }
 
 .terms-link:hover {
-  text-decoration: underline; /* 悬停时显示下划线 */
+  text-decoration: underline; /* Show underline on hover */
 }
 
 @media (max-width: 768px) {
   .footer {
-    display: none;
+    display: none; /* Hide footer on small screens */
   }
 }
 </style>

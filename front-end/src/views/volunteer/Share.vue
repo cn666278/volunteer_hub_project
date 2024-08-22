@@ -31,7 +31,7 @@ export default {
   },
   setup() {
     const textToShare = ref('');
-    const currentUrl = window.location.href; // 当前页面的URL
+    const currentUrl = window.location.href; // Get the current page URL
 
     function shareToTwitter() {
       const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(textToShare.value)}`;
@@ -74,16 +74,16 @@ export default {
   }
 }
 
-/* 确保表单项在小屏幕上也能舒适地显示 */
+/* Ensure the form items are comfortable to display on small screens */
 .el-form-item {
   width: 100%;
   margin-bottom: 20px;
 }
 
-/* 自适应设计 */
+/* Responsive design */
 @media (max-width: 768px) {
   .custom-card {
-    width: 100%; /* 在小屏幕上卡片宽度占据全屏 */
+    width: 100%; /* Card width occupies full screen on small screens */
     padding: 15px;
   }
 
@@ -92,7 +92,7 @@ export default {
   }
 
   .el-button {
-    width: 100%; /* 按钮在小屏幕上占据全宽 */
+    width: 100%; /* Buttons occupy full width on small screens */
     margin-bottom: 10px;
   }
 }
@@ -103,7 +103,7 @@ export default {
   }
 
   .el-input__inner {
-    font-size: 14px; /* 调整输入框字体大小以适应较小的屏幕 */
+    font-size: 14px; /* Adjust input font size to fit smaller screens */
   }
 }
 </style>
