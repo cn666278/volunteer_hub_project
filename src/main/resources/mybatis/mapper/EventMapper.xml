@@ -72,9 +72,9 @@
         FROM
             events e
                 LEFT JOIN
-            eventRoles r ON e.id = r.eventId
+            eventroles r ON e.id = r.eventId
                 LEFT JOIN
-            eventFacilities f ON e.id = f.eventId
+            eventfacilities f ON e.id = f.eventId
         WHERE
             e.id = #{id}
     </select>

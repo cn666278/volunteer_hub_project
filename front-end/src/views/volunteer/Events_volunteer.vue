@@ -33,7 +33,7 @@
                 </div>
                 <div class="date-details">
                   <el-icon><Calendar /></el-icon>
-                  {{ post.date }}
+                  {{ formatDate(post.date) }}
                 </div>
               </div>
               <h5>{{ post.title }}</h5>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="date-details">
                   <el-icon><Calendar /></el-icon>
-                  {{ post.date }}
+                  {{ formatDate(post.date) }}
                 </div>
               </div>
               <h5>{{ post.title }}</h5>
@@ -99,18 +99,18 @@ const fetchSubscribedEvents = async () => {
     const volunteerId = userStore.user.id;
     const response = await api.getSubscribedEvents({ volunteerId });
     subscribedEvents.value = await Promise.all(
-      response.map(async event => {
-        const uploadedFilePath = await fetchEventImage(event.eventPic);
-        return {
-          id: event.id,
-          uploadedFilePath,
-          title: event.title,
-          date: event.startDate,
-          organizationName: event.organizationName,
-          description: event.description,
-          status: event.status,
-        };
-      })
+        response.map(async event => {
+          const uploadedFilePath = await fetchEventImage(event.eventPic);
+          return {
+            id: event.id,
+            uploadedFilePath,
+            title: event.title,
+            date: event.startDate,
+            organizationName: event.organizationName,
+            description: event.description,
+            status: event.status,
+          };
+        })
     );
   } catch (error) {
     console.error('Error fetching subscribed events:', error);
@@ -122,18 +122,18 @@ const fetchParticipatedEvents = async () => {
     const volunteerId = userStore.user.id;
     const response = await api.getParticipatedEvents({ volunteerId });
     participatedEvents.value = await Promise.all(
-      response.map(async event => {
-        const uploadedFilePath = await fetchEventImage(event.eventPic);
-        return {
-          id: event.id,
-          uploadedFilePath,
-          title: event.title,
-          date: event.startDate,
-          organizationName: event.organizationName,
-          description: event.description,
-          status: event.status,
-        };
-      })
+        response.map(async event => {
+          const uploadedFilePath = await fetchEventImage(event.eventPic);
+          return {
+            id: event.id,
+            uploadedFilePath,
+            title: event.title,
+            date: event.startDate,
+            organizationName: event.organizationName,
+            description: event.description,
+            status: event.status,
+          };
+        })
     );
   } catch (error) {
     console.error('Error fetching participated events:', error);
@@ -160,6 +160,12 @@ const fetchEventImage = async (fileId) => {
   }
 };
 
+// 日期格式化方法
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+};
+
 const handleSelect = (index: string) => {
   activeIndex.value = index;
   if (index === '3') {
@@ -177,6 +183,7 @@ onMounted(() => {
   fetchParticipatedEvents();
 });
 </script>
+
 
 <style scoped>
 .container {

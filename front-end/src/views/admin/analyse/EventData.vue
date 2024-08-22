@@ -19,7 +19,7 @@
         
         <!-- Event Data Table -->
         <el-card shadow="hover" style="margin-top: 10px; height: 100%;">
-          <el-table :data="tableData" style="width: 100%;" height="400px">
+          <el-table :data="tableData" style="width: 100%;" height="550px">
             <el-table-column
               v-for="(val, key) in tableLable"
               :key="key"

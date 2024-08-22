@@ -6,12 +6,12 @@
 <mapper namespace="com.wsa.mapper.EventRolesMapper">
 
     <insert id="saveEventRoles">
-        INSERT INTO eventRoles (eventId, roleName, volunteerCount)
+        INSERT INTO eventroles (eventId, roleName, volunteerCount)
         VALUES
             (#{eventId}, #{roleName}, #{volunteerCount})
     </insert>
     <delete id="deleteEventRolesByEventId">
-        DELETE FROM eventRoles
+        DELETE FROM eventroles
         WHERE eventId = #{id};
     </delete>
 
