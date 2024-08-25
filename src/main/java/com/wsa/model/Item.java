@@ -10,4 +10,7 @@ public class Item {
     private String itemDescription;
     private int pointsRequired;
     private int stock;
+
+
+
 }
