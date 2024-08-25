@@ -9,4 +9,7 @@ public class Role implements Serializable {
 
     private Long roleId;
     private String roleName;
+
+
+
 }

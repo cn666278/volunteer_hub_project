@@ -10,5 +10,7 @@ public class Organizer {
     private String organizationName;
     private String organizationDescription;
 
+
+
     // Getters and setters
 }
