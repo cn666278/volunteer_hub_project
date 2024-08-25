@@ -278,6 +278,10 @@ export default {
       margin-bottom: 10px;
     }
 
+    .el-carousel__arrow el-carousel__arrow--left{
+      display: flow;
+    }
+
     h1 {
       font-size: 4rem;
       font-weight: bold;
