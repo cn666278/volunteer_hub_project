@@ -6,3 +6,26 @@
   text-decoration: none;
   outline: none;
 }
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --primary-color: #409eff; /* 根据 Element Plus 的默认主题色 */
+}
+
+[data-theme='dark'] {
+  --background-color: #181818;
+  --text-color: #ffffff;
+  --primary-color: #1e90ff; /* 深色主题下的主要颜色 */
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* 应用 Element Plus 的主要颜色 */
+.el-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
