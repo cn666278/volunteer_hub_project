@@ -1,13 +1,12 @@
 <template>
   <div>
+    <!-- 一键评论按钮放在表格的上面 -->
+    <div style="margin-bottom: 20px;">
+      <el-button type="primary" @click="oneClickComment">{{ t('commentVolunteer.oneClickComment') }}</el-button>
+    </div>
+
     <el-table :data="volunteers" stripe>
       <el-table-column prop="username" :label="t('commentVolunteer.username')"></el-table-column>
-<!--      <el-table-column :label="t('commentVolunteer.contact')">-->
-<!--        <template v-slot="scope">-->
-<!--          <div>{{ scope.row.phone }}</div>-->
-<!--          <div>{{ scope.row.email }}</div>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
       <el-table-column prop="experience" :label="t('commentVolunteer.experience')"></el-table-column>
       <el-table-column prop="eventCount" :label="t('commentVolunteer.eventCount')"></el-table-column>
       <el-table-column prop="roleName" :label="t('commentVolunteer.role')"></el-table-column>
@@ -36,7 +35,7 @@
 <script setup lang="ts">
 import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElMessageBox } from 'element-plus';
+import { ElMessageBox, ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -78,7 +77,6 @@ const handlePageChange = (page) => {
 };
 
 const commentVolunteer = (volunteer) => {
-  console.log("commentVolunteer event",event)
   router.push({
     name: 'CommentDetail',
     query: {
@@ -92,6 +90,23 @@ const commentVolunteer = (volunteer) => {
   });
 };
 
+// 一键评论功能
+const oneClickComment = async () => {
+  try {
+    for (const volunteer of volunteers.value) {
+      await proxy.$api.submitComment({
+        eventId: event.eventId,
+        organizerId: event.organizerId,
+        volunteerId: volunteer.volunteerId,
+        rating: 5,
+        comment: 'good job',
+      });
+    }
+    ElMessage.success(t('commentVolunteer.oneClickCommentSuccess'));
+  } catch (error) {
+    ElMessage.error(t('commentVolunteer.oneClickCommentFailure'));
+  }
+};
 
 onMounted(() => {
   fetchVolunteers();
@@ -99,4 +114,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Add any specific styles you need here */
 </style>

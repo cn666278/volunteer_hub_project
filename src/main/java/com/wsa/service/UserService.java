@@ -218,4 +218,7 @@ public class UserService {
         return true;
     }
 
+    public User getUserByVolunteerId(Long volunteerId) {
+        return userMapper.getUserByVolunteerId(volunteerId);
+    }
 }

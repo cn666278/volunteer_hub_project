@@ -95,6 +95,7 @@ export default {
   "editEvent.chooseEndDate": "Choose end date",
 
   // CommentVolunteer Page
+  "commentVolunteer.oneClickComment": "OneClickComment",
   "commentVolunteer.username": "Username",
   "commentVolunteer.experience": "Experience",
   "commentVolunteer.eventCount": "Event Count",
