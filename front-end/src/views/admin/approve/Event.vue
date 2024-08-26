@@ -6,8 +6,8 @@
           <a-form :model="formModel" :label-col-props="{ span: 8 }" :wrapper-col-props="{ span: 18 }" label-align="left">
             <a-row :gutter="16">
               <a-col :span="10">
-                <a-form-item field="number" :label="$t('searchTable.form.number')">
-                  <a-input v-model="formModel.number" :placeholder="$t('searchTable.form.number.placeholder')" />
+                <a-form-item field="location" :label="$t('searchTable.form.location')">
+                  <a-input v-model="formModel.location" :placeholder="$t('searchTable.form.location.placeholder')" />
                 </a-form-item>
               </a-col>
               <a-col :span="10">
@@ -15,12 +15,12 @@
                   <a-input v-model="formModel.name" :placeholder="$t('searchTable.form.name.placeholder')" />
                 </a-form-item>
               </a-col>
-              <a-col :span="10">
+              <!-- <a-col :span="10">
                 <a-form-item field="eventType" :label="$t('searchTable.form.eventType')">
                   <a-select v-model="formModel.eventType" :options="eventTypeOptions" :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
-              </a-col>
-              <a-col :span="6">
+              </a-col> -->
+              <a-col :span="10">
                 <a-form-item field="status" :label="$t('searchTable.form.status')">
                   <a-select v-model="formModel.status" :options="statusOptions" :placeholder="$t('searchTable.form.selectDefault')" />
                 </a-form-item>
@@ -224,6 +224,7 @@ const { proxy } = getCurrentInstance() as any;
 const generateFormModel = () => {
   return {
     number: '',
+    location: '',
     name: '',
     eventType: '',
     filterType: '',
@@ -316,32 +317,32 @@ const columns = computed<TableColumnData[]>(() => [
   },
 ]);
 
-const eventTypeOptions = computed<SelectOptionData[]>(() => [
-  {
-    label: t('searchTable.form.eventType.Judo'),
-    value: 'Judo',
-  },
-  {
-    label: t('searchTable.form.eventType.Badminton'),
-    value: 'Badminton',
-  },
-  {
-    label: t('searchTable.form.eventType.TableTennis'),
-    value: 'Table Tennis',
-  },
-  {
-    label: t('searchTable.form.eventType.Hockey'),
-    value: 'Hockey',
-  },
-  {
-    label: t('searchTable.form.eventType.Cycling'),
-    value: 'Cycling',
-  },
-  {
-    label: t('searchTable.form.eventType.Snowsports'),
-    value: 'Snowsports',
-  },
-]);
+// const eventTypeOptions = computed<SelectOptionData[]>(() => [
+//   {
+//     label: t('searchTable.form.eventType.Judo'),
+//     value: 'Judo',
+//   },
+//   {
+//     label: t('searchTable.form.eventType.Badminton'),
+//     value: 'Badminton',
+//   },
+//   {
+//     label: t('searchTable.form.eventType.TableTennis'),
+//     value: 'Table Tennis',
+//   },
+//   {
+//     label: t('searchTable.form.eventType.Hockey'),
+//     value: 'Hockey',
+//   },
+//   {
+//     label: t('searchTable.form.eventType.Cycling'),
+//     value: 'Cycling',
+//   },
+//   {
+//     label: t('searchTable.form.eventType.Snowsports'),
+//     value: 'Snowsports',
+//   },
+// ]);
 
 const statusOptions = computed<SelectOptionData[]>(() => [
   {
@@ -386,6 +387,7 @@ const search = () => {
   // Convert form data to lowercase for better matching
   const searchData = {
     number: formModel.value.number?.trim().toLowerCase(),
+    location: formModel.value.location?.trim().toLowerCase(),
     name: formModel.value.name?.trim().toLowerCase(),
     eventType: formModel.value.eventType,
     status: formModel.value.status,
@@ -395,6 +397,7 @@ const search = () => {
   // Filter the data
   const filteredData = fullData.value.filter((item) => {
     const matchesNumber = !searchData.number || item.id.toString().includes(searchData.number);
+    const matchLocation = !searchData.location || item.location.toLowerCase().includes(searchData.location);
     const matchesName = !searchData.name || item.title.toLowerCase().includes(searchData.name);
     const matchesEventType = !searchData.eventType || item.eventType === searchData.eventType;
     const matchesStatus = !searchData.status || item.status === searchData.status;
@@ -403,7 +406,7 @@ const search = () => {
       (new Date(item.startDate) >= new Date(searchData.createdTime[0]) &&
         new Date(item.endDate) <= new Date(searchData.createdTime[1]));
 
-    return matchesNumber && matchesName && matchesEventType && matchesStatus && matchesCreatedTime;
+    return matchesNumber && matchLocation && matchesName && matchesEventType && matchesStatus && matchesCreatedTime;
   });
 
   // Update render data

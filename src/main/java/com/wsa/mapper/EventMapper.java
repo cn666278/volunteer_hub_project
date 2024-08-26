@@ -51,7 +51,7 @@ public interface EventMapper {
             "WHERE er.volunteerId = #{volunteerId} AND er.status IN ('pending', 'accepted')")
     List<Event> findParticipatedEventsByVolunteerId(@Param("volunteerId") Long volunteerId);
 
-    @Select("SELECT * FROM events ORDER BY startDate DESC LIMIT 3")
+    @Select("SELECT * FROM events WHERE status = 'Passed' ORDER BY startDate DESC LIMIT 3")
     List<Event> findLatestEvents();
 
     @Update("UPDATE events SET status = #{status} WHERE id = #{id}")

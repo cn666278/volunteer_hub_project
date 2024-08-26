@@ -189,7 +189,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       if (res) {
         ElNotification({
           title: t('user.notification.title'),
-          message: res.message,
+          message: res,
           type: "success",
         });
         emit("update-user-list"); // update user list
@@ -198,7 +198,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       } else {
         ElNotification({
           title: t('user.notification.title'),
-          message: res.message,
+          message: res,
           type: "error",
         });
         console.log("error submit!");
