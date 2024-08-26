@@ -10,7 +10,7 @@
     <LoginBanner />
     <div class="content">
       <div class="content-inner">
-        <el-tabs type="border-card" style="width: 500px;">
+        <el-tabs type="border-card" class="responsive-tabs">
           <el-tab-pane :label="$t('login.login')">
             <VolunteerLoginForm />
           </el-tab-pane>
@@ -37,8 +37,6 @@ import changeLanguage from '../../components/changeLanguage.vue';
 </script>
 
 <style scoped lang="scss">
-// scoped表示这个样式只在当前组件中生效, 不会影响到其他组件
-
 .container {
   display: flex;
   height: 100vh;
@@ -64,6 +62,13 @@ import changeLanguage from '../../components/changeLanguage.vue';
     justify-content: center;
     padding-bottom: 40px;
     z-index: 1;  // 确保 content 不会覆盖语言切换按钮
+
+    .content-inner {
+      width: 100%;
+      max-width: 550px; /* 确保内容的最大宽度与Tab一致 */
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
     :deep(.el-form-item__label) {
       color: white;
@@ -119,5 +124,43 @@ import changeLanguage from '../../components/changeLanguage.vue';
 :deep(.el-tabs) {
   --el-color-primary: #f74150;
   --el-color-primary-light-3: #ff5d6a;
+}
+
+.responsive-tabs {
+  width: 100%;
+  max-width: 550px; /* 确保Tab内容在大屏幕时最大宽度为500px */
+  margin: 0 auto; /* 居中对齐 */
+  box-sizing: border-box; /* 确保内边距影响到整个宽度 */
+}
+
+/* 针对小屏幕的调整 */
+@media (max-width: 768px) {
+  .banner {
+    display: none; /* 当屏幕宽度小于768px时隐藏横幅 */
+  }
+
+  .responsive-tabs {
+    width: 100%; /* 小屏幕时表单宽度占100% */
+    padding: 10px; /* 为表单添加一些内边距 */
+  }
+
+  .logo {
+    img {
+      height: 50px; /* 减少Logo的高度 */
+    }
+
+    .logo-text {
+      font-size: 16px; /* 减少Logo文本的字体大小 */
+    }
+  }
+
+  .top-right {
+    top: 10px;
+    right: 10px; /* 缩小右上角按钮的边距 */
+  }
+
+  .footer {
+    font-size: 12px; /* 减少页脚字体大小 */
+  }
 }
 </style>
