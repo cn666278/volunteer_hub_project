@@ -3,12 +3,22 @@
     <div class="content">
       <div v-if="activeIndex === '1'" class="search-section">
         <el-input
-            :placeholder="$t('events.searchPlaceholder')"
-            v-model="searchQuery">
+          :placeholder="$t('events.searchPlaceholder')"
+          v-model="searchQuery">
           <template #prefix>
             <el-icon><Search /></el-icon>
           </template>
         </el-input>
+        <el-date-picker
+          v-model="dateRange"
+          type="daterange"
+          range-separator="to"
+          start-placeholder="Start date"
+          end-placeholder="End date"
+          style="margin-left: 10px;"
+          :clearable="true"
+          :unlink-panels="true"
+        />
       </div>
       <div class="blog-section" v-if="activeIndex === '1'">
         <div class="blog-display">
@@ -46,6 +56,7 @@ import api from '../../api/api';
 const allEvents = ref([]);
 const activeIndex = ref('1');
 const searchQuery = ref('');
+const dateRange = ref<[string, string] | null>(null); // 用于存储日期范围
 const { proxy } = getCurrentInstance();
 
 // 获取事件列表并且加载每个事件的组织信息
@@ -106,12 +117,19 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
+// filter events based on search query and date range
 const filteredEvents = computed(() => {
-  if (!searchQuery.value) return allEvents.value;
-  return allEvents.value.filter(event =>
-      event.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      (event.description && event.description.toLowerCase().includes(searchQuery.value.toLowerCase()))
-  );
+  return allEvents.value.filter(event => {
+    const matchesSearchQuery = !searchQuery.value || event.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (event.description && event.description.toLowerCase().includes(searchQuery.value.toLowerCase()));
+
+    const matchesDateRange = !dateRange.value || (
+      new Date(event.startDate) >= new Date(dateRange.value[0]) &&
+      new Date(event.startDate) <= new Date(dateRange.value[1])
+    );
+
+    return matchesSearchQuery && matchesDateRange;
+  });
 });
 </script>
 
