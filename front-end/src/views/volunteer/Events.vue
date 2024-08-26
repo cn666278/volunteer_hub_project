@@ -15,7 +15,7 @@
           range-separator="to"
           start-placeholder="Start date"
           end-placeholder="End date"
-          style="margin-left: 10px;"
+          class="date-picker"
           :clearable="true"
           :unlink-panels="true"
         />
@@ -146,26 +146,22 @@ const filteredEvents = computed(() => {
 }
 
 .search-section {
-  padding: 20px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 10px; /* 控制两者之间的间距 */
 }
 
-.el-input {
-  --el-input-border-color: #c0c4cc;
+.search-section .el-input,
+.search-section .date-picker {
+  flex: 1; /* 使两者等宽 */
+  min-width: 250px; /* 设置最小宽度以适应小屏幕 */
 }
 
-.el-input .el-input__inner {
-  padding-left: 35px;
-}
-
-.search-section .el-input {
-  width: 80%;
-}
-
-.el-input .el-icon {
-  margin-right: 8px;
-  color: #409EFF;
+.date-picker {
+  margin-left: 0; /* 移除之前设置的左边距 */
 }
 
 .blog-section {
@@ -243,6 +239,10 @@ p {
 }
 
 @media screen and (max-width: 768px) {
+  .search-section {
+    flex-direction: column; /* 小屏幕时垂直排列 */
+  }
+
   .blog-display {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
