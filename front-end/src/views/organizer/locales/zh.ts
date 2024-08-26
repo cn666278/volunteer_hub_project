@@ -94,6 +94,7 @@ export default {
   "editEvent.chooseEndDate": "选择结束日期",
 
   // CommentVolunteer 页面
+  "commentVolunteer.oneClickComment": "一键评论",
   "commentVolunteer.username": "用户名",
   "commentVolunteer.experience": "经验",
   "commentVolunteer.eventCount": "活动数量",

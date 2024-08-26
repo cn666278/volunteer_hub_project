@@ -56,5 +56,7 @@ public interface UserMapper {
     @Update("UPDATE users SET password = #{password} WHERE id = #{id}")
     void updatePassword(@Param("id") Long id, @Param("password") String password);
 
+    @Select("SELECT users.* FROM users INNER JOIN volunteer ON volunteer.userId = users.id WHERE volunteer.id = #{volunteerId}")
+    User getUserByVolunteerId(Long volunteerId);
 }
 
