@@ -3,6 +3,8 @@ export default {
   "menu.list.searchTable": "Chwilio Tabl",
   "searchTable.form.number": "Rhif",
   "searchTable.form.number.placeholder": "Rhowch rif",
+  "searchTable.form.location": "Lleoliad",
+  "searchTable.form.location.placeholder": "Rhowch leoliad",
   "searchTable.form.name": "Enw",
   "searchTable.form.name.placeholder": "Rhowch enw",
   "searchTable.form.eventType": "Math o Ddigwyddiad",

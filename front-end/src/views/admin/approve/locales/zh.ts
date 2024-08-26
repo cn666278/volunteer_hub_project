@@ -1,6 +1,8 @@
 export default {
   "searchTable.form.number": "编号",
   "searchTable.form.number.placeholder": "请输入编号",
+  "searchTable.form.location": "位置",
+  "searchTable.form.location.placeholder": "请输入位置",
   "searchTable.form.name": "名称",
   "searchTable.form.name.placeholder": "请输入名称",
   "searchTable.form.eventType": "活动类型",

@@ -3,6 +3,8 @@ export default {
   "menu.list.searchTable": "Search Table",
   "searchTable.form.number": "Number",
   "searchTable.form.number.placeholder": "Enter number",
+  "searchTable.form.location": "Location",
+  "searchTable.form.location.placeholder": "Enter location",
   "searchTable.form.name": "Name",
   "searchTable.form.name.placeholder": "Enter name",
   "searchTable.form.eventType": "Event Type",
