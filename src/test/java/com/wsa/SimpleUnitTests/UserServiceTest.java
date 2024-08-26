@@ -87,15 +87,17 @@ public class UserServiceTest {
     @Test
     void testUpdateUser() {
         // Arrange
-        UserReq request = new UserReq();
+        UserInfo request = new UserInfo();
         request.setId(1L);
         request.setUsername("updatedUser");
-        request.setRoleName(1L);
+        UserInfo.Role role1 = new UserInfo.Role();
+        role1.setRoleName("1");
+        request.setRole(role1);
 
         Role role = new Role();
         role.setRoleName("ROLE_USER");
 
-        when(roleMapper.selectRoleById(request.getRoleName())).thenReturn(role);
+        when(roleMapper.selectRoleById(Long.getLong(request.getRole().getRoleId()))).thenReturn(role);
 
         // Act
         userService.updateUser(request);
