@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/updateUser")
-    public ResultVO<String> updateUser(@RequestBody UserReq request) {
+    public ResultVO<String> updateUser(@RequestBody UserInfo request) {
         userService.updateUser(request);
         return ResultVO.success("update success");
     }
