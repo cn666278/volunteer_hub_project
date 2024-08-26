@@ -95,6 +95,7 @@ export default {
   "editEvent.chooseEndDate": "Dewiswch ddyddiad gorffen",
 
   // Tudalen CommentVolunteer
+  "commentVolunteer.oneClickComment": "UnClickComment",
   "commentVolunteer.username": "Enw Defnyddiwr",
   "commentVolunteer.experience": "Profiad",
   "commentVolunteer.eventCount": "Cyfrif Digwyddiadau",
