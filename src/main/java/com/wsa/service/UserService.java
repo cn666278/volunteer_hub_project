@@ -4,6 +4,7 @@ import com.wsa.exception.ResourceNotFoundException;
 import com.wsa.mapper.*;
 import com.wsa.model.*;
 import com.wsa.util.PasswordUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,27 +108,27 @@ public class UserService {
         userMapper.addUser(user);
         Long userId = user.getId();
         Authority authority = new Authority();
-        authority.setRoleId(request.getRoleId());
+        authority.setRoleId(request.getRoleName());
         authority.setUserId(userId);
         authority.setUsername(user.getUsername());
-        Role role = roleMapper.selectRoleById(request.getRoleId());
+        Role role = roleMapper.selectRoleById(request.getRoleName());
         authority.setAuthority(role.getRoleName());
         authorityMapper.addAuthority(authority);
-        if(request.getRoleId() == 1){
+        if(request.getRoleName() == 1){
             Organizer organizer = new Organizer();
             organizer.setUserId(userId);
             organizer.setOrganizationName(request.getUsername());
             organizer.setOrganizationDescription(request.getUsername());
             organizerMapper.addOrganizer(organizer);
         }
-        if(request.getRoleId() == 2){
+        if(request.getRoleName() == 2){
             Volunteer volunteer = new Volunteer();
             volunteer.setUserId(userId);
             volunteerMapper.addVolunteer(volunteer);
         }
     }
 
-    public void updateUser(UserReq request) {
+    public void updateUser(UserInfo request) {
         User user = new User();
         user.setLoginId(request.getLoginId());
         user.setUsername(request.getUsername());
@@ -136,11 +137,12 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setId(request.getId());
         userMapper.updateUser(user);
+        if(!StringUtils.isNumeric(request.getRoleName())) return;
         Authority authority = new Authority();
-        authority.setRoleId(request.getRoleName());
+        authority.setRoleId(Long.valueOf(request.getRoleName()));
         authority.setUserId(request.getId());
         authority.setUsername(request.getUsername());
-        Role role = roleMapper.selectRoleById(request.getRoleName());
+        Role role = roleMapper.selectRoleById(authority.getRoleId());
         authority.setAuthority(role.getRoleName());
         authorityMapper.updateAuthority(authority);
     }

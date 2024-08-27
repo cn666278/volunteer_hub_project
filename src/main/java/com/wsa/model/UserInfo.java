@@ -18,7 +18,8 @@ public class UserInfo implements Serializable {
     private String photo;
     private Timestamp lastLoginTime;
     private Role role;
-
+    private String roleId;
+    private String roleName;
     @Data
     public static class Role implements Serializable {
         private static final long serialVersionUID = 1L;
