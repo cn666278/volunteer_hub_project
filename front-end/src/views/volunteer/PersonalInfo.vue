@@ -1,6 +1,7 @@
 <template>
   <div class="PersonalInfo">
     <div class="user-profile">
+      <!-- Display user's avatar, clicking triggers file input for photo change -->
       <img :src="uploadedPhotoUrl || userStore.user.photo" class="user-avatar" @click="triggerFileInput" />
       <input type="file" ref="fileInput" style="display: none;" @change="onFileChange" />
     </div>
@@ -34,21 +35,19 @@
           <span class="close" @click="showEditModal = false">&times;</span>
           <h2>Edit Info</h2>
           <div class="modal-body">
+            <!-- Fields for editing user information -->
             <div class="info-item custom-card">
               <label for="username" class="info-label">Username:</label>
               <input type="text" v-model="editUsername" id="username" class="info-input" />
             </div>
-
             <div class="info-item custom-card">
               <label for="phone" class="info-label">Phone:</label>
               <input type="text" v-model="editPhone" id="phone" class="info-input" />
             </div>
-
             <div class="info-item custom-card">
               <label for="email" class="info-label">Email:</label>
               <input type="email" v-model="editEmail" id="email" class="info-input" />
             </div>
-
             <button @click="updateUserProfile" class="submit-button">Submit</button>
           </div>
         </div>
@@ -62,21 +61,19 @@
           <span class="close" @click="showChangePasswordModal = false">&times;</span>
           <h2>Change Password</h2>
           <div class="modal-body">
+            <!-- Fields for changing password -->
             <div class="info-item custom-card">
               <label for="currentPassword" class="info-label">Current Password:</label>
               <input type="password" v-model="currentPassword" id="currentPassword" class="info-input" />
             </div>
-
             <div class="info-item custom-card">
               <label for="newPassword" class="info-label">New Password:</label>
               <input type="password" v-model="newPassword" id="newPassword" class="info-input" />
             </div>
-
             <div class="info-item custom-card">
               <label for="confirmPassword" class="info-label">Confirm Password:</label>
               <input type="password" v-model="confirmPassword" id="confirmPassword" class="info-input" />
             </div>
-
             <button @click="changePassword" class="submit-button">Submit</button>
           </div>
         </div>
@@ -88,28 +85,28 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
-import api from '../../api/api';  // 确保你已经导入了API管理文件
+import api from '../../api/api'; // Ensure the API management file is properly imported
 
 const userStore = useUser();
-const showEditModal = ref(false);
-const showChangePasswordModal = ref(false);
+const showEditModal = ref(false); // Controls the visibility of the edit info modal
+const showChangePasswordModal = ref(false); // Controls the visibility of the change password modal
 const editUsername = ref(userStore.user.username);
 const editPhone = ref(userStore.user.phone);
 const editEmail = ref(userStore.user.email);
-const uploadedPhotoUrl = ref<string | null>(null); // 追踪上传的照片
+const uploadedPhotoUrl = ref<string | null>(null); // Tracks the uploaded photo URL
 const currentPassword = ref('');
 const newPassword = ref('');
 const confirmPassword = ref('');
 const fileInput = ref<HTMLInputElement | null>(null);
 
-// 触发文件输入对话框
+// Trigger the file input dialog for photo upload
 const triggerFileInput = () => {
   if (fileInput.value) {
     fileInput.value.click();
   }
 };
 
-// 处理文件更改事件
+// Handle the file change event when a new photo is selected
 const onFileChange = async (event: Event) => {
   const files = (event.target as HTMLInputElement).files;
   if (files && files.length > 0) {
@@ -124,7 +121,7 @@ const onFileChange = async (event: Event) => {
       const response = await api.uploadAvatorForVolunteer(formData);
       const photoId = response.match(/\d+$/)[0];
 
-      // 更新用户的照片字段并显示
+      // Update user's photo field and display
       await updateUserProfilePhoto(photoId);
       uploadedPhotoUrl.value = await fetchFile(photoId);
 
@@ -134,7 +131,7 @@ const onFileChange = async (event: Event) => {
   }
 };
 
-// 获取并显示上传的照片
+// Fetch and display the uploaded photo
 const fetchFile = async (fileId: string) => {
   try {
     const response = await api.getfiles({ id: fileId });
@@ -155,7 +152,7 @@ const fetchFile = async (fileId: string) => {
   return null;
 };
 
-// 更新用户资料照片
+// Update user's profile photo in the store
 const updateUserProfilePhoto = async (photoId: string) => {
   try {
     userStore.setUser({
@@ -167,7 +164,7 @@ const updateUserProfilePhoto = async (photoId: string) => {
   }
 };
 
-// 更新用户资料
+// Update user profile information
 const updateUserProfile = async () => {
   try {
     const response = await api.updateUserProfile({
@@ -195,7 +192,7 @@ const updateUserProfile = async () => {
   }
 };
 
-// 修改密码
+// Change user password
 const changePassword = async () => {
   if (newPassword.value !== confirmPassword.value) {
     alert("New passwords do not match");
@@ -221,7 +218,7 @@ const changePassword = async () => {
   }
 };
 
-// 加载用户资料图片
+// Load the user's profile picture on component mount
 const loadUserProfilePicture = async () => {
   if (userStore.user.photo) {
     const photoId = userStore.user.photo.split('/').pop();
@@ -275,7 +272,7 @@ onMounted(async () => {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #a9181a;
-  cursor: pointer; /* Indicate clickable area */
+  cursor: pointer; /* Indicates the area is clickable */
 }
 
 .info-display {

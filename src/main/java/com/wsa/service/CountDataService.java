@@ -8,17 +8,24 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing and retrieving statistical data.
+ * This service interacts with the data access layer (CountDataMapper) to fetch various counts related to events and users.
+ */
 @Service
 public class CountDataService {
 
     @Autowired
-    private CountDataMapper countDataMapper;
+    private CountDataMapper countDataMapper; // Mapper for database interactions related to count data
 
-    // 获取统计数据的方法
+    /**
+     * Method to get a list of statistical data.
+     * @return List of CountDataRes objects containing different statistical metrics.
+     */
     public List<CountDataRes> getCountData() {
-        List<CountDataRes> countDataResList = new ArrayList<>();
+        List<CountDataRes> countDataResList = new ArrayList<>(); // Initialize list to store count data results
 
-        // totalEvents
+        // Retrieve and add total number of events
         CountDataRes totalEvents = new CountDataRes();
         totalEvents.setName("totalEvents");
         totalEvents.setIcon("histogram");
@@ -26,7 +33,7 @@ public class CountDataService {
         totalEvents.setValue(countDataMapper.getTotalEvents());
         countDataResList.add(totalEvents);
 
-        // totalUsers
+        // Retrieve and add total number of users
         CountDataRes totalUsers = new CountDataRes();
         totalUsers.setName("totalUsers");
         totalUsers.setIcon("user-filled");
@@ -34,7 +41,7 @@ public class CountDataService {
         totalUsers.setValue(countDataMapper.getTotalUsers());
         countDataResList.add(totalUsers);
 
-        // totalRegisterUsers
+        // Retrieve and add total number of registered users
         CountDataRes totalRegisterUsers = new CountDataRes();
         totalRegisterUsers.setName("totalRegisterUsers");
         totalRegisterUsers.setIcon("checked");
@@ -42,7 +49,7 @@ public class CountDataService {
         totalRegisterUsers.setValue(countDataMapper.getTotalRegisterUsers());
         countDataResList.add(totalRegisterUsers);
 
-        // todaysActiveEvents
+        // Retrieve and add today's active events
         CountDataRes todaysActiveEvents = new CountDataRes();
         todaysActiveEvents.setName("todaysActiveEvents");
         todaysActiveEvents.setIcon("histogram");
@@ -50,7 +57,7 @@ public class CountDataService {
         todaysActiveEvents.setValue(countDataMapper.getTodaysActiveEvents());
         countDataResList.add(todaysActiveEvents);
 
-        // todaysActiveUsers
+        // Retrieve and add today's active users
         CountDataRes todaysActiveUsers = new CountDataRes();
         todaysActiveUsers.setName("todaysActiveUsers");
         todaysActiveUsers.setIcon("user-filled");
@@ -58,7 +65,7 @@ public class CountDataService {
         todaysActiveUsers.setValue(countDataMapper.getTodaysActiveUsers());
         countDataResList.add(todaysActiveUsers);
 
-        // todaysRegisterUsers
+        // Retrieve and add today's registered users
         CountDataRes todaysRegisterUsers = new CountDataRes();
         todaysRegisterUsers.setName("todaysRegisterUsers");
         todaysRegisterUsers.setIcon("checked");
@@ -66,7 +73,7 @@ public class CountDataService {
         todaysRegisterUsers.setValue(countDataMapper.getTodaysRegisterUsers());
         countDataResList.add(todaysRegisterUsers);
 
-        // monthlyActiveEvents
+        // Retrieve and add monthly active events
         CountDataRes monthlyActiveEvents = new CountDataRes();
         monthlyActiveEvents.setName("monthlyActiveEvents");
         monthlyActiveEvents.setIcon("histogram");
@@ -74,7 +81,7 @@ public class CountDataService {
         monthlyActiveEvents.setValue(countDataMapper.getMonthlyActiveEvents());
         countDataResList.add(monthlyActiveEvents);
 
-        // monthlyActiveUsers
+        // Retrieve and add monthly active users
         CountDataRes monthlyActiveUsers = new CountDataRes();
         monthlyActiveUsers.setName("monthlyActiveUsers");
         monthlyActiveUsers.setIcon("user-filled");
@@ -82,7 +89,7 @@ public class CountDataService {
         monthlyActiveUsers.setValue(countDataMapper.getMonthlyActiveUsers());
         countDataResList.add(monthlyActiveUsers);
 
-        // monthlyRegisterUsers
+        // Retrieve and add monthly registered users
         CountDataRes monthlyRegisterUsers = new CountDataRes();
         monthlyRegisterUsers.setName("monthlyRegisterUsers");
         monthlyRegisterUsers.setIcon("checked");
@@ -90,6 +97,7 @@ public class CountDataService {
         monthlyRegisterUsers.setValue(countDataMapper.getMonthlyRegisterUsers());
         countDataResList.add(monthlyRegisterUsers);
 
+        // Return the list of all statistical data collected
         return countDataResList;
     }
 }

@@ -101,6 +101,7 @@ export default {
     const displayedText = ref('');
     const { proxy } = getCurrentInstance();
 
+    // Fetch recent events from the API
     const fetchRecentEvents = async () => {
       try {
         const response = await proxy.$api.getLatestEvents();
@@ -121,11 +122,12 @@ export default {
       }
     };
 
+    // Fetch event image by its ID and convert to a Blob URL
     const fetchEventImage = async (eventPicId) => {
       try {
         const response = await proxy.$api.getfiles({ id: eventPicId });
         const base64Data = response;
-        const mimeType = response.mimeType || 'image/jpeg';
+        const mimeType = response.mimeType || 'image/jpeg'; // Default to JPEG if MIME type is missing
         const byteCharacters = atob(base64Data);
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
@@ -140,6 +142,7 @@ export default {
       }
     };
 
+    // Animate the "Volunteer Hub" text letter by letter
     const animateText = () => {
       const characters = volunteerHubText.value.split('');
       let index = 0;
@@ -153,6 +156,7 @@ export default {
       }, 300);
     };
 
+    // Format date to a readable format
     const formatDate = (dateString: string) => {
       const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
@@ -163,8 +167,8 @@ export default {
     };
 
     onMounted(() => {
-      fetchRecentEvents();
-      animateText();
+      fetchRecentEvents(); // Fetch recent events when component is mounted
+      animateText(); // Start text animation when component is mounted
     });
 
     return {
@@ -278,17 +282,13 @@ export default {
       margin-bottom: 10px;
     }
 
-    .el-carousel__arrow el-carousel__arrow--left{
-      display: flow;
-    }
-
     h1 {
       font-size: 4rem;
       font-weight: bold;
       line-height: 1.2;
       margin: 0.5rem 0;
 
-      /* 适配移动设备 */
+      /* Responsive styles for mobile devices */
       @media (max-width: 1200px) {
         font-size: 3rem;
       }
@@ -360,7 +360,6 @@ export default {
     }
   }
 }
-
 
 .project-introduction, .activities-section {
   padding: 20px;
@@ -509,6 +508,4 @@ export default {
     grid-template-columns: 1fr !important;
   }
 }
-
 </style>
-

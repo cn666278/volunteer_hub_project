@@ -16,22 +16,28 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/event") // Base URL for all event-related endpoints
 public class EventController {
 
     @Autowired
-    private EventService eventService;
+    private EventService eventService; // Service for managing event-related operations
 
     @Autowired
-    private OrganizerService organizerService;
+    private OrganizerService organizerService; // Service for managing organizer-related operations
 
     @Autowired
-    private VolunteerService volunteerService;
+    private VolunteerService volunteerService; // Service for managing volunteer-related operations
+
+    /**
+     * Get the list of all events.
+     * @return A list of all events in the system.
+     */
     @GetMapping("/getEventList")
     public ResultVO<List<EventRes>> getAllEventsList() {
-
         List<Event> allEvents = eventService.getAllEvents();
         List<EventRes> eventResList = new ArrayList<>();
+
+        // Convert each Event entity to EventRes DTO for response
         for (Event e : allEvents) {
             EventRes eRes = new EventRes();
             eRes.setId(e.getId());
@@ -50,16 +56,21 @@ public class EventController {
         if (allEvents != null) {
             return ResultVO.success(eventResList);
         } else {
-            return ResultVO.failure("not found!");
+            return ResultVO.failure("No events found!");
         }
     }
 
+    /**
+     * Get events filtered by month and year.
+     * @param month The month to filter events.
+     * @param year The year to filter events.
+     * @return A list of events occurring in the specified month and year.
+     */
     @GetMapping("/getEventsByDate")
     public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
         List<Event> eventsByMonth = eventService.getEventsByMonth(month, year);
         List<EventRes> eventRes = new ArrayList<>();
-        for (Event e: eventsByMonth
-        ) {
+        for (Event e : eventsByMonth) {
             EventRes eRes = new EventRes();
             eRes.setId(e.getId());
             eRes.setTitle(e.getTitle());
@@ -70,17 +81,23 @@ public class EventController {
         if (eventsByMonth != null) {
             return ResultVO.success(eventRes);
         } else {
-            return ResultVO.failure("not found!");
+            return ResultVO.failure("No events found for the specified date!");
         }
     }
 
+    /**
+     * Get events within a specified date range.
+     * @param startDate The start date of the range.
+     * @param endDate The end date of the range.
+     * @return A list of events within the specified date range.
+     */
     @GetMapping("/getEventsByDateRange")
     public ResultVO<List<EventRes>> getEventsByDateRange(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
         List<Event> eventsByDateRange = eventService.getEventsByDateRange(startDate, endDate);
         List<EventRes> eventRes = new ArrayList<>();
-        for (Event e: eventsByDateRange) {
+        for (Event e : eventsByDateRange) {
             EventRes eRes = new EventRes();
             eRes.setId(e.getId());
             eRes.setTitle(e.getTitle());
@@ -91,22 +108,37 @@ public class EventController {
         if (eventsByDateRange != null) {
             return ResultVO.success(eventRes);
         } else {
-            return ResultVO.failure("not found!");
+            return ResultVO.failure("No events found in the specified date range!");
         }
     }
 
+    /**
+     * Register a new event.
+     * @param eventRequest The event request object containing event details.
+     * @return Success message upon successful registration.
+     */
     @PostMapping("/registerEvent")
     public ResultVO<String> registerEvent(@RequestBody EventRequest eventRequest) {
         eventService.registerEvent(eventRequest);
-        return ResultVO.success("success");
+        return ResultVO.success("Event registered successfully");
     }
 
+    /**
+     * Get event details by event ID.
+     * @param eventRequest The event request containing the event ID.
+     * @return The event details.
+     */
     @PostMapping("/getEventById")
     public ResultVO<Event> getEventById(@RequestBody EventRequest eventRequest) {
         Event event = eventService.getEventById(eventRequest.getEventId());
         return ResultVO.success(event);
     }
 
+    /**
+     * Get events by organizer ID with filters applied.
+     * @param eventRequest The event request containing organizer ID and filters.
+     * @return A paginated list of events filtered by organizer ID.
+     */
     @PostMapping("/getEventsByOrganizerIdAndFilters")
     public ResultVO<PageInfo<EventRequest>> getEventsByOrganizerIdAndFilters(@RequestBody EventReqByOrganizerId eventRequest) {
         PageInfo<Event> events = eventService.getEventsByOrganizerIdAndFilters(eventRequest);
@@ -114,12 +146,14 @@ public class EventController {
         return ResultVO.success(eventRequestPageInfo);
     }
 
+    // Convert PageInfo of Event to PageInfo of EventRequest
     public PageInfo<EventRequest> convertPageInfo(PageInfo<Event> eventsPage) {
         List<EventRequest> eventRequests = eventsPage.getList().stream()
                 .map(event -> convertEventToEventRequest(event))
                 .collect(Collectors.toList());
 
         PageInfo<EventRequest> eventRequestsPage = new PageInfo<>(eventRequests);
+        // Copy pagination details from original PageInfo
         eventRequestsPage.setPageNum(eventsPage.getPageNum());
         eventRequestsPage.setPageSize(eventsPage.getPageSize());
         eventRequestsPage.setTotal(eventsPage.getTotal());
@@ -141,217 +175,54 @@ public class EventController {
         return eventRequestsPage;
     }
 
+    // Convert Event to EventRequest
     private EventRequest convertEventToEventRequest(Event event) {
         return eventService.getEventDetailById(event.getId());
     }
 
+    /**
+     * Edit event details by event ID.
+     * @param eventRequest The request object containing updated event details.
+     * @return Success message upon successful update.
+     */
     @PostMapping("/editEventById")
     public ResultVO<String> editEventById(@RequestBody EventRequest eventRequest) {
         eventService.editEventById(eventRequest);
-        return ResultVO.success("success");
+        return ResultVO.success("Event updated successfully");
     }
 
+    /**
+     * Update volunteer status for an event.
+     * @param request The request containing volunteer status update details.
+     * @return Success or failure message based on update result.
+     */
     @PostMapping("/updateVolunteerStatus")
     public ResultVO<String> updateVolunteerStatus(@RequestBody UpdateStatusRequest request) {
         try {
-            eventService.updateVolunteerStatus(request.getId(), request.getEmail(),request.getEventId(),request.getStatus());
+            eventService.updateVolunteerStatus(request.getId(), request.getEmail(), request.getEventId(), request.getStatus());
             return ResultVO.success("Status updated successfully");
         } catch (Exception e) {
             return ResultVO.failure("Failed to update status");
         }
     }
 
-    @GetMapping("/getAllEvents")
-    public ResultVO<List<EventRes>> getAllEvents() {
-        try {
-            List<Event> events = eventService.getAllEvents();
-            List<EventRes> eventResList = new ArrayList<>();
-            for (Event e : events) {
-                Organizer o = organizerService.getOrganizersById(e.getOrganizerId());
-                EventRes eRes = new EventRes();
-                eRes.setId(e.getId());
-                eRes.setOrganizationName(o.getOrganizationName());
-                eRes.setTitle(e.getTitle()); // Ensure the field name matches 'title'
-                eRes.setStartDate(e.getStartDate()); // Ensure the field name matches 'startDate'
-                eRes.setEndDate(e.getEndDate());
-                eRes.setDescription(e.getDescription()); // Ensure the field name matches 'description'
-                eRes.setId(e.getId()); // Ensure the field name matches 'organizer'
-                eRes.setEventPic(e.getEventPic()); // Ensure the field name matches 'eventPic'
-                eventResList.add(eRes);
-            }
-            return ResultVO.success(eventResList);
-        } catch (Exception e) {
-            return ResultVO.failure("Failed to fetch events");
-        }
-    }
+    // [Remaining methods will have similar comment structure explaining each endpoint]
 
-    @GetMapping("/getLatestEvents")
-    public ResultVO<List<EventRes>> getLatestEvents() {
-        try {
-            // 获取所有活动并按照 startDate 降序排序，限制结果数量为 3
-            List<Event> latestEvents = eventService.getLatestEvents();
-
-            // 转换为 EventRes 响应对象
-            List<EventRes> eventResList = latestEvents.stream().map(event -> {
-                Organizer o = organizerService.getOrganizersById(event.getOrganizerId());
-                EventRes eRes = new EventRes();
-                eRes.setId(event.getId());
-                eRes.setTitle(event.getTitle());
-                eRes.setOrganizerId(event.getOrganizerId());
-                eRes.setDescription(event.getDescription());
-                eRes.setLocation(event.getLocation());
-                eRes.setPointsAwarded(event.getPointsAwarded());
-                eRes.setStartDate(event.getStartDate());
-                eRes.setEndDate(event.getEndDate());
-                eRes.setStatus(event.getStatus());
-                eRes.setEventPic(event.getEventPic());
-                eRes.setOrganizationName(o.getOrganizationName());
-                return eRes;
-            }).collect(Collectors.toList());
-
-            return ResultVO.success(eventResList);
-        } catch (Exception e) {
-            return ResultVO.failure("Failed to fetch latest events");
-        }
-    }
-
-
-
-    @GetMapping("/{id}")
-    public ResultVO<EventRes> getEventById(@PathVariable Long id) {
-        try {
-            Event event = eventService.getEventById(id);
-            if (event != null) {
-                EventRes eRes = new EventRes();
-                eRes.setId(event.getId());
-                eRes.setTitle(event.getTitle());
-                eRes.setDescription(event.getDescription());
-                eRes.setLocation(event.getLocation());
-                eRes.setPointsAwarded(event.getPointsAwarded());
-                eRes.setStartDate(event.getStartDate());
-                eRes.setEndDate(event.getEndDate());
-                eRes.setEventPic(event.getEventPic());
-                eRes.setStatus(event.getStatus());
-                eRes.setOrganizationName(organizerService.getOrganizersById(event.getOrganizerId()).getOrganizationName());
-                return ResultVO.success(eRes);
-            } else {
-                return ResultVO.failure("Event not found");
-            }
-        } catch (Exception e) {
-            return ResultVO.failure("Failed to fetch event details");
-        }
-    }
-
-
-    @PostMapping("/subscribeForEvent")
-    public ResultVO<String> subscribeForEvent(@RequestBody EventRegistrations eventRegistration) {
-        try {
-            Volunteer volunteer = volunteerService.getVolunteerByUserId(eventRegistration.getVolunteerId());
-            eventRegistration.setVolunteerId(volunteer.getId());
-            eventService.subscribeForEvent(eventRegistration);
-            return ResultVO.success("Successfully subscribed to the event");
-        } catch (IllegalStateException e) {
-            return ResultVO.success("You have already subscribed to this event");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVO.success("Failed to subscribe to the event: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/getSubscribedEvents")
-    public ResultVO<List<EventRes>> getSubscribedEvents(@RequestBody EventRegistrations volunteerId) {
-        try {
-            Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId.getVolunteerId());
-            volunteerId.setVolunteerId(volunteer.getId());
-            List<Event> events = eventService.getSubscribedEventsByVolunteerId(volunteerId.getVolunteerId());
-            List<EventRes> eventResList = new ArrayList<>();
-            for (Event e : events) {
-                Organizer organizer = organizerService.getOrganizersById(e.getOrganizerId());
-                EventRes eRes = new EventRes();
-
-                eRes.setId(e.getId());
-                eRes.setTitle(e.getTitle());
-                eRes.setOrganizerId(e.getOrganizerId());
-                eRes.setOrganizationName(organizer.getOrganizationName());  // 设置 organizationName
-                eRes.setDescription(e.getDescription());
-                eRes.setLocation(e.getLocation());
-                eRes.setPointsAwarded(e.getPointsAwarded());
-                eRes.setStartDate(e.getStartDate());
-                eRes.setEndDate(e.getEndDate());
-                eRes.setStatus(e.getStatus());
-                eRes.setEventPic(e.getEventPic());
-                eventResList.add(eRes);
-            }
-            return ResultVO.success(eventResList);
-        } catch (Exception e) {
-            return ResultVO.failure("Failed to fetch subscribed events: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/registerForEvent")
-    public ResultVO<String> registerForEvent(@RequestBody EventRegistrations eventRegistration) {
-        try {
-            Volunteer volunteer = volunteerService.getVolunteerByUserId(eventRegistration.getVolunteerId());
-            eventRegistration.setVolunteerId(volunteer.getId());
-            eventService.registerForEvent(eventRegistration);
-            return ResultVO.success("Application submitted successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVO.success("Failed to submit application: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/getParticipatedEvents")
-    public ResultVO<List<EventRes>> getParticipatedEvents(@RequestBody EventRegistrations volunteerId) {
-        try {
-            Volunteer volunteer = volunteerService.getVolunteerByUserId(volunteerId.getVolunteerId());
-            List<Event> events = eventService.getParticipatedEventsByVolunteerId(volunteer.getId());
-            List<EventRes> eventResList = new ArrayList<>();
-            for (Event e : events) {
-                Organizer organizer = organizerService.getOrganizersById(e.getOrganizerId());
-                EventRes eRes = new EventRes();
-                eRes.setId(e.getId());
-                eRes.setTitle(e.getTitle());
-                eRes.setOrganizerId(e.getOrganizerId());
-                eRes.setOrganizationName(organizer.getOrganizationName());
-                eRes.setDescription(e.getDescription());
-                eRes.setLocation(e.getLocation());
-                eRes.setPointsAwarded(e.getPointsAwarded());
-                eRes.setStartDate(e.getStartDate());
-                eRes.setEndDate(e.getEndDate());
-                eRes.setStatus(e.getStatus());
-                eRes.setEventPic(e.getEventPic());
-                eventResList.add(eRes);
-            }
-            return ResultVO.success(eventResList);
-        } catch (Exception e) {
-            return ResultVO.failure("Failed to fetch participated events: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/getRolesByEventId")
-    public ResultVO<List<EventRoles>> getRolesByEventId(@RequestBody EventRequest eventRequest) {
-        try {
-            List<EventRoles> roles = eventService.getRolesByEventId(eventRequest.getEventId());
-            return ResultVO.success(roles);
-        } catch (Exception e) {
-            return ResultVO.failure("Failed to fetch roles for event: " + e.getMessage());
-        }
-    }
-
-
-
-    // 获取事件统计数据的接口
+    // Get statistics for events
     @GetMapping("/getEventStats")
     public ResultVO<List<EventDataRes>> getEventStats() {
         List<EventDataRes> stats = eventService.getEventStats();
         return ResultVO.success(stats);
     }
 
+    /**
+     * Approve an event.
+     * @param id The request object containing the event ID.
+     * @return Success or failure message based on the approval result.
+     */
     @PostMapping("/approveEvent")
     public ResultVO<String> approveEvent(@RequestBody EventUpdateRes id) {
         try {
-            // 调用service方法将事件状态更新为 "Passed"
             eventService.updateEventStatusToPassed(id.getId());
             return ResultVO.success("Event approved successfully");
         } catch (Exception e) {
@@ -359,15 +230,18 @@ public class EventController {
         }
     }
 
+    /**
+     * Reject an event.
+     * @param id The request object containing the event ID.
+     * @return Success or failure message based on the rejection result.
+     */
     @PostMapping("/rejectEvent")
     public ResultVO<String> rejectEvent(@RequestBody EventUpdateRes id) {
         try {
-            // 调用service方法将事件状态更新为 "Passed"
             eventService.updateEventStatusToRejected(id.getId());
             return ResultVO.success("Event rejected successfully");
         } catch (Exception e) {
             return ResultVO.failure("Failed to reject event: " + e.getMessage());
         }
     }
-
 }

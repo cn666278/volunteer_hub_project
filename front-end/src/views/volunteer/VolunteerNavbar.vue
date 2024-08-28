@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="navbar-top">
+      <!-- Logo and Language Switcher -->
       <img src="../../assets/logo.png" class="top-logo">
       <change-language />
     </div>
 
-    <!-- Navigation Menu -->
+    <!-- Desktop Navigation Menu -->
     <el-menu
         router
         :default-active="activeIndex"
@@ -25,6 +26,7 @@
       <el-menu-item index="/volunteer/rewardStore">
         <el-icon><Star /></el-icon><span class="menu-text">{{ $t('navbar.rewardStore') }}</span>
       </el-menu-item>
+      <!-- Profile Dropdown Menu -->
       <el-dropdown trigger="click" @command="handleCommand">
         <el-menu-item>
           <el-icon><User /></el-icon><span class="menu-text">{{ $t('navbar.profile') }}</span>
@@ -64,6 +66,7 @@
       <el-menu-item index="/volunteer/rewardStore">
         <el-icon><Star /></el-icon>{{ $t('navbar.rewardStore') }}
       </el-menu-item>
+      <!-- Profile Dropdown for Mobile -->
       <el-dropdown trigger="click" @command="handleCommand">
         <el-menu-item>
           <el-icon><User /></el-icon>{{ $t('Profile') }}
@@ -79,7 +82,6 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -91,49 +93,52 @@ import { House, Search, Star, User } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
 
-// user store
+// Initialize user store and router
 const userStore = useUser();
 let router = useRouter();
 
-const activeIndex = ref('1');
-const mobileMenuVisible = ref(false);
+const activeIndex = ref('1'); // Active menu item index
+const mobileMenuVisible = ref(false); // Mobile menu visibility toggle
 
+// Handle menu selection
 const handleSelect = (key: string, keyPath: string[]) => {
-  // 判断用户是否登录
+  // Check if the user is logged in
   if (!userStore.user.username) {
-    // 用户未登录，跳转到登录页面
+    // If not logged in, redirect to login page
     router.push('/login');
   } else {
-    // 用户已登录，导航到相应页面
+    // If logged in, navigate to the selected page
     router.push(key);
   }
 };
 
+// Toggle mobile menu visibility
 const toggleMobileMenu = () => {
   mobileMenuVisible.value = !mobileMenuVisible.value;
 };
 
+// Navigate to user profile
 const navigateToProfile = () => {
   router.push('/volunteer/personal');
 };
 
+// Handle dropdown menu commands
 const handleCommand = (command: string) => {
-  // 判断用户是否登录
+  // Check if the user is logged in
   if (!userStore.user.username) {
-    // 用户未登录，跳转到登录页面
+    // If not logged in, redirect to login page
     router.push('/login');
   } else {
-    // 用户已登录，导航到相应页面
+    // If logged in, handle command
     if (command === 'profile') {
       navigateToProfile();
     } else if (command === 'logout') {
       exit();
     }
   }
-
 };
 
-// exit
+// Handle logout process
 const exit = () => {
   ElMessageBox.confirm(t('logout.message'), t('logout.title'), {
     confirmButtonText: t('logout.confirm'),
@@ -149,7 +154,6 @@ const exit = () => {
       });
 };
 </script>
-
 
 <style scoped>
 .navbar-top {
@@ -182,20 +186,20 @@ const exit = () => {
   align-items: center;
 }
 
+/* Adjust styles for navbar and menu */
 .navbar-container,
 .el-menu-demo {
-  margin-top: 60px; /* 在navbar-top之下，调整这个值以适应navbar-top的高度 */
+  margin-top: 60px; /* Ensure it appears below the fixed navbar */
   display: flex;
   justify-content: center;
   background-color: #ffffff;
-  /*padding-right: 50px;*/
   width: 100%;
   z-index: 1000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 body {
-  padding-top: 80px; /* 调整这个值以确保足够的空间给固定的导航栏 */
+  padding-top: 80px; /* Ensure enough space for the fixed navbar */
 }
 
 :root {
@@ -259,8 +263,8 @@ body {
 
   .navbar-container,
   .el-menu-demo {
-    padding-left:0px;
-    justify-content: center; /* 居中 */
+    padding-left: 0;
+    justify-content: center;
   }
 
   .mobile-menu-icon {
@@ -278,7 +282,7 @@ body {
   }
 
   .el-menu-item .menu-text {
-    display: none; /* 隐藏文本 */
+    display: none; /* Hide text on smaller screens */
   }
 }
 </style>

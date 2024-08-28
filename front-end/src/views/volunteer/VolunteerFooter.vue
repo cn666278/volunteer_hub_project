@@ -1,6 +1,7 @@
 <template>
   <el-footer class="footer">
     <div class="footer-content">
+      <!-- Navigation Section -->
       <div class="footer-section navigation">
         <h3>Navigation</h3>
         <ul>
@@ -13,6 +14,8 @@
           <li><a href="https://wsa.wales/contact/" target="_blank">Contact the WSA</a></li>
         </ul>
       </div>
+
+      <!-- Social Media Section -->
       <div class="footer-section social-media">
         <h3>Find Us On Social Media</h3>
         <a href="https://twitter.com" target="_blank">
@@ -30,7 +33,7 @@
         <a href="https://youtube.com" target="_blank">
           <font-awesome-icon :icon="['fab', 'youtube']" />
         </a>
-        <!-- 添加自定义图标 -->
+        <!-- Add Custom Icons -->
         <div class="custom-icons">
           <a href="https://www.linkedin.com/company/welshsportsassociation/" target="_blank">
             <img src="../../assets/linkedin.png" alt="LinkedIn" class="custom-icon" />
@@ -40,6 +43,8 @@
           </a>
         </div>
       </div>
+
+      <!-- Contact Information Section -->
       <div class="footer-section contact">
         <h3>Contact Us Today</h3>
         <p>Welsh Sports Association</p>
@@ -53,7 +58,6 @@
     </div>
   </el-footer>
 </template>
-
 
 <script>
 export default {
@@ -83,7 +87,7 @@ export default {
 }
 
 .footer-section {
-  width: 30%; /* 每个div的宽度设为30% */
+  width: 30%; /* Each section takes 30% width */
 }
 
 .footer-section h3 {
@@ -104,16 +108,16 @@ export default {
 }
 
 .navigation ul li a {
-  color: inherit; /* 继承父元素的字体颜色，保持白色 */
-  text-decoration: none; /* 去掉下划线 */
+  color: inherit; /* Inherit font color from parent (white) */
+  text-decoration: none; /* Remove underline */
 }
 
 .navigation ul li a:hover {
-  text-decoration: underline; /* 悬停时显示下划线 */
+  text-decoration: underline; /* Show underline on hover */
 }
 
 .social-media {
-  text-align: center; /* 社交媒体部分居中 */
+  text-align: center; /* Center align the social media icons */
 }
 
 .social-media a {
@@ -127,28 +131,28 @@ export default {
 }
 
 .custom-icon {
-  width: 60px; /* 根据需要调整图标的大小 */
+  width: 60px; /* Adjust size of custom icons */
   height: 60px;
   margin-right: 10px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1); /* Ensure custom icons are white on a dark background */
 }
 
 .contact {
-  text-align: right; /* 联系我们部分居右 */
+  text-align: right; /* Align contact information to the right */
 }
 
 .terms-link {
-  color: inherit; /* 继承父元素的字体颜色，保持白色 */
-  text-decoration: none; /* 去掉下划线 */
+  color: inherit; /* Inherit font color from parent (white) */
+  text-decoration: none; /* Remove underline */
 }
 
 .terms-link:hover {
-  text-decoration: underline; /* 悬停时显示下划线 */
+  text-decoration: underline; /* Show underline on hover */
 }
 
 @media (max-width: 768px) {
   .footer {
-    display: none;
+    display: none; /* Hide footer on smaller screens */
   }
 }
 </style>

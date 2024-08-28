@@ -10,16 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin") // Base URL for all admin-related endpoints
 public class GetCountDataController {
 
     @Autowired
-    private CountDataService countDataService;
+    private CountDataService countDataService; // Service for fetching count-related data
 
-    // 获取统计数据的接口
+    /**
+     * Endpoint to retrieve statistical count data.
+     * @return ResultVO containing a list of CountDataRes objects with statistical data.
+     */
     @GetMapping("/getCountData")
     public ResultVO<List<CountDataRes>> getCountData() {
-        List<CountDataRes> stats = countDataService.getCountData();
-        return ResultVO.success(stats);
+        List<CountDataRes> stats = countDataService.getCountData(); // Fetch count data from the service
+        return ResultVO.success(stats); // Return the data wrapped in a ResultVO success response
     }
 }

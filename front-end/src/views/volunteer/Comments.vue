@@ -1,13 +1,7 @@
 <template>
   <div class="Comments">
     <div class="search-section">
-      <el-input
-          placeholder="在此处输入搜索..."
-          v-model="searchQuery">
-        <template #prefix>
-          <el-icon><search /></el-icon>
-        </template>
-      </el-input>
+
     </div>
     <div class="all-comments">
       <div v-for="comment in comments" :key="comment.id" class="custom-card">
@@ -29,9 +23,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
-import api from '../../api/api';  // 确保引入API管理文件
+import api from '../../api/api';  // Ensure the API management file is imported
 
-// 定义 proxy 对象
+// Define a proxy object to access API functions
 const proxy = {
   $api: api,
 };
@@ -39,21 +33,22 @@ const proxy = {
 const userStore = useUser();
 const comments = ref([]);
 
+// Function to fetch volunteer ratings and event details
 const fetchVolunteerRatings = async () => {
   try {
-    const volunteerId = userStore.user.id; // 假设 loginId 对应 volunteerId
+    const volunteerId = userStore.user.id; // Assume loginId corresponds to volunteerId
     const response = await proxy.$api.getRatingsByVolunteerId({ volunteerId });
 
-    if (response && Array.isArray(response)) {  // 确保响应对象存在且data为数组
+    if (response && Array.isArray(response)) {  // Ensure response object exists and data is an array
       if (response.length > 0) {
-        // 遍历每个rating，并获取对应的event title
+        // Iterate over each rating and fetch corresponding event title
         comments.value = await Promise.all(response.map(async (rating: any) => {
-          // 获取每个eventId对应的事件详情
+          // Fetch event details for each eventId
           const eventResponse = await proxy.$api.getEventById({ id: rating.eventId });
 
           return {
             volunteerId: rating.volunteerId,
-            eventName: eventResponse?.title || 'Unknown Event',  // 使用标题替换eventId
+            eventName: eventResponse?.title || 'Unknown Event',  // Use title instead of eventId
             text: rating.comment,
             rating: rating.rating,
             time: rating.createdAt,
@@ -63,24 +58,18 @@ const fetchVolunteerRatings = async () => {
         console.log('No ratings found for the given volunteerId');
       }
     } else {
-      console.error('获取志愿者评分失败:', response?.msg || '未知错误');
+      console.error('Failed to retrieve volunteer ratings:', response?.msg || 'Unknown error');
     }
   } catch (error) {
-    console.error('获取志愿者评分失败:', error.message || '请求失败');
+    console.error('Failed to retrieve volunteer ratings:', error.message || 'Request failed');
   }
 };
 
-
-// 在组件挂载时获取评分数据
+// Fetch ratings data when the component is mounted
 onMounted(() => {
   fetchVolunteerRatings();
 });
 </script>
-
-
-
-
-
 
 <style lang='scss'>
 .search-section {
@@ -146,7 +135,7 @@ onMounted(() => {
   justify-content: space-between;
   width: 90%;
   padding: 10px;
-  flex-wrap: wrap; /* Allow wrapping in smaller screens */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .comment-text {
@@ -200,4 +189,3 @@ onMounted(() => {
   }
 }
 </style>
-

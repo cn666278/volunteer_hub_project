@@ -83,24 +83,26 @@ import { Document, Menu as IconMenu, User, Calendar } from '@element-plus/icons-
 import api from '../../api/api';
 import useUser from '../../store/user';
 const { proxy } = getCurrentInstance();
-const activeIndex = ref('2');
+const activeIndex = ref('2'); // Controls which section (Participated/Subscribed) is displayed
 import { useRouter } from "vue-router";
 let router = useRouter();
 const userStore = useUser();
-const subscribedEvents = ref([]);
-const participatedEvents = ref([]);
+const subscribedEvents = ref([]); // Store subscribed events
+const participatedEvents = ref([]); // Store participated events
 
+// Navigate to event discussion page
 const navigateToDiscussion = (eventId: string) => {
   router.push({ name: 'EventDiscussion', query: { event: eventId } });
 };
 
+// Fetch events the user has subscribed to
 const fetchSubscribedEvents = async () => {
   try {
-    const volunteerId = userStore.user.id;
+    const volunteerId = userStore.user.id; // Get current user's ID
     const response = await api.getSubscribedEvents({ volunteerId });
     subscribedEvents.value = await Promise.all(
         response.map(async event => {
-          const uploadedFilePath = await fetchEventImage(event.eventPic);
+          const uploadedFilePath = await fetchEventImage(event.eventPic); // Fetch and store event image
           return {
             id: event.id,
             uploadedFilePath,
@@ -117,13 +119,14 @@ const fetchSubscribedEvents = async () => {
   }
 };
 
+// Fetch events the user has participated in
 const fetchParticipatedEvents = async () => {
   try {
-    const volunteerId = userStore.user.id;
+    const volunteerId = userStore.user.id; // Get current user's ID
     const response = await api.getParticipatedEvents({ volunteerId });
     participatedEvents.value = await Promise.all(
         response.map(async event => {
-          const uploadedFilePath = await fetchEventImage(event.eventPic);
+          const uploadedFilePath = await fetchEventImage(event.eventPic); // Fetch and store event image
           return {
             id: event.id,
             uploadedFilePath,
@@ -140,12 +143,12 @@ const fetchParticipatedEvents = async () => {
   }
 };
 
-// 获取并显示事件的图片
+// Fetch and display the image for each event
 const fetchEventImage = async (fileId) => {
   try {
     const response = await proxy.$api.getfiles({ id: fileId });
     const base64Data = response;
-    const mimeType = response.mimeType || 'image/jpeg'; // Default to JPEG if no MIME type
+    const mimeType = response.mimeType || 'image/jpeg'; // Default to JPEG if no MIME type is provided
     const byteCharacters = atob(base64Data);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -160,30 +163,32 @@ const fetchEventImage = async (fileId) => {
   }
 };
 
-// 日期格式化方法
+// Date formatting method
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
 };
 
+// Handle menu selection change
 const handleSelect = (index: string) => {
   activeIndex.value = index;
   if (index === '3') {
-    fetchSubscribedEvents();
+    fetchSubscribedEvents(); // Fetch subscribed events when "Events Subscribed" is selected
   } else if (index === '2') {
-    fetchParticipatedEvents();
+    fetchParticipatedEvents(); // Fetch participated events when "Events Participated" is selected
   }
 };
 
+// Navigate to event detail page
 const navigateToEvent = (eventId: string) => {
   proxy.$router.push({ name: 'EventDetail', params: { id: eventId } });
 };
 
+// Fetch participated events on component mount
 onMounted(() => {
   fetchParticipatedEvents();
 });
 </script>
-
 
 <style scoped>
 .container {

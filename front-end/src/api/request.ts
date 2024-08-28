@@ -3,8 +3,14 @@ import config from "../config/index";
 import { ElMessage } from "element-plus";
 
 /**
- * 二次封装axios，将请求地址抽离到api文件夹中 
- * 好处：1.便于维护，2.便于修改，3.便于管理 4.便于查找 5.便于复用 6.便于测试
+ * Second encapsulation of axios, extracting the request address into the api folder.
+ * Benefits:
+ * 1. Easier to maintain
+ * 2. Easier to modify
+ * 3. Easier to manage
+ * 4. Easier to find
+ * 5. Easier to reuse
+ * 6. Easier to test
  */
 
 const NETWORK_ERROR = "Network error, please try again later..";
@@ -15,7 +21,7 @@ const service = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 30000,
+  timeout: 30000, // Set a timeout of 30 seconds for all requests
 });
 
 service.interceptors.request.use(
@@ -23,36 +29,37 @@ service.interceptors.request.use(
       const token = sessionStorage.getItem('token');
       console.log("Token:", token);
       if (token) {
-        req.headers['Authorization'] = 'Bearer ' + token;
+        req.headers['Authorization'] = 'Bearer ' + token; // Attach token to request headers if available
       }
       return req;
     },
     (error) => {
-      return Promise.reject(error);
+      return Promise.reject(error); // Reject the promise if there's an error in the request configuration
     }
 );
 
 service.interceptors.response.use((res) => {
   console.log("res start",res)
   if (res.config.responseType === 'text') {
-    return res.data;
+    return res.data; // If the response type is text, return the response data as is
   }
   const { code, data, msg } = res.data;
-  // 根据后端，视情况修改状态码
+  // Modify status code based on backend requirements
   if (code === 200) {
     return data;
   } else {
-    ElMessage.error(msg || NETWORK_ERROR);
-    return Promise.reject(msg || NETWORK_ERROR); // Reject the promise and display the error message 
-    // why reject the promise? Because the return value of the request method is a promise, 
-    // and the return value of the promise is the data returned by the server. 
-    // If the request fails, the promise should be rejected, 
-    // and the error message should be displayed in the catch method.
+    ElMessage.error(msg || NETWORK_ERROR); // Display an error message if the request fails
+    return Promise.reject(msg || NETWORK_ERROR);
+    // Reject the promise and display the error message.
+    // Why reject the promise? Because the return value of the request method is a promise,
+    // and the return value of the promise is the data returned by the server.
+    // If the request fails, the promise should be rejected,
+    // and the error message should be handled in the catch method.
   }
 });
 
-// 封装的核心函数, 发送请求, 返回Promise
-function request(options: any){
+// Core function of the encapsulation, sends a request and returns a Promise
+function request(options: any) {
   options.method = options.method || 'get';
   // 处理get请求的参数
   if(options.method.toLowerCase() === 'get'){
@@ -63,16 +70,17 @@ function request(options: any){
   if(typeof options.mock !== 'undefined'){
     isMock = options.mock; // 如果options中有mock字段，就使用options中的mock字段
   }
-  // 对线上（生产）环境的处理
-  if(config.env === 'prod'){
-    // 如果是生产环境, 就不使用mock数据, 避免线上环境出现问题
+
+  // Handle production environment
+  if (config.env === 'prod') {
+    // In a production environment, do not use mock data to avoid issues in the live environment
     service.defaults.baseURL = config.baseApi;
   } else {
-    // 如果是开发环境，就使用mock数据
+    // In a development environment, use mock data if isMock is true
     service.defaults.baseURL = isMock ? config.mockApi : config.baseApi;
   }
-  return service(options);
 
+  return service(options); // Send the request using the configured axios instance
 }
 
 export default request;

@@ -35,29 +35,27 @@
   </div>
 </template>
 
-
-
 <script lang="ts" setup>
 import { ref, onMounted, computed, getCurrentInstance } from 'vue';
 import { Search, User, Calendar } from '@element-plus/icons-vue';
 import { ElMessage } from "element-plus";
 import api from '../../api/api';
 
-const allEvents = ref([]);
-const activeIndex = ref('1');
-const searchQuery = ref('');
+const allEvents = ref([]); // Store all event data
+const activeIndex = ref('1'); // Controls the active section to be displayed
+const searchQuery = ref(''); // Bind search query input to this variable
 const { proxy } = getCurrentInstance();
 
-// 获取事件列表并且加载每个事件的组织信息
+// Load event list and fetch organization info for each event
 const loadAllEvents = async () => {
   try {
-    const response = await api.getAllEvents();
+    const response = await api.getAllEvents(); // Get all events from API
     const events = response;
 
     // Fetch images for each event
     allEvents.value = await Promise.all(
         events.map(async (event) => {
-          const uploadedFilePath = await fetchEventImage(event.eventPic);
+          const uploadedFilePath = await fetchEventImage(event.eventPic); // Fetch event image by ID
           return {
             ...event,
             uploadedFilePath,
@@ -69,34 +67,37 @@ const loadAllEvents = async () => {
   }
 };
 
-// Fetch the image for each event
+// Fetch the image for each event by its picture ID
 const fetchEventImage = async (eventPicId) => {
   try {
     const response = await proxy.$api.getfiles({ id: eventPicId });
-    const base64Data = response;
-    const mimeType = response.mimeType || 'image/jpeg';
+    const base64Data = response; // Assume the API returns a base64 encoded string
+    const mimeType = response.mimeType || 'image/jpeg'; // Set default mime type to jpeg
     const byteCharacters = atob(base64Data);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: mimeType });
-    return URL.createObjectURL(blob);
+    const blob = new Blob([byteArray], { type: mimeType }); // Create a Blob object for the image
+    return URL.createObjectURL(blob); // Convert the Blob to a URL for the image source
   } catch (error) {
     console.error('Error fetching event image:', error);
-    return '';
+    return ''; // Return empty string if there's an error
   }
 };
 
+// When component mounts, load all events
 onMounted(() => {
   loadAllEvents();
 });
 
+// Navigate to the event detail page when an event is clicked
 const navigateToEvent = (eventId: string) => {
   proxy.$router.push({ name: 'EventDetail', params: { id: eventId } });
 };
 
+// Format the event date to a readable format
 const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -106,6 +107,7 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
+// Filter events based on the search query
 const filteredEvents = computed(() => {
   if (!searchQuery.value) return allEvents.value;
   return allEvents.value.filter(event =>
@@ -114,7 +116,6 @@ const filteredEvents = computed(() => {
   );
 });
 </script>
-
 
 <style scoped>
 .container {

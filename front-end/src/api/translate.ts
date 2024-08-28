@@ -1,3 +1,5 @@
+// This code is used to translate a given piece of text from its original
+// language into a specified target language using Google Cloud's Translation API.
 
 import axios from 'axios';
 

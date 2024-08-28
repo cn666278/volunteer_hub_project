@@ -3,7 +3,7 @@
  */
 import request from "./request.ts";
 export default {
-  // login组件
+  // login component
   login(params: any) {
     return request({
       url: "/login",
@@ -12,6 +12,7 @@ export default {
       mock: false,
     });
   },
+  // Retrieve logged-in user information
   getLoginUserInfo(params: any) {
     return request({
       url: "/getLoginUserInfo",
@@ -20,16 +21,20 @@ export default {
       mock: false,
     });
   },
+
   /** Admin */
-  //  dashboard 组件
+
+  // dashboard component: Retrieve table data
   getTableData(params: any) {
     return request({
       url: "/admin/home/getTableData",
       method: "get",
       data: params,
-      mock: true, // 是否使用mock数据, true则使用apifox/后端数据，false则使用本地数据
+      mock: true, // Use mock data if true, otherwise use real data
     });
   },
+
+  // Retrieve chart data for dashboard
   getEchartData() {
     return request({
       url: "/admin/getEchartData",
@@ -37,21 +42,26 @@ export default {
       mock: false,
     });
   },
-  getEventStatus(){
+
+  // Retrieve event statistics
+  getEventStatus() {
     return request({
       url: "/event/getEventStats",
       method: "get",
       mock: false,
     });
   },
-  getCountData(){
+
+  // Retrieve count data for the dashboard
+  getCountData() {
     return request({
       url: "/admin/getCountData",
       method: "get",
       mock: false,
     });
   },
-  // role组件
+
+  // role component: Retrieve the list of roles
   getRoleList(params: any) {
     return request({
       url: "/admin/role/getRoleList",
@@ -60,6 +70,8 @@ export default {
       mock: false,
     });
   },
+
+  // Retrieve a single role by its ID
   getSingleRole(params: any) {
     return request({
       url: "/admin/role/getSingleRole",
@@ -68,6 +80,8 @@ export default {
       mock: false,
     });
   },
+
+  // Update an existing role
   updateRole(params: any) {
     return request({
       url: "/admin/role/updateRole",
@@ -76,6 +90,8 @@ export default {
       mock: false,
     });
   },
+
+  // Add a new role
   addRole(params: any) {
     return request({
       url: "/admin/role/addRole",
@@ -84,6 +100,8 @@ export default {
       mock: false,
     });
   },
+
+  // Delete a role
   deleteRole(params: any) {
     return request({
       url: "/admin/role/deleteRole",
@@ -92,7 +110,8 @@ export default {
       mock: false,
     });
   },
-  // user组件
+
+  // user component: Upload a user image
   uploadImg(params: any) {
     return request({
       url: "/admin/user/uploadImg",
@@ -101,6 +120,8 @@ export default {
       mock: true,
     });
   },
+
+  // Retrieve user information by user ID
   getUserById(params: any) {
     return request({
       url: "/admin/user/getUserById",
@@ -109,14 +130,18 @@ export default {
       mock: false,
     });
   },
+
+  // Retrieve a list of users
   getUserList(params: any) {
     return request({
       url: "/admin/user/getUserList",
       method: "get",
-      data: params, // data: {total: 0, page: 1}
-      mock: false, // 本地获取数据，不使用mock(apifox)数据
+      data: params, // Example: data: {total: 0, page: 1}
+      mock: false, // Fetch data from server, not using mock data
     });
   },
+
+  // Add a new user
   addUser(params: any) {
     return request({
       url: "/admin/user/addUser",
@@ -125,6 +150,8 @@ export default {
       mock: false,
     });
   },
+
+  // Update existing user information
   updateUser(params: any) {
     return request({
       url: "/admin/user/updateUser",
@@ -133,6 +160,8 @@ export default {
       mock: false,
     });
   },
+
+  // Delete a user
   deleteUser(params: any) {
     return request({
       url: "/admin/user/deleteUser",
@@ -141,7 +170,8 @@ export default {
       mock: false,
     });
   },
-  // event approve 组件
+
+  // event approval component: Retrieve the list of events
   getEventList(params: any) {
     return request({
       url: "/event/getEventList",
@@ -150,14 +180,18 @@ export default {
       mock: false,
     });
   },
+
+  // Retrieve events within a specific date range
   getEventsByDateRange(params: any) {
-      return request({
+    return request({
       url: "/event/getEventsByDateRange",
       method: "post",
       data: params,
       mock: false,
-      });
+    });
   },
+
+  // Retrieve user information by organizer ID
   getUserInfoByOrganizerId(params: any) {
     return request({
       url: "/organizer/getUserByOrganizerId",
@@ -166,6 +200,8 @@ export default {
       mock: false,
     });
   },
+
+  // Approve an event
   approveEvent(params: any) {
     return request({
       url: "/event/approveEvent",
@@ -174,6 +210,8 @@ export default {
       mock: false,
     });
   },
+
+  // Reject an event
   rejectEvent(params: any) {
     return request({
       url: "/event/rejectEvent",
@@ -183,19 +221,9 @@ export default {
     });
   },
 
-  // 根据用户名不同，返回不一样的菜单列表
-  //   getMenu(prams: any){
-  //     return request({
-  //       url: "/permission/getMenu",
-  //       method: "post",
-  //       data: prams,
-  //       mock: false,
-  //     });
-  //   }
   /** Organizer */
-  /**
-   * event api
-   */
+
+  // event API: Retrieve events by specific date
   getEventsByDate(params: any) {
     return request({
       url: "/event/getEventsByDate",
@@ -204,6 +232,8 @@ export default {
       mock: false,
     });
   },
+
+  // Register a new event
   registerEvent(params: any) {
     return request({
       url: "/event/registerEvent",
@@ -212,6 +242,8 @@ export default {
       mock: false,
     });
   },
+
+  // Retrieve events by organizer ID and filter criteria
   getEventsByOrganizerIdAndFilters(params: any) {
     return request({
       url: "/event/getEventsByOrganizerIdAndFilters",
@@ -220,6 +252,8 @@ export default {
       mock: false,
     });
   },
+
+  // Edit event information by event ID
   editEventById(params: any) {
     return request({
       url: "/event/editEventById",
@@ -228,6 +262,8 @@ export default {
       mock: false,
     });
   },
+
+  // Update volunteer status for an event
   updateVolunteerStatus(params: any) {
     return request({
       url: "/event/updateVolunteerStatus",
@@ -236,6 +272,8 @@ export default {
       mock: false,
     });
   },
+
+  // Retrieve messages by event ID
   getMessagesByEventId(params: any) {
     return request({
       url: "/messages/getMessagesByEventId",
@@ -244,6 +282,8 @@ export default {
       mock: false,
     });
   },
+
+  // Delete a message
   deleteMessage(params: any) {
     return request({
       url: '/messages/deleteMessage',
@@ -252,9 +292,10 @@ export default {
       mock: false,
     });
   },
-  /**
-   * volunteer api
-   */
+
+  /** volunteer API */
+
+  // Retrieve volunteers by event ID
   getVolunteersByEventId(params: any) {
     return request({
       url: "/volunteer/getVolunteersByEventId",
@@ -263,6 +304,8 @@ export default {
       mock: false,
     });
   },
+
+  // Submit a comment by a volunteer
   submitComment(params: any) {
     return request({
       url: "/volunteer/submitComment",
@@ -271,9 +314,10 @@ export default {
       mock: false,
     });
   },
-  /**
-   * store api
-   */
+
+  /** store API */
+
+  // Retrieve items from the reward store
   getItems(params: any) {
     return request({
       url: "/rewardstore/items",
@@ -282,6 +326,8 @@ export default {
       mock: false,
     });
   },
+
+  // Redeem an item from the reward store
   redeemItem(params: any) {
     return request({
       url: "/rewardstore/redeem",
@@ -291,6 +337,7 @@ export default {
     });
   },
 
+  // Add a new item to the reward store
   addRewardStoreItem(params: any) {
     return request({
       url: '/rewardstore/add',
@@ -300,7 +347,7 @@ export default {
     });
   },
 
-
+  // Update an existing item in the reward store
   updateRewardStoreItem(params: any) {
     return request({
       url: '/rewardstore/update',
@@ -310,7 +357,7 @@ export default {
     });
   },
 
-
+  // Delete an item from the reward store
   deleteRewardStoreItem(params: any) {
     return request({
       url: `/rewardstore/delete/${params.id}`,
@@ -319,9 +366,9 @@ export default {
     });
   },
 
-  /**
-   * file api
-   */
+  /** file API */
+
+  // Upload a file
   uploadFile(params: any) {
     return request({
       url: "/upload",
@@ -333,6 +380,8 @@ export default {
       }
     });
   },
+
+  // Upload a file for a volunteer
   uploadFileForVolunteer(params: any) {
     return request({
       url: "/uploadForVolunteer",
@@ -344,6 +393,8 @@ export default {
       }
     });
   },
+
+  // Upload a profile picture (avatar) for a volunteer
   uploadAvatorForVolunteer(params: any) {
     return request({
       url: "/uploadAvatorForVolunteer",
@@ -355,6 +406,8 @@ export default {
       }
     });
   },
+
+  // Retrieve files by file ID
   getfiles(params: any) {
     return request({
       url: `/files/${params.id}`,
@@ -364,8 +417,7 @@ export default {
     });
   },
 
-
-    //Hao Li, Adding, deleting, and checking events
+  // Retrieve all events
   getAllEvents(params: any) {
     return request({
       url: "/event/getAllEvents",
@@ -375,6 +427,7 @@ export default {
     });
   },
 
+  // Retrieve the latest events
   getLatestEvents() {
     return request({
       url: "/event/getLatestEvents",
@@ -383,6 +436,7 @@ export default {
     });
   },
 
+  // Retrieve an event by its ID
   getEventById(params: any) {
     return request({
       url: `/event/${params.id}`,
@@ -391,14 +445,7 @@ export default {
     });
   },
 
-  // getUserById(params: any) {
-  //   return request({
-  //     url: `/user/${params.id}`,
-  //     method: "get",
-  //     mock: false,
-  //   });
-  // },
-
+  // Update user profile
   updateUserProfile(params: any) {
     return request({
       url: "/user/updateProfile",
@@ -408,6 +455,7 @@ export default {
     });
   },
 
+  // Retrieve ratings by volunteer ID
   getRatingsByVolunteerId(params: any) {
     return request({
       url: `/user/${params.volunteerId}/ratings`,
@@ -416,6 +464,7 @@ export default {
     });
   },
 
+  // Retrieve volunteer information by volunteer ID
   getVolunteerInfoByVolunteerId(params: any) {
     return request({
       url: `/user/${params.volunteerId}/volunteerinfo`,
@@ -424,6 +473,7 @@ export default {
     });
   },
 
+  // Subscribe to an event
   subscribeForEvent(params: any) {
     return request({
       url: "/event/subscribeForEvent",
@@ -433,6 +483,7 @@ export default {
     });
   },
 
+  // Retrieve subscribed events
   getSubscribedEvents(params: any) {
     return request({
       url: "/event/getSubscribedEvents",
@@ -442,6 +493,7 @@ export default {
     });
   },
 
+  // Register for an event
   registerForEvent(params: any) {
     return request({
       url: "/event/registerForEvent",
@@ -451,6 +503,7 @@ export default {
     });
   },
 
+  // Retrieve participated events
   getParticipatedEvents(params: any) {
     return request({
       url: "/event/getParticipatedEvents",
@@ -460,6 +513,7 @@ export default {
     });
   },
 
+  // Retrieve credentials by volunteer ID
   getCredentialsByVolunteerId(params: any) {
     return request({
       url: "/volunteer/getCredentialsByVolunteerId",
@@ -469,6 +523,7 @@ export default {
     });
   },
 
+  // Delete a credential
   deleteCredential(params: any) {
     return request({
       url: '/volunteer/deleteCredential',
@@ -478,6 +533,7 @@ export default {
     });
   },
 
+  // Update a credential
   updateCredential(params: any) {
     return request({
       url: '/volunteer/updateCredential',
@@ -486,6 +542,8 @@ export default {
       mock: false,
     });
   },
+
+  // Retrieve volunteer information by user ID
   getVolunteerByUserId(params: any) {
     return request({
       url: `/volunteer/getVolunteerByUserId/${params.userId}`,
@@ -494,6 +552,7 @@ export default {
     });
   },
 
+  // Retrieve roles associated with an event by event ID
   getRolesByEventId(params: any) {
     return request({
       url: "/event/getRolesByEventId",
@@ -502,10 +561,8 @@ export default {
       mock: false,
     });
   },
-  // navigateToEvent(params: any) {
-  //   router.push({ name: 'EventDetail', params: { id: params.id } });
-  // },
 
+  // Change user password
   changeUserPassword(params: any) {
     return request({
       url: "/user/changePassword",
@@ -514,10 +571,4 @@ export default {
       mock: false,
     });
   }
-
-
-
-
-
 }
-

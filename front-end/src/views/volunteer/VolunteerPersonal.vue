@@ -1,11 +1,14 @@
 <template>
   <div class="volunteerPersonal">
-    <!-- Main content -->
+    <!-- Main content area -->
     <el-main class="main-content">
+      <!-- User Profile Section -->
       <div class="user-profile">
         <img :src="uploadedPhotoUrl || userStore.user.photo" class="user-avatar">
         <div class="username">{{ userStore.user.username }}</div>
       </div>
+
+      <!-- Features Section with Cards -->
       <el-row :gutter="20" class="feature-row">
         <el-col :span="24" :md="8" v-for="feature in features" :key="feature.name">
           <el-card class="feature-card" @click="navigateTo(feature.route)">
@@ -21,18 +24,17 @@
   </div>
 </template>
 
-
-
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useUser from '../../store/user';
 import api from '../../api/api';
-import { useRouter } from 'vue-router';  // 导入 useRouter
+import { useRouter } from 'vue-router';
 
 const userStore = useUser();
-const uploadedPhotoUrl = ref<string | null>(null);
-const router = useRouter();  // 获取 router 实例
+const uploadedPhotoUrl = ref<string | null>(null); // Reactive variable for uploaded photo URL
+const router = useRouter(); // Initialize router instance
 
+// Function to fetch file from server
 const fetchFile = async (fileId: string) => {
   try {
     const response = await api.getfiles({ id: fileId });
@@ -45,7 +47,7 @@ const fetchFile = async (fileId: string) => {
       }
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], { type: 'image/jpeg' });
-      return URL.createObjectURL(blob);
+      return URL.createObjectURL(blob); // Convert image to URL
     }
   } catch (error) {
     console.error('Error fetching file:', error);
@@ -53,19 +55,22 @@ const fetchFile = async (fileId: string) => {
   return null;
 };
 
+// Load user profile picture
 const loadUserProfilePicture = async () => {
   if (userStore.user.photo) {
-    const photoId = userStore.user.photo.split('/').pop(); // Extract the 'id' part
+    const photoId = userStore.user.photo.split('/').pop(); // Extract the file ID from the photo URL
     if (photoId) {
       uploadedPhotoUrl.value = await fetchFile(photoId);
     }
   }
 };
 
+// Call the function when the component is mounted
 onMounted(async () => {
   await loadUserProfilePicture();
 });
 
+// Define features for the volunteer dashboard
 const features = [
   {
     name: 'personal.personalInformation',
@@ -99,48 +104,49 @@ const features = [
   }
 ];
 
+// Navigate to different sections based on user selection
 const navigateTo = (route: string) => {
-  router.push(route);  // 使用 router 实例进行导航
+  router.push(route);
 };
 </script>
 
-
-
-
 <style scoped>
+/* Main content styling */
 .main-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  color: #a9181a; /* 设置文本颜色为深灰色 */
+  color: #a9181a;
 }
 
+/* User profile styling */
 .user-profile {
   margin-bottom: 10px;
-  width: 100%; /* 确保占满整个容器宽度 */
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 保证子元素居中 */
+  align-items: center;
 }
 
 .username {
-  margin-top: 10px; /* 根据需要调整间距 */
-  text-align: center; /* 确保文本居中显示 */
+  margin-top: 10px;
+  text-align: center;
   color: #a9181a;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .user-avatar {
-  width: 100px; /* 设置头像宽度 */
-  height: 100px; /* 设置头像高度 */
-  border-radius: 50%; /* 保持圆形 */
-  object-fit: cover; /* 使图片覆盖整个区域，多余的部分会被剪裁掉 */
-  border: 2px solid #a9181a; /* 为头像添加边框 */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #a9181a;
 }
 
+/* Feature row and card styling */
 .feature-row {
   width: 100%;
 }
@@ -185,56 +191,55 @@ const navigateTo = (route: string) => {
   font-size: 14px;
 }
 
-/* Remove or adjust mobile-specific styles */
+/* Responsive design for smaller screens */
 @media (max-width: 600px) {
   .main-content {
-    padding: 10px; /* 调整内边距为10px */
+    padding: 10px;
   }
 
   .username {
-    font-size: 18px; /* 将字体大小调整为18px */
-    padding: 0 10px; /* 增加左右的内边距 */
-    margin-bottom: 10px; /* 增加与下方元素的间距 */
+    font-size: 18px;
+    padding: 0 10px;
+    margin-bottom: 10px;
   }
 
   .user-avatar {
-    width: 80px; /* 将头像宽度调整为80px */
-    height: 80px; /* 将头像高度调整为80px */
+    width: 80px;
+    height: 80px;
   }
 
   .feature-row {
-    margin: 0; /* Remove the extra margins */
+    margin: 0;
   }
 
   .feature-card {
-    border: 1px solid #ccc; /* Ensure border style is consistent */
-    padding: 20px; /* Match padding to the desktop version */
+    border: 1px solid #ccc;
+    padding: 20px;
     margin-top: 10px;
     margin-bottom: 15px;
-    width: 100%; /* Make sure the width is consistent */
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    background-color: #f5f5f5; /* Ensure background color matches */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     border-radius: 10px;
   }
 
   .feature-icon {
-    width: 40px; /* Consistent icon size */
+    width: 40px;
     height: 40px;
   }
 
   .feature-card h3 {
-    font-size: 14px; /* Ensure consistency in font size */
+    font-size: 14px;
     margin: 10px 0;
   }
 
   .feature-card p {
-    font-size: 14px; /* Consistent paragraph text size */
+    font-size: 14px;
     margin: 0;
     text-align: center;
     word-wrap: break-word;
   }
 }
 </style>
-

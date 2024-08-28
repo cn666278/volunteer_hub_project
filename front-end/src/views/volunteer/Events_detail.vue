@@ -85,13 +85,13 @@
             <label for="event-name">Event name</label>
             <input id="event-name" v-model="event.title" readonly />
           </div>
-          <!-- 新增的日期行 -->
+          <!-- New date row -->
           <div class="form-group">
             <label for="event-dates">Event Dates</label>
             <input id="event-dates" :value="`${formattedEventStartDate} - ${formattedEventEndDate}`" readonly />
           </div>
 
-          <!-- 修改后的Terms & Conditions 复选框 -->
+          <!-- Modified Terms & Conditions checkbox -->
           <div class="form-group terms-conditions">
             <label for="terms-checkbox">
               Please ensure that you have understood and agreed to our
@@ -127,12 +127,12 @@ export default {
   setup() {
     const route = useRoute();
     const event = ref(null);
-    const roles = ref([]); // 用于存储角色信息
-    const uploadedFilePath = ref(''); // 用于存储图片路径
-    const { t } = useI18n(); // 国际化支持
+    const roles = ref([]); // Store role information
+    const uploadedFilePath = ref(''); // Store image path
+    const { t } = useI18n(); // Internationalization support
     const userStore = useUser();
     const isSubscribed = ref(false);
-    const agreedToTerms = ref(false); // 用于控制复选框是否选中
+    const agreedToTerms = ref(false); // Control checkbox state
 
     const introSections = computed(() => [
       { title: 'LOCATION', value: event.value?.location },
@@ -142,6 +142,7 @@ export default {
 
     const applyDialogVisible = ref(false);
 
+    // Load event details including image and role information
     const loadEvent = async () => {
       const eventId = route.params.id;
       if (eventId) {
@@ -151,10 +152,10 @@ export default {
         if (response) {
           event.value = response;
 
-          // 加载图片
+          // Load image
           uploadedFilePath.value = await fetchEventImage(response.eventPic);
 
-          // 加载角色信息
+          // Load role information
           roles.value = await fetchRoles(eventId);
         }
       } else {
@@ -162,7 +163,7 @@ export default {
       }
     };
 
-    // 获取事件图片
+    // Fetch event image
     const fetchEventImage = async (eventPicId) => {
       try {
         const response = await api.getfiles({ id: eventPicId });
@@ -182,7 +183,7 @@ export default {
       }
     };
 
-    // 获取角色信息
+    // Fetch role information
     const fetchRoles = async (eventId) => {
       try {
         const response = await api.getRolesByEventId({ eventId });
@@ -238,8 +239,7 @@ export default {
     };
 
     const submitApplication = async () => {
-      if (agreedToTerms.value == false) {
-
+      if (!agreedToTerms.value) {
         // Show an alert if the checkbox is not checked
         ElMessage({
           message: 'Please agree to the Terms & Conditions before submitting.',
@@ -286,6 +286,7 @@ export default {
       }
     };
 
+    // Format start date for display
     const formattedEventStartDate = computed(() => {
       if (event.value && event.value.startDate) {
         return new Date(event.value.startDate).toLocaleDateString('en-US', {
@@ -297,6 +298,7 @@ export default {
       return '';
     });
 
+    // Format end date for display
     const formattedEventEndDate = computed(() => {
       if (event.value && event.value.endDate) {
         return new Date(event.value.endDate).toLocaleDateString('en-US', {
@@ -308,7 +310,6 @@ export default {
       return '';
     });
 
-
     onMounted(() => {
       loadEvent();
     });
@@ -317,7 +318,7 @@ export default {
       event,
       roles,
       introSections,
-      uploadedFilePath, // 返回图片路径
+      uploadedFilePath, // Return image path
       subscribeToEvent,
       openApplyDialog,
       applyDialogVisible,
@@ -325,7 +326,7 @@ export default {
       formattedEventStartDate,
       formattedEventEndDate,
       isSubscribed,
-      agreedToTerms, // 绑定复选框的状态
+      agreedToTerms, // Bind to checkbox state
     };
   },
 };
