@@ -27,6 +27,11 @@ public class EventController {
 
     @Autowired
     private VolunteerService volunteerService;
+
+    /**
+     * Get the list of all events.
+     * @return a list of all events.
+     */
     @GetMapping("/getEventList")
     public ResultVO<List<EventRes>> getAllEventsList() {
 
@@ -54,6 +59,12 @@ public class EventController {
         }
     }
 
+    /**
+     * Get events by month and year.
+     * @param month the month to filter events.
+     * @param year the year to filter events.
+     * @return a list of events in the specified month and year.
+     */
     @GetMapping("/getEventsByDate")
     public ResultVO<List<EventRes>> getEventsByDate(@RequestParam("month") int month, @RequestParam("year") int year) {
         List<Event> eventsByMonth = eventService.getEventsByMonth(month, year);
@@ -74,6 +85,12 @@ public class EventController {
         }
     }
 
+    /**
+     * Get events by a specified date range.
+     * @param startDate the start date of the range.
+     * @param endDate the end date of the range.
+     * @return a list of events within the date range.
+     */
     @GetMapping("/getEventsByDateRange")
     public ResultVO<List<EventRes>> getEventsByDateRange(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
@@ -95,18 +112,33 @@ public class EventController {
         }
     }
 
+    /**
+     * Register a new event.
+     * @param eventRequest the request containing event details.
+     * @return success message if registration is successful.
+     */
     @PostMapping("/registerEvent")
     public ResultVO<String> registerEvent(@RequestBody EventRequest eventRequest) {
         eventService.registerEvent(eventRequest);
         return ResultVO.success("success");
     }
 
+    /**
+     * Get event details by ID.
+     * @param eventRequest the request containing the event ID.
+     * @return event details.
+     */
     @PostMapping("/getEventById")
     public ResultVO<Event> getEventById(@RequestBody EventRequest eventRequest) {
         Event event = eventService.getEventById(eventRequest.getEventId());
         return ResultVO.success(event);
     }
 
+    /**
+     * Get events by organizer ID and filters.
+     * @param eventRequest the request containing organizer ID and filters.
+     * @return a paginated list of events.
+     */
     @PostMapping("/getEventsByOrganizerIdAndFilters")
     public ResultVO<PageInfo<EventRequest>> getEventsByOrganizerIdAndFilters(@RequestBody EventReqByOrganizerId eventRequest) {
         PageInfo<Event> events = eventService.getEventsByOrganizerIdAndFilters(eventRequest);
@@ -114,6 +146,11 @@ public class EventController {
         return ResultVO.success(eventRequestPageInfo);
     }
 
+    /**
+     * Convert a list of Event objects to a list of EventRequest objects for pagination.
+     * @param eventsPage the paginated list of events.
+     * @return the converted paginated list.
+     */
     public PageInfo<EventRequest> convertPageInfo(PageInfo<Event> eventsPage) {
         List<EventRequest> eventRequests = eventsPage.getList().stream()
                 .map(event -> convertEventToEventRequest(event))
@@ -141,16 +178,31 @@ public class EventController {
         return eventRequestsPage;
     }
 
+    /**
+     * Convert an Event object to an EventRequest object.
+     * @param event the event to be converted.
+     * @return the converted EventRequest object.
+     */
     private EventRequest convertEventToEventRequest(Event event) {
         return eventService.getEventDetailById(event.getId());
     }
 
+    /**
+     * Edit an event by ID.
+     * @param eventRequest the request containing event details.
+     * @return success message if edit is successful.
+     */
     @PostMapping("/editEventById")
     public ResultVO<String> editEventById(@RequestBody EventRequest eventRequest) {
         eventService.editEventById(eventRequest);
         return ResultVO.success("success");
     }
 
+    /**
+     * Update the volunteer status for an event.
+     * @param request the request containing status update details.
+     * @return success message if status update is successful.
+     */
     @PostMapping("/updateVolunteerStatus")
     public ResultVO<String> updateVolunteerStatus(@RequestBody UpdateStatusRequest request) {
         try {
@@ -161,6 +213,10 @@ public class EventController {
         }
     }
 
+    /**
+     * Get all events.
+     * @return a list of all events.
+     */
     @GetMapping("/getAllEvents")
     public ResultVO<List<EventRes>> getAllEvents() {
         try {
@@ -171,12 +227,12 @@ public class EventController {
                 EventRes eRes = new EventRes();
                 eRes.setId(e.getId());
                 eRes.setOrganizationName(o.getOrganizationName());
-                eRes.setTitle(e.getTitle()); // Ensure the field name matches 'title'
-                eRes.setStartDate(e.getStartDate()); // Ensure the field name matches 'startDate'
+                eRes.setTitle(e.getTitle());
+                eRes.setStartDate(e.getStartDate());
                 eRes.setEndDate(e.getEndDate());
-                eRes.setDescription(e.getDescription()); // Ensure the field name matches 'description'
-                eRes.setId(e.getId()); // Ensure the field name matches 'organizer'
-                eRes.setEventPic(e.getEventPic()); // Ensure the field name matches 'eventPic'
+                eRes.setDescription(e.getDescription());
+                eRes.setId(e.getId());
+                eRes.setEventPic(e.getEventPic());
                 eventResList.add(eRes);
             }
             return ResultVO.success(eventResList);
@@ -185,13 +241,17 @@ public class EventController {
         }
     }
 
+    /**
+     * Get the latest events.
+     * @return a list of the latest events.
+     */
     @GetMapping("/getLatestEvents")
     public ResultVO<List<EventRes>> getLatestEvents() {
         try {
-            // 获取所有活动并按照 startDate 降序排序，限制结果数量为 3
+            // Fetch all events sorted by startDate in descending order, limiting the results to 3
             List<Event> latestEvents = eventService.getLatestEvents();
 
-            // 转换为 EventRes 响应对象
+            // Convert to EventRes response objects
             List<EventRes> eventResList = latestEvents.stream().map(event -> {
                 Organizer o = organizerService.getOrganizersById(event.getOrganizerId());
                 EventRes eRes = new EventRes();
@@ -215,8 +275,11 @@ public class EventController {
         }
     }
 
-
-
+    /**
+     * Get event details by ID.
+     * @param id the event ID.
+     * @return event details.
+     */
     @GetMapping("/{id}")
     public ResultVO<EventRes> getEventById(@PathVariable Long id) {
         try {
@@ -242,7 +305,11 @@ public class EventController {
         }
     }
 
-
+    /**
+     * Subscribe a volunteer to an event.
+     * @param eventRegistration the event registration details.
+     * @return success message if subscription is successful.
+     */
     @PostMapping("/subscribeForEvent")
     public ResultVO<String> subscribeForEvent(@RequestBody EventRegistrations eventRegistration) {
         try {
@@ -258,6 +325,11 @@ public class EventController {
         }
     }
 
+    /**
+     * Get subscribed events for a volunteer.
+     * @param volunteerId the volunteer ID.
+     * @return a list of subscribed events.
+     */
     @PostMapping("/getSubscribedEvents")
     public ResultVO<List<EventRes>> getSubscribedEvents(@RequestBody EventRegistrations volunteerId) {
         try {
@@ -272,7 +344,7 @@ public class EventController {
                 eRes.setId(e.getId());
                 eRes.setTitle(e.getTitle());
                 eRes.setOrganizerId(e.getOrganizerId());
-                eRes.setOrganizationName(organizer.getOrganizationName());  // 设置 organizationName
+                eRes.setOrganizationName(organizer.getOrganizationName());
                 eRes.setDescription(e.getDescription());
                 eRes.setLocation(e.getLocation());
                 eRes.setPointsAwarded(e.getPointsAwarded());
@@ -288,6 +360,11 @@ public class EventController {
         }
     }
 
+    /**
+     * Register a volunteer for an event.
+     * @param eventRegistration the event registration details.
+     * @return success message if registration is successful.
+     */
     @PostMapping("/registerForEvent")
     public ResultVO<String> registerForEvent(@RequestBody EventRegistrations eventRegistration) {
         try {
@@ -301,6 +378,11 @@ public class EventController {
         }
     }
 
+    /**
+     * Get events a volunteer has participated in.
+     * @param volunteerId the volunteer ID.
+     * @return a list of participated events.
+     */
     @PostMapping("/getParticipatedEvents")
     public ResultVO<List<EventRes>> getParticipatedEvents(@RequestBody EventRegistrations volunteerId) {
         try {
@@ -329,6 +411,11 @@ public class EventController {
         }
     }
 
+    /**
+     * Get roles by event ID.
+     * @param eventRequest the request containing the event ID.
+     * @return a list of event roles.
+     */
     @PostMapping("/getRolesByEventId")
     public ResultVO<List<EventRoles>> getRolesByEventId(@RequestBody EventRequest eventRequest) {
         try {
@@ -339,19 +426,25 @@ public class EventController {
         }
     }
 
-
-
-    // 获取事件统计数据的接口
+    /**
+     * Get event statistics.
+     * @return a list of event statistics.
+     */
     @GetMapping("/getEventStats")
     public ResultVO<List<EventDataRes>> getEventStats() {
         List<EventDataRes> stats = eventService.getEventStats();
         return ResultVO.success(stats);
     }
 
+    /**
+     * Approve an event.
+     * @param id the event ID.
+     * @return success message if approval is successful.
+     */
     @PostMapping("/approveEvent")
     public ResultVO<String> approveEvent(@RequestBody EventUpdateRes id) {
         try {
-            // 调用service方法将事件状态更新为 "Passed"
+            // Call service method to update event status to "Passed"
             eventService.updateEventStatusToPassed(id.getId());
             return ResultVO.success("Event approved successfully");
         } catch (Exception e) {
@@ -359,15 +452,19 @@ public class EventController {
         }
     }
 
+    /**
+     * Reject an event.
+     * @param id the event ID.
+     * @return success message if rejection is successful.
+     */
     @PostMapping("/rejectEvent")
     public ResultVO<String> rejectEvent(@RequestBody EventUpdateRes id) {
         try {
-            // 调用service方法将事件状态更新为 "Passed"
+            // Call service method to update event status to "Rejected"
             eventService.updateEventStatusToRejected(id.getId());
             return ResultVO.success("Event rejected successfully");
         } catch (Exception e) {
             return ResultVO.failure("Failed to reject event: " + e.getMessage());
         }
     }
-
 }
